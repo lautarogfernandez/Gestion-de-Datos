@@ -1,0 +1,11 @@
+C:\Users\Usuario\Desktop\GDD\FrbaHotel\FrbaHotel\bin\Debug\FrbaHotel.exe
+C:\Users\Usuario\Desktop\GDD\FrbaHotel\FrbaHotel\bin\Debug\FrbaHotel.pdb
+C:\Users\Usuario\Desktop\GDD\FrbaHotel\FrbaHotel\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Usuario\Desktop\GDD\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Cliente.Cliente_alta.resources
+C:\Users\Usuario\Desktop\GDD\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Cliente.Cliente_baja.resources
+C:\Users\Usuario\Desktop\GDD\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Cliente.Cliente_listado.resources
+C:\Users\Usuario\Desktop\GDD\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.Properties.Resources.resources
+C:\Users\Usuario\Desktop\GDD\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.csproj.GenerateResource.Cache
+C:\Users\Usuario\Desktop\GDD\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.exe
+C:\Users\Usuario\Desktop\GDD\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.pdb
+C:\Users\Usuario\Desktop\GDD\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.MenuPrincipal.resources
