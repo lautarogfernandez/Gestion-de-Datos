@@ -55,11 +55,11 @@ CREATE TABLE TEAM_CASTY.Reserva (
 	Cant_Noches numeric(18) NOT NULL,
 	Cod_Hotel numeric(18) NOT NULL,
 	ID_Cliente_Reservador numeric(18) NOT NULL,
-	Cod_Regimen numeric(18),	
+	Cod_Regimen numeric(18) DEFAULT NULL,	
 	--Cod_Tipo numeric(18) NOT NULL, --¿que es?	
 	Fecha_Inicio datetime,
 	Fecha_Salida datetime,	
-	Cod_Estado numeric(18) NOT NULL,
+	Cod_Estado numeric(18) NOT NULL DEFAULT 1,
 	FOREIGN KEY (ID_Cliente_Reservador) REFERENCES TEAM_CASTY.Cliente (ID_Cliente),
 	FOREIGN KEY (Cod_Regimen) REFERENCES TEAM_CASTY.Regimen (Cod_Regimen),
 	FOREIGN KEY (Cod_Estado) REFERENCES TEAM_CASTY.Estados (Cod_Estado));

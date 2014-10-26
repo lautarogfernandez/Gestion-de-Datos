@@ -77,9 +77,10 @@ into #reservas
 FROM gd_esquema.Maestra t1
 order by 1
 
-select * from #reservas order by 1
+--select * from #reservas order by 1
 
 select distinct res.Reserva_Codigo,res.Reserva_Fecha_Inicio,res.Reserva_Cant_Noches,h.Cod_Hotel,reg.Cod_Regimen, c.ID_Cliente
+into #reservas_new
 FROM TEAM_CASTY.Ciudad ciu, TEAM_CASTY.Cliente c, TEAM_CASTY.Hotel h, #reservas res, TEAM_CASTY.Regimen reg
 where
 ciu.Nombre=res.Hotel_Ciudad and
@@ -92,15 +93,14 @@ c.Nombre=res.Cliente_Nombre and
 reg.Descripcion=res.Regimen_Descripcion
 order by 1
 
-drop table #reservas
+--select * from #reservas_new
 
---------------------
 select distinct t1.Reserva_Codigo
 into #todas_reservas
 FROM gd_esquema.Maestra t1
 order by 1
 
-select * from #todas_reservas order by 1
+--select * from #todas_reservas order by 1
 
 select distinct t1.Reserva_Codigo
 into #reservas_efectivas
@@ -108,7 +108,7 @@ FROM gd_esquema.Maestra t1
 where t1.Factura_Total is not null
 order by 1
 
-select * from #reservas_efectivas order by 1
+--select * from #reservas_efectivas order by 1
 
 select distinct t1.Reserva_Codigo
 into #reservas_canceladas_NoShow
@@ -117,12 +117,22 @@ where t1.Reserva_Codigo not in (select distinct t2.Reserva_Codigo
 							   FROM #reservas_efectivas t2)
 order by 1
 
-select distinct t1.Reserva_Fecha_Inicio, t1.Reserva_Codigo	
-FROM gd_esquema.Maestra t1
+--select * from #reservas_canceladas_NoShow order by 1
+
+select distinct t1.Reserva_Codigo,t1.Reserva_Fecha_Inicio,t1.Reserva_Cant_Noches,t1.Cod_Hotel,t1.Cod_Regimen, t1.ID_Cliente, 6 AS 'Cod_Estado'
+FROM #reservas_new t1
+where t1.Reserva_Codigo in (select res.Reserva_Codigo
+							from #reservas_efectivas res)
+order by t1.Reserva_Codigo
+
+select distinct t1.Reserva_Codigo,t1.Reserva_Fecha_Inicio,t1.Reserva_Cant_Noches,t1.Cod_Hotel,t1.Cod_Regimen, t1.ID_Cliente, 5 AS 'Cod_Estado'	
+FROM #reservas_new t1
 where t1.Reserva_Codigo in (select res.Reserva_Codigo
 							from #reservas_canceladas_NoShow res)
-order by t1.Reserva_Fecha_Inicio, t1.Reserva_Codigo
+order by t1.Reserva_Codigo
 
+drop table #reservas
+drop table #reservas_new
 drop table #todas_reservas
 drop table #reservas_efectivas
 drop table #reservas_canceladas_NoShow
@@ -150,6 +160,16 @@ ORDER BY t1.Reserva_Codigo
 
 SELECT MIN(t1.Reserva_Codigo)
 FROM gd_esquema.Maestra t1
+
+--clientes x reserva
+SELECT DISTINCT t1.Reserva_Codigo, c.ID_Cliente
+FROM gd_esquema.Maestra t1, TEAM_CASTY.Cliente c, TEAM_CASTY.Reserva r
+WHERE 
+t1.Cliente_Apellido=c.Apellido and
+t1.Cliente_Nombre=c.Nombre and
+t1.Cliente_Pasaporte_Nro=c.Nro_Documento and
+r.Cod_Reserva=t1.Reserva_Codigo
+ORDER BY t1.Reserva_Codigo, c.ID_Cliente
 
 --items facturas rey
 select  Factura_Nro ,'Consumible' as "Tipo_Item"  ,Consumible_Codigo  as "Codigo"
@@ -204,6 +224,11 @@ from gd_esquema.Maestra t1
 where t1.Reserva_Codigo=10010
 
 select distinct t1.Cliente_Dom_Calle from gd_esquema.Maestra t1
+
+select Habitacion_Numero, Habitacion_Piso, Reserva_Codigo, Reserva_Fecha_Inicio, Reserva_Cant_Noches, Hotel_Calle, Hotel_Ciudad, Hotel_Nro_Calle
+ from gd_esquema.Maestra
+ group by Habitacion_Numero, Habitacion_Piso, Reserva_Codigo, Reserva_Fecha_Inicio, Reserva_Cant_Noches, Hotel_Calle, Hotel_Ciudad, Hotel_Nro_Calle
+ order by  Habitacion_Numero, Habitacion_Piso, Reserva_Codigo, Reserva_Fecha_Inicio, Reserva_Cant_Noches, Hotel_Calle, Hotel_Ciudad, Hotel_Nro_Calle
 
 --consulta genérica
 SELECT *
