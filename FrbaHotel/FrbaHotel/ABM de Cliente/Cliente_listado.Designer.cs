@@ -260,7 +260,7 @@
             this.Controls.Add(this.button_limpiar);
             this.Controls.Add(this.Filtros_de_busqueda);
             this.Name = "Cliente_listado";
-            this.Text = "Cliente_listado";
+            this.Text = "Listado Clientes";
             this.Load += new System.EventHandler(this.Cliente_listado_Load);
             this.Filtros_de_busqueda.ResumeLayout(false);
             this.Filtros_de_busqueda.PerformLayout();

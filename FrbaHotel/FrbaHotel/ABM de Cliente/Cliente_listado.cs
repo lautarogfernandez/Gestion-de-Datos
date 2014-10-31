@@ -32,6 +32,15 @@ namespace FrbaHotel.ABM_de_Cliente
         public Cliente_listado()
         {
             InitializeComponent();
+            string busqueda = "SELECT Tipo_Documento "
+                                                         + "FROM [GD2C2014].[Team_Casty].[Cliente]";          //búsqueda básica
+            button_Buscar.Enabled = false;            //Deshabilito búsqueda hasta que haya resultado
+            label_progreso.Text = "Cargando Clientes";       //Imprime en la barra de progreso
+            string ConnStr = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;"; //ruta de la conexión
+            SqlConnection conn = new SqlConnection(ConnStr);                                                             //conexión
+            conn.Open();                                                                                                                                 //Abrir Conexión
+            SqlDataAdapter adaptador;
+            adaptador = new SqlDataAdapter(busqueda, conn);                                                              //Busco en la sesión abierta
         }
         #region Txt_Nombre
         // EVENTOS TextBox Nombre
@@ -130,8 +139,8 @@ namespace FrbaHotel.ABM_de_Cliente
 
         private void button_Buscar_Click(object sender, EventArgs e)
         {
-            string busqueda = "SELECT DISTINCT [Cliente_Nombre] Nombre,[Cliente_Apellido] Apellido,[Cliente_Mail] Email, [Cliente_Pasaporte_Nro] Numero_Documento "
-                                                                     + "FROM [GD2C2014].[gd_esquema].[Maestra]";          //búsqueda básica
+            string busqueda = "SELECT * "
+                                                                     + "FROM [GD2C2014].[Team_Casty].[Cliente]";          //búsqueda básica
             button_Buscar.Enabled = false;            //Deshabilito búsqueda hasta que haya resultado
             label_progreso.Text = "Cargando Clientes";       //Imprime en la barra de progreso
             string ConnStr = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;"; //ruta de la conexión
@@ -148,25 +157,30 @@ namespace FrbaHotel.ABM_de_Cliente
                 if (_buscaDoc)
                 {
                     _masDeUno = true;
-                    busqueda += " [Cliente_Pasaporte_Nro] LIKE '%" + txt_numeroIdentificacion.Text.ToString() + "%'";
+                    busqueda += " [Nro_Documento] LIKE '%" + txt_numeroIdentificacion.Text.ToString() + "%'";
                 }
                 if (_buscaNombre)
                 {
                     if (_masDeUno) busqueda += " AND ";
                     _masDeUno = true;
-                    busqueda += " [Cliente_Nombre] LIKE '%" + txt_Nombre.Text.ToString().ToUpper() + "%'";
+                    busqueda += " [Nombre] LIKE '%" + txt_Nombre.Text.ToString().ToUpper() + "%'";
                 }
                 if (_buscaApellido)
                 {
                     if (_masDeUno) busqueda += " AND ";
                     _masDeUno = true;
-                    busqueda += " [Cliente_Apellido] LIKE '%" + txt_Apellido.Text.ToString().ToUpper() + "%'";
+                    busqueda += " [Apellido] LIKE '%" + txt_Apellido.Text.ToString().ToUpper() + "%'";
                 }
                 if (_buscaEmail)
                 {
                     if (_masDeUno) busqueda += " AND ";
                     _masDeUno = true;
-                    busqueda += " [Cliente_Mail] LIKE '%" + txt_Email.Text.ToString().ToLower() + "%'";
+                    busqueda += " [Mail] LIKE '%" + txt_Email.Text.ToString().ToLower() + "%'";
+                }
+                if (_buscaTipoDoc)
+                {
+                    if (_masDeUno) busqueda += " AND ";
+                    busqueda += " [Tipo_Documento] = " + cmb_tipoIdentificacion;
                 }
             }
             #endregion
