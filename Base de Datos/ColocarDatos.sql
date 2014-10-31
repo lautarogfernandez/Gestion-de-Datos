@@ -228,10 +228,19 @@ INSERT INTO TEAM_CASTY.Forma_Pago(Descripcion) VALUES ('Tarjeta de Crédito');
 
 SELECT * FROM TEAM_CASTY.Forma_Pago
 
+--Tipos de Documento
+CREATE TABLE TEAM_CASTY.Tipo_Documento ( 
+	ID_Tipo_Documento numeric(18) NOT NULL PRIMARY KEY IDENTITY (1, 1),
+	Tipo_Documento varchar(20) NOT NULL);
+
+insert into TEAM_CASTY.Tipo_Documento (Tipo_Documento) values ('PASAPORTE');
+
+select * from TEAM_CASTY.Tipo_Documento
+
 --Clientes
 CREATE TABLE TEAM_CASTY.Cliente ( 
 	ID_Cliente numeric(18) NOT NULL PRIMARY KEY IDENTITY (1, 1),
-	Tipo_Documento varchar(20) NOT NULL,
+	ID_Tipo_Documento numeric(18) NOT NULL,
 	Nro_Documento numeric(18) NOT NULL,
 	Apellido nvarchar(255) NOT NULL,
 	Nombre nvarchar(255) NOT NULL,
@@ -259,14 +268,14 @@ FROM #datos_completos_clientes c
 GROUP BY c.Cliente_Pasaporte_Nro
 HAVING COUNT(c.Cliente_Pasaporte_Nro)>1
 
-INSERT INTO TEAM_CASTY.Cliente (Tipo_Documento,Nro_Documento,Apellido,Nombre,Fecha_Nacimiento,Pais,Localidad,Nom_Calle,Nro_Calle,Piso,Dto,Mail,Nacionalidad)
-SELECT 'PASAPORTE' AS 'Tipo Documento', t3.Cliente_Pasaporte_Nro, t3.Cliente_Apellido, t3.Cliente_Nombre, t3.Cliente_Fecha_Nac, 'ARGENTINA' AS 'Pais', 'CAPITAL FEDERAL' AS 'Localidad', t3.Cliente_Dom_Calle, t3.Cliente_Nro_Calle, t3.Cliente_Piso, t3.Cliente_Depto, t3.Cliente_Mail, t3.Cliente_Nacionalidad
+INSERT INTO TEAM_CASTY.Cliente (ID_Tipo_Documento,Nro_Documento,Apellido,Nombre,Fecha_Nacimiento,Pais,Localidad,Nom_Calle,Nro_Calle,Piso,Dto,Mail,Nacionalidad)
+SELECT 1 AS 'ID_Tipo_Documento', t3.Cliente_Pasaporte_Nro, t3.Cliente_Apellido, t3.Cliente_Nombre, t3.Cliente_Fecha_Nac, 'ARGENTINA' AS 'Pais', 'CAPITAL FEDERAL' AS 'Localidad', t3.Cliente_Dom_Calle, t3.Cliente_Nro_Calle, t3.Cliente_Piso, t3.Cliente_Depto, t3.Cliente_Mail, t3.Cliente_Nacionalidad
 FROM #datos_completos_clientes t3
 WHERE t3.Cliente_Pasaporte_Nro not in (SELECT t1.Cliente_Pasaporte_Nro FROM #clientes_repetidos t1)
 ORDER BY 2,3,4
 
-INSERT INTO TEAM_CASTY.Cliente (Tipo_Documento,Nro_Documento,Apellido,Nombre,Fecha_Nacimiento,Pais,Localidad,Nom_Calle,Nro_Calle,Piso,Dto,Mail,Nacionalidad, Erroneo)
-SELECT 'PASAPORTE' AS 'Tipo Documento', t3.Cliente_Pasaporte_Nro, t3.Cliente_Apellido, t3.Cliente_Nombre, t3.Cliente_Fecha_Nac, 'ARGENTINA' AS 'Pais', 'CAPITAL FEDERAL' AS 'Localidad', t3.Cliente_Dom_Calle, t3.Cliente_Nro_Calle, t3.Cliente_Piso, t3.Cliente_Depto, t3.Cliente_Mail, t3.Cliente_Nacionalidad, 1 AS 'Erroneo'
+INSERT INTO TEAM_CASTY.Cliente (ID_Tipo_Documento,Nro_Documento,Apellido,Nombre,Fecha_Nacimiento,Pais,Localidad,Nom_Calle,Nro_Calle,Piso,Dto,Mail,Nacionalidad, Erroneo)
+SELECT 1 AS 'ID_Tipo_Documento', t3.Cliente_Pasaporte_Nro, t3.Cliente_Apellido, t3.Cliente_Nombre, t3.Cliente_Fecha_Nac, 'ARGENTINA' AS 'Pais', 'CAPITAL FEDERAL' AS 'Localidad', t3.Cliente_Dom_Calle, t3.Cliente_Nro_Calle, t3.Cliente_Piso, t3.Cliente_Depto, t3.Cliente_Mail, t3.Cliente_Nacionalidad, 1 AS 'Erroneo'
 FROM #datos_completos_clientes t3
 WHERE t3.Cliente_Pasaporte_Nro in (SELECT t1.Cliente_Pasaporte_Nro FROM #clientes_repetidos t1)
 ORDER BY 2,3,4
@@ -276,6 +285,25 @@ DROP TABLE #datos_completos_clientes
 
 SELECT * FROM TEAM_CASTY.Cliente
 
+--Tarjetas, solo se crea, no tiene datos al principio
+CREATE TABLE TEAM_CASTY.Tarjeta ( 
+	Numero numeric(18) NOT NULL,
+	Banco nvarchar(255) NOT NULL,
+	ID_Cliente numeric(18) NOT NULL,
+	PRIMARY KEY (Numero, Banco),
+	FOREIGN KEY (ID_Cliente) REFERENCES TEAM_CASTY.Cliente (ID_Cliente));
+
+--TarjetaXFactura, solo se crea, no tiene datos al principio
+CREATE TABLE TEAM_CASTY.TarjetaXFactura ( 
+	Nro_Factura numeric(18) NOT NULL,
+	Numero_Tarjeta numeric(18) NOT NULL,
+	Banco nvarchar(255) NOT NULL,
+	PRIMARY KEY (Nro_Factura, Numero_Tarjeta, Banco),
+	FOREIGN KEY (Nro_Factura) REFERENCES TEAM_CASTY.Factura (Nro_Factura),
+	FOREIGN KEY (Numero_Tarjeta, Banco) REFERENCES TEAM_CASTY.Tarjeta (Numero, Banco));
+	
+	
+GO	
 
 --Reservas
 CREATE TABLE TEAM_CASTY.Reserva ( 
@@ -285,7 +313,6 @@ CREATE TABLE TEAM_CASTY.Reserva (
 	Cod_Hotel numeric(18) NOT NULL,
 	ID_Cliente_Reservador numeric(18) NOT NULL,
 	Cod_Regimen numeric(18) DEFAULT NULL,	
-	--Cod_Tipo numeric(18) NOT NULL, --¿que es?	
 	Fecha_Inicio datetime,
 	Fecha_Salida datetime,	
 	Cod_Estado numeric(18) NOT NULL DEFAULT 1,
@@ -327,7 +354,7 @@ select distinct t1.Reserva_Codigo
 into #reservas_canceladas_NoShow
 FROM #todas_reservas t1
 where t1.Reserva_Codigo not in (select distinct t2.Reserva_Codigo
-							   FROM #reservas_efectivas t2)
+							    FROM #reservas_efectivas t2)
 order by 1
 
 INSERT INTO TEAM_CASTY.Reserva (Cod_Reserva,Fecha_Reserva,Cant_Noches,Cod_Hotel,Cod_Regimen,ID_Cliente_Reservador,Cod_Estado)
@@ -376,6 +403,37 @@ WHERE hab.Cod_Tipo=t1.Habitacion_Tipo_Codigo AND
 	  ciu.Cod_Ciudad=h.Cod_Ciudad
 ORDER BY t1.Reserva_Codigo
 
-GO
 
 
+
+--Facturas
+CREATE TABLE TEAM_CASTY.Factura ( 
+	Fecha datetime NOT NULL,
+	Nro_Factura numeric(18) NOT NULL PRIMARY KEY,
+	Total numeric(18,2) NOT NULL,
+	Cod_Reserva numeric(18) NOT NULL,
+	Cod_Forma_Pago numeric(18) NOT NULL,
+	FOREIGN KEY (Cod_Forma_Pago) REFERENCES TEAM_CASTY.Forma_Pago (Cod_Forma_Pago),
+	FOREIGN KEY (Cod_Reserva) REFERENCES TEAM_CASTY.Reserva (Cod_Reserva));
+
+CREATE TABLE TEAM_CASTY.Auxiliar_Item_Total ( 
+	Nro_Factura numeric(18) NOT NULL,
+	Total numeric(18,2) NOT NULL);
+
+INSERT INTO TEAM_CASTY.Auxiliar_Item_Total select  Factura_Nro ,Consumible_Precio as  "Total"
+from gd_esquema.Maestra m1
+where m1.Consumible_Codigo is not null and m1.Factura_Nro is not null and m1.Regimen_Descripcion not in ('All inclusive' , 'All Inclusive moderado')
+
+INSERT INTO TEAM_CASTY.Auxiliar_Item_Total select Factura_Nro , (Reserva_Cant_Noches * Item_Factura_Monto) as "Total"
+from gd_esquema.Maestra m1
+where m1.Consumible_Codigo is null and m1.Factura_Nro is not null
+
+INSERT INTO TEAM_CASTY.Factura (Nro_Factura,Fecha,Cod_Reserva,Cod_Forma_Pago,Total)
+SELECT DISTINCT  m.Factura_Nro AS "Nro_Factura", m.Factura_Fecha AS "Fecha", m.Reserva_Codigo AS "Cod_Reserva", 1 AS "Cod_Forma_Pago" , SUM (auxiliar.Total) AS "Total"
+FROM gd_esquema.Maestra	m join TEAM_CASTY.Auxiliar_Item_Total auxiliar on (auxiliar.Nro_Factura = m.Factura_Nro)
+group by m.Factura_Nro,m.Factura_Fecha, m.Reserva_Codigo
+order by 1
+
+drop table TEAM_CASTY.Auxiliar_Item_Total
+
+select * from TEAM_CASTY.Factura

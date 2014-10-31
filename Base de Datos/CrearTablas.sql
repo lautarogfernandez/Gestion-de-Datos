@@ -26,17 +26,6 @@ CREATE TABLE TEAM_CASTY.Cliente (
 	Duplicado bit NOT NULL);
 	
 	
-CREATE TABLE TEAM_CASTY.Empleado ( 
-	Nombre nvarchar(255) NOT NULL,
-	Apellido nvarchar(255) NOT NULL,
-	Mail nvarchar(255) NOT NULL,
-	Telefono nvarchar(50) NOT NULL,
-	Direccion nvarchar(255) NOT NULL,
-	Fecha_Nacimiento datetime NOT NULL,
-	Cod_Hotel numeric(18) NOT NULL,
-	Cod_Empleado numeric(18) NOT NULL PRIMARY KEY);
-	
-	
 CREATE TABLE TEAM_CASTY.Estados ( 
 	Cod_Estado numeric(18) NOT NULL PRIMARY KEY IDENTITY (1, 1),
 	Descripcion nvarchar(255),
@@ -172,14 +161,25 @@ CREATE TABLE TEAM_CASTY.Item_Factura_Consumible (
 	
 	
 CREATE TABLE TEAM_CASTY.Usuario ( 
+	Cod_Usuario numeric(18) NOT NULL PRIMARY KEY IDENTITY (1, 1),
 	Username nvarchar(255) NOT NULL UNIQUE,
-	Password nvarchar(255) NOT NULL,
-	Cod_Usuario numeric(18) NOT NULL PRIMARY KEY ,
+	Password nvarchar(255) NOT NULL,	
 	Cant_Intentos numeric(18) DEFAULT 0 NOT NULL,
 	Cod_Empleado numeric(18) NOT NULL,
 	Habilitado bit DEFAULT 1 NOT NULL,
-	Baja bit DEFAULT 0 NOT NULL,
-	FOREIGN KEY (Cod_Empleado) REFERENCES TEAM_CASTY.Empleado (Cod_Empleado));
+	Baja bit DEFAULT 0 NOT NULL);
+	
+	
+CREATE TABLE TEAM_CASTY.Empleado ( 
+	Cod_Empleado numeric(18) NOT NULL PRIMARY KEY IDENTITY (1, 1),
+	Nombre nvarchar(255) NOT NULL,
+	Apellido nvarchar(255) NOT NULL,
+	Mail nvarchar(255) NOT NULL,
+	Telefono nvarchar(50) NOT NULL,
+	Direccion nvarchar(255) NOT NULL,
+	Fecha_Nacimiento datetime NOT NULL,
+	Cod_Usuario numeric(18) NOT NULL,
+	FOREIGN KEY (Cod_Usuario) REFERENCES TEAM_CASTY.Usuario (Cod_Usuario));
 	
 	
 CREATE TABLE TEAM_CASTY.Periodo_Inhabilitado ( 
@@ -198,11 +198,14 @@ CREATE TABLE TEAM_CASTY.RegimenXHotel (
 	PRIMARY KEY (Cod_Hotel, Cod_Regimen),
 	FOREIGN KEY (Cod_Hotel) REFERENCES TEAM_CASTY.Hotel (Cod_Hotel),
 	FOREIGN KEY (Cod_Regimen) REFERENCES TEAM_CASTY.Regimen (Cod_Regimen));	
-CREATE TABLE TEAM_CASTY.RolXUsuarioXHotel ( --VER
+	
+	
+CREATE TABLE TEAM_CASTY.RolXUsuarioXHotel (
 	Cod_Rol numeric(18) NOT NULL,
 	Cod_Usuario numeric(18) NOT NULL,
 	Cod_Hotel numeric(18) NOT NULL,
-	PRIMARY KEY (Cod_Hotel, Cod_Usuario),
+	PRIMARY KEY (Cod_Usuario,Cod_Hotel,Cod_Rol),
+	FOREIGN KEY (Cod_Rol) REFERENCES TEAM_CASTY.Rol (Cod_Rol),
 	FOREIGN KEY (Cod_Hotel) REFERENCES TEAM_CASTY.Hotel (Cod_Hotel),
 	FOREIGN KEY (Cod_Usuario) REFERENCES TEAM_CASTY.Usuario (Cod_Usuario));	
 	
@@ -213,7 +216,7 @@ CREATE TABLE TEAM_CASTY.Rol (
 	Activo bit DEFAULT 1 NOT NULL);
 	
 	
-CREATE TABLE TEAM_CASTY.RolXUsuario ( 
+CREATE TABLE TEAM_CASTY.RolXUsuario ( --no va, la que va es TEAM_CASTY.RolXUsuarioXHotel
 	Cod_Rol numeric(18) NOT NULL,
 	Cod_Usuario numeric(18) NOT NULL,
 	PRIMARY KEY (Cod_Rol, Cod_Usuario),
@@ -238,7 +241,7 @@ CREATE TABLE TEAM_CASTY.TarjetaXFactura (
 	FOREIGN KEY (Numero_Tarjeta, Banco) REFERENCES TEAM_CASTY.Tarjeta (Numero, Banco));
 	
 	
-CREATE TABLE TEAM_CASTY.UsuarioXHotel ( 
+CREATE TABLE TEAM_CASTY.UsuarioXHotel ( --me parece que no va
 	Cod_Hotel numeric(18) NOT NULL,
 	Cod_Usuario numeric(18) NOT NULL,
 	PRIMARY KEY (Cod_Hotel, Cod_Usuario),
@@ -248,10 +251,114 @@ CREATE TABLE TEAM_CASTY.UsuarioXHotel (
 	
 CREATE TABLE TEAM_CASTY.UsuarioXReserva ( 
 	Cod_Reserva numeric(18) NOT NULL,
-	Cod_Usuario numeric(18) NOT NULL,
-	Fecha datetime NOT NULL,
 	Numero_Modificacion numeric(18) NOT NULL,
+	Cod_Usuario numeric(18) NOT NULL,
+	Fecha datetime NOT NULL,	
 	Descripcion varchar(255),
 	PRIMARY KEY (Cod_Reserva, Numero_Modificacion),
 	FOREIGN KEY (Cod_Reserva) REFERENCES TEAM_CASTY.Reserva (Cod_Reserva),
 	FOREIGN KEY (Cod_Usuario) REFERENCES TEAM_CASTY.Usuario (Cod_Usuario));
+	
+	
+	
+	
+	
+	
+--Reservas
+CREATE TABLE TEAM_CASTY.Reserva ( 
+	Cod_Reserva numeric(18) NOT NULL PRIMARY KEY,
+	Fecha_Reserva datetime NOT NULL,
+	Cant_Noches numeric(18) NOT NULL,
+	Cod_Hotel numeric(18) NOT NULL,
+	ID_Cliente_Reservador numeric(18) NOT NULL,
+	Cod_Regimen numeric(18) DEFAULT NULL,	
+	Fecha_Inicio datetime,
+	Fecha_Salida datetime,	
+	Cod_Estado numeric(18) NOT NULL DEFAULT 1,
+	FOREIGN KEY (ID_Cliente_Reservador) REFERENCES TEAM_CASTY.Cliente (ID_Cliente),
+	FOREIGN KEY (Cod_Regimen) REFERENCES TEAM_CASTY.Regimen (Cod_Regimen),
+	FOREIGN KEY (Cod_Estado) REFERENCES TEAM_CASTY.Estados (Cod_Estado));
+
+select distinct t1.Reserva_Codigo, t1.Reserva_Fecha_Inicio, t1.Reserva_Cant_Noches, t1.Cliente_Pasaporte_Nro,t1.Cliente_Apellido, t1.Cliente_Nombre, t1.Hotel_Ciudad, t1.Hotel_Calle, t1.Hotel_Nro_Calle, t1.Regimen_Descripcion
+into #reservas
+FROM gd_esquema.Maestra t1
+order by 1
+
+select distinct res.Reserva_Codigo,res.Reserva_Fecha_Inicio,res.Reserva_Cant_Noches,h.Cod_Hotel,reg.Cod_Regimen, c.ID_Cliente
+into #reservas_new
+FROM TEAM_CASTY.Ciudad ciu, TEAM_CASTY.Cliente c, TEAM_CASTY.Hotel h, #reservas res, TEAM_CASTY.Regimen reg
+where
+ciu.Nombre=res.Hotel_Ciudad and
+h.Calle=res.Hotel_Calle and
+h.Cod_Ciudad=ciu.Cod_Ciudad and
+h.Nro_Calle=res.Hotel_Nro_Calle and
+c.Nro_Documento=res.Cliente_Pasaporte_Nro and
+c.Apellido=res.Cliente_Apellido and
+c.Nombre=res.Cliente_Nombre and
+reg.Descripcion=res.Regimen_Descripcion
+order by 1
+
+select distinct t1.Reserva_Codigo
+into #todas_reservas
+FROM gd_esquema.Maestra t1
+order by 1
+
+select distinct t1.Reserva_Codigo
+into #reservas_efectivas
+FROM gd_esquema.Maestra t1
+where t1.Factura_Total is not null
+order by 1
+
+select distinct t1.Reserva_Codigo
+into #reservas_canceladas_NoShow
+FROM #todas_reservas t1
+where t1.Reserva_Codigo not in (select distinct t2.Reserva_Codigo
+							    FROM #reservas_efectivas t2)
+order by 1
+
+INSERT INTO TEAM_CASTY.Reserva (Cod_Reserva,Fecha_Reserva,Cant_Noches,Cod_Hotel,Cod_Regimen,ID_Cliente_Reservador,Cod_Estado)
+select distinct t1.Reserva_Codigo,t1.Reserva_Fecha_Inicio,t1.Reserva_Cant_Noches,t1.Cod_Hotel,t1.Cod_Regimen, t1.ID_Cliente, 6 AS 'Cod_Estado'
+FROM #reservas_new t1
+where t1.Reserva_Codigo in (select res.Reserva_Codigo
+							from #reservas_efectivas res)
+order by t1.Reserva_Codigo
+
+INSERT INTO TEAM_CASTY.Reserva (Cod_Reserva,Fecha_Reserva,Cant_Noches,Cod_Hotel,Cod_Regimen,ID_Cliente_Reservador,Cod_Estado)
+select distinct t1.Reserva_Codigo,t1.Reserva_Fecha_Inicio,t1.Reserva_Cant_Noches,t1.Cod_Hotel,t1.Cod_Regimen, t1.ID_Cliente, 5 AS 'Cod_Estado'	
+FROM #reservas_new t1
+where t1.Reserva_Codigo in (select res.Reserva_Codigo
+							from #reservas_canceladas_NoShow res)
+order by t1.Reserva_Codigo
+
+drop table #reservas
+drop table #reservas_new
+drop table #todas_reservas
+drop table #reservas_efectivas
+drop table #reservas_canceladas_NoShow		
+
+select * from TEAM_CASTY.Reserva
+
+
+--Habitacion X Reserva
+CREATE TABLE TEAM_CASTY.HabitacionXReserva ( 
+	Cod_Reserva numeric(18) NOT NULL,
+	Cod_Habitacion numeric(18) NOT NULL,
+	PRIMARY KEY (Cod_Reserva, Cod_Habitacion),	
+	FOREIGN KEY (Cod_Reserva) REFERENCES TEAM_CASTY.Reserva (Cod_Reserva),
+	FOREIGN KEY (Cod_Habitacion) REFERENCES TEAM_CASTY.Habitacion (Cod_Habitacion));
+
+INSERT INTO TEAM_CASTY.HabitacionXReserva (Cod_Reserva,Cod_Habitacion)
+SELECT DISTINCT t1.Reserva_Codigo, hab.Cod_Habitacion
+FROM gd_esquema.Maestra t1, TEAM_CASTY.Hotel h, TEAM_CASTY.Ciudad ciu, TEAM_CASTY.Habitacion hab
+WHERE hab.Cod_Tipo=t1.Habitacion_Tipo_Codigo AND
+	  hab.Frente=t1.Habitacion_Frente AND
+	  t1.Habitacion_Numero=hab.Numero AND
+	  t1.Habitacion_Piso=hab.Piso AND
+	  h.Cod_Hotel=hab.Cod_Hotel AND
+	  h.Cod_Ciudad=ciu.Cod_Ciudad AND
+	  t1.Hotel_Calle=h.Calle AND
+	  t1.Hotel_Nro_Calle= h.Nro_Calle AND
+	  ciu.Nombre=t1.Hotel_Ciudad AND
+	  ciu.Cod_Ciudad=h.Cod_Ciudad
+ORDER BY t1.Reserva_Codigo
+	

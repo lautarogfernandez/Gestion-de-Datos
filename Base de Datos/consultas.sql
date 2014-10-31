@@ -229,6 +229,9 @@ select Habitacion_Numero, Habitacion_Piso, Reserva_Codigo, Reserva_Fecha_Inicio,
  from gd_esquema.Maestra
  group by Habitacion_Numero, Habitacion_Piso, Reserva_Codigo, Reserva_Fecha_Inicio, Reserva_Cant_Noches, Hotel_Calle, Hotel_Ciudad, Hotel_Nro_Calle
  order by  Habitacion_Numero, Habitacion_Piso, Reserva_Codigo, Reserva_Fecha_Inicio, Reserva_Cant_Noches, Hotel_Calle, Hotel_Ciudad, Hotel_Nro_Calle
+ 
+ select MAX(m.Reserva_Codigo) from gd_esquema.Maestra m
+select MAX(m.Factura_Fecha) from gd_esquema.Maestra m
 
 --consulta genérica
 SELECT *
