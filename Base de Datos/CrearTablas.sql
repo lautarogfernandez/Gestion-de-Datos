@@ -62,12 +62,15 @@ CREATE TABLE TEAM_CASTY.ClienteXReserva (
 	FOREIGN KEY (ID_Cliente) REFERENCES TEAM_CASTY.Cliente (ID_Cliente));	
 		
 	
-CREATE TABLE TEAM_CASTY.ConsumibleXReserva ( 
+CREATE TABLE TEAM_CASTY.ConsumibleXHabitacionXReserva ( 
 	Cod_Reserva numeric(18) NOT NULL,
+	Cod_Habitacion numeric(18) NOT NULL,
 	Cod_Consumible numeric(18) NOT NULL,
-	PRIMARY KEY (Cod_Reserva, Cod_Consumible),
-	FOREIGN KEY (Cod_Consumible) REFERENCES TEAM_CASTY.Consumible (Cod_Consumible),
-	FOREIGN KEY (Cod_Reserva) REFERENCES TEAM_CASTY.Reserva (Cod_Reserva));	
+	Cantidad numeric(18) NOT NULL,
+	PRIMARY KEY (Cod_Reserva,Cod_Habitacion,Cod_Consumible),
+	FOREIGN KEY (Cod_Habitacion) REFERENCES TEAM_CASTY.Habitacion (Cod_Habitacion),
+	FOREIGN KEY (Cod_Reserva) REFERENCES TEAM_CASTY.Reserva (Cod_Reserva),
+	FOREIGN KEY (Cod_Consumible) REFERENCES TEAM_CASTY.Consumible (Cod_Consumible));
 	
 	
 CREATE TABLE TEAM_CASTY.Forma_Pago ( 
