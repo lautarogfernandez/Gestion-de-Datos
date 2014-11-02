@@ -25,4 +25,26 @@ from TEAM_CASTY.Reserva r, TEAM_CASTY.Regimen reg
 
 select * from TEAM_CASTY.Vista_Reserva_Regimen
 
+
+--vista hotel
+Create view TEAM_CASTY.Vista_Hotel
+AS
+select c.Nombre as "Ciudad",h.Calle,h.Nro_Calle,h.Telefono,h.Mail,h.CantEstrella,re.Recarga as "Recarga_Estrella"
+from TEAM_CASTY.Hotel h, TEAM_CASTY.Ciudad c , TEAM_CASTY.Recarga_Estrella re
+
+select * from TEAM_CASTY.Vista_Hotel
+
+drop table TEAM_CASTY.Vista_Hotel
+
+
+--vista habitacion
+Create view TEAM_CASTY.Vista_Habitacion
+as
+select h.Cod_Hotel,h.Numero,h.Piso,h.Frente,h.Descripcion,th.Descripcion as "Tipo de habitacion", th.Porcentual 
+from TEAM_CASTY.Habitacion h, TEAM_CASTY.Tipo_Habitacion th
+where h.Baja=0
+
+select * from TEAM_CASTY.Vista_Habitacion
+
+drop table TEAM_CASTY.Vista_Habitacion
 drop table TEAM_CASTY.Vista_Reserva_Regimen
