@@ -65,9 +65,9 @@ AS
 select c.Nombre as "Ciudad",h.Calle,h.Nro_Calle,h.Telefono,h.Mail,h.CantEstrella,re.Recarga as "Recarga_Estrella"
 from TEAM_CASTY.Hotel h, TEAM_CASTY.Ciudad c , TEAM_CASTY.Recarga_Estrella re
 
-select * from TEAM_CASTY.Vista_Hotel
+select * from TEAM_CASTY.vistaHoteles
 
-drop view TEAM_CASTY.Vista_Hotel
+drop view TEAM_CASTY.vistaHoteles
 --vista habitacion
 Create view TEAM_CASTY.vistaHabitaciones
 as
