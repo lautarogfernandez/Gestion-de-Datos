@@ -527,6 +527,54 @@ drop table #auxiliar
 
 select * from TEAM_CASTY.ConsumibleXHabitacionXReserva
 
+
+
+
+
+
+--consumible, habitacion y factura
+CREATE TABLE TEAM_CASTY.item_ConsumibleXFactura ( 
+	Nro_Factura numeric(18) NOT NULL,
+	Cod_Habitacion numeric(18) NOT NULL,
+	Cod_Consumible numeric(18) NOT NULL,
+	Cantidad numeric(18) NOT NULL,
+	Monto numeric(18,2) NOT NULL,
+	PRIMARY KEY (Nro_Factura,Cod_Habitacion,Cod_Consumible),
+	FOREIGN KEY (Cod_Habitacion) REFERENCES TEAM_CASTY.Habitacion (Cod_Habitacion),
+	FOREIGN KEY (Nro_Factura) REFERENCES TEAM_CASTY.Factura (Nro_Factura),
+	FOREIGN KEY (Cod_Consumible) REFERENCES TEAM_CASTY.Consumible (Cod_Consumible));
+
+--insert into TEAM_CASTY.item_ConsumibleXFactura (Nro_Factura,Cod_Habitacion,Cod_Consumible,Cantidad,Monto)
+select f.Nro_Factura,chres.Cod_Habitacion,chres.Cod_Consumible,chres.Cantidad, chres.Cantidad*con.Precio
+from TEAM_CASTY.ConsumibleXHabitacionXReserva chres, TEAM_CASTY.Factura f, TEAM_CASTY.Consumible con
+where f.Cod_Reserva=chres.Cod_Reserva
+
+
+--estadia, habitacion y factura
+CREATE TABLE TEAM_CASTY.item_EstadiaXFactura ( 
+	Nro_Factura numeric(18) NOT NULL,
+	Cod_Habitacion numeric(18) NOT NULL,
+	Cod_Regimen numeric(18) NOT NULL,
+	Monto numeric(18,2) NOT NULL,
+	PRIMARY KEY (Nro_Factura,Cod_Habitacion,Cod_Regimen),
+	FOREIGN KEY (Cod_Habitacion) REFERENCES TEAM_CASTY.Habitacion (Cod_Habitacion),
+	FOREIGN KEY (Nro_Factura) REFERENCES TEAM_CASTY.Factura (Nro_Factura),
+	FOREIGN KEY (Cod_Regimen) REFERENCES TEAM_CASTY.Regimen (Cod_Regimen));
+
+--insert into TEAM_CASTY.item_EstadiaXFactura (Nro_Factura,Cod_Habitacion,Cod_Regimen,Monto)
+select f.Nro_Factura, hxr.Cod_Habitacion, res.Cod_Regimen, res.Cant_Noches*reg.Precio+hot.CantEstrella*rec.Recarga as Monto
+from TEAM_CASTY.Factura f, TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXReserva hxr, TEAM_CASTY.Hotel hot, TEAM_CASTY.Recarga_Estrella rec, TEAM_CASTY.Regimen reg, TEAM_CASTY.Reserva res
+where f.Cod_Reserva=res.Cod_Reserva and
+res.Cod_Reserva=hxr.Cod_Reserva and
+hxr.Cod_Habitacion=hab.Cod_Habitacion and
+hab.Cod_Hotel=hot.Cod_Hotel and
+rec.Cod_Recarga=1 and
+res.Cod_Regimen=reg.Cod_Regimen
+
+
+
+
+
 --Usuario por reserva (para modificacion de Reserva)
 CREATE TABLE TEAM_CASTY.UsuarioXReserva ( 
 	Cod_Reserva numeric(18) NOT NULL,
