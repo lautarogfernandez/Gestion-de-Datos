@@ -287,11 +287,62 @@ DROP TABLE #datos_completos_clientes
 
 SELECT * FROM TEAM_CASTY.Cliente
 
-GO	
-
-
+--Usuarios
+CREATE TABLE TEAM_CASTY.Usuario ( 
+	Cod_Usuario numeric(18) NOT NULL PRIMARY KEY IDENTITY (1, 1),
+	Username nvarchar(255) NOT NULL UNIQUE,
+	Contraseña nvarchar(255) NOT NULL,	
+	Cant_Intentos numeric(18) DEFAULT 0 NOT NULL,
+	Habilitado bit DEFAULT 1 NOT NULL,
+	Baja bit DEFAULT 0 NOT NULL);
 	
+insert into TEAM_CASTY.Usuario (Username,Contraseña) values ('Administrador','ea042aac8c9f5d78d16b076597f64b6b7e69ec7ea3f232dab518b5f07c8a530f');--la contraseña es CASTY
+insert into TEAM_CASTY.Usuario (Username,Contraseña) values ('Guest','16ceb2796ccd9d52d4f2a92134ef9ecfeb8f016150a82d36b299d09d5b9963f0');--la contraseña es GUEST
+
+SELECT * FROM TEAM_CASTY.Usuario
 	
+--Empleados	
+CREATE TABLE TEAM_CASTY.Empleado ( 
+	Cod_Empleado numeric(18) NOT NULL PRIMARY KEY IDENTITY (1, 1),
+	Nombre nvarchar(255) NOT NULL,
+	Apellido nvarchar(255) NOT NULL,
+	Mail nvarchar(255) NOT NULL,
+	Telefono nvarchar(50) NOT NULL,
+	Direccion nvarchar(255) NOT NULL,
+	Fecha_Nacimiento datetime NOT NULL,
+	Cod_Usuario numeric(18) NOT NULL,
+	FOREIGN KEY (Cod_Usuario) REFERENCES TEAM_CASTY.Usuario (Cod_Usuario));
+
+--Roles de los Usuarios por cada Hotel
+CREATE TABLE TEAM_CASTY.RolXUsuarioXHotel (	
+	Cod_Usuario numeric(18) NOT NULL,	
+	Cod_Hotel numeric(18) NOT NULL,
+	Cod_Rol numeric(18) NOT NULL,
+	PRIMARY KEY (Cod_Usuario,Cod_Hotel,Cod_Rol),
+	FOREIGN KEY (Cod_Rol) REFERENCES TEAM_CASTY.Rol (Cod_Rol),
+	FOREIGN KEY (Cod_Hotel) REFERENCES TEAM_CASTY.Hotel (Cod_Hotel),
+	FOREIGN KEY (Cod_Usuario) REFERENCES TEAM_CASTY.Usuario (Cod_Usuario));	
+
+insert into TEAM_CASTY.RolXUsuarioXHotel
+(Cod_Usuario,Cod_Rol,Cod_Hotel) 
+select 1,1,@code
+where @code in (select h.Cod_Hotel from TEAM_CASTY.Hotel h)
+
+insert into TEAM_CASTY.RolXUsuarioXHotel
+(Cod_Usuario,Cod_Rol,Cod_Hotel) 
+select 2,3,(select h.Cod_Hotel from TEAM_CASTY.Hotel h)
+
+SELECT * FROM TEAM_CASTY.RolXUsuarioXHotel
+	
+--Inhabilitacion de los Hoteles	
+CREATE TABLE TEAM_CASTY.Periodo_Inhabilitado ( 
+	Cod_Hotel numeric(18) NOT NULL,
+	Fecha_Inicio datetime NOT NULL,
+	Fecha_Fin datetime NOT NULL,
+	Descripcion varchar(255),
+	PRIMARY KEY (Cod_Hotel, Fecha_Inicio, Fecha_Fin),--ver
+	FOREIGN KEY (Cod_Hotel) REFERENCES TEAM_CASTY.Hotel (Cod_Hotel));	
+
 --Reservas
 CREATE TABLE TEAM_CASTY.Reserva ( 
 	Cod_Reserva numeric(18) NOT NULL PRIMARY KEY,
@@ -383,23 +434,6 @@ ORDER BY t1.Reserva_Codigo, c.ID_Cliente
 
 select * from TEAM_CASTY.ClienteXReserva
 
---Tarjetas, solo se crea, no tiene datos al principio
-CREATE TABLE TEAM_CASTY.Tarjeta ( 
-	Numero numeric(18) NOT NULL,
-	Banco nvarchar(255) NOT NULL,
-	ID_Cliente numeric(18) NOT NULL,
-	PRIMARY KEY (Numero, Banco),
-	FOREIGN KEY (ID_Cliente) REFERENCES TEAM_CASTY.Cliente (ID_Cliente));
-
---TarjetaXFactura, solo se crea, no tiene datos al principio
-CREATE TABLE TEAM_CASTY.TarjetaXFactura ( 
-	Nro_Factura numeric(18) NOT NULL,
-	Numero_Tarjeta numeric(18) NOT NULL,
-	Banco nvarchar(255) NOT NULL,
-	PRIMARY KEY (Nro_Factura, Numero_Tarjeta, Banco),
-	FOREIGN KEY (Nro_Factura) REFERENCES TEAM_CASTY.Factura (Nro_Factura),
-	FOREIGN KEY (Numero_Tarjeta, Banco) REFERENCES TEAM_CASTY.Tarjeta (Numero, Banco));
-
 --Facturas
 CREATE TABLE TEAM_CASTY.Factura ( 
 	Fecha datetime NOT NULL,
@@ -431,6 +465,23 @@ order by 1
 drop table TEAM_CASTY.Auxiliar_Item_Total
 
 select * from TEAM_CASTY.Factura
+
+--Tarjetas, solo se crea, no tiene datos al principio
+CREATE TABLE TEAM_CASTY.Tarjeta ( 
+	Numero numeric(18) NOT NULL,
+	Banco nvarchar(255) NOT NULL,
+	ID_Cliente numeric(18) NOT NULL,
+	PRIMARY KEY (Numero, Banco),
+	FOREIGN KEY (ID_Cliente) REFERENCES TEAM_CASTY.Cliente (ID_Cliente));
+
+--TarjetaXFactura, solo se crea, no tiene datos al principio
+CREATE TABLE TEAM_CASTY.TarjetaXFactura ( 
+	Nro_Factura numeric(18) NOT NULL,
+	Numero_Tarjeta numeric(18) NOT NULL,
+	Banco nvarchar(255) NOT NULL,
+	PRIMARY KEY (Nro_Factura, Numero_Tarjeta, Banco),
+	FOREIGN KEY (Nro_Factura) REFERENCES TEAM_CASTY.Factura (Nro_Factura),
+	FOREIGN KEY (Numero_Tarjeta, Banco) REFERENCES TEAM_CASTY.Tarjeta (Numero, Banco));
 
 --Cambiar hacer check in y out de las reservas 
 update TEAM_CASTY.Reserva
@@ -466,3 +517,15 @@ drop table #auxiliar
 
 select * from TEAM_CASTY.ConsumibleXHabitacionXReserva
 
+--Usuario por reserva (para modificacion de Reserva)
+CREATE TABLE TEAM_CASTY.UsuarioXReserva ( 
+	Cod_Reserva numeric(18) NOT NULL,
+	Numero_Modificacion numeric(18) NOT NULL,
+	Cod_Usuario numeric(18) NOT NULL,
+	Fecha datetime DEFAULT getdate(),	
+	Descripcion varchar(255),
+	PRIMARY KEY (Cod_Reserva, Numero_Modificacion),
+	FOREIGN KEY (Cod_Reserva) REFERENCES TEAM_CASTY.Reserva (Cod_Reserva),
+	FOREIGN KEY (Cod_Usuario) REFERENCES TEAM_CASTY.Usuario (Cod_Usuario));
+
+GO

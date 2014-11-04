@@ -256,7 +256,7 @@ CREATE TABLE TEAM_CASTY.UsuarioXReserva (
 	Cod_Reserva numeric(18) NOT NULL,
 	Numero_Modificacion numeric(18) NOT NULL,
 	Cod_Usuario numeric(18) NOT NULL,
-	Fecha datetime NOT NULL,	
+	Fecha datetime DEFAULT getdate(),	
 	Descripcion varchar(255),
 	PRIMARY KEY (Cod_Reserva, Numero_Modificacion),
 	FOREIGN KEY (Cod_Reserva) REFERENCES TEAM_CASTY.Reserva (Cod_Reserva),
