@@ -32,7 +32,7 @@ drop view TEAM_CASTY.vistaHabitaciones
 -- vistas sobre reservas
 Create view TEAM_CASTY.Vista_Reserva_Estado
 AS
-select r.Cod_Reserva, r.Cod_Hotel,r.ID_Cliente_Reservador,r.Cod_Regimen,r.Cod_Estado,e.Nombre as "Nombre_Estado",e.Descripcion as"Descripcion_Estado",r.Fecha_Reserva,r.Fecha_Inicio,r.Fecha_Salida,r.Cant_Noches
+select r.Cod_Reserva, r.ID_Cliente_Reservador,r.Cod_Regimen,r.Cod_Estado,e.Nombre as "Nombre_Estado",e.Descripcion as"Descripcion_Estado",r.Fecha_Reserva,r.Fecha_Inicio,r.Fecha_Salida,r.Cant_Noches
 from TEAM_CASTY.Reserva r , TEAM_CASTY.Estados e
 
 select * from TEAM_CASTY.Vista_Reserva_Estado
@@ -41,7 +41,7 @@ drop view TEAM_CASTY.Vista_Reserva_Estado
 
 Create view TEAM_CASTY.Vista_Reserva_Regimen
 AS
-select  r.Cod_Reserva, r.Cod_Hotel,r.ID_Cliente_Reservador,r.Cod_Regimen,reg.Descripcion as "Descripcion_Regimen",reg.Precio as "Precio_Regimen",r.Cod_Estado,r.Fecha_Reserva,r.Fecha_Inicio,r.Fecha_Salida,r.Cant_Noches
+select  r.Cod_Reserva, r.ID_Cliente_Reservador,r.Cod_Regimen,reg.Descripcion as "Descripcion_Regimen",reg.Precio as "Precio_Regimen",r.Cod_Estado,r.Fecha_Reserva,r.Fecha_Inicio,r.Fecha_Salida,r.Cant_Noches
 from TEAM_CASTY.Reserva r, TEAM_CASTY.Regimen reg
 
 select * from TEAM_CASTY.Vista_Reserva_Regimen
@@ -88,7 +88,7 @@ drop view  TEAM_CASTY.vistaRegimenesXHoteles
 --vista HabitacionXReserva
 create view TEAM_CASTY.vistaHabitacionesXReservas
 AS  
-select    h.Cod_Habitacion, h.Numero, h.Piso, h.Frente, h.Descripcion as "Descripcion_Habitacion", h."Tipo_De_Habitacion", h.Porcentual ,r.*
+select   h.Cod_Hotel , h.Cod_Habitacion, h.Numero, h.Piso, h.Frente, h.Descripcion as "Descripcion_Habitacion", h."Tipo_De_Habitacion", h.Porcentual ,r.*
 from  TEAM_CASTY.vistaHabitaciones h, TEAM_CASTY.HabitacionXReserva , TEAM_CASTY.vistaReservas r
 
 
@@ -115,7 +115,7 @@ drop view TEAM_CASTY.vistaClientesXReservas
 create view TEAM_CASTY.vistasFuncionesXRol
 AS  
 select   r.*,f.*
-from  TEAM_CASTY.FuncionesXRol, TEAM_CASTY.Rol  r, TEAM_CASTY.Funcion f
+from  TEAM_CASTY.FuncionXRol, TEAM_CASTY.Rol  r, TEAM_CASTY.Funcion f
 
 select * from TEAM_CASTY.vistasFuncionesXRol
 
@@ -127,7 +127,7 @@ drop view TEAM_CASTY.vistasFuncionesXRol
 --vista ConsumibleXHabitacionXReserva
 create view TEAM_CASTY.vistaConsumibleXHabitacionXReserva
 AS  
-select   c.*,vhxr.*
+select   c.Cod_Consumible,c.Descripciona as "Descripcion_Consumible", c.Precio as "Precio_Consumible",vhxr.*
 from  TEAM_CASTY.ConsumibleXHabitacionXReserva,TEAM_CASTY.Consumible c, TEAM_CASTY.vistaHabitacionesXReservas vhxr
 
 
@@ -153,6 +153,7 @@ order by Cantidad_Reservas_Canceladas desc
 
 SELECT * FROM vistaTOP5ReservasCanceladas
 
+drop function vistaTOP5ReservasCanceladas
 
 -- vista q no sirve
 create view TEAM_CASTY.vistaTOP5ReservasCanceladas
@@ -172,12 +173,13 @@ CREATE FUNCTION vistaTOP5ConsumiblesFacturados (@pFecha_Inicio date,@pFecha_Fin 
 RETURNS TABLE
 AS
 RETURN
-   select  top 5 h.Cod_Hotel, vh.Ciudad, vh.Calle, vh.Nro_Calle, vh.Telefono,  vh.Mail, vh.CantEstrella,vh.Recarga_Estrella,  Sum (vCxHxR.Cantidad) as "Cantidad_Consumibles" 
-from TEAM_CASTY.vistaHoteles vh,TEAM_CASTY.Hotel h, TEAM_CASTY.vistaConsumibleXHabitacionXReserva vCxHxR
+   select  top 5 vh.Cod_Hotel, vh.Ciudad, vh.Calle, vh.Nro_Calle, vh.Telefono,  vh.Mail, vh.CantEstrella,vh.Recarga_Estrella, COUNT (vCxHxR.Cod_Hotel) as "Cantidad_Consumibles" 
+from TEAM_CASTY.vistaHoteles vh, TEAM_CASTY.vistaConsumibleXHabitacionXReserva vCxHxR
 where vCxHxR.Nombre_Estado = 'Finalizada' and vCxHxR.Fecha_Reserva between @pFecha_Inicio and @pFecha_Fin
-group by h.Cod_Hotel, vh.Ciudad, vh.Calle, vh.Nro_Calle, vh.Telefono,  vh.Mail, vh.CantEstrella,vh.Recarga_Estrella
+group by vh.Cod_Hotel, vh.Ciudad, vh.Calle, vh.Nro_Calle, vh.Telefono,  vh.Mail, vh.CantEstrella,vh.Recarga_Estrella
 order by Cantidad_Consumibles
 
+drop function vistaTOP5ConsumiblesFacturados
 
 SELECT * FROM vistaTOP5ConsumiblesFacturados
 
@@ -185,7 +187,7 @@ SELECT * FROM vistaTOP5ConsumiblesFacturados
 --vista que no sirve
 create view TEAM_CASTY.vistaTOP5ConsumiblesFacturados
 as 
-select  top 5 h.Cod_Hotel, vh.Ciudad, vh.Calle, vh.Nro_Calle, vh.Telefono,  vh.Mail, vh.CantEstrella,vh.Recarga_Estrella,  Sum (vCxHxR.Cantidad) as "Cantidad_Consumibles" 
+select  top 5 h.Cod_Hotel, vh.Ciudad, vh.Calle, vh.Nro_Calle, vh.Telefono,  vh.Mail, vh.CantEstrella,vh.Recarga_Estrella, Sum (vCxHxR.Cantidad) as "Cantidad_Consumibles" 
 from TEAM_CASTY.vistaHoteles vh,TEAM_CASTY.Hotel h, TEAM_CASTY.vistaConsumibleXHabitacionXReserva vCxHxR
 where vCxHxR.Nombre_Estado = 'Finalizada'
 group by h.Cod_Hotel, vh.Ciudad, vh.Calle, vh.Nro_Calle, vh.Telefono,  vh.Mail, vh.CantEstrella,vh.Recarga_Estrella
@@ -220,16 +222,16 @@ from TEAM_CASTY.vistaHoteles vh,TEAM_CASTY.Hotel h, TEAM_CASTY.Periodo_Inhabilit
 group by h.Cod_Hotel, vh.Ciudad, vh.Calle, vh.Nro_Calle, vh.Telefono,  vh.Mail, vh.CantEstrella,vh.Recarga_Estrella
 order by Total_Dias_Fuera_De_Servicio desc
 
-
+drop function vistaTOP5CantidadDeDiasFueraDeServicio
 ------------------------------------------------------------------------------------
 
 CREATE FUNCTION TEAM_CASTY.vistaTOP5HabitacionesHabitadas (@pFecha_Inicio date,@pFecha_Fin date)
 RETURNS TABLE
 AS
 RETURN
-select  top 5 vhxr.Cod_Hotel, vhxr.Numero, vhxr.Piso,hab.Frente, vhxr.Descripcion, vhxr.Tipo_De_Habitacion, vhxr.Porcentual ,SUM(dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,vhxr.Fecha_Inicio,vhxr.Fecha_Salida )) as "Dias_Ocupada", COUNT (vhxr.Cod_Reserva) "Cantidad_De_Veces_Ocupada"
+select  top 5 vhxr.Cod_Hotel, vhxr.Numero, vhxr.Piso,vhxr.Frente, vhxr.Descripcion_Habitacion, vhxr.Tipo_De_Habitacion, vhxr.Porcentual ,SUM(dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,vhxr.Fecha_Inicio,vhxr.Fecha_Salida )) as "Dias_Ocupada", COUNT (vhxr.Cod_Reserva) "Cantidad_De_Veces_Ocupada"
 from TEAM_CASTY.vistaHabitacionesXReservas vhxr, TEAM_CASTY.vistaHoteles h
-group by  vhxr.Cod_Hotel, vhxr.Numero, vhxr.Piso,hab.Frente, vhxr.Descripcion, vhxr.Tipo_De_Habitacion, vhxr.Porcentual
+group by  vhxr.Cod_Hotel, vhxr.Numero, vhxr.Piso,vhxr.Frente, vhxr.Descripcion_Habitacion, vhxr.Tipo_De_Habitacion, vhxr.Porcentual
 order by  Dias_Ocupada, Cantidad_De_Veces_Ocupada
 
 
