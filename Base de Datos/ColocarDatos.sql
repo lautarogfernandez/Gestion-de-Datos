@@ -256,7 +256,8 @@ CREATE TABLE TEAM_CASTY.Cliente (
 	Telefono nvarchar(50),
 	Inhabilitado bit NOT NULL DEFAULT 0,	
 	Erroneo bit NOT NULL DEFAULT 0,
-	Baja bit NOT NULL DEFAULT 0);
+	Baja bit NOT NULL DEFAULT 0,
+	FOREIGN KEY (ID_Tipo_Documento) REFERENCES TEAM_CASTY.Tipo_Documento (ID_Tipo_Documento));
 
 SELECT DISTINCT t3.Cliente_Pasaporte_Nro, t3.Cliente_Apellido, t3.Cliente_Nombre, t3.Cliente_Fecha_Nac, 'ARGENTINA' AS 'Pais', 'CAPITAL FEDERAL' AS 'Localidad', t3.Cliente_Dom_Calle, t3.Cliente_Nro_Calle, t3.Cliente_Piso, t3.Cliente_Depto, t3.Cliente_Mail, t3.Cliente_Nacionalidad
 INTO #datos_completos_clientes
@@ -431,6 +432,12 @@ drop table TEAM_CASTY.Auxiliar_Item_Total
 
 select * from TEAM_CASTY.Factura
 
+--Cambiar hacer check in y out de las reservas 
+update TEAM_CASTY.Reserva
+set TEAM_CASTY.Reserva.Fecha_Inicio=TEAM_CASTY.Reserva.Fecha_Reserva,
+TEAM_CASTY.Reserva.Fecha_Salida=(select r.Fecha_Reserva+r.Cant_Noches from TEAM_CASTY.Reserva r where r.Cod_Reserva=TEAM_CASTY.Reserva.Cod_Reserva),
+TEAM_CASTY.Reserva.Cod_Estado=6
+where TEAM_CASTY.Reserva.Cod_Reserva in (select fac.Cod_Reserva from TEAM_CASTY.Factura fac)
 
 --cosumibles de la reserva (por habitacion) --anda OK
 CREATE TABLE TEAM_CASTY.ConsumibleXHabitacionXReserva ( 

@@ -56,3 +56,29 @@ CLOSE _cursor;
 DEALLOCATE _cursor;
 
 EXEC TEAM_CASTY.Cargar_Clientes
+
+
+
+create procedure  TEAM_CASTY.Setear_Check_IN_OUT
+AS
+DECLARE _cursor CURSOR FOR
+SELECT  Cod_Reserva
+FROM TEAM_CASTY.Reserva res
+DECLARE @Cod_Reserva numeric(18,0)
+OPEN _cursor;
+FETCH NEXT FROM _cursor INTO @Cod_Reserva;
+WHILE @@FETCH_STATUS = 0
+BEGIN
+if(@Cod_Reserva in (select f.Cod_Reserva from TEAM_CASTY.Factura f))
+begin
+update TEAM_CASTY.Reserva
+set Fecha_Inicio=Fecha_Reserva,
+Fecha_Salida=(select f.Fecha from TEAM_CASTY.Factura f where f.Cod_Reserva=@Cod_Reserva),
+Cod_Estado=6
+where @Cod_Reserva=Cod_Reserva
+end
+else
+FETCH NEXT FROM _cursor INTO @Cod_Reserva;
+END
+
+GO
