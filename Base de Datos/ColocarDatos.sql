@@ -14,7 +14,7 @@ INSERT INTO TEAM_CASTY.Rol (Nombre, Activo) VALUES ('Administrador',1);
 INSERT INTO TEAM_CASTY.Rol (Nombre, Activo) VALUES ('Recepcionista',1);
 INSERT INTO TEAM_CASTY.Rol (Nombre, Activo) VALUES ('Guest',1);
 
-SELECT * FROM TEAM_CASTY.Rol
+--SELECT * FROM TEAM_CASTY.Rol
 
 --Funciones
 CREATE TABLE TEAM_CASTY.Funcion ( 
@@ -34,7 +34,7 @@ INSERT INTO TEAM_CASTY.Funcion(Descripcion) VALUES ('Registrar Consumibles');
 INSERT INTO TEAM_CASTY.Funcion(Descripcion) VALUES ('Facturar Estadía');
 INSERT INTO TEAM_CASTY.Funcion(Descripcion) VALUES ('Listado Estadístico');
 
-SELECT * FROM TEAM_CASTY.Funcion
+--SELECT * FROM TEAM_CASTY.Funcion
 
 --FuncionesXRol
 CREATE TABLE TEAM_CASTY.FuncionXRol ( 
@@ -65,7 +65,7 @@ INSERT INTO TEAM_CASTY.FuncionXRol(Cod_Rol,Cod_Funcion) VALUES (2,11);
 INSERT INTO TEAM_CASTY.FuncionXRol(Cod_Rol,Cod_Funcion) VALUES (3,7);
 INSERT INTO TEAM_CASTY.FuncionXRol(Cod_Rol,Cod_Funcion) VALUES (3,8);
 
-SELECT * FROM TEAM_CASTY.FuncionXRol
+--SELECT * FROM TEAM_CASTY.FuncionXRol
 
 --Regimenes
 CREATE TABLE TEAM_CASTY.Regimen ( 
@@ -77,7 +77,7 @@ INSERT INTO TEAM_CASTY.Regimen SELECT DISTINCT t1.Regimen_Descripcion, t1.Regime
 							   FROM gd_esquema.Maestra t1
 							   ORDER BY t1.Regimen_Descripcion
 														   
-SELECT * FROM TEAM_CASTY.Regimen
+--SELECT * FROM TEAM_CASTY.Regimen
 
 --Tipos de Habitaciones
 CREATE TABLE TEAM_CASTY.Tipo_Habitacion ( 
@@ -89,7 +89,7 @@ INSERT INTO TEAM_CASTY.Tipo_Habitacion SELECT DISTINCT t1.Habitacion_Tipo_Codigo
 							   FROM gd_esquema.Maestra t1
 							   ORDER BY t1.Habitacion_Tipo_Codigo
 							   
-SELECT * FROM TEAM_CASTY.Tipo_Habitacion
+--SELECT * FROM TEAM_CASTY.Tipo_Habitacion
 
 --Recarga Estrella
 CREATE TABLE TEAM_CASTY.Recarga_Estrella ( 
@@ -112,7 +112,7 @@ INSERT INTO TEAM_CASTY.Ciudad SELECT DISTINCT t1.Hotel_Ciudad
 							  FROM gd_esquema.Maestra t1
 							  ORDER BY t1.Hotel_Ciudad
 
-SELECT * FROM TEAM_CASTY.Ciudad
+--SELECT * FROM TEAM_CASTY.Ciudad
 
 --Hoteles
 CREATE TABLE TEAM_CASTY.Hotel ( 
@@ -130,11 +130,11 @@ INSERT INTO TEAM_CASTY.Hotel (Cod_Ciudad, Calle, Nro_Calle, CantEstrella) SELECT
 																						    FROM gd_esquema.Maestra t1 JOIN TEAM_CASTY.Ciudad ON (TEAM_CASTY.Ciudad.Nombre=t1.Hotel_Ciudad)
 																							ORDER BY TEAM_CASTY.Ciudad.Cod_Ciudad, t1.Hotel_Calle, t1.Hotel_Nro_Calle
 
-SELECT * FROM TEAM_CASTY.Hotel
+--SELECT * FROM TEAM_CASTY.Hotel
 
-SELECT Cod_Hotel, Nombre,Calle, Nro_Calle, CantEstrella, Fecha_Creacion, Telefono, Mail
-FROM TEAM_CASTY.Hotel h JOIN TEAM_CASTY.Ciudad c ON (c.Cod_Ciudad=h.Cod_Ciudad)
-ORDER BY Cod_Hotel
+--SELECT Cod_Hotel, Nombre,Calle, Nro_Calle, CantEstrella, Fecha_Creacion, Telefono, Mail
+--FROM TEAM_CASTY.Hotel h JOIN TEAM_CASTY.Ciudad c ON (c.Cod_Ciudad=h.Cod_Ciudad)
+--ORDER BY Cod_Hotel
 
 --Regimenes por Hotel
 CREATE TABLE TEAM_CASTY.RegimenXHotel ( 
@@ -154,14 +154,14 @@ INSERT INTO TEAM_CASTY.RegimenXHotel (Cod_Hotel, Cod_Regimen) SELECT DISTINCT h.
 															  t1.Regimen_Descripcion=r.Descripcion
 															  ORDER BY h.Cod_Hotel, r.Cod_Regimen
 															  
-SELECT * FROM TEAM_CASTY.RegimenXHotel
+--SELECT * FROM TEAM_CASTY.RegimenXHotel
 
-SELECT c.Nombre, h.Calle, h.Nro_Calle, h.Mail, h.Telefono, r.Descripcion, r.Precio 
-FROM TEAM_CASTY.RegimenXHotel rxh, TEAM_CASTY.Ciudad c, TEAM_CASTY.Hotel h, TEAM_CASTY.Regimen r
-WHERE rxh.Cod_Hotel=h.Cod_Hotel and
-c.Cod_Ciudad=h.Cod_Ciudad and
-r.Cod_Regimen=rxh.Cod_Regimen
-ORDER BY 1,2,3,4,5,6,7
+--SELECT c.Nombre, h.Calle, h.Nro_Calle, h.Mail, h.Telefono, r.Descripcion, r.Precio 
+--FROM TEAM_CASTY.RegimenXHotel rxh, TEAM_CASTY.Ciudad c, TEAM_CASTY.Hotel h, TEAM_CASTY.Regimen r
+--WHERE rxh.Cod_Hotel=h.Cod_Hotel and
+--c.Cod_Ciudad=h.Cod_Ciudad and
+--r.Cod_Regimen=rxh.Cod_Regimen
+--ORDER BY 1,2,3,4,5,6,7
 	
 --Habitaciones
 CREATE TABLE TEAM_CASTY.Habitacion ( 
@@ -181,13 +181,13 @@ INSERT INTO TEAM_CASTY.Habitacion (Cod_Hotel,Piso, Numero,Frente,Cod_Tipo) SELEC
 																									  join TEAM_CASTY.Ciudad c on(c.Cod_Ciudad=h.Cod_Ciudad AND t1.Hotel_Ciudad=c.Nombre)
 																		   ORDER BY h.Cod_Hotel, t1.Habitacion_Piso, t1.Habitacion_Numero, t1.Habitacion_Tipo_Codigo
 
-SELECT * FROM TEAM_CASTY.Habitacion																		   
+--SELECT * FROM TEAM_CASTY.Habitacion																		   
 
-SELECT hab.Cod_Habitacion, h.Cod_Hotel, Nombre,Calle, Nro_Calle, Piso, Numero, Frente, hab.Descripcion, t.Descripcion
-FROM  TEAM_CASTY.Habitacion	hab JOIN TEAM_CASTY.Hotel h ON (hab.Cod_Hotel=h.Cod_Hotel)
-								JOIN TEAM_CASTY.Ciudad c ON (c.Cod_Ciudad=h.Cod_Ciudad)
-								JOIN TEAM_CASTY.Tipo_Habitacion t ON (hab.Cod_Tipo=t.Cod_Tipo)
-ORDER BY h.Cod_Hotel, Nombre,Calle, Nro_Calle, Piso, Numero, Frente
+--SELECT hab.Cod_Habitacion, h.Cod_Hotel, Nombre,Calle, Nro_Calle, Piso, Numero, Frente, hab.Descripcion, t.Descripcion
+--FROM  TEAM_CASTY.Habitacion	hab JOIN TEAM_CASTY.Hotel h ON (hab.Cod_Hotel=h.Cod_Hotel)
+--								JOIN TEAM_CASTY.Ciudad c ON (c.Cod_Ciudad=h.Cod_Ciudad)
+--								JOIN TEAM_CASTY.Tipo_Habitacion t ON (hab.Cod_Tipo=t.Cod_Tipo)
+--ORDER BY h.Cod_Hotel, Nombre,Calle, Nro_Calle, Piso, Numero, Frente
 
 --Estados
 CREATE TABLE TEAM_CASTY.Estados ( 
@@ -202,7 +202,7 @@ INSERT INTO TEAM_CASTY.Estados(Nombre,Descripcion) VALUES ('Cancelada Cliente','
 INSERT INTO TEAM_CASTY.Estados(Nombre,Descripcion) VALUES ('Cancelada No-Show','Reserva cancelada por No-Show');
 INSERT INTO TEAM_CASTY.Estados(Nombre,Descripcion) VALUES ('Efectivizada','Reserva con ingreso (efectivizada)');
 
-SELECT * FROM TEAM_CASTY.Estados
+--SELECT * FROM TEAM_CASTY.Estados
 
 --Consumibles
 CREATE TABLE TEAM_CASTY.Consumible ( 
@@ -215,7 +215,7 @@ INSERT INTO TEAM_CASTY.Consumible(Cod_Consumible,Descripcion,Precio) SELECT DIST
 																     WHERE t1.Consumible_Codigo IS NOT NULL
 																	 ORDER BY t1.Consumible_Codigo
 																	 
-SELECT * FROM TEAM_CASTY.Consumible
+--SELECT * FROM TEAM_CASTY.Consumible
 
 --Formas de Pago
 CREATE TABLE TEAM_CASTY.Forma_Pago ( 
@@ -224,9 +224,9 @@ CREATE TABLE TEAM_CASTY.Forma_Pago (
 	
 INSERT INTO TEAM_CASTY.Forma_Pago(Descripcion) VALUES ('Efectivo');
 INSERT INTO TEAM_CASTY.Forma_Pago(Descripcion) VALUES ('Tarjeta de Crédito');
---INSERT INTO TEAM_CASTY.Forma_Pago(Descripcion) VALUES ('Tarjeta de Débito'); --¿va?
+--INSERT INTO TEAM_CASTY.Forma_Pago(Descripcion) VALUES ('Tarjeta de Débito'); --¿va? ¿alguno más?
 
-SELECT * FROM TEAM_CASTY.Forma_Pago
+--SELECT * FROM TEAM_CASTY.Forma_Pago
 
 --Tipos de Documento
 CREATE TABLE TEAM_CASTY.Tipo_Documento ( 
@@ -235,7 +235,7 @@ CREATE TABLE TEAM_CASTY.Tipo_Documento (
 
 INSERT INTO TEAM_CASTY.Tipo_Documento (Tipo_Documento) values ('PASAPORTE');
 
-SELECT * FROM TEAM_CASTY.Tipo_Documento
+--SELECT * FROM TEAM_CASTY.Tipo_Documento
 
 --Clientes
 CREATE TABLE TEAM_CASTY.Cliente ( 
@@ -285,7 +285,7 @@ ORDER BY 2,3,4
 DROP TABLE #clientes_repetidos
 DROP TABLE #datos_completos_clientes
 
-SELECT * FROM TEAM_CASTY.Cliente
+--SELECT * FROM TEAM_CASTY.Cliente
 
 --Usuarios
 CREATE TABLE TEAM_CASTY.Usuario ( 
@@ -299,7 +299,7 @@ CREATE TABLE TEAM_CASTY.Usuario (
 INSERT INTO TEAM_CASTY.Usuario (Username,Contraseña) values ('Administrador','ea042aac8c9f5d78d16b076597f64b6b7e69ec7ea3f232dab518b5f07c8a530f');--la contraseña es CASTY
 INSERT INTO TEAM_CASTY.Usuario (Username,Contraseña) values ('Guest','16ceb2796ccd9d52d4f2a92134ef9ecfeb8f016150a82d36b299d09d5b9963f0');--la contraseña es GUEST
 
-SELECT * FROM TEAM_CASTY.Usuario
+--SELECT * FROM TEAM_CASTY.Usuario
 	
 --Empleados	
 CREATE TABLE TEAM_CASTY.Empleado ( 
@@ -342,7 +342,7 @@ FROM #hoteles_guest
 DROP TABLE #hoteles_admnistrador
 DROP TABLE #hoteles_guest
 
-SELECT * FROM TEAM_CASTY.RolXUsuarioXHotel
+--SELECT * FROM TEAM_CASTY.RolXUsuarioXHotel
 	
 --Inhabilitacion de los Hoteles	
 CREATE TABLE TEAM_CASTY.Periodo_Inhabilitado ( 
@@ -386,7 +386,7 @@ c.Nombre=res.Cliente_Nombre and
 reg.Descripcion=res.Regimen_Descripcion
 ORDER BY 1
 
-SELECT * FROM #reservas_new
+--SELECT * FROM #reservas_new
 
 INSERT INTO TEAM_CASTY.Reserva (Cod_Reserva,Fecha_Reserva,Cant_Noches,Cod_Regimen,ID_Cliente_Reservador,Cod_Estado)
 SELECT distinct t1.Reserva_Codigo,t1.Reserva_Fecha_Inicio,t1.Reserva_Cant_Noches,t1.Cod_Regimen, t1.ID_Cliente, 1 AS 'Cod_Estado'
@@ -397,7 +397,7 @@ ORDER BY t1.Reserva_Codigo
 DROP TABLE #reservas
 DROP TABLE #reservas_new	
 
-SELECT * FROM TEAM_CASTY.Reserva
+--SELECT * FROM TEAM_CASTY.Reserva
 
 --Habitacion X Reserva
 CREATE TABLE TEAM_CASTY.HabitacionXReserva ( 
@@ -422,7 +422,7 @@ WHERE hab.Cod_Tipo=t1.Habitacion_Tipo_Codigo AND
 	  ciu.Cod_Ciudad=h.Cod_Ciudad
 ORDER BY t1.Reserva_Codigo
 
-SELECT * FROM TEAM_CASTY.HabitacionXReserva
+--SELECT * FROM TEAM_CASTY.HabitacionXReserva
 
 --Clientes por Reserva
 CREATE TABLE TEAM_CASTY.ClienteXReserva ( 	
@@ -442,7 +442,7 @@ t1.Cliente_Pasaporte_Nro=c.Nro_Documento and
 r.Cod_Reserva=t1.Reserva_Codigo
 ORDER BY t1.Reserva_Codigo, c.ID_Cliente
 
-SELECT * FROM TEAM_CASTY.ClienteXReserva
+--SELECT * FROM TEAM_CASTY.ClienteXReserva
 
 --Facturas
 CREATE TABLE TEAM_CASTY.Factura ( 
@@ -454,27 +454,32 @@ CREATE TABLE TEAM_CASTY.Factura (
 	FOREIGN KEY (Cod_Forma_Pago) REFERENCES TEAM_CASTY.Forma_Pago (Cod_Forma_Pago),
 	FOREIGN KEY (Cod_Reserva) REFERENCES TEAM_CASTY.Reserva (Cod_Reserva));
 
+
 CREATE TABLE TEAM_CASTY.Auxiliar_Item_Total ( 
+    Factura_Fecha datetime NOT NULL,
+	Reserva_Codigo numeric(18) NOT NULL,
 	Nro_Factura numeric(18) NOT NULL,
 	Total numeric(18,2) NOT NULL);
 
-INSERT INTO TEAM_CASTY.Auxiliar_Item_Total SELECT  Factura_Nro ,Consumible_Precio AS  "Total"
-FROM gd_esquema.Maestra m1
-WHERE m1.Consumible_Codigo is not null and m1.Factura_Nro is not null and m1.Regimen_Descripcion not in ('All inclusive' , 'All Inclusive moderado')
+INSERT INTO TEAM_CASTY.Auxiliar_Item_Total (Reserva_Codigo,Factura_Fecha,Nro_Factura,Total)
+select Reserva_Codigo ,Factura_Fecha, Factura_Nro, Consumible_Precio as  "Total"
+from gd_esquema.Maestra m1
+where m1.Consumible_Codigo is not null and m1.Factura_Nro is not null and m1.Regimen_Descripcion not in ('All inclusive' , 'All Inclusive moderado')
 
-INSERT INTO TEAM_CASTY.Auxiliar_Item_Total SELECT Factura_Nro , (Reserva_Cant_Noches * Item_Factura_Monto) AS "Total"
-FROM gd_esquema.Maestra m1
-WHERE m1.Consumible_Codigo is null and m1.Factura_Nro is not null
+INSERT INTO TEAM_CASTY.Auxiliar_Item_Total (Reserva_Codigo,Factura_Fecha,Nro_Factura,Total)
+select Reserva_Codigo,Factura_Fecha, Factura_Nro , (Reserva_Cant_Noches * Item_Factura_Monto) as "Total"
+from gd_esquema.Maestra m1
+where m1.Consumible_Codigo is null and m1.Factura_Nro is not null
 
 INSERT INTO TEAM_CASTY.Factura (Nro_Factura,Fecha,Cod_Reserva,Cod_Forma_Pago,Total)
-SELECT DISTINCT  m.Factura_Nro AS "Nro_Factura", m.Factura_Fecha AS "Fecha", m.Reserva_Codigo AS "Cod_Reserva", 1 AS "Cod_Forma_Pago" , SUM (auxiliar.Total) AS "Total"
-FROM gd_esquema.Maestra	m join TEAM_CASTY.Auxiliar_Item_Total auxiliar on (auxiliar.Nro_Factura = m.Factura_Nro)
-GROUP BY m.Factura_Nro,m.Factura_Fecha, m.Reserva_Codigo
-ORDER BY 1
+SELECT DISTINCT  auxiliar.Nro_Factura AS "Nro_Factura", auxiliar.Factura_Fecha AS "Fecha", auxiliar.Reserva_Codigo AS "Cod_Reserva", 1 AS "Cod_Forma_Pago" , SUM (auxiliar.Total) AS "Total"
+FROM TEAM_CASTY.Auxiliar_Item_Total auxiliar 
+group by auxiliar.Nro_Factura, auxiliar.Factura_Fecha, auxiliar.Reserva_Codigo
+order by 1
 
 DROP TABLE TEAM_CASTY.Auxiliar_Item_Total
 
-SELECT * FROM TEAM_CASTY.Factura
+--SELECT * FROM TEAM_CASTY.Factura
 
 --Tarjetas, solo se crea, no tiene datos al principio
 CREATE TABLE TEAM_CASTY.Tarjeta ( 
@@ -525,12 +530,7 @@ GROUP BY a.Cod_Reserva, a.Cod_Habitacion,m.Consumible_Codigo
 
 DROP TABLE #auxiliar
 
-SELECT * FROM TEAM_CASTY.ConsumibleXHabitacionXReserva
-
-
-
-
-
+--SELECT * FROM TEAM_CASTY.ConsumibleXHabitacionXReserva
 
 --consumible, habitacion y factura
 CREATE TABLE TEAM_CASTY.item_ConsumibleXFactura ( 
@@ -549,7 +549,6 @@ SELECT f.Nro_Factura,chres.Cod_Habitacion,chres.Cod_Consumible,chres.Cantidad, c
 FROM TEAM_CASTY.ConsumibleXHabitacionXReserva chres, TEAM_CASTY.Factura f, TEAM_CASTY.Consumible con
 WHERE f.Cod_Reserva=chres.Cod_Reserva
 
-
 --estadia, habitacion y factura
 CREATE TABLE TEAM_CASTY.item_EstadiaXFactura ( 
 	Nro_Factura numeric(18) NOT NULL,
@@ -562,18 +561,15 @@ CREATE TABLE TEAM_CASTY.item_EstadiaXFactura (
 	FOREIGN KEY (Cod_Regimen) REFERENCES TEAM_CASTY.Regimen (Cod_Regimen));
 
 --INSERT INTO TEAM_CASTY.item_EstadiaXFactura (Nro_Factura,Cod_Habitacion,Cod_Regimen,Monto)
-SELECT f.Nro_Factura, hxr.Cod_Habitacion, res.Cod_Regimen, res.Cant_Noches*reg.Precio+hot.CantEstrella*rec.Recarga AS Monto
-FROM TEAM_CASTY.Factura f, TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXReserva hxr, TEAM_CASTY.Hotel hot, TEAM_CASTY.Recarga_Estrella rec, TEAM_CASTY.Regimen reg, TEAM_CASTY.Reserva res
+SELECT f.Nro_Factura, hxr.Cod_Habitacion, res.Cod_Regimen, res.Cant_Noches*reg.Precio*thab.Porcentual+hot.CantEstrella*rec.Recarga AS Monto
+FROM TEAM_CASTY.Factura f, TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXReserva hxr, TEAM_CASTY.Hotel hot, TEAM_CASTY.Recarga_Estrella rec, TEAM_CASTY.Regimen reg, TEAM_CASTY.Reserva res,TEAM_CASTY.Tipo_Habitacion thab
 WHERE f.Cod_Reserva=res.Cod_Reserva and
 res.Cod_Reserva=hxr.Cod_Reserva and
 hxr.Cod_Habitacion=hab.Cod_Habitacion and
 hab.Cod_Hotel=hot.Cod_Hotel and
 rec.Cod_Recarga=1 and
-res.Cod_Regimen=reg.Cod_Regimen
-
-
-
-
+res.Cod_Regimen=reg.Cod_Regimen and
+thab.Cod_Tipo=hab.Cod_Tipo
 
 --Usuario por reserva (para modificacion de Reserva)
 CREATE TABLE TEAM_CASTY.UsuarioXReserva ( 

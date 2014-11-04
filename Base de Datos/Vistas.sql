@@ -11,24 +11,25 @@ where c.Baja=0
 --Vista factura
 create view TEAM_CASTY.vistaFacturas
 AS
-select fac.Fecha,fac.Nro_Factura,fac.Total,fac.Cod_Reserva, fdp.Descripcion as "Forma_De_Pago"
+select fac.Nro_Factura,fac.Fecha,fac.Total, fdp.Descripcion as "Forma_De_Pago",fac.Cod_Reserva
 from TEAM_CASTY.Factura fac, TEAM_CASTY.Forma_Pago fdp
 where fac.Cod_Forma_Pago=fdp.Cod_Forma_Pago
 
 select * from TEAM_CASTY.vistaFacturas
 
-drop view TEAM_CASTY.vistaFacturas
-   
-   
+  
 -- vista habitaciones
 create view TEAM_CASTY.vistaHabitaciones
 AS
-select h.*, th.Descripcion as "Tipo_De_Habitacion" ,th.Porcentual
-from TEAM_CASTY.Habitacion h, TEAM_CASTY.Tipo_Habitacion th
-where h.Baja = 0
+select hab.Cod_Habitacion,hab.Descripcion,hab.Piso,hab.Numero,hab.Frente,hab.Cod_Hotel, ciu.Nombre as Ciudad,hot.Calle,hot.Nro_Calle,thab.Cod_Tipo,thab.Descripcion as "Tipo_De_Habitacion" ,thab.Porcentual
+from TEAM_CASTY.Habitacion hab, TEAM_CASTY.Tipo_Habitacion thab, TEAM_CASTY.Hotel hot, TEAM_CASTY.Ciudad ciu
+where hab.Baja = 0 and
+hot.Cod_Hotel=hab.Cod_Hotel and
+thab.Cod_Tipo=hab.Cod_Tipo and
+ciu.Cod_Ciudad=hot.Cod_Ciudad
+
 select * from TEAM_CASTY.vistaHabitaciones
 
-drop view TEAM_CASTY.vistaHabitaciones
    
 -- vistas sobre reservas
 Create view TEAM_CASTY.Vista_Reserva_Estado
@@ -38,7 +39,6 @@ from TEAM_CASTY.Reserva r , TEAM_CASTY.Estados e
 
 select * from TEAM_CASTY.Vista_Reserva_Estado
 
-drop view TEAM_CASTY.Vista_Reserva_Estado
 
 Create view TEAM_CASTY.Vista_Reserva_Regimen
 AS
@@ -47,9 +47,6 @@ from TEAM_CASTY.Reserva r, TEAM_CASTY.Regimen reg
 
 select * from TEAM_CASTY.Vista_Reserva_Regimen
 
-drop view TEAM_CASTY.Vista_Reserva_Regimen  
-
-
 
 Create view TEAM_CASTY.vistaReservas--(contiene a las otras 2)
 as
@@ -57,8 +54,7 @@ select r.*, e.Nombre_Estado, e.Descripcion_Estado
  from TEAM_CASTY.Vista_Reserva_Regimen r, Vista_Reserva_Estado e 
 
 select * from TEAM_CASTY.vistaReservas
-
-drop view TEAM_CASTY.vistaReservas  
+ 
 
 --vista hotel
 Create view TEAM_CASTY.vistaHoteles
@@ -68,10 +64,7 @@ from TEAM_CASTY.Hotel h, TEAM_CASTY.Ciudad c , TEAM_CASTY.Recarga_Estrella re
 
 select * from TEAM_CASTY.vistaHoteles
 
-drop view TEAM_CASTY.vistaHoteles
 
-   
-   
  -- vista regimenes-hoteles  
 create view TEAM_CASTY.vistaRegimenesXHoteles
 AS  
@@ -80,10 +73,6 @@ from  TEAM_CASTY.vistaHoteles h, TEAM_CASTY.RegimenXHotel , TEAM_CASTY.Regimen r
 
 select *
 from TEAM_CASTY.vistaRegimenesXHoteles
-
-   
-drop view  TEAM_CASTY.vistaRegimenesXHoteles   
-
 
 
 --vista HabitacionXReserva
@@ -95,10 +84,6 @@ from  TEAM_CASTY.vistaHabitaciones h, TEAM_CASTY.HabitacionXReserva , TEAM_CASTY
 
 select * from TEAM_CASTY.vistaHabitacionesXReservas
 
-   
-drop view  TEAM_CASTY.vistaHabitacionesXReservas   
-
-
 
 -- vista ClienteXReserva
 create view TEAM_CASTY.vistaClientesXReservas
@@ -108,9 +93,6 @@ from  TEAM_CASTY.ClienteXReserva, TEAM_CASTY.vistaClientes  c, TEAM_CASTY.Reserv
 
 select * from TEAM_CASTY.vistaClientesXReservas
 
-drop view TEAM_CASTY.vistaClientesXReservas
-
-
 
 --vista FuncionesXRol
 create view TEAM_CASTY.vistasFuncionesXRol
@@ -119,10 +101,6 @@ select   r.*,f.*
 from  TEAM_CASTY.FuncionXRol, TEAM_CASTY.Rol  r, TEAM_CASTY.Funcion f
 
 select * from TEAM_CASTY.vistasFuncionesXRol
-
-drop view TEAM_CASTY.vistasFuncionesXRol
-
-
 
 
 --vista ConsumibleXHabitacionXReserva
@@ -134,6 +112,19 @@ from  TEAM_CASTY.ConsumibleXHabitacionXReserva,TEAM_CASTY.Consumible c, TEAM_CAS
 
 select * from TEAM_CASTY.vistaConsumibleXHabitacionXReserva
 
+
+--drop de las vistas
+drop view TEAM_CASTY.vistaClientes
+drop view TEAM_CASTY.vistaFacturas
+drop view TEAM_CASTY.vistaHabitaciones
+drop view TEAM_CASTY.Vista_Reserva_Estado
+drop view TEAM_CASTY.Vista_Reserva_Regimen
+drop view TEAM_CASTY.vistaReservas 
+drop view TEAM_CASTY.vistaHoteles
+drop view  TEAM_CASTY.vistaRegimenesXHoteles 
+drop view  TEAM_CASTY.vistaHabitacionesXReservas
+drop view TEAM_CASTY.vistaClientesXReservas
+drop view TEAM_CASTY.vistasFuncionesXRol
 drop view TEAM_CASTY.vistaConsumibleXHabitacionXReserva
 
 

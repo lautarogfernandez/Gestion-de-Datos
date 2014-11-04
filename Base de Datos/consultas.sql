@@ -195,6 +195,19 @@ SELECT DISTINCT t1.Factura_Nro, t1.Item_Factura_Cantidad, t1.Item_Factura_Monto
 FROM gd_esquema.Maestra t1 JOIN #numeros_facturas t2 ON (t1.Factura_Nro=t2.Factura_Nro)
 ORDER BY t1.Factura_Nro, t1.Item_Factura_Cantidad, t1.Item_Factura_Monto
 
+--para probar el monto de facturas
+select *
+from gd_esquema.Maestra
+where Consumible_Codigo is null and Factura_Nro is not null
+
+select t1.Habitacion_Tipo_Descripcion,t1.Habitacion_Tipo_Porcentual,t1.Consumible_Descripcion,t1.Consumible_Precio,t1.Regimen_Descripcion,t1.Regimen_Precio,t1.Estadia_Cant_Noches,t1.Hotel_CantEstrella,t1.Hotel_Recarga_Estrella,t1.Item_Factura_Cantidad,t1.Item_Factura_Monto,t1.Factura_Nro,t1.Factura_Total
+from gd_esquema.Maestra t1
+where t1.Reserva_Codigo=10329
+
+select f.*
+from TEAM_CASTY.Factura f
+where f.Cod_Reserva=10329
+
 --para boludear
 SELECT MAX(t1.Cliente_Piso)
 FROM gd_esquema.Maestra t1
