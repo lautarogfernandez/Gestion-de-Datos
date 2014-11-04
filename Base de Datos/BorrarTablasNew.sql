@@ -2,8 +2,8 @@ DROP TABLE TEAM_CASTY.UsuarioXReserva;
 DROP TABLE TEAM_CASTY.UsuarioXHotel;
 DROP TABLE TEAM_CASTY.TarjetaXFactura;
 DROP TABLE TEAM_CASTY.ConsumibleXHabitacionXReserva;
+DROP TABLE TEAM_CASTY.RolXUsuarioXHotel
 DROP TABLE TEAM_CASTY.ClienteXReserva;
-DROP TABLE TEAM_CASTY.RolXUsuario;	
 DROP TABLE TEAM_CASTY.RegimenXHotel;
 DROP TABLE TEAM_CASTY.Periodo_Inhabilitado;
 DROP TABLE TEAM_CASTY.Item_Factura_Consumible;	

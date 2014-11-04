@@ -323,14 +323,24 @@ CREATE TABLE TEAM_CASTY.RolXUsuarioXHotel (
 	FOREIGN KEY (Cod_Hotel) REFERENCES TEAM_CASTY.Hotel (Cod_Hotel),
 	FOREIGN KEY (Cod_Usuario) REFERENCES TEAM_CASTY.Usuario (Cod_Usuario));	
 
-insert into TEAM_CASTY.RolXUsuarioXHotel
-(Cod_Usuario,Cod_Rol,Cod_Hotel) 
-select 1,1,@code
-where @code in (select h.Cod_Hotel from TEAM_CASTY.Hotel h)
+SELECT 1 as Cod_Usuario,h.Cod_Hotel,1 as Cod_Rol
+INTO #hoteles_admnistrador
+FROM TEAM_CASTY.Hotel h
 
-insert into TEAM_CASTY.RolXUsuarioXHotel
-(Cod_Usuario,Cod_Rol,Cod_Hotel) 
-select 2,3,(select h.Cod_Hotel from TEAM_CASTY.Hotel h)
+SELECT 2 as Cod_Usuario,h.Cod_Hotel,3 as Cod_Rol
+INTO #hoteles_guest
+FROM TEAM_CASTY.Hotel h
+
+insert into TEAM_CASTY.RolXUsuarioXHotel (Cod_Usuario,Cod_Hotel,Cod_Rol)
+select *
+FROM #hoteles_admnistrador
+
+insert into TEAM_CASTY.RolXUsuarioXHotel (Cod_Usuario,Cod_Hotel,Cod_Rol)
+select *
+FROM #hoteles_guest
+
+drop table #hoteles_admnistrador
+drop table #hoteles_guest
 
 SELECT * FROM TEAM_CASTY.RolXUsuarioXHotel
 	
