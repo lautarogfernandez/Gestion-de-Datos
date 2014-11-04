@@ -11,8 +11,9 @@ where c.Baja=0
 --Vista factura
 create view TEAM_CASTY.vistaFacturas
 AS
-select fac.*, fdp.Descripcion as "Forma_De_Pago"
+select fac.Fecha,fac.Nro_Factura,fac.Total,fac.Cod_Reserva, fdp.Descripcion as "Forma_De_Pago"
 from TEAM_CASTY.Factura fac, TEAM_CASTY.Forma_Pago fdp
+where fac.Cod_Forma_Pago=fdp.Cod_Forma_Pago
 
 select * from TEAM_CASTY.vistaFacturas
 
