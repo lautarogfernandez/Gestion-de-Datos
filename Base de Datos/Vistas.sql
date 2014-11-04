@@ -172,7 +172,7 @@ CREATE FUNCTION vistaTOP5ConsumiblesFacturados (@pFecha_Inicio date,@pFecha_Fin 
 RETURNS TABLE
 AS
 RETURN
-   select  top 5 h.Cod_Hotel, vh.Ciudad, vh.Calle, vh.Nro_Calle, vh.Telefono,  vh.Mail, vh.CantEstrella,vh.Recarga_Estrella, COUNT (vCxHxR.Cod_Hotel) as "Cantidad_Consumibles" 
+   select  top 5 h.Cod_Hotel, vh.Ciudad, vh.Calle, vh.Nro_Calle, vh.Telefono,  vh.Mail, vh.CantEstrella,vh.Recarga_Estrella,  Sum (vCxHxR.Cantidad) as "Cantidad_Consumibles" 
 from TEAM_CASTY.vistaHoteles vh,TEAM_CASTY.Hotel h, TEAM_CASTY.vistaConsumibleXHabitacionXReserva vCxHxR
 where vCxHxR.Nombre_Estado = 'Finalizada' and vCxHxR.Fecha_Reserva between @pFecha_Inicio and @pFecha_Fin
 group by h.Cod_Hotel, vh.Ciudad, vh.Calle, vh.Nro_Calle, vh.Telefono,  vh.Mail, vh.CantEstrella,vh.Recarga_Estrella
@@ -185,7 +185,7 @@ SELECT * FROM vistaTOP5ConsumiblesFacturados
 --vista que no sirve
 create view TEAM_CASTY.vistaTOP5ConsumiblesFacturados
 as 
-select  top 5 h.Cod_Hotel, vh.Ciudad, vh.Calle, vh.Nro_Calle, vh.Telefono,  vh.Mail, vh.CantEstrella,vh.Recarga_Estrella, COUNT (vCxHxR.Cod_Hotel) as "Cantidad_Consumibles" 
+select  top 5 h.Cod_Hotel, vh.Ciudad, vh.Calle, vh.Nro_Calle, vh.Telefono,  vh.Mail, vh.CantEstrella,vh.Recarga_Estrella,  Sum (vCxHxR.Cantidad) as "Cantidad_Consumibles" 
 from TEAM_CASTY.vistaHoteles vh,TEAM_CASTY.Hotel h, TEAM_CASTY.vistaConsumibleXHabitacionXReserva vCxHxR
 where vCxHxR.Nombre_Estado = 'Finalizada'
 group by h.Cod_Hotel, vh.Ciudad, vh.Calle, vh.Nro_Calle, vh.Telefono,  vh.Mail, vh.CantEstrella,vh.Recarga_Estrella
