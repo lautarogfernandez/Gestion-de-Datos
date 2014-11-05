@@ -32,10 +32,11 @@ select * from TEAM_CASTY.vistaHabitaciones
 
    
 -- vistas sobre reservas
-Create view TEAM_CASTY.Vista_Reserva_Estado
+Create view TEAM_CASTY.Vista_Reserva_Estado 
 AS
 select r.Cod_Reserva, r.ID_Cliente_Reservador,r.Cod_Regimen,r.Cod_Estado,e.Nombre as "Nombre_Estado",e.Descripcion as"Descripcion_Estado",r.Fecha_Reserva,r.Fecha_Inicio,r.Fecha_Salida,r.Cant_Noches
 from TEAM_CASTY.Reserva r , TEAM_CASTY.Estados e
+where r.Cod_Estado = e.Cod_Estado
 
 select * from TEAM_CASTY.Vista_Reserva_Estado
 
@@ -44,43 +45,48 @@ Create view TEAM_CASTY.Vista_Reserva_Regimen
 AS
 select  r.Cod_Reserva, r.ID_Cliente_Reservador,r.Cod_Regimen,reg.Descripcion as "Descripcion_Regimen",reg.Precio as "Precio_Regimen",r.Cod_Estado,r.Fecha_Reserva,r.Fecha_Inicio,r.Fecha_Salida,r.Cant_Noches
 from TEAM_CASTY.Reserva r, TEAM_CASTY.Regimen reg
+where r.Cod_Regimen = reg.Cod_Regimen
 
 select * from TEAM_CASTY.Vista_Reserva_Regimen
 
 
-Create view TEAM_CASTY.vistaReservas--(contiene a las otras 2)
+Create view TEAM_CASTY.vistaReservas(Codigo, "Cliente reservador", Regimen, "Precio Regimen", "Fecha de reserva", "Fecha de inicio", "Fecha de salida", "Cantidad de Noches" , Estado, "Descripcion de estado" )
 as
-select r.*, e.Nombre_Estado, e.Descripcion_Estado
- from TEAM_CASTY.Vista_Reserva_Regimen r, Vista_Reserva_Estado e 
+select r.Cod_Reserva, r.ID_Cliente_Reservador,r.Descripcion_Regimen,r.Precio_Regimen,r.Fecha_Reserva,r.Fecha_Inicio, r.Fecha_Salida,r.Cant_Noches, e.Nombre_Estado, e.Descripcion_Estado
+ from TEAM_CASTY.Vista_Reserva_Regimen r, TEAM_CASTY.Vista_Reserva_Estado e 
+ where r.Cod_Reserva = e.Cod_Reserva
 
 select * from TEAM_CASTY.vistaReservas
  
 
 --vista hotel
-Create view TEAM_CASTY.vistaHoteles
+Create view TEAM_CASTY.vistaHoteles(Codigo,Ciudad,Calle,"Numero Calle",Telefono,Mail,"Cantidad de estrellas", "Recarga por estrella" )
 AS
-select  h.Cod_Hotel, c.Nombre as "Ciudad",h.Calle,h.Nro_Calle,h.Telefono,h.Mail,h.CantEstrella,re.Recarga as "Recarga_Estrella"
+select  h.Cod_Hotel, c.Nombre ,h.Calle,h.Nro_Calle,h.Telefono,h.Mail,h.CantEstrella,re.Recarga  
 from TEAM_CASTY.Hotel h, TEAM_CASTY.Ciudad c , TEAM_CASTY.Recarga_Estrella re
+where h.Cod_Ciudad= c.Cod_Ciudad
+
 
 select * from TEAM_CASTY.vistaHoteles
 
 
  -- vista regimenes-hoteles  
-create view TEAM_CASTY.vistaRegimenesXHoteles
+create view TEAM_CASTY.vistaRegimenesXHoteles(Hotel,Ciudad,Calle,"Numero Calle","Cantidad de estrellas",Telefono,Mail, Regimen , "Precio Regimen")
 AS  
-select     h.* , r.*
-from  TEAM_CASTY.vistaHoteles h, TEAM_CASTY.RegimenXHotel , TEAM_CASTY.Regimen r
+select   h.Codigo,h.Ciudad,h.Calle,h.[Numero Calle],h.[Cantidad de estrellas],h.Telefono,h.Mail,r.Descripcion,r.Precio
+from  TEAM_CASTY.vistaHoteles h, TEAM_CASTY.RegimenXHotel rxh , TEAM_CASTY.Regimen r
+where h.Codigo = rxh.Cod_Hotel and rxh.Cod_Regimen = r.Cod_Regimen
 
-select *
+
+select * 
 from TEAM_CASTY.vistaRegimenesXHoteles
 
 
---vista HabitacionXReserva
-create view TEAM_CASTY.vistaHabitacionesXReservas
+create view TEAM_CASTY.vistaHabitacionesXReservas(Reserva,Hotel, "Numero de habitacion", Piso, Frente, Tipo,"Descripcion de tipo", Porcentual)
 AS  
-select   h.Cod_Hotel , h.Cod_Habitacion, h.Numero, h.Piso, h.Frente, h.Descripcion as "Descripcion_Habitacion", h."Tipo_De_Habitacion", h.Porcentual ,r.*
-from  TEAM_CASTY.vistaHabitaciones h, TEAM_CASTY.HabitacionXReserva , TEAM_CASTY.vistaReservas r
-
+select   r.Codigo,h.Hotel, h.Numero, h.Piso, h.Frente, h.Tipo, h.[Descripcion de tipo], h.Porcentual
+from  TEAM_CASTY.vistaHabitaciones h, TEAM_CASTY.HabitacionXReserva  hxr , TEAM_CASTY.vistaReservas r
+where h.Codigo = hxr.Cod_Habitacion and hxr.Cod_Reserva = r.Codigo
 
 select * from TEAM_CASTY.vistaHabitacionesXReservas
 
@@ -88,8 +94,10 @@ select * from TEAM_CASTY.vistaHabitacionesXReservas
 -- vista ClienteXReserva
 create view TEAM_CASTY.vistaClientesXReservas
 AS  
-select   c.*,r.*
-from  TEAM_CASTY.ClienteXReserva, TEAM_CASTY.vistaClientes  c, TEAM_CASTY.Reserva r
+select   c.Codigo, c.Nombre, c.Apellido, c.Mail, c.[Tipo Documento],c.[Numero Documento] ,c.Telefono,c.Pais,c.Localidad,c.Calle,c.[Numero Calle],c.Piso, c.Departamento, c.Nacionalidad,c.[Fecha Nacimiento],r.Codigo as "Reserva"
+from  TEAM_CASTY.ClienteXReserva cxr, TEAM_CASTY.vistaClientes  c, TEAM_CASTY.vistaReservas r
+where c.Codigo = cxr.ID_Cliente and cxr.Cod_Reserva = r.Codigo
+
 
 select * from TEAM_CASTY.vistaClientesXReservas
 
@@ -98,8 +106,8 @@ select * from TEAM_CASTY.vistaClientesXReservas
 create view TEAM_CASTY.vistasFuncionesXRol
 AS  
 select   r.*,f.*
-from  TEAM_CASTY.FuncionXRol, TEAM_CASTY.Rol  r, TEAM_CASTY.Funcion f
-
+from  TEAM_CASTY.FuncionXRol fxr, TEAM_CASTY.Rol  r, TEAM_CASTY.Funcion f
+where fxr.Cod_Rol = r.Cod_Rol and f.Cod_Funcion = fxr.Cod_Funcion
 select * from TEAM_CASTY.vistasFuncionesXRol
 
 
