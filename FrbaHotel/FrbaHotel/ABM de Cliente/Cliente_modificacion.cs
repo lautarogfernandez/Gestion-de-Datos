@@ -18,7 +18,25 @@ namespace FrbaHotel.ABM_de_Cliente
         public bool _buscaEmail = false;    //busca email
         public bool _buscaTipoDoc = false;  //busca un tipo de doc
         public bool _buscaDoc = false;      //busca un numero doc
-        #endregion
+
+        private enum tipoComponente
+        {
+            codigo,
+            alfanumerico,
+            numerico,
+            fecha,
+            seleccionAcotada,
+            seleccionMultiple
+        }
+        //public struct ObjetoModificable
+        //{
+        //    public tipoComponente _restrains;
+        //    public string _header;
+        //    public string _tipo;
+        //    public string _valor;
+        //}
+ //       List<ObjetoModificable> paramsModificacion = new List<ObjetoModificable>();
+ #endregion
 
         public void habilitar_boton(Button _unBoton) 
         {
@@ -303,7 +321,20 @@ namespace FrbaHotel.ABM_de_Cliente
 
         private void button_modificar_Click(object sender, EventArgs e)
         {
-            Cliente_modificar fomularioModificar = new Cliente_modificar(dgv_resultados.SelectedCells,dgv_resultados.Columns);
+
+            //for (int i = 0; i < dgv_resultados.SelectedCells.Count; i++)
+            //{
+            //    ObjetoModificable obj = new ObjetoModificable();
+            //    obj._header
+            //}
+            List<int> seleccionesAcotadas = new List<int>();
+            List<int> seleccionesMultiples = new List<int>();
+            for(int i=0;i<dgv_resultados.Columns.Count;i++){
+                if (dgv_resultados.Columns[i].HeaderText == "Tipo Documento")
+                    seleccionesAcotadas.Add(i);
+            }
+            Modificar formularioModificar = new Modificar(dgv_resultados.SelectedCells,dgv_resultados.Columns,"vistaClientes",seleccionesAcotadas,seleccionesMultiples);
+            formularioModificar.Show();
         }
 
         private void Cliente_modificacion_Load(object sender, EventArgs e)

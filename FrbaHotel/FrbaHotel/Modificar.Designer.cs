@@ -47,6 +47,7 @@
             this.button_modificar.TabIndex = 22;
             this.button_modificar.Text = "Modificar";
             this.button_modificar.UseVisualStyleBackColor = true;
+            this.button_modificar.Click += new System.EventHandler(this.button_modificar_Click);
             // 
             // button_volver
             // 
@@ -70,6 +71,7 @@
             this.stat_BarraEstado.Size = new System.Drawing.Size(584, 22);
             this.stat_BarraEstado.TabIndex = 23;
             this.stat_BarraEstado.Text = "Estado";
+            this.stat_BarraEstado.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.stat_BarraEstado_ItemClicked);
             // 
             // barra_progreso
             // 
