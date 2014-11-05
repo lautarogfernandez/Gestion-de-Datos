@@ -19,10 +19,12 @@ namespace FrbaHotel
         public int cantidad_hoteles;
         public string rutaFormularioElegido;
         public Form formulario_elegido;
+        public ComboBox combo_objetoEstandar,combo_operacionEstandar;
         public MenuPrincipal()
-
         {
             InitializeComponent();
+            combo_objetoEstandar = combo_objeto.ComboBox;
+            combo_operacionEstandar = combo_operacion.ComboBox;
         }
 
         private void MenuPrincipal_Load(object sender, EventArgs e)
@@ -153,17 +155,26 @@ namespace FrbaHotel
         }
         private void combo_operacion_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string oper= combo_operacion.SelectedItem.ToString();
-            rutaFormularioElegido +=oper.ToLower();
+
         }
 
         private void button_ir_Click(object sender, EventArgs e)
         {
-            Type t = Type.GetType("FrbaHotel."+rutaFormularioElegido);
-            formulario_elegido = Activator.CreateInstance(t) as Form;
-            formulario_elegido.Show();
+            try
+            {
+                string oper = combo_operacion.SelectedItem.ToString();
+                rutaFormularioElegido += oper.ToLower();
+                Type t = Type.GetType("FrbaHotel." + rutaFormularioElegido);
+                formulario_elegido = Activator.CreateInstance(t) as Form;
+                formulario_elegido.Show();
+                this.Hide();
+            }
+            catch (Exception)
+            {
+                 string msj = "No puede acceder a ese formulario \n";
+                MessageBox.Show(msj,"Excepcion SQL",MessageBoxButtons.OK,MessageBoxIcon.Information);
+            }
+
         }
-
-
     }
 }

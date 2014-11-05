@@ -72,6 +72,12 @@
     <Compile Include="ABM de Cliente\Cliente_modificacion.Designer.cs">
       <DependentUpon>Cliente_modificacion.cs</DependentUpon>
     </Compile>
+    <Compile Include="ABM de Cliente\Cliente_modificar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Cliente\Cliente_modificar.Designer.cs">
+      <DependentUpon>Cliente_modificar.cs</DependentUpon>
+    </Compile>
     <Compile Include="ABM de Habitacion\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -95,6 +101,12 @@
     </Compile>
     <Compile Include="ABM de Usuario\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modificar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modificar.Designer.cs">
+      <DependentUpon>Modificar.cs</DependentUpon>
     </Compile>
     <Compile Include="Reserva\Form1.cs">
       <SubType>Form</SubType>
@@ -131,8 +143,17 @@
     <EmbeddedResource Include="ABM de Cliente\Cliente_listado.resx">
       <DependentUpon>Cliente_listado.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Cliente\Cliente_modificacion.resx">
+      <DependentUpon>Cliente_modificacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Cliente\Cliente_modificar.resx">
+      <DependentUpon>Cliente_modificar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MenuPrincipal.resx">
       <DependentUpon>MenuPrincipal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modificar.resx">
+      <DependentUpon>Modificar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

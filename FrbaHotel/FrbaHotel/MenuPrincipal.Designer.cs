@@ -199,6 +199,8 @@
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.button_mostrar_hoteles);
             this.Controls.Add(this.imagenHotel);
+            this.MaximumSize = new System.Drawing.Size(600, 500);
+            this.MinimumSize = new System.Drawing.Size(600, 500);
             this.Name = "MenuPrincipal";
             this.Text = "MenuPrincipal";
             this.Load += new System.EventHandler(this.MenuPrincipal_Load);

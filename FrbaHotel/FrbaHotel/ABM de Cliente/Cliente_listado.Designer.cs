@@ -71,6 +71,7 @@
             this.Filtros_de_busqueda.TabIndex = 0;
             this.Filtros_de_busqueda.TabStop = false;
             this.Filtros_de_busqueda.Text = "Filtros de búsqueda";
+            this.Filtros_de_busqueda.Enter += new System.EventHandler(this.Filtros_de_busqueda_Enter);
             // 
             // button_Buscar
             // 
@@ -92,16 +93,20 @@
             this.txt_numeroIdentificacion.Size = new System.Drawing.Size(200, 20);
             this.txt_numeroIdentificacion.TabIndex = 9;
             this.txt_numeroIdentificacion.Text = "Ingrese número de identificación";
+            this.txt_numeroIdentificacion.TextChanged += new System.EventHandler(this.txt_numeroIdentificacion_TextChanged);
+            this.txt_numeroIdentificacion.Click += new System.EventHandler(this.txt_numeroIdentificacion_Click);
+            this.txt_numeroIdentificacion.Leave += new System.EventHandler(this.txt_numeroIdentificacion_Leave);
             // 
             // cmb_tipoIdentificacion
             // 
-            this.cmb_tipoIdentificacion.ForeColor = System.Drawing.SystemColors.ScrollBar;
+            this.cmb_tipoIdentificacion.ForeColor = System.Drawing.SystemColors.MenuText;
             this.cmb_tipoIdentificacion.FormattingEnabled = true;
             this.cmb_tipoIdentificacion.Location = new System.Drawing.Point(20, 125);
             this.cmb_tipoIdentificacion.Name = "cmb_tipoIdentificacion";
             this.cmb_tipoIdentificacion.Size = new System.Drawing.Size(121, 21);
             this.cmb_tipoIdentificacion.TabIndex = 7;
             this.cmb_tipoIdentificacion.Text = "Seleccione tipo";
+            this.cmb_tipoIdentificacion.SelectedIndexChanged += new System.EventHandler(this.cmb_tipoIdentificacion_SelectedIndexChanged);
             // 
             // txt_Email
             // 
@@ -200,6 +205,7 @@
             this.button_limpiar.TabIndex = 11;
             this.button_limpiar.Text = "Limpiar";
             this.button_limpiar.UseVisualStyleBackColor = true;
+            this.button_limpiar.Click += new System.EventHandler(this.button_limpiar_Click);
             // 
             // button_volver
             // 
@@ -211,6 +217,7 @@
             this.button_volver.TabIndex = 12;
             this.button_volver.Text = "Volver";
             this.button_volver.UseVisualStyleBackColor = true;
+            this.button_volver.Click += new System.EventHandler(this.button_volver_Click);
             // 
             // stat_BarraEstado
             // 
@@ -248,6 +255,7 @@
             this.dgv_resultados.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_resultados.Size = new System.Drawing.Size(560, 300);
             this.dgv_resultados.TabIndex = 14;
+            this.dgv_resultados.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_resultados_CellContentClick);
             // 
             // Cliente_listado
             // 
@@ -259,9 +267,13 @@
             this.Controls.Add(this.button_volver);
             this.Controls.Add(this.button_limpiar);
             this.Controls.Add(this.Filtros_de_busqueda);
+            this.MaximumSize = new System.Drawing.Size(600, 600);
+            this.MinimumSize = new System.Drawing.Size(600, 600);
             this.Name = "Cliente_listado";
             this.Text = "Listado Clientes";
             this.Load += new System.EventHandler(this.Cliente_listado_Load);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Cliente_listado_KeyPress);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Cliente_listado_KeyUp);
             this.Filtros_de_busqueda.ResumeLayout(false);
             this.Filtros_de_busqueda.PerformLayout();
             this.stat_BarraEstado.ResumeLayout(false);
