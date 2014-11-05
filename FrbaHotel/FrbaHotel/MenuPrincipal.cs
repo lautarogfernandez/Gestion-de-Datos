@@ -44,7 +44,7 @@ namespace FrbaHotel
             DataTable tablaCiudad= new DataTable();
             try
             {
-                adaptador = new SqlDataAdapter("SELECT DISTINCT [Hotel_Ciudad],[Hotel_Calle],[Hotel_Nro_Calle] FROM [GD2C2014].[gd_esquema].[Maestra]", conn);
+                adaptador = new SqlDataAdapter("SELECT DISTINCT [Ciudad],[Calle],[Numero Calle],[Cantidad Estrellas] FROM [GD2C2014].[Team_Casty].[vistaHoteles]", conn);
                 adaptador.Fill(tablaCiudad);
                 dgv_hoteles.DataSource = tablaCiudad;
                 barra_progreso.Value = 100;
