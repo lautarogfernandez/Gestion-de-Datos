@@ -545,10 +545,12 @@ CREATE TABLE TEAM_CASTY.item_ConsumibleXFactura (
 	FOREIGN KEY (Nro_Factura) REFERENCES TEAM_CASTY.Factura (Nro_Factura),
 	FOREIGN KEY (Cod_Consumible) REFERENCES TEAM_CASTY.Consumible (Cod_Consumible));
 
---INSERT INTO TEAM_CASTY.item_ConsumibleXFactura (Nro_Factura,Cod_Habitacion,Cod_Consumible,Cantidad,Monto)
+INSERT INTO TEAM_CASTY.item_ConsumibleXFactura (Nro_Factura,Cod_Habitacion,Cod_Consumible,Cantidad,Monto)
 SELECT f.Nro_Factura,chres.Cod_Habitacion,chres.Cod_Consumible,chres.Cantidad, chres.Cantidad*con.Precio
 FROM TEAM_CASTY.ConsumibleXHabitacionXReserva chres, TEAM_CASTY.Factura f, TEAM_CASTY.Consumible con
-WHERE f.Cod_Reserva=chres.Cod_Reserva
+WHERE f.Cod_Reserva=chres.Cod_Reserva and chres.Cod_Consumible = con.Cod_Consumible
+
+select * from TEAM_CASTY.item_ConsumibleXFactura
 
 --estadia, habitacion y factura
 CREATE TABLE TEAM_CASTY.item_EstadiaXFactura ( 
@@ -561,7 +563,7 @@ CREATE TABLE TEAM_CASTY.item_EstadiaXFactura (
 	FOREIGN KEY (Nro_Factura) REFERENCES TEAM_CASTY.Factura (Nro_Factura),
 	FOREIGN KEY (Cod_Regimen) REFERENCES TEAM_CASTY.Regimen (Cod_Regimen));
 
---INSERT INTO TEAM_CASTY.item_EstadiaXFactura (Nro_Factura,Cod_Habitacion,Cod_Regimen,Monto)
+INSERT INTO TEAM_CASTY.item_EstadiaXFactura (Nro_Factura,Cod_Habitacion,Cod_Regimen,Monto)
 SELECT f.Nro_Factura, hxr.Cod_Habitacion, res.Cod_Regimen, res.Cant_Noches*reg.Precio*thab.Porcentual+hot.CantEstrella*rec.Recarga AS Monto
 FROM TEAM_CASTY.Factura f, TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXReserva hxr, TEAM_CASTY.Hotel hot, TEAM_CASTY.Recarga_Estrella rec, TEAM_CASTY.Regimen reg, TEAM_CASTY.Reserva res,TEAM_CASTY.Tipo_Habitacion thab
 WHERE f.Cod_Reserva=res.Cod_Reserva and
@@ -571,6 +573,8 @@ hab.Cod_Hotel=hot.Cod_Hotel and
 rec.Cod_Recarga=1 and
 res.Cod_Regimen=reg.Cod_Regimen and
 thab.Cod_Tipo=hab.Cod_Tipo
+
+--select * from TEAM_CASTY.item_EstadiaXFactura
 
 --Usuario por reserva (para modificacion de Reserva)
 CREATE TABLE TEAM_CASTY.UsuarioXReserva ( 
