@@ -1,4 +1,3 @@
-   
 --vista cliente
 create view TEAM_CASTY.vistaClientes (Codigo, Nombre, Apellido, Mail, "Tipo Documento", "Numero Documento",Telefono,Pais,Localidad,"Calle","Numero Calle",Piso, "Departamento", Nacionalidad,"Fecha Nacimiento")
 AS
@@ -145,10 +144,11 @@ CREATE FUNCTION vistaTOP5ReservasCanceladas (@pFecha_Inicio date,@pFecha_Fin dat
 RETURNS TABLE
 AS
 RETURN
-   select  top 5 h.Cod_Hotel, vh.Ciudad, vh.Calle, vh.Nro_Calle, vh.Telefono,  vh.Mail, vh.CantEstrella,vh.Recarga_Estrella, count (vr.Cod_Reserva)  as "Cantidad_Reservas_Canceladas"
-from TEAM_CASTY.vistaHoteles vh,TEAM_CASTY.Hotel h, TEAM_CASTY.Habitacion, TEAM_CASTY.vistaReservas vr 
-where vr.Nombre_Estado = 'Cancelada' and vr.Fecha_Reserva between @pFecha_Inicio and @pFecha_Fin
-group by h.Cod_Hotel, vh.Ciudad, vh.Calle, vh.Nro_Calle, vh.Telefono,  vh.Mail, vh.CantEstrella,vh.Recarga_Estrella
+   select  top 5 vh.Codigo, count (vr.Codigo)  as "Cantidad_Reservas_Canceladas" ---- agregar resto de campos hotel aca y en el group by EN TODAS
+from TEAM_CASTY.vistaHoteles vh,TEAM_CASTY.HabitacionXReserva hxr,TEAM_CASTY.vistaReservas vr ,TEAM_CASTY.Habitacion hab
+where vh.Codigo = hab.Cod_Hotel and hab.Cod_Habitacion= hxr.Cod_Habitacion and vr.Codigo= hxr.Cod_Reserva
+       and  vr.Estado = 'Cancelada' and vr.[Fecha de reserva] between @pFecha_Inicio and @pFecha_Fin
+group by vh.Codigo
 order by Cantidad_Reservas_Canceladas desc
 
 SELECT * FROM vistaTOP5ReservasCanceladas
@@ -173,10 +173,11 @@ CREATE FUNCTION vistaTOP5ConsumiblesFacturados (@pFecha_Inicio date,@pFecha_Fin 
 RETURNS TABLE
 AS
 RETURN
-   select  top 5 vh.Cod_Hotel, vh.Ciudad, vh.Calle, vh.Nro_Calle, vh.Telefono,  vh.Mail, vh.CantEstrella,vh.Recarga_Estrella, COUNT (vCxHxR.Cod_Hotel) as "Cantidad_Consumibles" 
-from TEAM_CASTY.vistaHoteles vh, TEAM_CASTY.vistaConsumibleXHabitacionXReserva vCxHxR
-where vCxHxR.Nombre_Estado = 'Finalizada' and vCxHxR.Fecha_Reserva between @pFecha_Inicio and @pFecha_Fin
-group by vh.Cod_Hotel, vh.Ciudad, vh.Calle, vh.Nro_Calle, vh.Telefono,  vh.Mail, vh.CantEstrella,vh.Recarga_Estrella
+   select  top 5 vh.Codigo, Sum (CxHxR.Cantidad) as "Cantidad_Consumibles" 
+from TEAM_CASTY.vistaHoteles vh,TEAM_CASTY.Habitacion hab, TEAM_CASTY.ConsumibleXHabitacionXReserva CxHxR, TEAM_CASTY.Factura f
+where vh.Codigo = hab.Cod_Hotel and hab.Cod_Habitacion=CxHxR.Cod_Habitacion  and  f.Cod_Reserva = CxHxR.Cod_Reserva 
+       and f.Fecha between @pFecha_Inicio and @pFecha_Fin
+group by vh.Codigo
 order by Cantidad_Consumibles
 
 drop function vistaTOP5ConsumiblesFacturados
@@ -217,9 +218,10 @@ CREATE FUNCTION vistaTOP5CantidadDeDiasFueraDeServicio (@pFecha_Inicio date,@pFe
 RETURNS TABLE
 AS
 RETURN
-select  top 5 h.Cod_Hotel, vh.Ciudad, vh.Calle, vh.Nro_Calle, vh.Telefono,  vh.Mail, vh.CantEstrella,vh.Recarga_Estrella,SUM(dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,ph.Fecha_Inicio,ph.Fecha_Fin )) as "Total_Dias_Fuera_De_Servicio"
-from TEAM_CASTY.vistaHoteles vh,TEAM_CASTY.Hotel h, TEAM_CASTY.Periodo_Inhabilitado ph 
-group by h.Cod_Hotel, vh.Ciudad, vh.Calle, vh.Nro_Calle, vh.Telefono,  vh.Mail, vh.CantEstrella,vh.Recarga_Estrella
+select  top 5 vh.Codigo,SUM(dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,ph.Fecha_Inicio,ph.Fecha_Fin )) as "Total Dias Fuera De Servicio"
+from TEAM_CASTY.vistaHoteles vh, TEAM_CASTY.Periodo_Inhabilitado ph 
+where vh.Codigo = ph.Cod_Hotel
+group by vh.Codigo
 order by Total_Dias_Fuera_De_Servicio desc
 
 drop function vistaTOP5CantidadDeDiasFueraDeServicio
@@ -229,19 +231,23 @@ CREATE FUNCTION TEAM_CASTY.vistaTOP5HabitacionesHabitadas (@pFecha_Inicio date,@
 RETURNS TABLE
 AS
 RETURN
-select  top 5 vhxr.Cod_Hotel, vhxr.Numero, vhxr.Piso,vhxr.Frente, vhxr.Descripcion_Habitacion, vhxr.Tipo_De_Habitacion, vhxr.Porcentual ,SUM(dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,vhxr.Fecha_Inicio,vhxr.Fecha_Salida )) as "Dias_Ocupada", COUNT (vhxr.Cod_Reserva) "Cantidad_De_Veces_Ocupada"
-from TEAM_CASTY.vistaHabitacionesXReservas vhxr, TEAM_CASTY.vistaHoteles h
-group by  vhxr.Cod_Hotel, vhxr.Numero, vhxr.Piso,vhxr.Frente, vhxr.Descripcion_Habitacion, vhxr.Tipo_De_Habitacion, vhxr.Porcentual
-order by  Dias_Ocupada, Cantidad_De_Veces_Ocupada
+select  top 5 vhab.Hotel, vhab.Numero, vhab.Piso,vhab.Frente, vhab.Tipo,vhab.[Descripcion de tipo], vhab.Porcentual ,SUM(dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,res.Fecha_Inicio,res.Fecha_Salida )) as "Dias_Ocupada", COUNT (res.Cod_Reserva) as "Cantidad_De_Veces_Ocupada"
+from TEAM_CASTY.vistaHabitaciones vhab,TEAM_CASTY.HabitacionXReserva habxres,TEAM_CASTY.Reserva res
+where vhab.Codigo = habxres.Cod_Habitacion and habxres.Cod_Reserva = res.Cod_Reserva 
+group by  vhab.Hotel, vhab.Numero, vhab.Piso,vhab.Frente, vhab.Tipo,vhab.[Descripcion de tipo], vhab.Porcentual
+order by  Dias_Ocupada desc, Cantidad_De_Veces_Ocupada desc
 
-
+drop function TEAM_CASTY.vistaTOP5HabitacionesHabitadas
 --------------------------------------------------------------------
 
 CREATE FUNCTION TEAM_CASTY.vistaTOP5HabitacionesHabitadas (@pFecha_Inicio date,@pFecha_Fin date)
 RETURNS TABLE
 AS
 RETURN
-select top 5
-from TEAM_CASTY--- ID_Cliente_Reservador
+select top 5 
+from TEAM_CASTY.Factura,TEAM_CASTY.--- ID_Cliente_Reservador
 
+Cliente con mayor cantidad de puntos, donde cada $10 en estadías vale 1 puntos y cada $5 de consumibles es 1 punto,
+ de la sumatoria de todas las facturaciones que haya tenido dentro de un periodo independientemente del Hotel. 
+ Tener en cuenta que la facturación siempre es a quien haya realizado la reserva.
 
