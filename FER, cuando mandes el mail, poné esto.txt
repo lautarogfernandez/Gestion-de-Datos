@@ -1,0 +1,1 @@
+Pregunta: Está bien lo de los items de la factura, porque no sabíamos si debíeams guardar esos datos (se repiten) o lo podemos sacar por cálculos cuando haya que mostrarlos.
