@@ -1,15 +1,21 @@
 Migración Base de Datos
+
 -Creamos la tabla "Recarga_Estrella" que posee un código y una fecha de modificación que en el caso de la migración de la tabla vieja es la fecha en que se realiza.
 
 
-
 Modelado de la Base de Datos
+
 -En la tabla reserva guardamos la información sobre la estadía ya que maneja los mismos datos.
+
 -Consideramos que los consumibles deberían estar ligados a la habitación de una reserva que actualmente estén realizando la estadía, de aquí al terminar la estadía, se realizara la factura.
+
 -Consideramos que cada cliente puede tener ninguna,una o muchas tarjetas y una factura esta ligada a una tarjeta si su forma de pago es "tarjeta".
+
 -Los usuarios poseen roles ligados a un hotel.
 
 
+Otras consideraciones
 
 -El usuario Guest lo consideramos como un usuario activado al principio por defecto.
+
 -Agregamos un usario administrador llamado 'admin', para poder realizar ciertas funcionalidades al principio. 
