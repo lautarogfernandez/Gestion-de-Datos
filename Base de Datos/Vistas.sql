@@ -1,24 +1,27 @@
 --vista cliente
-create view TEAM_CASTY.vistaClientes (Codigo, Nombre, Apellido, Mail, "Tipo Documento", "Numero Documento",Telefono,Pais,Localidad,"Calle","Numero Calle",Piso, "Departamento", Nacionalidad,"Fecha Nacimiento")
+create view TEAM_CASTY.vistaClientes
+(Codigo, Nombre, Apellido, Mail, "Tipo Documento", "Numero Documento",Telefono,Pais,Localidad,"Calle","Numero Calle",Piso, "Departamento", Nacionalidad,"Fecha Nacimiento")
 AS
 select c.ID_Cliente, c.Nombre, c.Apellido, c.Mail, d.Tipo_Documento, c.Nro_Documento, c.Telefono, c.Pais, c.Localidad, c.Nom_Calle, c.Nro_Calle, c.Piso ,c.Dto,c.Nacionalidad, c.Fecha_Nacimiento
 from TEAM_CASTY.Cliente c, TEAM_CASTY.Tipo_Documento d
 where c.Baja=0
-   
-   SELECT * FROM TEAM_CASTY.vistaClientes
+
+--SELECT * FROM TEAM_CASTY.vistaClientes
    
 --Vista factura
-create view TEAM_CASTY.vistaFacturas ("Numero Factura", Fecha, Total, "Forma de Pago", "Codigo de Reserva")
-AS
-select fac.Nro_Factura,fac.Fecha,fac.Total, fdp.Descripcion,fac.Cod_Reserva
-from TEAM_CASTY.Factura fac, TEAM_CASTY.Forma_Pago fdp
-where fac.Cod_Forma_Pago=fdp.Cod_Forma_Pago
+--create view TEAM_CASTY.vistaFacturas
+--([Numero Factura], Fecha, Total, [Forma de Pago], [Codigo de Estadia])
+--AS
+--select fac.Nro_Factura,fac.Fecha,fac.Total, fdp.Descripcion,fac.Cod_Estadia
+--from TEAM_CASTY.Factura fac, TEAM_CASTY.Forma_Pago fdp
+--where fac.Cod_Forma_Pago=fdp.Cod_Forma_Pago
 
-select * from TEAM_CASTY.vistaFacturas
+--select * from TEAM_CASTY.vistaFacturas
 
   
 -- vista habitaciones
-create view TEAM_CASTY.vistaHabitaciones (Codigo,Descripcion,Piso,Numero,Frente, Hotel,Ciudad,Calle,"Numero Calle", Tipo, "Descripcion de tipo",Porcentual)
+create view TEAM_CASTY.vistaHabitaciones
+(Codigo,Descripcion,Piso,Numero,Frente, Hotel,Ciudad,Calle,"Numero Calle", Tipo, "Descripcion de tipo",Porcentual)
 AS
 select hab.Cod_Habitacion,hab.Descripcion,hab.Piso,hab.Numero,hab.Frente,hab.Cod_Hotel, ciu.Nombre,hot.Calle,hot.Nro_Calle,thab.Cod_Tipo,thab.Descripcion ,thab.Porcentual
 from TEAM_CASTY.Habitacion hab, TEAM_CASTY.Tipo_Habitacion thab, TEAM_CASTY.Hotel hot, TEAM_CASTY.Ciudad ciu
