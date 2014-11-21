@@ -135,6 +135,7 @@
             this.Filtros_de_busqueda.TabIndex = 15;
             this.Filtros_de_busqueda.TabStop = false;
             this.Filtros_de_busqueda.Text = "Filtros de búsqueda";
+            this.Filtros_de_busqueda.Enter += new System.EventHandler(this.Filtros_de_busqueda_Enter_1);
             // 
             // button_Buscar
             // 

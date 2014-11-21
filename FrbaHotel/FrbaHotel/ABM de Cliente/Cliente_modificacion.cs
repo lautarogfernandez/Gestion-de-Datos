@@ -18,7 +18,8 @@ namespace FrbaHotel.ABM_de_Cliente
         public bool _buscaEmail = false;    //busca email
         public bool _buscaTipoDoc = false;  //busca un tipo de doc
         public bool _buscaDoc = false;      //busca un numero doc
-
+ 
+        public valoresDataGridView _valores;
         private enum tipoComponente
         {
             codigo,
@@ -201,7 +202,8 @@ namespace FrbaHotel.ABM_de_Cliente
         {
             button_modificar.Enabled = false;
             button_modificar.ForeColor = SystemColors.ScrollBar;
-            string busqueda = "SELECT * "
+            string busqueda = "SELECT Codigo, Nombre, Apellido, Mail, [Tipo Documento], [Numero Documento], Telefono, "+
+                                           "Pais, Localidad, Calle, [Numero Calle], Piso, Departamento, Nacionalidad, [Fecha Nacimiento] "
                                                                      + "FROM [GD2C2014].[Team_Casty].[vistaClientes]";          //búsqueda básica
             button_Buscar.Enabled = false;            //Deshabilito búsqueda hasta que haya resultado
             label_progreso.Text = "Cargando Clientes";       //Imprime en la barra de progreso
@@ -317,23 +319,109 @@ namespace FrbaHotel.ABM_de_Cliente
         {
             button_modificar.Enabled = true;
             button_modificar.ForeColor = SystemColors.MenuText;
+
+
+
+
         }
 
         private void button_modificar_Click(object sender, EventArgs e)
         {
-
+            _valores = new valoresDataGridView();
+            for(int i=0; i< dgv_resultados.SelectedCells.Count;i++)
+            {
+                switch (dgv_resultados.Columns[i].HeaderText)
+                {
+                    case "Nombre": 
+                    {
+                        _valores._nombre = dgv_resultados.SelectedCells[i].Value.ToString();
+                        break;
+                    }
+                    case "Apellido":
+                    {
+                        _valores._apellido = dgv_resultados.SelectedCells[i].Value.ToString();
+                        break;
+                    }
+                    case "Mail":
+                    {
+                        _valores._mail = dgv_resultados.SelectedCells[i].Value.ToString();
+                        break;
+                    }
+                    case "Codigo":
+                    {
+                        _valores._codigo = dgv_resultados.SelectedCells[i].Value.ToString();
+                        break;
+                    }
+                    case "Tipo Documento":
+                    {
+                        _valores._tipo_documento = dgv_resultados.SelectedCells[i].Value.ToString();
+                        break;
+                    }
+                    case "Numero Documento":
+                    {
+                        _valores._numero_documento= dgv_resultados.SelectedCells[i].Value.ToString();
+                        break;
+                    }
+                    case "Telefono":
+                    {
+                        _valores._telefono = dgv_resultados.SelectedCells[i].Value.ToString();
+                        break;
+                    }
+                    case "Pais":
+                    {
+                        _valores._pais = dgv_resultados.SelectedCells[i].Value.ToString();
+                        break;
+                    }
+                    case "Localidad":
+                    {
+                        _valores._localidad = dgv_resultados.SelectedCells[i].Value.ToString();
+                        break;
+                    }
+                    case "Calle":
+                    {
+                        _valores._calle = dgv_resultados.SelectedCells[i].Value.ToString();
+                        break;
+                    }
+                    case "Numero Calle":
+                    {
+                        _valores._numero_calle = dgv_resultados.SelectedCells[i].Value.ToString();
+                        break;
+                    }
+                    case "Piso":
+                    {
+                        _valores._piso= dgv_resultados.SelectedCells[i].Value.ToString();
+                        break;
+                    }
+                    case "Departamento":
+                    {
+                        _valores._departamento = dgv_resultados.SelectedCells[i].Value.ToString();
+                        break;
+                    }
+                    case "Nacionalidad":
+                    {
+                        _valores._nacionalidad= dgv_resultados.SelectedCells[i].Value.ToString();
+                        break;
+                    }
+                    case "Fecha Nacimiento":
+                    {
+                        _valores._fecha_nacimiento = dgv_resultados.SelectedCells[i].Value.ToString();
+                        break;
+                    }
+                }
+            }
+            Cliente_modificar formularioModificar = new Cliente_modificar(_valores);
             //for (int i = 0; i < dgv_resultados.SelectedCells.Count; i++)
             //{
             //    ObjetoModificable obj = new ObjetoModificable();
             //    obj._header
             //}
-            List<int> seleccionesAcotadas = new List<int>();
-            List<int> seleccionesMultiples = new List<int>();
-            for(int i=0;i<dgv_resultados.Columns.Count;i++){
-                if (dgv_resultados.Columns[i].HeaderText == "Tipo Documento")
-                    seleccionesAcotadas.Add(i);
-            }
-            Modificar formularioModificar = new Modificar(dgv_resultados.SelectedCells,dgv_resultados.Columns,"vistaClientes",seleccionesAcotadas,seleccionesMultiples);
+            //List<int> seleccionesAcotadas = new List<int>();
+            //List<int> seleccionesMultiples = new List<int>();
+            //for(int i=0;i<dgv_resultados.Columns.Count;i++){
+            //    if (dgv_resultados.Columns[i].HeaderText == "Tipo Documento")
+            //        seleccionesAcotadas.Add(i);
+            //}
+            //Modificar formularioModificar = new Modificar(dgv_resultados.SelectedCells,dgv_resultados.Columns,"vistaClientes",seleccionesAcotadas,seleccionesMultiples);
             formularioModificar.Show();
         }
 
@@ -341,6 +429,13 @@ namespace FrbaHotel.ABM_de_Cliente
         {
 
         }
+
+        private void Filtros_de_busqueda_Enter_1(object sender, EventArgs e)
+        {
+
+        }
+
+
 
     }
 }

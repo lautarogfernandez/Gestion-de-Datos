@@ -12,6 +12,7 @@ namespace FrbaHotel
 {
     public partial class Modificar : Form
     {
+        #region Variables y estructuras
         List<Label> _cabecera = new List<Label>();
         List<Label> _atributos = new List<Label>();
         List<ObjetoModificable> _atributosNuevos = new List<ObjetoModificable>();
@@ -31,13 +32,15 @@ namespace FrbaHotel
         }
         string _tabla;
         string _formularioAnterior;
+        #endregion
         public Modificar(DataGridViewSelectedCellCollection _camposElegidos,DataGridViewColumnCollection _columnas,string _nombreTabla,
                                      List<int> _seleccionesAcotadas,List<int>  _seleccionesMultiples )
         {
             InitializeComponent();
-
+           
             for (int i = 0; i < _camposElegidos.Count; i++)
             {
+                #region Labels
                 Label label = new Label();
                 label.Parent = this;
                 label.Text = _columnas[i].HeaderText.ToString();
@@ -55,6 +58,8 @@ namespace FrbaHotel
                 label2.MouseHover += common_hover_label;
                 label2.MouseLeave += common_leave_label;
                 _atributos.Add(label2);
+                #endregion
+                #region Switch
                 if (_seleccionesAcotadas.Contains(i))
                 {
                     ComboBox component = new ComboBox();
@@ -84,6 +89,7 @@ namespace FrbaHotel
                     obj._restrains = tipoComponente.seleccionAcotada;
                     obj._valor = component;
                     obj._tipoEstr = "System.String";
+                    component.SelectedValueChanged += common_value_change;
                     _atributosNuevos.Add(obj);
                 }
                 else
@@ -140,6 +146,7 @@ namespace FrbaHotel
                                     obj._valor = component;
                                     obj._tipoEstr = "System.Decimal";
                                     _atributosNuevos.Add(obj);
+                                    component.TextChanged += common_int_change;
                                     break;
                                 }
                             case "System.DateTime":
@@ -157,6 +164,7 @@ namespace FrbaHotel
                                     obj._valor = component;
                                     obj._tipoEstr = "System.DateTime";
                                     _atributosNuevos.Add(obj);
+                                    component.ValueChanged += common_date_change;
                                     break;
                                 }
                             case "System.String":
@@ -175,12 +183,15 @@ namespace FrbaHotel
                                     obj._valor = component;
                                     obj._tipoEstr = "System.String";
                                     _atributosNuevos.Add(obj);
+                                    component.TextChanged += common_text_change;
                                     break;
                                 }
                         }
+
                     }
                 }
-
+                #endregion
+                #region CheckBoxes
                 CheckBox checkBox = new CheckBox();
                 checkBox.Parent = this;
                 checkBox.Checked = false;
@@ -188,10 +199,45 @@ namespace FrbaHotel
                 checkBox.Top = (_atributosNuevos[i]._valor as Control).Top;
                 checkBox.Click += common_click_checkBox;
                 _habilitarMod.Add(checkBox);
+                #endregion
             }
             _formularioAnterior = _nombreTabla.Substring(5, _nombreTabla.Length-6)+"_modificacion";
             _tabla = _nombreTabla.Substring(5, _nombreTabla.Length - 6);
         }
+
+        private string texto(ObjetoModificable _obj)
+        {
+            switch (_obj._restrains)
+            {
+                case tipoComponente.codigo:
+                    {
+                        return (_obj._valor as TextBox).Text.ToString();
+                        break;
+                    }
+                case tipoComponente.numerico:
+                    {
+                        return (_obj._valor as TextBox).Text.ToString();
+                        break;
+                    }
+                case tipoComponente.fecha:
+                    {
+                        return (_obj._valor as DateTimePicker).Value.ToString();
+                        break;
+                    }
+                case tipoComponente.seleccionAcotada:
+                    {
+                        return (_obj._valor as ComboBox).SelectedText.ToString();
+                        break;
+                    }
+                case tipoComponente.alfanumerico:
+                    {
+                        return (_obj._valor as TextBox).Text.ToString();
+                        break;
+                    }
+                default: return _obj._valor.ToString();
+            }
+        }
+        
         private void common_leave_component(object sender, EventArgs e)
         { 
         }
@@ -230,6 +276,48 @@ namespace FrbaHotel
             Label label = sender as Label;
             label.Width = this.Width * 20 / 100;
         }
+        private void common_date_change(object sender, EventArgs e)
+        {
+            DateTimePicker chk = sender as DateTimePicker;
+            ObjetoModificable obj = _atributosNuevos.Find(
+                delegate(ObjetoModificable _obj)
+                {
+                    return _obj._valor == chk;
+                });
+            (obj._valor as DateTimePicker).Value = chk.Value;
+        }
+        private void common_int_change(object sender, EventArgs e)
+        {
+            TextBox chk = sender as TextBox;
+            ObjetoModificable obj = _atributosNuevos.Find(
+                delegate(ObjetoModificable _obj)
+                {
+                    return _obj._valor == chk;
+                });
+            (obj._valor as TextBox).Text = chk.Text;
+        }
+        private void common_value_change(object sender, EventArgs e)
+        {
+            ComboBox chk = sender as ComboBox;
+            ObjetoModificable obj = _atributosNuevos.Find(
+                delegate(ObjetoModificable _obj)
+                {
+                    return _obj._valor == chk;
+                });
+            (obj._valor as ComboBox).Text = chk.Text;
+        }
+        private void common_text_change(object sender, EventArgs e)
+        {
+            TextBox chk = sender as TextBox;
+            ObjetoModificable obj = _atributosNuevos.Find(
+                delegate(ObjetoModificable _obj)
+                {
+                    return _obj._valor == chk;
+                });
+            (obj._valor as TextBox).Text = chk.Text;
+        }
+
+
         private void common_click_checkBox(object sender, EventArgs e)
         {
             CheckBox chk = sender as CheckBox;
@@ -237,18 +325,65 @@ namespace FrbaHotel
             if (_habilitarMod[num].Checked == true)
             {
                 habilitar_component(num);
+                button_modificar.Enabled = true;
             }
-            else deshabilitar_component(num);
+            else
+            {
+                deshabilitar_component(num);
+                button_modificar.Enabled = false;
+            }
         }
 
         private void button_volver_Click(object sender, EventArgs e)
         {
             this.Hide();
         }
-
+        private bool checkeado(CheckBox _checkbox) {
+            return _checkbox.Checked == true;
+        }
         private void button_modificar_Click(object sender, EventArgs e)
         {
-           
+            string operacion = "UPDATE [GD2C2014].[Team_Casty].[" + _tabla + "]";              //Update básico
+            bool primero = true;
+            for (int i = 0; i < _habilitarMod.Count; i++)
+            {
+                if(checkeado(_habilitarMod[i]))
+                {
+                    //Acá me tengo que fijar si está vacío
+                    if (primero)
+                    {
+                        operacion += " SET ";
+                        primero = false;
+                        operacion += " [" + _cabecera[i].Text + " ] = " + texto(_atributosNuevos[i]) + "   " + _atributosNuevos[i].ToString() ;
+                    }
+                    else
+                        operacion += ", [" + _cabecera[i].Text + " ] = " + texto(_atributosNuevos[i]);
+
+                }
+            }
+            //string ConnStr = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;"; //ruta de la conexión
+            //SqlConnection conn = new SqlConnection(ConnStr);                                                             //conexión
+            //conn.Open();                                                                                                                                 //Abrir Conexión
+            //SqlCommand cmd = new SqlCommand(operacion, conn);
+            ////Busco en la sesión abierta
+            //try
+            //{
+            //    SqlDataReader reader = cmd.ExecuteReader();
+            //    while (reader.Read())
+            //    {
+            //    }
+
+            //    reader.Close();
+            //}
+            //catch (SqlException exc)
+            //{
+            //    string msj = "Errores de sql: \n";
+            //    for (int i = 0; i < exc.Errors.Count; i++)
+            //        msj += exc.Errors[i].Message + "\n";
+            //    MessageBox.Show(msj, "Excepcion SQL", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            //}
+
+            //conn.Close();
         }
 
         private void stat_BarraEstado_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
