@@ -355,7 +355,6 @@ CREATE TABLE TEAM_CASTY.Periodo_Inhabilitado (
 	FOREIGN KEY (Cod_Hotel) REFERENCES TEAM_CASTY.Hotel (Cod_Hotel));	
 	
 
-
 --Reservas
 CREATE TABLE TEAM_CASTY.Reserva ( 
 	Cod_Reserva numeric(18) NOT NULL PRIMARY KEY,
@@ -391,7 +390,7 @@ ORDER BY 1
 --SELECT * FROM #reservas_new
 
 INSERT INTO TEAM_CASTY.Reserva (Cod_Reserva,Fecha_Reserva,Cant_Noches,Cod_Regimen,ID_Cliente_Reservador,Cod_Estado,Fecha_Realizacion)
-SELECT distinct t1.Reserva_Codigo,t1.Reserva_Fecha_Inicio,t1.Reserva_Cant_Noches,t1.Cod_Regimen, t1.ID_Cliente, 1 AS 'Cod_Estado',NULL
+SELECT distinct t1.Reserva_Codigo,t1.Reserva_Fecha_Inicio,t1.Reserva_Cant_Noches,t1.Cod_Regimen, t1.ID_Cliente, 1 AS 'Cod_Estado',t1.Reserva_Fecha_Inicio
 FROM #reservas_new t1
 WHERE t1.Reserva_Codigo in (SELECT res.Reserva_Codigo FROM #reservas_new res)
 ORDER BY t1.Reserva_Codigo
@@ -425,6 +424,21 @@ WHERE hab.Cod_Tipo=t1.Habitacion_Tipo_Codigo AND
 ORDER BY t1.Reserva_Codigo
 
 --SELECT * FROM TEAM_CASTY.HabitacionXReserva
+
+--Usuario por reserva (para modificacion de Reserva)
+CREATE TABLE TEAM_CASTY.UsuarioXReserva ( 
+	Cod_Reserva numeric(18) NOT NULL,
+	Numero_Modificacion numeric(18) NOT NULL,
+	Cod_Usuario numeric(18) NOT NULL,
+	Fecha datetime DEFAULT getdate(),	
+	Descripcion varchar(255),
+	PRIMARY KEY (Cod_Reserva, Numero_Modificacion),
+	FOREIGN KEY (Cod_Reserva) REFERENCES TEAM_CASTY.Reserva (Cod_Reserva),
+	FOREIGN KEY (Cod_Usuario) REFERENCES TEAM_CASTY.Usuario (Cod_Usuario));
+
+insert into TEAM_CASTY.UsuarioXReserva (Cod_Reserva,Numero_Modificacion,Cod_Usuario,Fecha,Descripcion)	
+select res.Cod_Reserva,1,2,res.Fecha_Realizacion,'De la migración'
+from TEAM_CASTY.Reserva res
 
 --Estadía	
 CREATE TABLE TEAM_CASTY.Estadia ( 
@@ -479,8 +493,6 @@ ORDER BY est.Cod_Estadia, hxr.Cod_Habitacion
 
 --select * from TEAM_CASTY.HabitacionXEstadia
 
-GO		
-
 --Consumibles por Estadia
 CREATE TABLE TEAM_CASTY.ConsumibleXHabitacionXEstadia ( 
 	Cod_ConsumibleXHabitacionXEstadia numeric(18)  NOT NULL PRIMARY KEY IDENTITY(1,1),
@@ -521,10 +533,11 @@ UPDATE res
 SET res.Cod_Estado=6
 from TEAM_CASTY.Reserva res join TEAM_CASTY.Estadia est on (res.Cod_Reserva=est.Cod_Reserva)
 
+
 --Facturas
 CREATE TABLE TEAM_CASTY.Factura ( 
-	Fecha datetime NOT NULL,
 	Nro_Factura numeric(18) NOT NULL PRIMARY KEY,
+	Fecha datetime NOT NULL,	
 	Total numeric(18,2) NOT NULL,
 	Cod_Estadia numeric(18) NOT NULL,
 	Cod_Forma_Pago numeric(18) NOT NULL,
@@ -550,7 +563,7 @@ where m1.Consumible_Codigo is null and m1.Factura_Nro is not null
 INSERT INTO TEAM_CASTY.Factura (Nro_Factura,Fecha,Cod_Estadia,Cod_Forma_Pago,Total)
 SELECT DISTINCT  auxiliar.Nro_Factura AS "Nro_Factura", auxiliar.Factura_Fecha AS "Fecha", e.Cod_Estadia, 1 AS "Cod_Forma_Pago" , SUM (auxiliar.Total) AS "Total"
 FROM TEAM_CASTY.Auxiliar_Item_Total auxiliar JOIN TEAM_CASTY.Estadia e ON(e.Cod_Reserva=auxiliar.Reserva_Codigo)
-group by auxiliar.Nro_Factura, auxiliar.Factura_Fecha, auxiliar.Reserva_Codigo
+group by auxiliar.Nro_Factura, auxiliar.Factura_Fecha,  e.Cod_Estadia
 order by 1
 
 DROP TABLE TEAM_CASTY.Auxiliar_Item_Total
@@ -574,7 +587,6 @@ CREATE TABLE TEAM_CASTY.TarjetaXFactura (
 	FOREIGN KEY (Nro_Factura) REFERENCES TEAM_CASTY.Factura (Nro_Factura),
 	FOREIGN KEY (Numero_Tarjeta, Banco) REFERENCES TEAM_CASTY.Tarjeta (Numero, Banco));
 
-
 --consumible, habitacion y factura
 CREATE TABLE TEAM_CASTY.item_ConsumibleXFactura ( 
 	Nro_Factura numeric(18) NOT NULL,
@@ -585,13 +597,14 @@ CREATE TABLE TEAM_CASTY.item_ConsumibleXFactura (
 
 INSERT INTO TEAM_CASTY.item_ConsumibleXFactura (Nro_Factura,Cod_ConsumibleXHabitacionXEstadia)
 SELECT f.Nro_Factura,chr.Cod_ConsumibleXHabitacionXEstadia
-FROM TEAM_CASTY.ConsumibleXHabitacionXEstadia chr, TEAM_CASTY.Factura f, TEAM_CASTY.Estadia
-WHERE f.Cod_Reserva=chres.Cod_Reserva and chres.Cod_Consumible = con.Cod_Consumible
+FROM TEAM_CASTY.ConsumibleXHabitacionXEstadia chr, TEAM_CASTY.Factura f, TEAM_CASTY.Estadia est
+WHERE f.Cod_Estadia=est.Cod_Estadia and
+est.Cod_Estadia=chr.Cod_Estadia
 
-select * from TEAM_CASTY.item_ConsumibleXFactura
+--select * from TEAM_CASTY.item_ConsumibleXFactura
 
 --estadia, habitacion y factura
-CREATE TABLE TEAM_CASTY.item_EstadiaXFactura ( 
+CREATE TABLE TEAM_CASTY.item_habitacionXFactura ( 
 	Nro_Factura numeric(18) NOT NULL,
 	Cod_Habitacion numeric(18) NOT NULL,
 	Cod_Regimen numeric(18) NOT NULL,
@@ -601,28 +614,18 @@ CREATE TABLE TEAM_CASTY.item_EstadiaXFactura (
 	FOREIGN KEY (Nro_Factura) REFERENCES TEAM_CASTY.Factura (Nro_Factura),
 	FOREIGN KEY (Cod_Regimen) REFERENCES TEAM_CASTY.Regimen (Cod_Regimen));
 
-INSERT INTO TEAM_CASTY.item_EstadiaXFactura (Nro_Factura,Cod_Habitacion,Cod_Regimen,Monto)
-SELECT f.Nro_Factura, hxr.Cod_Habitacion, res.Cod_Regimen, res.Cant_Noches*reg.Precio*thab.Porcentual+hot.CantEstrella*rec.Recarga AS Monto
-FROM TEAM_CASTY.Factura f, TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXReserva hxr, TEAM_CASTY.Hotel hot, TEAM_CASTY.Recarga_Estrella rec, TEAM_CASTY.Regimen reg, TEAM_CASTY.Reserva res,TEAM_CASTY.Tipo_Habitacion thab
-WHERE f.Cod_Reserva=res.Cod_Reserva and
-res.Cod_Reserva=hxr.Cod_Reserva and
-hxr.Cod_Habitacion=hab.Cod_Habitacion and
+INSERT INTO TEAM_CASTY.item_habitacionXFactura (Nro_Factura,Cod_Habitacion,Cod_Regimen,Monto)
+SELECT f.Nro_Factura, hxe.Cod_Habitacion, res.Cod_Regimen, res.Cant_Noches*reg.Precio*thab.Porcentual+hot.CantEstrella*rec.Recarga AS Monto
+FROM TEAM_CASTY.Factura f, TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXEstadia hxe, TEAM_CASTY.Hotel hot, TEAM_CASTY.Recarga_Estrella rec, TEAM_CASTY.Regimen reg, TEAM_CASTY.Estadia est,TEAM_CASTY.Tipo_Habitacion thab, TEAM_CASTY.Reserva res
+WHERE f.Cod_Estadia=est.Cod_Estadia and
+est.Cod_Estadia=hxe.Cod_Estadia and
+hxe.Cod_Habitacion=hab.Cod_Habitacion and
 hab.Cod_Hotel=hot.Cod_Hotel and
 rec.Cod_Recarga=1 and
 res.Cod_Regimen=reg.Cod_Regimen and
-thab.Cod_Tipo=hab.Cod_Tipo
+thab.Cod_Tipo=hab.Cod_Tipo and
+res.Cod_Reserva=est.Cod_Reserva
 
---select * from TEAM_CASTY.item_EstadiaXFactura
-
---Usuario por reserva (para modificacion de Reserva)
-CREATE TABLE TEAM_CASTY.UsuarioXReserva ( 
-	Cod_Reserva numeric(18) NOT NULL,
-	Numero_Modificacion numeric(18) NOT NULL,
-	Cod_Usuario numeric(18) NOT NULL,
-	Fecha datetime DEFAULT getdate(),	
-	Descripcion varchar(255),
-	PRIMARY KEY (Cod_Reserva, Numero_Modificacion),
-	FOREIGN KEY (Cod_Reserva) REFERENCES TEAM_CASTY.Reserva (Cod_Reserva),
-	FOREIGN KEY (Cod_Usuario) REFERENCES TEAM_CASTY.Usuario (Cod_Usuario));
+--select * from TEAM_CASTY.item_habitacionXFactura
 
 GO
