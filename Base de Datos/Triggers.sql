@@ -34,7 +34,7 @@ end
 
 else
 begin
-set @mensaje=@mensaje + 'No se realizÛ el alta';
+set @mensaje=@mensaje + 'No se realiz√≥ el alta';
 RAISERROR (@mensaje,10,1);
 end
 
@@ -89,7 +89,7 @@ end
 
 else
 begin
-set @mensaje=@mensaje + 'No se realizÛ el alta';
+set @mensaje=@mensaje + 'No se realiz√≥ el alta';
 RAISERROR (@mensaje,10,1);
 end
 
@@ -116,3 +116,70 @@ select * from team_casty.vistaClientes
 select * from team_casty.Cliente c
 
 -----------------------------------------------------------------------------------------------------------------------
+--------------------------------------PUNTO 1---------------------------------------------------------------------------------
+
+
+
+create view TEAM_CASTY.vistaRoles
+as 
+select r.Cod_Rol as Codigo, r.Nombre , r.Activo , f.Descripcion as Funcion
+from TEAM_CASTY.Rol r, TEAM_CASTY.FuncionXRol fxr , TEAM_CASTY.Funcion f
+where r.Cod_Rol = fxr.Cod_Rol and fxr.Cod_Funcion= f.Cod_Funcion
+
+
+create trigger TEAM_CASTY.alta_roles
+ ON TEAM_CASTY.vistaRoles
+instead of insert
+as
+begin
+insert into TEAM_CASTY.Rol (Activo,Nombre) select Activo, Nombre from inserted  
+
+insert into TEAM_CASTY.FuncionXRol select i.Codigo as Cod_Rol , f.Cod_Funcion
+                                   from inserted i  join TEAM_CASTY.Funcion f on (i.Funcion = f.Descripcion)
+end
+
+create trigger TEAM_CASTY.modificacion_roles 
+ON TEAM_CASTY.vistaRoles
+instead of update
+as
+begin
+update r set r.Nombre = i.Nombre ,r.Activo = i.Activo
+from TEAM_CASTY.Rol r join inserted i on (i.Codigo = r.Cod_Rol)
+end
+
+
+create trigger TEAM_CASTY.baja_roles
+ON TEAM_CASTY.vistaRoles
+instead of delete
+as
+begin
+update r
+set r.Activo=0
+from TEAM_CASTY.Rol r, deleted del
+where del.Codigo= r.Cod_Rol;
+end;
+
+
+--------------------------------------------------------------------------------------------------------
+
+
+-----------------------------------------PUNTO 3--------------------------------------------------------
+
+
+create view vistaUsuarios
+as
+select u.Cod_Usuario as Codigo, u.Username, u.Contrase√±a, u.Habilitado
+ from TEAM_CASTY.Usuario u join TEAM_CASTY.RolXUsuarioXHotel rxuxh
+ 
+ 
+ -----------------------------------------------------------------------------------------------------------
+ 
+ ---------------------------------------PUNTO 5--------------------------------------------------------------
+ 
+ create view vistaHoteles
+ as
+ select
+ from TEAM_CASTY.Hotel h join TEAM_CASTY.Ciudad c on (c.Cod_Ciudad= h.Cod_Ciudad)
+                         join TEAM_CASTY.RegimenXHotel rxh on (rxh.Cod_Hotel = h.Cod_Hotel)
+                         join TEAM_CASTY.Regimen r on (r.Cod_Regimen = rxh.Cod_Regimen)
+                         join TEAM_CASTY.Periodo_Inhabilitado pinh on (pinh.Cod_Hotel = h.Cod_Hotel)
