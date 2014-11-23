@@ -189,7 +189,7 @@ order by [Cantidad Consumibles] desc
 
 drop function vistaTOP5ConsumiblesFacturados
 
-SELECT * FROM vistaTOP5ConsumiblesFacturados('2013-01-01 00:00:00.000','2024-12-28 00:00:00.000')
+SELECT * FROM vistaTOP5ConsumiblesFacturados('2013-01-01 00:00:00.000','2013-12-28 00:00:00.000')
 
 
 --vista que no sirve
@@ -227,7 +227,7 @@ AS
 RETURN
 select  top 5 vh.Codigo, vh.Ciudad, vh.Calle,vh.[Numero Calle], vh.Telefono, vh.Mail, vh.[Cantidad de estrellas], vh.[Recarga por estrella],SUM(dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,ph.Fecha_Inicio,ph.Fecha_Fin )) as "Total Dias Fuera De Servicio"
 from TEAM_CASTY.vistaHoteles vh, TEAM_CASTY.Periodo_Inhabilitado ph 
-where vh.Codigo = ph.Cod_Hotel
+where vh.Codigo = ph.Cod_Hotel and dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,ph.Fecha_Inicio,ph.Fecha_Fin ) >0
 group by vh.Codigo, vh.Ciudad, vh.Calle,vh.[Numero Calle], vh.Telefono, vh.Mail, vh.[Cantidad de estrellas], vh.[Recarga por estrella]
 order by [Total Dias Fuera De Servicio] desc
 
@@ -242,14 +242,14 @@ CREATE FUNCTION vistaTOP5HabitacionesHabitadas (@pFecha_Inicio date,@pFecha_Fin 
 RETURNS TABLE
 AS
 RETURN
-select  top 5 vhab.Hotel, vhab.Numero, vhab.Piso,vhab.Frente, vhab.Tipo,vhab.[Descripcion de tipo], vhab.Porcentual ,SUM(dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,est.Fecha_Inicio,est.Fecha_Salida )) as "Dias Ocupada", COUNT (est.Cod_Estadia) as "Cantidad De Veces Ocupada"
+select  top 5 vhab.Codigo, vhab.Hotel, vhab.Numero, vhab.Piso,vhab.Frente, vhab.Tipo,vhab.[Descripcion de tipo], vhab.Porcentual ,SUM(dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,est.Fecha_Inicio,est.Fecha_Salida )) as "Dias Ocupada", COUNT (est.Cod_Estadia) as "Cantidad De Veces Ocupada"
 from TEAM_CASTY.vistaHabitaciones vhab,TEAM_CASTY.HabitacionXEstadia habxest, TEAM_CASTY.Estadia est
-where vhab.Codigo = habxest.Cod_Habitacion   and est.Cod_Estadia=habxest.Cod_Estadia
-group by  vhab.Hotel, vhab.Numero, vhab.Piso,vhab.Frente, vhab.Tipo,vhab.[Descripcion de tipo], vhab.Porcentual
+where vhab.Codigo = habxest.Cod_Habitacion   and est.Cod_Estadia=habxest.Cod_Estadia and  dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,est.Fecha_Inicio,est.Fecha_Salida) >0
+group by  vhab.Codigo, vhab.Hotel, vhab.Numero, vhab.Piso,vhab.Frente, vhab.Tipo,vhab.[Descripcion de tipo], vhab.Porcentual
 order by  [Dias Ocupada] desc, [Cantidad De Veces Ocupada] desc
 
 
-SELECT * FROM vistaTOP5HabitacionesHabitadas('2013-01-01 00:00:00.000','2024-12-28 00:00:00.000')
+SELECT * FROM vistaTOP5HabitacionesHabitadas('2013-01-01 00:00:00.000','2013-01-28 00:00:00.000')
 
 drop function vistaTOP5HabitacionesHabitadas
 --------------------------------------------------------------------
@@ -273,5 +273,4 @@ drop function vistaTOP5ClienteConPuntos
 Cliente con mayor cantidad de puntos, donde cada $10 en estadías vale 1 puntos y cada $5 de consumibles es 1 punto,
  de la sumatoria de todas las facturaciones que haya tenido dentro de un periodo independientemente del Hotel. 
  Tener en cuenta que la facturación siempre es a quien haya realizado la reserva.
-
 
