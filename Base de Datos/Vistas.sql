@@ -141,6 +141,8 @@ drop view TEAM_CASTY.vistaConsumibleXHabitacionXReserva
 
 
 
+
+
 ---------------------------------------------------------------------------------------------------------------------
 --LISTADOS
  ---- agregar resto de campos en select y en group by
@@ -148,13 +150,13 @@ drop view TEAM_CASTY.vistaConsumibleXHabitacionXReserva
 CREATE FUNCTION vistaTOP5ReservasCanceladas (@pFecha_Inicio date,@pFecha_Fin date)
 RETURNS TABLE
 AS
-RETURN
-   select  top 5 vh.Codigo, count (distinct r.Cod_Reserva)  as "Cantidad_Reservas_Canceladas"
+RETURN 
+   select  top 5 vh.Codigo, vh.Ciudad, vh.Calle,vh.[Numero Calle], vh.Telefono, vh.Mail, vh.[Cantidad de estrellas], vh.[Recarga por estrella], count (distinct r.Cod_Reserva)  as "Cantidad Reservas Canceladas"
    from TEAM_CASTY.vistaHoteles vh, TEAM_CASTY.HabitacionXReserva hxr,TEAM_CASTY.Reserva r ,TEAM_CASTY.Habitacion hab, TEAM_CASTY.Estados e
    where vh.Codigo = hab.Cod_Hotel and hab.Cod_Habitacion= hxr.Cod_Habitacion and r.Cod_Reserva= hxr.Cod_Reserva
        and  r.Cod_Estado= e.Cod_Estado and e.Nombre  = 'Cancelada' and r.Fecha_Reserva between @pFecha_Inicio and @pFecha_Fin
-   group by vh.Codigo
-   order by Cantidad_Reservas_Canceladas desc
+   group by vh.Codigo, vh.Ciudad, vh.Calle,vh.[Numero Calle], vh.Telefono, vh.Mail, vh.[Cantidad de estrellas], vh.[Recarga por estrella]
+   order by [Cantidad Reservas Canceladas] desc
 
    SELECT * FROM   vistaTOP5ReservasCanceladas('2013-01-01 00:00:00.000','2024-12-28 00:00:00.000')
 
@@ -178,12 +180,12 @@ CREATE FUNCTION vistaTOP5ConsumiblesFacturados (@pFecha_Inicio date,@pFecha_Fin 
 RETURNS TABLE
 AS
 RETURN
-   select  top 5 vh.Codigo, Sum (CxHxE.Cantidad) as "Cantidad_Consumibles" 
+   select  top 5  vh.Codigo, vh.Ciudad, vh.Calle,vh.[Numero Calle], vh.Telefono, vh.Mail, vh.[Cantidad de estrellas], vh.[Recarga por estrella], Sum (CxHxE.Cantidad) as "Cantidad Consumibles" 
 from TEAM_CASTY.vistaHoteles vh,TEAM_CASTY.Habitacion hab, TEAM_CASTY.ConsumibleXHabitacionXEstadia CxHxE, TEAM_CASTY.Factura f
 where vh.Codigo = hab.Cod_Hotel and hab.Cod_Habitacion=CxHxE.Cod_Habitacion  and  f.Cod_Estadia = CxHxE.Cod_Estadia 
        and f.Fecha between @pFecha_Inicio and @pFecha_Fin
-group by vh.Codigo
-order by Cantidad_Consumibles desc
+group by  vh.Codigo, vh.Ciudad, vh.Calle,vh.[Numero Calle], vh.Telefono, vh.Mail, vh.[Cantidad de estrellas], vh.[Recarga por estrella]
+order by [Cantidad Consumibles] desc
 
 drop function vistaTOP5ConsumiblesFacturados
 
@@ -223,11 +225,11 @@ CREATE FUNCTION vistaTOP5CantidadDeDiasFueraDeServicio (@pFecha_Inicio date,@pFe
 RETURNS TABLE
 AS
 RETURN
-select  top 5 vh.Codigo,SUM(dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,ph.Fecha_Inicio,ph.Fecha_Fin )) as "Total Dias Fuera De Servicio"
+select  top 5 vh.Codigo, vh.Ciudad, vh.Calle,vh.[Numero Calle], vh.Telefono, vh.Mail, vh.[Cantidad de estrellas], vh.[Recarga por estrella],SUM(dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,ph.Fecha_Inicio,ph.Fecha_Fin )) as "Total Dias Fuera De Servicio"
 from TEAM_CASTY.vistaHoteles vh, TEAM_CASTY.Periodo_Inhabilitado ph 
 where vh.Codigo = ph.Cod_Hotel
-group by vh.Codigo
-order by 2 desc
+group by vh.Codigo, vh.Ciudad, vh.Calle,vh.[Numero Calle], vh.Telefono, vh.Mail, vh.[Cantidad de estrellas], vh.[Recarga por estrella]
+order by [Total Dias Fuera De Servicio] desc
 
 
 
@@ -240,11 +242,11 @@ CREATE FUNCTION vistaTOP5HabitacionesHabitadas (@pFecha_Inicio date,@pFecha_Fin 
 RETURNS TABLE
 AS
 RETURN
-select  top 5 vhab.Hotel, vhab.Numero, vhab.Piso,vhab.Frente, vhab.Tipo,vhab.[Descripcion de tipo], vhab.Porcentual ,SUM(dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,est.Fecha_Inicio,est.Fecha_Salida )) as "Dias_Ocupada", COUNT (est.Cod_Estadia) as "Cantidad De Veces Ocupada"
+select  top 5 vhab.Hotel, vhab.Numero, vhab.Piso,vhab.Frente, vhab.Tipo,vhab.[Descripcion de tipo], vhab.Porcentual ,SUM(dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,est.Fecha_Inicio,est.Fecha_Salida )) as "Dias Ocupada", COUNT (est.Cod_Estadia) as "Cantidad De Veces Ocupada"
 from TEAM_CASTY.vistaHabitaciones vhab,TEAM_CASTY.HabitacionXEstadia habxest, TEAM_CASTY.Estadia est
 where vhab.Codigo = habxest.Cod_Habitacion   and est.Cod_Estadia=habxest.Cod_Estadia
 group by  vhab.Hotel, vhab.Numero, vhab.Piso,vhab.Frente, vhab.Tipo,vhab.[Descripcion de tipo], vhab.Porcentual
-order by  Dias_Ocupada desc, [Cantidad De Veces Ocupada] desc
+order by  [Dias Ocupada] desc, [Cantidad De Veces Ocupada] desc
 
 
 SELECT * FROM vistaTOP5HabitacionesHabitadas('2013-01-01 00:00:00.000','2024-12-28 00:00:00.000')
@@ -255,15 +257,15 @@ drop function vistaTOP5HabitacionesHabitadas
 CREATE FUNCTION vistaTOP5ClienteConPuntos (@pFecha_Inicio date,@pFecha_Fin date)
 RETURNS TABLE
 AS
-RETURN
-select top 5 r.ID_Cliente_Reservador,  sum(CxHxE.Precio)/5 as puntos
-from TEAM_CASTY.Factura f,TEAM_CASTY.Estadia e,TEAM_CASTY.Reserva r , TEAM_CASTY.ConsumibleXHabitacionXEstadia CxHxE--- ID_Cliente_Reservador
-where f.Cod_Estadia = e.Cod_Estadia and r.Cod_Reserva = e.Cod_Reserva and CxHxE.Cod_Estadia = e.Cod_Estadia
-group by r.ID_Cliente_Reservador
+RETURN 
+select top 5 vc.Codigo,vc.Nombre,vc.Apellido,vc.Mail, vc.[Tipo Documento], vc.[Numero Documento], vc.Telefono, vc.Pais, vc.Localidad, vc.Calle, vc.[Numero Calle], vc.Piso, vc.Departamento, vc.Nacionalidad, vc.[Fecha Nacimiento] , sum(CxHxE.Precio)/5 as puntos
+from TEAM_CASTY.Factura f,TEAM_CASTY.Estadia e,TEAM_CASTY.Reserva r , TEAM_CASTY.ConsumibleXHabitacionXEstadia CxHxE, TEAM_CASTY.vistaClientes vc--- ID_Cliente_Reservador
+where f.Cod_Estadia = e.Cod_Estadia and r.Cod_Reserva = e.Cod_Reserva and CxHxE.Cod_Estadia = e.Cod_Estadia and vc.Codigo = r.ID_Cliente_Reservador
+group by  vc.Codigo,vc.Nombre,vc.Apellido,vc.Mail, vc.[Tipo Documento], vc.[Numero Documento], vc.Telefono, vc.Pais, vc.Localidad, vc.Calle, vc.[Numero Calle], vc.Piso, vc.Departamento, vc.Nacionalidad, vc.[Fecha Nacimiento] 
 order by puntos desc
 
 
-SELECT * FROM vistaTOP5ClienteConPuntos('2013-01-01 00:00:00.000','2024-12-28 00:00:00.000')
+SELECT * FROM vistaTOP5ClienteConPuntos('2013-01-01 ','2024-12-28')
 
 drop function vistaTOP5ClienteConPuntos
 
