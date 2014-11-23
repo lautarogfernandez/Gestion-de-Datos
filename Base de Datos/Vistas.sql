@@ -139,22 +139,24 @@ drop view TEAM_CASTY.vistaConsumibleXHabitacionXReserva
 
 
 
+
+
 ---------------------------------------------------------------------------------------------------------------------
 --LISTADOS
-
+ ---- agregar resto de campos en select y en group by
 -----------------------------------------------------------------------------------------------------------------------------------
 CREATE FUNCTION vistaTOP5ReservasCanceladas (@pFecha_Inicio date,@pFecha_Fin date)
 RETURNS TABLE
 AS
 RETURN
-   select  top 5 vh.Codigo, count (vr.Codigo)  as "Cantidad_Reservas_Canceladas" ---- agregar resto de campos hotel aca y en el group by EN TODAS
-from TEAM_CASTY.vistaHoteles vh,TEAM_CASTY.HabitacionXReserva hxr,TEAM_CASTY.vistaReservas vr ,TEAM_CASTY.Habitacion hab
-where vh.Codigo = hab.Cod_Hotel and hab.Cod_Habitacion= hxr.Cod_Habitacion and vr.Codigo= hxr.Cod_Reserva
-       and  vr.Estado = 'Cancelada' and vr.[Fecha de reserva] between @pFecha_Inicio and @pFecha_Fin
-group by vh.Codigo
-order by Cantidad_Reservas_Canceladas desc
+   select  top 5 vh.Codigo, count (distinct r.Cod_Reserva)  as "Cantidad_Reservas_Canceladas"
+   from TEAM_CASTY.vistaHoteles vh, TEAM_CASTY.HabitacionXReserva hxr,TEAM_CASTY.Reserva r ,TEAM_CASTY.Habitacion hab, TEAM_CASTY.Estados e
+   where vh.Codigo = hab.Cod_Hotel and hab.Cod_Habitacion= hxr.Cod_Habitacion and r.Cod_Reserva= hxr.Cod_Reserva
+       and  r.Cod_Estado= e.Cod_Estado and e.Nombre  = 'Cancelada' and r.Fecha_Reserva between @pFecha_Inicio and @pFecha_Fin
+   group by vh.Codigo
+   order by Cantidad_Reservas_Canceladas desc
 
-SELECT * FROM vistaTOP5ReservasCanceladas
+   SELECT * FROM   vistaTOP5ReservasCanceladas('2013-01-01 00:00:00.000','2024-12-28 00:00:00.000')
 
 drop function vistaTOP5ReservasCanceladas
 
@@ -176,16 +178,16 @@ CREATE FUNCTION vistaTOP5ConsumiblesFacturados (@pFecha_Inicio date,@pFecha_Fin 
 RETURNS TABLE
 AS
 RETURN
-   select  top 5 vh.Codigo, Sum (CxHxR.Cantidad) as "Cantidad_Consumibles" 
-from TEAM_CASTY.vistaHoteles vh,TEAM_CASTY.Habitacion hab, TEAM_CASTY.ConsumibleXHabitacionXReserva CxHxR, TEAM_CASTY.Factura f
-where vh.Codigo = hab.Cod_Hotel and hab.Cod_Habitacion=CxHxR.Cod_Habitacion  and  f.Cod_Reserva = CxHxR.Cod_Reserva 
+   select  top 5 vh.Codigo, Sum (CxHxE.Cantidad) as "Cantidad_Consumibles" 
+from TEAM_CASTY.vistaHoteles vh,TEAM_CASTY.Habitacion hab, TEAM_CASTY.ConsumibleXHabitacionXEstadia CxHxE, TEAM_CASTY.Factura f
+where vh.Codigo = hab.Cod_Hotel and hab.Cod_Habitacion=CxHxE.Cod_Habitacion  and  f.Cod_Estadia = CxHxE.Cod_Estadia 
        and f.Fecha between @pFecha_Inicio and @pFecha_Fin
 group by vh.Codigo
-order by Cantidad_Consumibles
+order by Cantidad_Consumibles desc
 
 drop function vistaTOP5ConsumiblesFacturados
 
-SELECT * FROM vistaTOP5ConsumiblesFacturados
+SELECT * FROM vistaTOP5ConsumiblesFacturados('2013-01-01 00:00:00.000','2024-12-28 00:00:00.000')
 
 
 --vista que no sirve
@@ -225,32 +227,49 @@ select  top 5 vh.Codigo,SUM(dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,ph.Fe
 from TEAM_CASTY.vistaHoteles vh, TEAM_CASTY.Periodo_Inhabilitado ph 
 where vh.Codigo = ph.Cod_Hotel
 group by vh.Codigo
-order by Total_Dias_Fuera_De_Servicio desc
+order by 2 desc
+
+
+
+SELECT * FROM vistaTOP5CantidadDeDiasFueraDeServicio('2013-01-01 00:00:00.000','2024-12-28 00:00:00.000')
 
 drop function vistaTOP5CantidadDeDiasFueraDeServicio
 ------------------------------------------------------------------------------------
 
-CREATE FUNCTION TEAM_CASTY.vistaTOP5HabitacionesHabitadas (@pFecha_Inicio date,@pFecha_Fin date)
+CREATE FUNCTION vistaTOP5HabitacionesHabitadas (@pFecha_Inicio date,@pFecha_Fin date)
 RETURNS TABLE
 AS
 RETURN
-select  top 5 vhab.Hotel, vhab.Numero, vhab.Piso,vhab.Frente, vhab.Tipo,vhab.[Descripcion de tipo], vhab.Porcentual ,SUM(dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,res.Fecha_Inicio,res.Fecha_Salida )) as "Dias_Ocupada", COUNT (res.Cod_Reserva) as "Cantidad_De_Veces_Ocupada"
-from TEAM_CASTY.vistaHabitaciones vhab,TEAM_CASTY.HabitacionXReserva habxres,TEAM_CASTY.Reserva res
-where vhab.Codigo = habxres.Cod_Habitacion and habxres.Cod_Reserva = res.Cod_Reserva 
+select  top 5 vhab.Hotel, vhab.Numero, vhab.Piso,vhab.Frente, vhab.Tipo,vhab.[Descripcion de tipo], vhab.Porcentual ,SUM(dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,est.Fecha_Inicio,est.Fecha_Salida )) as "Dias_Ocupada", COUNT (est.Cod_Estadia) as "Cantidad De Veces Ocupada"
+from TEAM_CASTY.vistaHabitaciones vhab,TEAM_CASTY.HabitacionXEstadia habxest, TEAM_CASTY.Estadia est
+where vhab.Codigo = habxest.Cod_Habitacion   and est.Cod_Estadia=habxest.Cod_Estadia
 group by  vhab.Hotel, vhab.Numero, vhab.Piso,vhab.Frente, vhab.Tipo,vhab.[Descripcion de tipo], vhab.Porcentual
-order by  Dias_Ocupada desc, Cantidad_De_Veces_Ocupada desc
+order by  Dias_Ocupada desc, [Cantidad De Veces Ocupada] desc
 
-drop function TEAM_CASTY.vistaTOP5HabitacionesHabitadas
+
+SELECT * FROM vistaTOP5HabitacionesHabitadas('2013-01-01 00:00:00.000','2024-12-28 00:00:00.000')
+
+drop function vistaTOP5HabitacionesHabitadas
 --------------------------------------------------------------------
 
-CREATE FUNCTION TEAM_CASTY.vistaTOP5HabitacionesHabitadas (@pFecha_Inicio date,@pFecha_Fin date)
+CREATE FUNCTION vistaTOP5ClienteConPuntos (@pFecha_Inicio date,@pFecha_Fin date)
 RETURNS TABLE
 AS
 RETURN
-select top 5 
-from TEAM_CASTY.Factura,TEAM_CASTY.--- ID_Cliente_Reservador
+select top 5 r.ID_Cliente_Reservador,  sum(CxHxE.Precio)/5 as puntos
+from TEAM_CASTY.Factura f,TEAM_CASTY.Estadia e,TEAM_CASTY.Reserva r , TEAM_CASTY.ConsumibleXHabitacionXEstadia CxHxE--- ID_Cliente_Reservador
+where f.Cod_Estadia = e.Cod_Estadia and r.Cod_Reserva = e.Cod_Reserva and CxHxE.Cod_Estadia = e.Cod_Estadia
+group by r.ID_Cliente_Reservador
+order by puntos desc
+
+
+SELECT * FROM vistaTOP5ClienteConPuntos('2013-01-01 00:00:00.000','2024-12-28 00:00:00.000')
+
+drop function vistaTOP5ClienteConPuntos
+
 
 Cliente con mayor cantidad de puntos, donde cada $10 en estadías vale 1 puntos y cada $5 de consumibles es 1 punto,
  de la sumatoria de todas las facturaciones que haya tenido dentro de un periodo independientemente del Hotel. 
  Tener en cuenta que la facturación siempre es a quien haya realizado la reserva.
+
 
