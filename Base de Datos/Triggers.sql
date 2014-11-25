@@ -115,7 +115,6 @@ where Codigo=100741
 select * from team_casty.vistaClientes
 select * from team_casty.Cliente c
 
------------------------------------------------------------------------------------------------------------------------
 --------------------------------------PUNTO 1---------------------------------------------------------------------------------
 
 
@@ -183,3 +182,85 @@ select u.Cod_Usuario as Codigo, u.Username, u.Contraseña, u.Habilitado
                          join TEAM_CASTY.RegimenXHotel rxh on (rxh.Cod_Hotel = h.Cod_Hotel)
                          join TEAM_CASTY.Regimen r on (r.Cod_Regimen = rxh.Cod_Regimen)
                          join TEAM_CASTY.Periodo_Inhabilitado pinh on (pinh.Cod_Hotel = h.Cod_Hotel)
+ 
+ create procedure
+ 
+ --------------------------------------------------------------------------------------------------------------                         
+ 
+ ----------------------------------------PUNTO6-----------------------------------------------------------------
+ create view vistaHabitaciones
+ as
+ select h.Cod_Habitacion as Codigo, h.Numero , h.Piso , h.Frente, h.Descripcion , th.Descripcion as "Tipo de habitacion" , h.Cod_Hotel Hotel
+ from TEAM_CASTY.Habitacion h, TEAM_CASTY.Tipo_Habitacion th
+ where h.Cod_Tipo = th.Cod_Tipo
+ 
+ create view TEAM_CASTY.vistaRoles
+as 
+select r.Cod_Rol as Codigo, r.Nombre , r.Activo , f.Descripcion as Funcion
+from TEAM_CASTY.Rol r, TEAM_CASTY.FuncionXRol fxr , TEAM_CASTY.Funcion f
+where r.Cod_Rol = fxr.Cod_Rol and fxr.Cod_Funcion= f.Cod_Funcion
+
+
+create trigger TEAM_CASTY.alta_Habitaciones
+ ON TEAM_CASTY.vistaHabitaciones
+instead of insert
+as
+begin
+insert into TEAM_CASTY.Habitacion (Numero ,Piso ,Descripcion ,Cod_Hotel , Frente , Cod_Tipo ) select i.Numero, i.Piso,i.Descripcion, i.Codigo as Cod_Hotel , i.Frente , th.Cod_Tipo from inserted i , TEAM_CASTY.Tipo_Habitacion th 
+                                                                                                                             where i.[Descripcion de tipo] = th.Descripcion  
+end
+
+create trigger TEAM_CASTY.modificacion_Habitaciones
+ON TEAM_CASTY.vistaHabitaciones
+instead of update
+as
+begin
+if not exists (select from inserted i, TEAM_CASTY.Habitacion h  where i.Numero= h.Numero and i.Hotel = h.Cod_Hotel)
+ begin
+  update h set h.Piso = i.Piso , h.Numero = i.Numero , h.Frente = i.Frente , h.Descripcion = i.Descripcion 
+  from TEAM_CASTY.Habitacion h join inserted i on (i.Codigo = h.Cod_Habitacion)
+
+
+create trigger TEAM_CASTY.baja_Habitaciones
+ON TEAM_CASTY.vistaRoles
+instead of delete
+as
+begin
+update h set h.Baja=0
+from TEAM_CASTY.Habitacion h, deleted del
+where del.Codigo= h.Cod_Habitacion
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+
+-----------------------------------------------------PUNTO 8 -----------------------------------------------------------
+create trigger TEAM_CASTY.alta_Reservas
+on TEAM_CASTY.vistaReservas
+instead of insert
+as
+begin
+if  exists(select from TEAM_CASTY.Periodo_Inhabilitado ph, TEAM_CASTY.Reserva r, inserted i ,TEAM_CASTY.HabitacionXReserva  HxR, TEAM_CASTY.Habitacion Hab
+                     where periodosSinInterseccion(i.[Fecha de Inicio], i.[Fecha de Salida],  ph.Fecha_Inicio , ph.Fecha_Fin)
+                      and  periodosSinInterseccion(i.[Fecha de Inicio], i.[Fecha de Salida], r.Fecha_Reserva, DATEADD(day, r.Cant_Noches, r.Fecha_Reserva))  
+                      and  r.Cod_Reserva = HxR.Cod_Reserva and HxR.Cod_Habitacion = Hab.Cod_Habitacion
+                      and(i.Hotel <> Hab.Cod_Hotel and i.Numero <>Hab.Cod_Hotel)
+    begin
+      insert into Reserva (d)
+    end                  
+end
+
+create function periodosSinInterseccion(@FechaInicio1 date, @FechaFin1 date, @FechaInicio2 date, @FechaFin2 date)
+RETURNS bit
+AS 
+BEGIN
+    if ((@FechaInicio1 > @FechaFin2 or  @FechaInicio2 > @FechaFin1 ))  RETURN 0
+   else    RETURN 1
+END;
+GO
+
+
+-----------------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------PUNTO 9-------------------------------------------------------
+
