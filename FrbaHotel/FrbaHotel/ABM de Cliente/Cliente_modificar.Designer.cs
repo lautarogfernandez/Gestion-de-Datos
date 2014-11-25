@@ -89,6 +89,7 @@
             this.chk_piso = new System.Windows.Forms.CheckBox();
             this.chk_numero_calle = new System.Windows.Forms.CheckBox();
             this.chk_calle = new System.Windows.Forms.CheckBox();
+            this.chk_todos = new System.Windows.Forms.CheckBox();
             this.stat_BarraEstado.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -401,6 +402,7 @@
             this.txt_nombre.Name = "txt_nombre";
             this.txt_nombre.Size = new System.Drawing.Size(210, 20);
             this.txt_nombre.TabIndex = 59;
+            this.txt_nombre.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_apellido
             // 
@@ -408,6 +410,7 @@
             this.txt_apellido.Name = "txt_apellido";
             this.txt_apellido.Size = new System.Drawing.Size(210, 20);
             this.txt_apellido.TabIndex = 60;
+            this.txt_apellido.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_mail
             // 
@@ -415,6 +418,7 @@
             this.txt_mail.Name = "txt_mail";
             this.txt_mail.Size = new System.Drawing.Size(210, 20);
             this.txt_mail.TabIndex = 61;
+            this.txt_mail.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_numero_documento
             // 
@@ -422,6 +426,7 @@
             this.txt_numero_documento.Name = "txt_numero_documento";
             this.txt_numero_documento.Size = new System.Drawing.Size(210, 20);
             this.txt_numero_documento.TabIndex = 62;
+            this.txt_numero_documento.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // cmb_tipo_documento
             // 
@@ -430,6 +435,7 @@
             this.cmb_tipo_documento.Name = "cmb_tipo_documento";
             this.cmb_tipo_documento.Size = new System.Drawing.Size(210, 21);
             this.cmb_tipo_documento.TabIndex = 63;
+            this.cmb_tipo_documento.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_localidad
             // 
@@ -437,6 +443,7 @@
             this.txt_localidad.Name = "txt_localidad";
             this.txt_localidad.Size = new System.Drawing.Size(210, 20);
             this.txt_localidad.TabIndex = 66;
+            this.txt_localidad.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_pais
             // 
@@ -444,6 +451,7 @@
             this.txt_pais.Name = "txt_pais";
             this.txt_pais.Size = new System.Drawing.Size(210, 20);
             this.txt_pais.TabIndex = 65;
+            this.txt_pais.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_telefono
             // 
@@ -451,6 +459,7 @@
             this.txt_telefono.Name = "txt_telefono";
             this.txt_telefono.Size = new System.Drawing.Size(210, 20);
             this.txt_telefono.TabIndex = 64;
+            this.txt_telefono.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_piso
             // 
@@ -458,6 +467,7 @@
             this.txt_piso.Name = "txt_piso";
             this.txt_piso.Size = new System.Drawing.Size(210, 20);
             this.txt_piso.TabIndex = 69;
+            this.txt_piso.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_numero_calle
             // 
@@ -465,6 +475,7 @@
             this.txt_numero_calle.Name = "txt_numero_calle";
             this.txt_numero_calle.Size = new System.Drawing.Size(210, 20);
             this.txt_numero_calle.TabIndex = 68;
+            this.txt_numero_calle.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_calle
             // 
@@ -472,6 +483,7 @@
             this.txt_calle.Name = "txt_calle";
             this.txt_calle.Size = new System.Drawing.Size(210, 20);
             this.txt_calle.TabIndex = 67;
+            this.txt_calle.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_nacionalidad
             // 
@@ -479,6 +491,7 @@
             this.txt_nacionalidad.Name = "txt_nacionalidad";
             this.txt_nacionalidad.Size = new System.Drawing.Size(210, 20);
             this.txt_nacionalidad.TabIndex = 71;
+            this.txt_nacionalidad.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_departamento
             // 
@@ -486,6 +499,7 @@
             this.txt_departamento.Name = "txt_departamento";
             this.txt_departamento.Size = new System.Drawing.Size(210, 20);
             this.txt_departamento.TabIndex = 70;
+            this.txt_departamento.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // dtp_fecha_nacimiento
             // 
@@ -493,6 +507,7 @@
             this.dtp_fecha_nacimiento.Name = "dtp_fecha_nacimiento";
             this.dtp_fecha_nacimiento.Size = new System.Drawing.Size(210, 20);
             this.dtp_fecha_nacimiento.TabIndex = 72;
+            this.dtp_fecha_nacimiento.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // chk_nombre
             // 
@@ -634,11 +649,22 @@
             this.chk_calle.UseVisualStyleBackColor = true;
             this.chk_calle.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
+            // chk_todos
+            // 
+            this.chk_todos.AutoSize = true;
+            this.chk_todos.Location = new System.Drawing.Point(557, 39);
+            this.chk_todos.Name = "chk_todos";
+            this.chk_todos.Size = new System.Drawing.Size(15, 14);
+            this.chk_todos.TabIndex = 87;
+            this.chk_todos.UseVisualStyleBackColor = true;
+            this.chk_todos.CheckedChanged += new System.EventHandler(this.check_todos_change);
+            // 
             // Cliente_modificar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 561);
+            this.Controls.Add(this.chk_todos);
             this.Controls.Add(this.chk_fecha_nacimiento);
             this.Controls.Add(this.chk_nacionalidad);
             this.Controls.Add(this.chk_departamento);
@@ -773,6 +799,7 @@
         private System.Windows.Forms.CheckBox chk_piso;
         private System.Windows.Forms.CheckBox chk_numero_calle;
         private System.Windows.Forms.CheckBox chk_calle;
+        private System.Windows.Forms.CheckBox chk_todos;
 
 
     }
