@@ -30,9 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuPrincipal));
             this.button_mostrar_hoteles = new System.Windows.Forms.Button();
-            this.stat_BarraEstado = new System.Windows.Forms.StatusStrip();
-            this.barra_progreso = new System.Windows.Forms.ToolStripProgressBar();
-            this.label_progreso = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.combo_objeto = new System.Windows.Forms.ToolStripComboBox();
             this.combo_operacion = new System.Windows.Forms.ToolStripComboBox();
@@ -42,10 +39,13 @@
             this.button_ir = new System.Windows.Forms.Button();
             this.imagenHotel = new System.Windows.Forms.PictureBox();
             this.dgv_hoteles = new System.Windows.Forms.DataGridView();
-            this.stat_BarraEstado.SuspendLayout();
+            this.barra_progreso = new System.Windows.Forms.ToolStripProgressBar();
+            this.label_progreso = new System.Windows.Forms.ToolStripStatusLabel();
+            this.stat_BarraEstado = new System.Windows.Forms.StatusStrip();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imagenHotel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_hoteles)).BeginInit();
+            this.stat_BarraEstado.SuspendLayout();
             this.SuspendLayout();
             // 
             // button_mostrar_hoteles
@@ -57,28 +57,6 @@
             this.button_mostrar_hoteles.Text = "Mostrar Hoteles";
             this.button_mostrar_hoteles.UseVisualStyleBackColor = true;
             this.button_mostrar_hoteles.Click += new System.EventHandler(this.button_mostrar_hoteles_Click);
-            // 
-            // stat_BarraEstado
-            // 
-            this.stat_BarraEstado.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.barra_progreso,
-            this.label_progreso});
-            this.stat_BarraEstado.Location = new System.Drawing.Point(0, 439);
-            this.stat_BarraEstado.Name = "stat_BarraEstado";
-            this.stat_BarraEstado.Size = new System.Drawing.Size(584, 22);
-            this.stat_BarraEstado.TabIndex = 3;
-            this.stat_BarraEstado.Text = "Estado";
-            // 
-            // barra_progreso
-            // 
-            this.barra_progreso.Name = "barra_progreso";
-            this.barra_progreso.Size = new System.Drawing.Size(100, 16);
-            // 
-            // label_progreso
-            // 
-            this.label_progreso.Name = "label_progreso";
-            this.label_progreso.Size = new System.Drawing.Size(42, 17);
-            this.label_progreso.Text = "Estado";
             // 
             // menuStrip1
             // 
@@ -185,6 +163,28 @@
             this.dgv_hoteles.MouseHover += new System.EventHandler(this.dgv_hoteles_MouseHover);
             this.dgv_hoteles.MouseLeave += new System.EventHandler(this.dgv_hoteles_MouseLeave);
             // 
+            // barra_progreso
+            // 
+            this.barra_progreso.Name = "barra_progreso";
+            this.barra_progreso.Size = new System.Drawing.Size(100, 16);
+            // 
+            // label_progreso
+            // 
+            this.label_progreso.Name = "label_progreso";
+            this.label_progreso.Size = new System.Drawing.Size(42, 17);
+            this.label_progreso.Text = "Estado";
+            // 
+            // stat_BarraEstado
+            // 
+            this.stat_BarraEstado.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.barra_progreso,
+            this.label_progreso});
+            this.stat_BarraEstado.Location = new System.Drawing.Point(0, 439);
+            this.stat_BarraEstado.Name = "stat_BarraEstado";
+            this.stat_BarraEstado.Size = new System.Drawing.Size(584, 22);
+            this.stat_BarraEstado.TabIndex = 3;
+            this.stat_BarraEstado.Text = "Estado";
+            // 
             // MenuPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -204,12 +204,12 @@
             this.Name = "MenuPrincipal";
             this.Text = "MenuPrincipal";
             this.Load += new System.EventHandler(this.MenuPrincipal_Load);
-            this.stat_BarraEstado.ResumeLayout(false);
-            this.stat_BarraEstado.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imagenHotel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_hoteles)).EndInit();
+            this.stat_BarraEstado.ResumeLayout(false);
+            this.stat_BarraEstado.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -218,9 +218,6 @@
         #endregion
 
         private System.Windows.Forms.Button button_mostrar_hoteles;
-        private System.Windows.Forms.StatusStrip stat_BarraEstado;
-        private System.Windows.Forms.ToolStripProgressBar barra_progreso;
-        private System.Windows.Forms.ToolStripStatusLabel label_progreso;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripComboBox combo_operacion;
         private System.Windows.Forms.ToolStripComboBox combo_objeto;
@@ -230,5 +227,8 @@
         private System.Windows.Forms.Button button_ir;
         private System.Windows.Forms.PictureBox imagenHotel;
         private System.Windows.Forms.DataGridView dgv_hoteles;
+        private System.Windows.Forms.ToolStripProgressBar barra_progreso;
+        private System.Windows.Forms.ToolStripStatusLabel label_progreso;
+        private System.Windows.Forms.StatusStrip stat_BarraEstado;
     }
 }

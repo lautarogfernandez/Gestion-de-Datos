@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 
 namespace FrbaHotel.ABM_de_Cliente
 {
@@ -17,11 +18,24 @@ namespace FrbaHotel.ABM_de_Cliente
     public partial class Cliente_modificar : Form
     {
         private string _tabla = "vistaClientes";
+        private string codigo;
         public Cliente_modificar(valoresDataGridView _valoresDGV)
         {
             InitializeComponent();
             establecerAtributosOriginales(_valoresDGV);
             cambiarTodosLosControles(false);
+            string busqueda = "SELECT DISTINCT [Tipo_Documento] "
+                                                         + "FROM [GD2C2014].[Team_Casty].[Tipo_Documento]";          //búsqueda básica
+            string ConnStr = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;"; //ruta de la conexión
+            SqlConnection conn = new SqlConnection(ConnStr);                                                             //conexión
+            conn.Open();                                                                                                                                 //Abrir Conexión
+            SqlCommand cmd = new SqlCommand(busqueda, conn);
+            SqlDataReader reader = cmd.ExecuteReader();                                                       //Busco en la sesión abierta
+            while (reader.Read())
+            {
+                cmb_tipo_documento.Items.Add(reader["Tipo_Documento"].ToString());
+            }
+            codigo = _valoresDGV._codigo;
         }
         private void establecerAtributosOriginales(valoresDataGridView _valoresDGV) 
         {
@@ -33,6 +47,12 @@ namespace FrbaHotel.ABM_de_Cliente
             _lbl_mail.Text = _valoresDGV._mail;
             _lbl_nacionalidad.Text = _valoresDGV._nacionalidad;
             _lbl_nombre.Text = _valoresDGV._nombre;
+            _lbl_numero_calle.Text = _valoresDGV._numero_calle;
+            _lbl_numero_documento.Text = _valoresDGV._numero_documento;
+            _lbl_pais.Text = _valoresDGV._pais;
+            _lbl_piso.Text = _valoresDGV._piso;
+            _lbl_telefono.Text = _valoresDGV._telefono;
+            _lbl_tipo_documento.Text = _valoresDGV._tipo_documento;
         }
         private void cambiarTodosLosControles(bool _enable) {
             Control[] controles = {txt_apellido,txt_calle,txt_departamento,txt_localidad,txt_mail,txt_nacionalidad,
@@ -50,6 +70,9 @@ namespace FrbaHotel.ABM_de_Cliente
                 checks[i].Checked = _enable;
             }
             habilitar_o_deshabilitar_fecha(dtp_fecha_nacimiento, _enable);
+            string[] _strings = {txt_apellido.Text,txt_calle.Text,txt_departamento.Text,txt_localidad.Text,txt_mail.Text,txt_nacionalidad.Text,
+                                        txt_nombre.Text,txt_numero_calle.Text,txt_numero_documento.Text,txt_pais.Text,txt_piso.Text,txt_telefono.Text,
+                                        cmb_tipo_documento.Text};
         }
         private void Modificar_Load(object sender, EventArgs e)
         {
@@ -58,12 +81,201 @@ namespace FrbaHotel.ABM_de_Cliente
         
         private void button_volver_Click(object sender, EventArgs e)
         {
-
+            this.Hide();
         }
 
         private void button_modificar_Click(object sender, EventArgs e)
         {
+            string mensaje = "UPDATE [GD2C2014].[Team_Casty].[" + _tabla + "] SET ";
 
+            bool prim = true;
+            #region Atributos
+            if (txt_apellido.Enabled && txt_apellido.Text!=string.Empty)
+            {
+                if(prim==true)
+                {
+                    prim = false;
+                    mensaje += " [Apellido] = @Apellido";
+                }
+            }
+            if (txt_calle.Enabled && txt_calle.Text!=string.Empty)
+            {
+                if (prim == true)
+                {
+                    prim = false;
+                    mensaje += " [Calle] = @Calle";
+                }
+                else mensaje += ", [Calle] = @Calle";
+            }
+            if (txt_departamento.Enabled && txt_departamento.Text != string.Empty)
+            {
+                if (prim == true)
+                {
+                    prim = false;
+                    mensaje += " [Departamento] = @Departamento" ;
+                }
+                else mensaje += ", [Departamento] = @Departamento";
+            }
+            if (txt_localidad.Enabled && txt_localidad.Text != string.Empty)
+            {
+                if (prim == true)
+                {
+                    prim = false;
+                    mensaje += " [Localidad] = @Localidad";
+                }
+                else mensaje += ", [Localidad] = @Localidad";
+            }
+            if (txt_mail.Enabled && txt_mail.Text != string.Empty)
+            {
+                if (prim == true)
+                {
+                    prim = false;
+                    mensaje += " [Mail] = @Mail";
+                }
+                else mensaje += ", [Mail] = @Mail";
+            }
+            if (txt_nacionalidad.Enabled && txt_nacionalidad.Text != string.Empty)
+            {
+                if (prim == true)
+                {
+                    prim = false;
+                    mensaje += " [Nacionalidad] = @Nacionalidad";
+                }
+                else mensaje += ", [Nacionalidad] = @Nacionalidad";
+            }
+            if (txt_nombre.Enabled && txt_nombre.Text != string.Empty)
+            {
+                if (prim == true)
+                {
+                    prim = false;
+                    mensaje += " [Nombre] = @Nombre";
+                }
+                else mensaje += ", [Nombre] = @Nombre";
+            }
+            if (txt_numero_calle.Enabled && txt_numero_calle.Text != string.Empty)
+            {
+                if (prim == true)
+                {
+                    prim = false;
+                    mensaje += " [Numero Calle] = @NumCalle";
+                }
+                else mensaje += ", [Numero Calle] = @NumCalle";
+            }
+            if (txt_numero_documento.Enabled && txt_numero_documento.Text != string.Empty)
+            {
+                if (prim == true)
+                {
+                    prim = false;
+                    mensaje += " [Numero Documento] = @NumDoc";
+                }
+                else mensaje += ", [Numero Documento] = @NumDoc";
+            }
+            if (txt_pais.Enabled && txt_pais.Text != string.Empty)
+            {
+                if (prim == true)
+                {
+                    prim = false;
+                    mensaje += " [Pais] = @Pais";
+                }
+                else mensaje += ", [Pais] = @Pais";
+            }
+            if (txt_piso.Enabled && txt_piso.Text != string.Empty)
+            {
+                if (prim == true)
+                {
+                    prim = false;
+                    mensaje += " [Piso] = @Piso";
+                }
+                else mensaje += ", [Piso] = @Piso";
+            }
+            if (txt_telefono.Enabled && txt_telefono.Text != string.Empty)
+            {
+                if (prim == true)
+                {
+                    prim = false;
+                    mensaje += " [Telefono] = @Telefono";
+                }
+                else mensaje += ", [Telefono] = @Telefono";
+            }
+            if (cmb_tipo_documento.Enabled && cmb_tipo_documento.Text != string.Empty)
+            {
+                if (prim == true)
+                {
+                    prim = false;
+                    mensaje += " [Tipo Documento] = @TipoDoc";
+                }
+                else mensaje += ", [Tipo Documento] = @TipoDoc";
+            }
+            if (dtp_fecha_nacimiento.Enabled && dtp_fecha_nacimiento.Value.Date < DateTime.Today)
+            {
+                if (prim == true)
+                {
+                    prim = false;
+                    mensaje += " [Fecha Nacimiento] = @FechaNacimiento";
+                }
+                else mensaje += ", [Fecha Nacimiento] = @FechaNacimiento";
+            }
+            #endregion
+            if (prim == false)
+            {
+                mensaje += " WHERE [Codigo] = " + codigo;
+                try
+                {
+                    string connectionString = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;";
+                    using (SqlConnection conn =
+                        new SqlConnection(connectionString))
+                    {
+                        conn.Open();
+                        using (SqlCommand cmd =
+                            new SqlCommand(mensaje, conn))
+                        {
+                            if (dtp_fecha_nacimiento.Enabled && dtp_fecha_nacimiento.Value.Date < DateTime.Today)
+                                cmd.Parameters.AddWithValue("@FechaNacimiento", dtp_fecha_nacimiento.Value);
+                            if (txt_apellido.Enabled && txt_apellido.Text != string.Empty)
+                                cmd.Parameters.AddWithValue("@Apellido",txt_apellido.Text);
+                            if (txt_calle.Enabled && txt_calle.Text != string.Empty)
+                                cmd.Parameters.AddWithValue("@Calle", txt_calle.Text);
+                            if (txt_departamento.Enabled && txt_departamento.Text != string.Empty)
+                                cmd.Parameters.AddWithValue("@Departamento", txt_departamento.Text);
+                            if (txt_localidad.Enabled && txt_localidad.Text != string.Empty)
+                                cmd.Parameters.AddWithValue("@Localidad", txt_localidad.Text);
+                            if (txt_mail.Enabled && txt_mail.Text != string.Empty)
+                                cmd.Parameters.AddWithValue("@Mail", txt_mail.Text);
+                            if (txt_nacionalidad.Enabled && txt_nacionalidad.Text != string.Empty)
+                                cmd.Parameters.AddWithValue("@Nacionalidad", txt_nacionalidad.Text);
+                            if (txt_nombre.Enabled && txt_nombre.Text != string.Empty)
+                                cmd.Parameters.AddWithValue("@Nombre", txt_nombre.Text);
+                            if (txt_numero_calle.Enabled && txt_numero_calle.Text != string.Empty)
+                                cmd.Parameters.AddWithValue("@NumCalle", txt_numero_calle.Text);
+                            if (txt_numero_documento.Enabled && txt_numero_documento.Text != string.Empty)
+                                cmd.Parameters.AddWithValue("@NumDoc", txt_numero_documento.Text);
+                            if (txt_pais.Enabled && txt_pais.Text != string.Empty)
+                                cmd.Parameters.AddWithValue("@Pais", txt_pais.Text);
+                            if (txt_piso.Enabled && txt_piso.Text != string.Empty)
+                                cmd.Parameters.AddWithValue("@Piso", txt_piso.Text);
+                            if (txt_telefono.Enabled && txt_telefono.Text != string.Empty)
+                                cmd.Parameters.AddWithValue("@Telefono", txt_telefono.Text);
+                            if (cmb_tipo_documento.Enabled && cmb_tipo_documento.Text != string.Empty)
+                                cmd.Parameters.AddWithValue("@TipoDoc", cmb_tipo_documento.Text);
+
+                            int rows = cmd.ExecuteNonQuery();
+                            //rows number of record got updated
+                        }
+                    }
+                }
+                catch (SqlException exc)
+                {
+                    string msj = "Errores de sql: \n";
+                    for (int i = 0; i < exc.Errors.Count; i++)
+                        msj += exc.Errors[i].Message + "\n";
+                    MessageBox.Show(msj, "Excepcion SQL", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    //Log exception
+                    //Display Error message
+                }
+
+
+
+            }
         }
 
         private void Cliente_modificar_Load(object sender, EventArgs e)
@@ -99,6 +311,7 @@ namespace FrbaHotel.ABM_de_Cliente
                     _unControl.Enabled = _unBooleano;
                     if (_unBooleano)
                     {
+
                         _unControl.Text = string.Empty;
                     }
                     else
@@ -117,6 +330,7 @@ namespace FrbaHotel.ABM_de_Cliente
         private void common_checkBox_check(object sender, EventArgs e)
         {
             CheckBox _checker = sender as CheckBox;
+            #region Checks
             switch (_checker.Name)
             {
                 case "chk_nombre": 
@@ -190,6 +404,7 @@ namespace FrbaHotel.ABM_de_Cliente
                     break;
                 }
             }
+            #endregion
         }
 
         private void control_enabled_change(object sender, EventArgs e)
@@ -198,6 +413,8 @@ namespace FrbaHotel.ABM_de_Cliente
             if (_control.Enabled)
             {
                 _control.ForeColor = SystemColors.WindowText;
+                button_modificar.Enabled = true;
+                button_modificar.ForeColor = SystemColors.WindowText;
             }
             else
                 _control.ForeColor = SystemColors.ScrollBar;
@@ -206,6 +423,11 @@ namespace FrbaHotel.ABM_de_Cliente
         private void check_todos_change(object sender, EventArgs e)
         {
             cambiarTodosLosControles((sender as CheckBox).Checked);
+        }
+
+        private void control_text_change(object sender, EventArgs e)
+        {
+
         }
     }
 }

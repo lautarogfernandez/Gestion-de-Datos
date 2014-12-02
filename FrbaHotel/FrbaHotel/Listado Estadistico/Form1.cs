@@ -55,59 +55,59 @@ namespace FrbaHotel.Listado_Estadistico
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string fechaInicial;
-            string fechaFinal;
+            string fechaInicial="-01-01";
+            string fechaFinal="-01-01";
             string busqueda;
 
-            if (comboBox1.SelectedItem =="1")
+            if (comboBox1.SelectedItem.ToString() == "1")
             {
                     fechaInicial = "'"+ textBox1.Text + "-01-01";          
                     fechaFinal = "'" + textBox1.Text + "-03-31"; 
             }
-            if (comboBox1.SelectedItem == "2")
+            if (comboBox1.SelectedItem.ToString() == "2")
             {
                  fechaInicial = "'" + textBox1.Text + "-04-01";          
                  fechaFinal = "'" + textBox1.Text + "-06-30";
             }
-            if (comboBox1.SelectedItem == "3")
+            if (comboBox1.SelectedItem.ToString() == "3")
             {
                  fechaInicial = "'" + textBox1.Text + "-07-01";         
                  fechaFinal = "'" + textBox1.Text + "-09-30";
             }
-            if (comboBox1.SelectedItem == "4")
+            if (comboBox1.SelectedItem.ToString() == "4")
             {
                  fechaInicial = "'" + textBox1.Text + "-10-01";          
                  fechaFinal = "'" + textBox1.Text + "-12-31";
             }
 
 
-            if (comboBox2.SelectedItem == "Hoteles con mayor cantidad de reservas canceladas")
+            if (comboBox2.SelectedItem.ToString() == "Hoteles con mayor cantidad de reservas canceladas")
             {
-                 busqueda =    "SELECT * FROM   vistaTOP5ReservasCanceladas('"+ fechaInicial + "','"+ fechaFinal +"')"
+                 busqueda =    "SELECT * FROM   vistaTOP5ReservasCanceladas('"+ fechaInicial + "','"+ fechaFinal +"')";
             }
 
 
 
-            if (comboBox2.SelectedItem == "Hoteles con mayor cantidad de consumibles facturados")
+            if (comboBox2.SelectedItem.ToString() == "Hoteles con mayor cantidad de consumibles facturados")
             {
-                 busqueda =    "SELECT * FROM   vistaTOP5ConsumiblesFacturados('"+ fechaInicial + "','"+ fechaFinal +"')"
+                 busqueda =    "SELECT * FROM   vistaTOP5ConsumiblesFacturados('"+ fechaInicial + "','"+ fechaFinal +"')";
             }
 
-            if (comboBox2.SelectedItem == "Hoteles con mayor cantidad de días fuera de servicio")
+            if (comboBox2.SelectedItem.ToString() == "Hoteles con mayor cantidad de días fuera de servicio")
                             {
-                 busqueda =    "SELECT * FROM   vistaTOP5CantidadDeDiasFueraDeServicio('"+ fechaInicial + "','"+ fechaFinal +"')"
+                 busqueda =    "SELECT * FROM   vistaTOP5CantidadDeDiasFueraDeServicio('"+ fechaInicial + "','"+ fechaFinal +"')";
             }
 
 
-            if (comboBox2.SelectedItem == "Habitaciones con mayor cantidad de días y veces que fueron ocupadas")
+            if (comboBox2.SelectedItem.ToString() == "Habitaciones con mayor cantidad de días y veces que fueron ocupadas")
                             {
-                 busqueda =    "SELECT * FROM   vistaTOP5HabitacionesHabitadas('"+ fechaInicial + "','"+ fechaFinal +"')"
+                 busqueda =    "SELECT * FROM   vistaTOP5HabitacionesHabitadas('"+ fechaInicial + "','"+ fechaFinal +"')";
             }
 
 
-            if (comboBox2.SelectedItem == "Cliente con mayor cantidad de puntos")
+            if (comboBox2.SelectedItem.ToString() == "Cliente con mayor cantidad de puntos")
                          {
-                 busqueda =    "SELECT * FROM   vistaTOP5ClienteConPuntos('"+ fechaInicial + "','"+ fechaFinal +"')"
+                             busqueda = "SELECT * FROM   vistaTOP5ClienteConPuntos('" + fechaInicial + "','" + fechaFinal + "')";
             }   
           
         }
