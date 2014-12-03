@@ -440,6 +440,15 @@ insert into TEAM_CASTY.UsuarioXReserva (Cod_Reserva,Numero_Modificacion,Cod_Usua
 select res.Cod_Reserva,1,2,res.Fecha_Realizacion,'De la migración'
 from TEAM_CASTY.Reserva res
 
+--Reservas canceladas
+CREATE TABLE TEAM_CASTY.Cancelacion ( 
+	Cod_Reserva numeric(18) NOT NULL,
+	Motivo varchar(255),
+	Fecha datetime NOT NULL,
+	Cod_Usuario numeric(18)NOT NULL,
+	FOREIGN KEY (Cod_Reserva) REFERENCES TEAM_CASTY.Reserva (Cod_Reserva),
+	FOREIGN KEY (Cod_Usuario) REFERENCES TEAM_CASTY.Usuario (Cod_Usuario));
+
 --Estadía	
 CREATE TABLE TEAM_CASTY.Estadia ( 
 	Cod_Estadia numeric(18) NOT NULL PRIMARY KEY IDENTITY (1,1),
