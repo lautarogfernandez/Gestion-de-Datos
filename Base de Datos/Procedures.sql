@@ -61,3 +61,117 @@ into #casty
 from TEAM_CASTY.Precios_Por_Dia(1,1001,1)
 drop table #casty
 
+create procedure  TEAM_CASTY.Alta_Rol
+@nombre varchar(250), @funciones TEAM_CASTY.t_funcion READONLY
+AS
+
+declare @mensaje varchar(1000);
+declare @error int;
+set @error=0;
+set @mensaje='Error: ';
+
+if (not exists(select *
+		   from @funciones f
+	       where f.funcion in (select f.Descripcion from TEAM_CASTY.Funcion f)))
+begin
+set @error=1;
+set @mensaje=@mensaje + 'Función inexistente. ';
+end
+
+if (exists(select *
+		   from TEAM_CASTY.Rol r
+		   where @nombre=r.Nombre))
+begin
+set @error=1;
+set @mensaje=@mensaje + 'Rol existente. ';
+end
+
+if (@error=0) 
+begin
+ 
+insert into TEAM_CASTY.Rol
+(Activo,Nombre)
+values (1,@nombre);
+
+insert into TEAM_CASTY.FuncionXRol
+select r.Cod_Rol,fun.Cod_Funcion
+from @funciones f join TEAM_CASTY.Funcion fun on (f.funcion = fun.Descripcion)
+				  join TEAM_CASTY.Rol r on (r.Nombre=@nombre)
+
+end
+
+else
+begin
+set @mensaje=@mensaje + 'No se realizó la modificación';
+RAISERROR (@mensaje,10,1);
+end
+
+go
+
+
+
+
+declare @tablaParaProbar TEAM_CASTY.t_funcion;
+insert into @tablaParaProbar
+select f.Descripcion
+from TEAM_CASTY.Funcion f;
+exec TEAM_CASTY.Alta_Rol @nombre='ELPIBE', @funciones=@tablaParaProbar;
+
+select * from TEAM_CASTY.Rol
+select * from TEAM_CASTY.FuncionXRol
+
+
+
+--probar
+create procedure  TEAM_CASTY.Cancelar_Reserva
+@Cod_Reserva numeric(18),@fecha datetime,@motivo varchar(255), @usuario numeric(18)
+AS
+declare @mensaje varchar(1000);
+declare @error int;
+set @error=0;
+set @mensaje='Error: ';
+
+if(exists (select * from TEAM_CASTY.Reserva r where @Cod_Reserva=r.Cod_Reserva))
+begin
+	if(exists (select * from TEAM_CASTY.Reserva r where @Cod_Reserva=r.Cod_Reserva and datediff(day,r.Fecha_Reserva,@fecha)>0))
+	begin
+		if(exists(select distinct h.Cod_Hotel
+		from TEAM_CASTY.Hotel h, TEAM_CASTY.Reserva r,TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXReserva hxr
+		where h.Cod_Hotel=hab.Cod_Hotel and
+		r.Cod_Reserva=@Cod_Reserva and
+		hxr.Cod_Reserva=@Cod_Reserva and		
+		hxr.Cod_Habitacion=hab.Cod_Habitacion and
+		h.Cod_Hotel in(select rxuxh.Cod_Hotel from TEAM_CASTY.RolXUsuarioXHotel rxuxh where @usuario=rxuxh.Cod_Usuario))
+		begin
+			declare @estado numeric(18);
+			if(@usuario=3)
+			begin
+				set @estado=4 
+			end
+			else
+			begin
+				set @estado=5
+			end
+			insert into TEAM_CASTY.Cancelacion (Cod_Reserva,Cod_Usuario,Fecha,Motivo)
+			values (@Cod_Reserva,@usuario,@fecha,@motivo);
+			update TEAM_CASTY.Reserva 
+			set Cod_Estado=@estado
+			where @Cod_Reserva=Cod_Reserva;
+		end
+		else
+		begin
+			set @error=1;
+			set @mensaje=@mensaje + 'El usuario no puede operar sobre ese hotel';
+		end
+	end
+	else
+	begin
+		set @error=1;
+		set @mensaje=@mensaje + 'Fecha inválida';
+	end
+end
+else
+begin
+	set @error=1;
+	set @mensaje=@mensaje + 'No existe la Reserva';
+end
