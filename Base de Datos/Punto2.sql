@@ -1,32 +1,40 @@
-create procedure validarUsuario(@usuario nvarchar(255),@contrase�a nvarchar(255))
+create procedure validarUsuario(@usuario nvarchar(255),@contraseña nvarchar(255))
 as
 begin
 
-if exists (select * from TEAM_CASTY.Usuario u where u.Username=@usuario and u.Habilitado =0 )
+if exists (select * from TEAM_CASTY.Usuario u where u.Username=@usuario and u.Habilitado =0 ) -- si existe y esta inhabilitado
   begin
   
-  
+  --retornar error inhabilitado
   
   end
-
-if exists (select * from TEAM_CASTY.Usuario u where u.Username=@usuario and u.Habilitado =1 )
-  begin
+  else
+   begin
+     if exists (select * from TEAM_CASTY.Usuario u where u.Username=@usuario and u.Habilitado =1 )-- si  existe y esta habilitado
+       begin
   
-  if  exists (select * from TEAM_CASTY.Usuario u where u.Username=@usuario and u.Contrase�a = @contrase�a )
-    begin
-    update TEAM_CASTY.Usuario set Cant_Intentos=0 where Username = @usuario
-    end
+       if  exists (select * from TEAM_CASTY.Usuario u where u.Username=@usuario and u.Contraseña = @contraseña )-- si la contraseña es correcta
+         begin
+           update TEAM_CASTY.Usuario set Cant_Intentos=0 where Username = @usuario
+           --tiene q devolver 1??
+         end
   
-  else 
-    begin
-    update TEAM_CASTY.Usuario set Cant_Intentos= Cant_Intentos + 1 where Username = @usuario
-    update TEAM_CASTY.Usuario set Habilitado=0 where Username = @usuario and Cant_Intentos >= 3
-    end  
+         else -- si la contraseña es incorrecta
+         begin
+           update TEAM_CASTY.Usuario set Cant_Intentos= Cant_Intentos + 1 where Username = @usuario
+           update TEAM_CASTY.Usuario set Habilitado=0 where Username = @usuario and Cant_Intentos >= 3
+           --tiene q devolver 0??
+         end  
     
-  end
-
+       end
+   
+    else-- si no existe
+      begin
+        --retornar error username
+      end
+   end
+   
 end
-
 
 
 CREATE FUNCTION RolesDeUsuarioEnHotel (@usuario numeric(18),@hotel numeric(18))
