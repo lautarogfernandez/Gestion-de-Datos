@@ -181,6 +181,7 @@ namespace FrbaHotel
         {
             Login.Formulario_login formularioLogin=new Login.Formulario_login();
             formularioLogin.Show();
+            this.Hide();
         }
 
     }

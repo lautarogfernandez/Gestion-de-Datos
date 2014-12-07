@@ -5,8 +5,8 @@ using System.Text;
 
 namespace FrbaHotel
 {
-    class Home
+    public class Home
     {
-        public string _nombreUsuario = "Guest";
+        public static string _nombreUsuario = "Guest";
     }
 }

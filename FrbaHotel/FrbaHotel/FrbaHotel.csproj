@@ -120,6 +120,8 @@
     <Compile Include="ABM de Usuario\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Encriptado\Encriptador.cs" />
+    <Compile Include="Home.cs" />
     <Compile Include="Login\Formulario_login.cs">
       <SubType>Form</SubType>
     </Compile>

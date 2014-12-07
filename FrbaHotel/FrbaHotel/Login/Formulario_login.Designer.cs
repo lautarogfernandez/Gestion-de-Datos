@@ -52,6 +52,7 @@
             this.button_aceptar.TabIndex = 16;
             this.button_aceptar.Text = "Aceptar";
             this.button_aceptar.UseVisualStyleBackColor = true;
+            this.button_aceptar.Click += new System.EventHandler(this.button_aceptar_Click);
             // 
             // button_volver
             // 
