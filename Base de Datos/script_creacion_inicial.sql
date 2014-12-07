@@ -711,13 +711,12 @@ CREATE FUNCTION TEAM_CASTY.RolesDeUsuarioEnHotel
 RETURNS TABLE
 AS
 RETURN 
-   select distinct r.Cod_Rol as Codigo, r.Nombre
+   select distinct r.Cod_Rol as [Codigo de Rol], r.Nombre as [Nombre de Rol]
    from TEAM_CASTY.RolXUsuarioXHotel RxUxH, TEAM_CASTY.Rol r, TEAM_CASTY.Usuario u
    where  @usuario=u.Username and
    RxUxH.Cod_Rol = r.Cod_Rol and
    RxUxH.Cod_Hotel = @hotel and
    RxUxH.Cod_Usuario = u.Cod_Usuario;
-   
    
 CREATE FUNCTION TEAM_CASTY.FuncionesDeUnRol
 (@Rol numeric(18))
@@ -849,3 +848,315 @@ update TEAM_CASTY.Usuario
 set Contraseña=@contraseña
 where @usuario=Cod_Usuario;
 end;
+
+create procedure TEAM_CASTY.CargarHabitacion
+(@hotel numeric(18), @numero numeric(18),@piso numeric(18),@frente char(1),@tipo nvarchar(255),@descripcion nvarchar(255))
+as
+begin
+
+declare @mensaje varchar(1000);
+declare @error int;
+set @error=0;
+set @mensaje='Error:';
+
+if(exists (select * from TEAM_CASTY.Habitacion hab where hab.Cod_Hotel=@hotel and hab.Numero=@numero and @piso=hab.Piso))
+begin
+set @error=1
+set @mensaje=@mensaje + ' Habitación existente.';
+end
+
+if(@error=0)
+begin
+declare @cod_tipo numeric(18);
+select @cod_tipo=th.Cod_Tipo
+from TEAM_CASTY.Tipo_Habitacion th
+where th.Descripcion=@tipo;
+insert into TEAM_CASTY.Habitacion
+(Cod_Hotel,Cod_Tipo,Descripcion,Cod_Tipo,Frente,Numero,Piso)
+values (@hotel,@cod_tipo,@descripcion,@frente,@numero,@piso);
+end
+
+else
+begin
+set @mensaje=@mensaje + ' No se realizó el alta.';
+RAISERROR (@mensaje,15,1);
+end
+
+end;
+
+
+create procedure TEAM_CASTY.ModificarHabitacion
+(@hotel numeric(18), @numero numeric(18),@piso numeric(18),@frente char(1),@tipo nvarchar(255),@descripcion nvarchar(255), @baja numeric(18))
+as
+begin
+
+declare @mensaje varchar(1000);
+declare @error int;
+set @error=0;
+set @mensaje='Error:';
+
+if(@baja=1)
+begin
+set @error=1
+set @mensaje=@mensaje + ' No se puede dar de baja.';
+end
+
+if(exists (select * from TEAM_CASTY.Habitacion hab where hab.Cod_Hotel=@hotel and hab.Numero=@numero and @piso=hab.Piso))
+begin
+set @error=1
+set @mensaje=@mensaje + ' Habitación existente.';
+end
+
+if(@error=0)
+begin
+update TEAM_CASTY.Habitacion
+set Descripcion=@descripcion,Numero=@numero,Piso=@piso,Frente=@frente,Baja=0
+where Cod_Hotel=@hotel and Numero=@numero and Piso=@piso;
+end
+
+else
+begin
+set @mensaje=@mensaje + ' No se realizó la modificación.';
+RAISERROR (@mensaje,15,1);
+end
+
+end;
+
+create procedure TEAM_CASTY.BajarHabitacion
+(@hotel numeric(18), @numero numeric(18),@piso numeric(18),@fecha datetime)
+as
+begin
+
+declare @mensaje varchar(1000);
+declare @error int;
+set @error=0;
+set @mensaje='Error:';
+
+if(exists (select * from TEAM_CASTY.Habitacion hab where hab.Cod_Hotel=@hotel and hab.Numero=@numero and @piso=hab.Piso))
+begin
+set @error=1
+set @mensaje=@mensaje + ' Habitación existente.';
+end
+
+if (exists(
+select *
+from TEAM_CASTY.Habitacion hab, TEAM_CASTY.Reserva res, TEAM_CASTY.HabitacionXReserva hxr
+where hab.Cod_Hotel=@hotel and hab.Piso=@piso and @numero=hab.Numero and
+hxr.Cod_Habitacion=hab.Cod_Habitacion and
+res.Cod_Reserva=hxr.Cod_Reserva and
+res.Cod_Estado=1 and
+datediff(day,res.Fecha_Reserva,@fecha)>0
+))
+begin
+set @error=1
+set @mensaje=@mensaje + ' La habitación tiene reservas, en el futuro o actualmente.';
+end
+
+if (exists(
+SELECT *
+from TEAM_CASTY.Estadia est, TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXEstadia hxe
+where hab.Piso=@piso and hab.Numero=@numero and hab.Cod_Hotel=@hotel and
+hab.Cod_Habitacion=hxe.Cod_Habitacion and
+hxe.Cod_Estadia=est.Cod_Estadia and
+datediff(day,est.Fecha_Inicio,@fecha)>0 and datediff(day,@fecha,est.Fecha_Salida)<0
+))
+begin
+set @error=1
+set @mensaje=@mensaje + ' La habitación tiene una estadía.';
+end
+
+if(@error=0)
+begin
+update TEAM_CASTY.Habitacion
+set Baja=1
+where Cod_Hotel=@hotel and Numero=@numero and Piso=@piso;
+end
+
+else
+begin
+set @mensaje=@mensaje + ' No se realizó la baja.';
+RAISERROR (@mensaje,15,1);
+end
+
+end;
+
+go
+
+create function  TEAM_CASTY.Precios_Por_Dia
+(@hotel numeric(18))
+RETURNS @tablaPorDia TABLE(
+Regimen nvarchar(255),
+[Tipo Habitación] nvarchar(255),
+[Precio Por Dia] numeric(18,2))
+AS
+begin
+INSERT  into @tablaPorDia 
+select distinct reg.Descripcion, thab.Descripcion, (reg.Precio*thab.Porcentual+(hot.CantEstrella*(select top 1 rec.Recarga from TEAM_CASTY.Recarga_Estrella rec order by rec.Fecha_Modificacion desc))) [Precio Por Dia]
+from TEAM_CASTY.Tipo_Habitacion thab,TEAM_CASTY.Hotel hot,TEAM_CASTY.Regimen reg, TEAM_CASTY.RegimenXHotel rxh
+where hot.Cod_Hotel=@hotel and rxh.Cod_Hotel=@hotel and rxh.Activo=1
+RETURN 
+end;
+
+create function TEAM_CASTY.FuncionesAsignables
+()
+RETURNS @tabla TABLE(
+Codigo numeric (18) not null,
+Descripcion nvarchar(255) not null)
+AS
+begin
+insert into @tabla
+select f.Cod_Funcion,f.Descripcion
+from TEAM_CASTY.Funcion f
+where f.Cod_Funcion not in (2,4,5,6)
+return;
+end;
+
+create function TEAM_CASTY.RegimenesElegibles
+(@hotel numeric (18))
+RETURNS @tabla TABLE(
+Codigo numeric (18) not null,
+Descripcion nvarchar(255) not null)
+AS
+begin
+insert into @tabla
+select reg.Cod_Regimen,reg.Descripcion
+from TEAM_CASTY.Regimen reg, TEAM_CASTY.RegimenXHotel rxh
+where reg.Cod_Regimen=rxh.Cod_Regimen and rxh.Cod_Hotel=@hotel and rxh.Activo=1
+return;
+end;
+
+create procedure  TEAM_CASTY.Alta_Rol
+@nombre varchar(250), @funciones TEAM_CASTY.t_funcion READONLY
+AS
+begin
+declare @mensaje varchar(1000);
+declare @error int;
+set @error=0;
+set @mensaje='Error:';
+
+if (not exists(select *
+		   from @funciones f
+	       where f.funcion in (select f.Descripcion from TEAM_CASTY.Funcion f)))
+begin
+set @error=1;
+set @mensaje=@mensaje + ' Función inexistente.';
+end
+
+if (exists(select *
+		   from TEAM_CASTY.Rol r
+		   where @nombre=r.Nombre))
+begin
+set @error=1;
+set @mensaje=@mensaje + ' Rol existente.';
+end
+
+if (@error=0) 
+begin
+ 
+insert into TEAM_CASTY.Rol
+(Activo,Nombre)
+values (1,@nombre);
+
+insert into TEAM_CASTY.FuncionXRol
+select r.Cod_Rol,fun.Cod_Funcion
+from @funciones f join TEAM_CASTY.Funcion fun on (f.funcion = fun.Descripcion)
+				  join TEAM_CASTY.Rol r on (r.Nombre=@nombre)
+
+end
+
+else
+begin
+set @mensaje=@mensaje + ' No se realizó el alta.';
+RAISERROR (@mensaje,15,1);
+end
+end;
+
+create procedure  TEAM_CASTY.Modificacion_Rol
+(@nombre varchar(250), @funciones TEAM_CASTY.t_funcion READONLY, @activo numeric(18))
+AS
+begin
+declare @mensaje varchar(1000);
+declare @error int;
+set @error=0;
+set @mensaje='Error:';
+
+if (not exists(select *
+		   from @funciones f
+	       where f.funcion in (select f.Descripcion from TEAM_CASTY.Funcion f)))
+begin
+set @error=1;
+set @mensaje=@mensaje + ' Función inexistente.';
+end
+
+if (exists(select *
+		   from TEAM_CASTY.Rol r
+		   where @nombre=r.Nombre))
+begin
+set @error=1;
+set @mensaje=@mensaje + ' Rol existente.';
+end
+
+if (@error=0) 
+begin
+declare @cod_rol numeric(18); 
+select @cod_rol=r.Cod_Rol
+from TEAM_CASTY.Rol r
+where @nombre=Nombre;
+delete from TEAM_CASTY.FuncionXRol
+where @cod_rol=Cod_Rol;
+insert into TEAM_CASTY.FuncionXRol
+select r.Cod_Rol,fun.Cod_Funcion
+from @funciones f join TEAM_CASTY.Funcion fun on (f.funcion = fun.Descripcion)
+				  join TEAM_CASTY.Rol r on (r.Nombre=@nombre);
+if(@cod_rol=1)
+begin
+update TEAM_CASTY.Rol
+set Activo=1
+where @cod_rol=Cod_Rol;
+end
+end
+
+else
+begin
+set @mensaje=@mensaje + ' No se realizó la modificación.';
+RAISERROR (@mensaje,15,1);
+end
+end;
+
+create procedure  TEAM_CASTY.Baja_Rol
+@nombre varchar(250)
+AS
+begin
+declare @mensaje varchar(1000);
+declare @error int;
+set @error=0;
+set @mensaje='Error:';
+
+
+if (exists(select *
+		   from TEAM_CASTY.Rol r
+		   where @nombre=r.Nombre))
+begin
+set @error=1;
+set @mensaje=@mensaje + ' Rol existente.';
+end
+
+if (@error=0) 
+begin
+declare @cod_rol numeric(18); 
+select @cod_rol=r.Cod_Rol
+from TEAM_CASTY.Rol r
+where @nombre=Nombre;
+update TEAM_CASTY.Rol
+set Activo=0
+where @cod_rol=Cod_Rol;
+end
+
+else
+begin
+set @mensaje=@mensaje + ' No se realizó la baja.';
+RAISERROR (@mensaje,15,1);
+end
+end;
+
+GO
