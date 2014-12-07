@@ -306,6 +306,8 @@ INSERT INTO TEAM_CASTY.Usuario (Username,Contraseña) values ('guest','16ceb2796c
 --Empleados	
 CREATE TABLE TEAM_CASTY.Empleado ( 
 	Cod_Empleado numeric(18) NOT NULL PRIMARY KEY IDENTITY (1, 1),
+	ID_Tipo_Documento numeric(18) NOT NULL,
+	Nro_Documento numeric(18) NOT NULL,
 	Nombre nvarchar(255) NOT NULL,
 	Apellido nvarchar(255) NOT NULL,
 	Mail nvarchar(255) NOT NULL,
@@ -313,7 +315,8 @@ CREATE TABLE TEAM_CASTY.Empleado (
 	Direccion nvarchar(255) NOT NULL,
 	Fecha_Nacimiento datetime NOT NULL,
 	Cod_Usuario numeric(18) NOT NULL,
-	FOREIGN KEY (Cod_Usuario) REFERENCES TEAM_CASTY.Usuario (Cod_Usuario));
+	FOREIGN KEY (Cod_Usuario) REFERENCES TEAM_CASTY.Usuario (Cod_Usuario),
+	FOREIGN KEY (ID_Tipo_Documento) REFERENCES TEAM_CASTY.Tipo_Documento (ID_Tipo_Documento));
 
 print('Empleados OK');
 --Roles de los Usuarios por cada Hotel
@@ -837,3 +840,12 @@ end
 end;
 
 GO
+
+create procedure TEAM_CASTY.CambiarPassword
+(@usuario nvarchar(255),@contraseña nvarchar(255))
+as
+begin
+update TEAM_CASTY.Usuario
+set Contraseña=@contraseña
+where @usuario=Cod_Usuario;
+end;
