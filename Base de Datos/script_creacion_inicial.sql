@@ -692,25 +692,28 @@ begin
 end
 end
 
-CREATE FUNCTION TEAM_CASTY.HotelesPorUsario
-(@usuario nvarchar(255))
-RETURNS TABLE
-AS
-RETURN 
-   select h.*
-   from TEAM_CASTY.RolXUsuarioXHotel RxUxH,TEAM_CASTY.Usuario u, TEAM_CASTY.vistaHoteles h
-   where @usuario=u.Username and
-   RxUxH.Cod_Usuario = u.Cod_Usuario and
-   RxUxH.Cod_Hotel=h.Codigo;
+--CREATE FUNCTION TEAM_CASTY.HotelesPorUsario
+--(@usuario nvarchar(255))
+--RETURNS TABLE
+--AS
+--RETURN 
+--   select vistaClientes.*
+--   from TEAM_CASTY.RolXUsuarioXHotel RxUxH,TEAM_CASTY.Usuario u, TEAM_CASTY.vistaHoteles h
+--   where @usuario=u.Username and
+--   RxUxH.Cod_Usuario = u.Cod_Usuario and
+--   RxUxH.Cod_Hotel=h.Codigo;
 
 CREATE FUNCTION TEAM_CASTY.RolesDeUsuarioEnHotel
-(@usuario numeric(18),@hotel numeric(18))
+(@usuario nvarchar(255),@hotel numeric(18))
 RETURNS TABLE
 AS
 RETURN 
-   select distinct r.Cod_Rol as Codigo, r.Nombre ,r.Activo
-   from TEAM_CASTY.RolXUsuarioXHotel RxUxH , TEAM_CASTY.Rol r 
-   where  RxUxH.Cod_Rol = r.Cod_Rol and RxUxH.Cod_Hotel = @hotel and RxUxH.Cod_Usuario = @usuario;
+   select distinct r.Cod_Rol as Codigo, r.Nombre
+   from TEAM_CASTY.RolXUsuarioXHotel RxUxH, TEAM_CASTY.Rol r, TEAM_CASTY.Usuario u
+   where  @usuario=u.Username and
+   RxUxH.Cod_Rol = r.Cod_Rol and
+   RxUxH.Cod_Hotel = @hotel and
+   RxUxH.Cod_Usuario = u.Cod_Usuario;
    
    
 CREATE FUNCTION TEAM_CASTY.FuncionesDeUnRol
