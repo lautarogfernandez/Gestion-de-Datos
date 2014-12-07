@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace FrbaHotel.Login
 {
-    public partial class Form1 : Form
+    public partial class Formulario_login : Form
     {
-        public Form1()
+        public Formulario_login()
         {
             InitializeComponent();
         }

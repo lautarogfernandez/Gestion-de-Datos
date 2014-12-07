@@ -8,27 +8,39 @@ using System.Text;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 
-namespace FrbaHotel.ABM_de_Cliente
+
+namespace FrbaHotel.ABM_de_Hotel
 {
-    public partial class Cliente_alta : Form
+    public partial class Hotel_alta : Form
     {
-        public Cliente_alta()
+        public int cantidad_estrellas = 0;
+        public Hotel_alta()
         {
             InitializeComponent();
-            string busqueda = "SELECT DISTINCT [Tipo_Documento] "
-                                                         + "FROM [GD2C2014].[Team_Casty].[Tipo_Documento]";          //búsqueda básica
+            string busqueda = "SELECT DISTINCT [Descripcion] "
+                                                         + "FROM [GD2C2014].[TEAM_CASTY].[Regimen]";          //búsqueda básica de regímenes
+            string busqueda2 = "SELECT DISTINCT [Nombre] "
+                                                         + "FROM [GD2C2014].[TEAM_CASTY].[Ciudad]";          //búsqueda básica de ciudades
             string ConnStr = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;"; //ruta de la conexión
             SqlConnection conn = new SqlConnection(ConnStr);                                                             //conexión
             conn.Open();                                                                                                                                 //Abrir Conexión
             SqlCommand cmd = new SqlCommand(busqueda, conn);
+            SqlCommand cmd2 = new SqlCommand(busqueda2, conn);
             try
             {
+                SqlDataReader reader2 = cmd2.ExecuteReader();
+                while (reader2.Read())
+                {
+                    cmb_ciudad.Items.Add(reader2["Nombre"].ToString());
+                }
+                reader2.Close();
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    this.cmb_tipo_documento.Items.Add(reader["Tipo_Documento"].ToString());
+                    list_tipos_regimenes.Items.Add(reader["Descripcion"].ToString());
                 }
                 reader.Close();
+
             }
             catch (SqlException exc)
             {
@@ -41,9 +53,9 @@ namespace FrbaHotel.ABM_de_Cliente
             conn.Close();
         }
 
-        private void Cliente_alta_Load(object sender, EventArgs e)
+        private void Hotel_alta_Load(object sender, EventArgs e)
         {
- 
+            
         }
 
 
@@ -52,14 +64,12 @@ namespace FrbaHotel.ABM_de_Cliente
         {
             //barra_progreso.ForeColor = Color.Green;
             //barra_progreso.Value = 100;
-            if (txt_apellido.Text != string.Empty && txt_nombre.Text != string.Empty && txt_mail.Text != string.Empty && txt_numero_documento.Text != string.Empty
-                && txt_nacionalidad.Text != string.Empty && cmb_tipo_documento.SelectedText != string.Empty && dtp_fecha_nacimiento.Value < DateTime.Today)
+            if (txt_nombre.Text != string.Empty && txt_mail.Text != string.Empty && txt_calle.Text != string.Empty && cmb_ciudad.Text!=string.Empty
+                && list_tipos_regimenes.SelectedItems.Count != 0 && txt_numero_calle.Text!=string.Empty && txt_pais.Text!=string.Empty )
             {
-                string mensaje = "INSERT INTO [GD2C2014].[Team_Casty].[vistaClientes] " +
-                                "([Apellido],[Calle],[Departamento],[Localidad],[Mail],[Nacionalidad],[Nombre],[Numero Calle],[Numero Documento]" +
-                                ",[Pais],[Piso],[Telefono],[Tipo Documento],[Fecha Nacimiento]) VALUES" +
-                                "(@Apellido,@Calle,@Departamento,@Localidad,@Mail,@Nacionalidad,@Nombre,@NumCalle,@NumDoc,@Pais" +
-                                ",@Piso,@Telefono,@TipoDoc,@FechaNacimiento)";
+                string mensaje = "INSERT INTO [GD2C2014].[Team_Casty].[vistaHoteles] " +
+                                "[Ciudad],[Calle],[Numero Calle],[Telefono],[Mail],[Cantidad de estrellas]"+
+                                " VALUES ()";
                 try
                 {
                     string connectionString = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;";
@@ -70,39 +80,20 @@ namespace FrbaHotel.ABM_de_Cliente
                         using (SqlCommand cmd =
                             new SqlCommand(mensaje, conn))
                         {
-                            if (dtp_fecha_nacimiento.Enabled && dtp_fecha_nacimiento.Value.Date < DateTime.Today)
-                                cmd.Parameters.AddWithValue("@FechaNacimiento", dtp_fecha_nacimiento.Value);
-                            if (txt_apellido.Enabled && txt_apellido.Text != string.Empty)
-                                cmd.Parameters.AddWithValue("@Apellido", txt_apellido.Text);
-                            if (txt_calle.Enabled && txt_calle.Text != string.Empty)
                                 cmd.Parameters.AddWithValue("@Calle", txt_calle.Text);
-                            if (txt_departamento.Enabled && txt_departamento.Text != string.Empty)
-                                cmd.Parameters.AddWithValue("@Departamento", txt_departamento.Text);
-                            if (txt_localidad.Enabled && txt_localidad.Text != string.Empty)
-                                cmd.Parameters.AddWithValue("@Localidad", txt_localidad.Text);
-                            if (txt_mail.Enabled && txt_mail.Text != string.Empty)
                                 cmd.Parameters.AddWithValue("@Mail", txt_mail.Text);
-                            if (txt_nacionalidad.Enabled && txt_nacionalidad.Text != string.Empty)
-                                cmd.Parameters.AddWithValue("@Nacionalidad", txt_nacionalidad.Text);
-                            if (txt_nombre.Enabled && txt_nombre.Text != string.Empty)
-                                cmd.Parameters.AddWithValue("@Nombre", txt_nombre.Text);
-                            if (txt_numero_calle.Enabled && txt_numero_calle.Text != string.Empty)
+                            //    cmd.Parameters.AddWithValue("@Nombre", txt_nombre.Text);
                                 cmd.Parameters.AddWithValue("@NumCalle", txt_numero_calle.Text);
-                            if (txt_numero_documento.Enabled && txt_numero_documento.Text != string.Empty)
-                                cmd.Parameters.AddWithValue("@NumDoc", txt_numero_documento.Text);
-                            if (txt_pais.Enabled && txt_pais.Text != string.Empty)
                                 cmd.Parameters.AddWithValue("@Pais", txt_pais.Text);
-                            if (txt_piso.Enabled && txt_piso.Text != string.Empty)
-                                cmd.Parameters.AddWithValue("@Piso", txt_piso.Text);
-                            if (txt_telefono.Enabled && txt_telefono.Text != string.Empty)
                                 cmd.Parameters.AddWithValue("@Telefono", txt_telefono.Text);
-                            if (cmb_tipo_documento.Enabled && cmb_tipo_documento.Text != string.Empty)
-                                cmd.Parameters.AddWithValue("@TipoDoc", cmb_tipo_documento.Text);
+                                cmd.Parameters.AddWithValue("@Cant_estrellas", cantidad_estrellas);
+                                cmd.Parameters.AddWithValue("@Ciudad",cmb_ciudad.Text);
+
 
                             int rows = cmd.ExecuteNonQuery();
                             //rows number of record got updated
 
-                            string msj = "Cliente agregado con éxito \n";
+                            string msj = "Hotel agregado con éxito \n";
                             MessageBox.Show(msj, "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                         }
                     }
@@ -133,6 +124,56 @@ namespace FrbaHotel.ABM_de_Cliente
             this.Hide();
         }
 
+        private void lbl_tipo_regimenes_Click(object sender, EventArgs e)
+        {
+
+        }
+        #region CheckedList_Regimenes
+        private void list_tipos_regimenes_MouseHover(object sender, EventArgs e)
+        {
+            list_tipos_regimenes.IntegralHeight=true;
+            list_tipos_regimenes.Height = list_tipos_regimenes.PreferredHeight;
+            list_tipos_regimenes.BringToFront();
+        }
+
+        private void list_tipos_regimenes_MouseLeave(object sender, EventArgs e)
+        {
+            list_tipos_regimenes.IntegralHeight=false;
+            list_tipos_regimenes.Height = 17;
+        }
+        #endregion
+        #region cantidadEstrellas
+        private void rb_1estrella_Click(object sender, EventArgs e)
+        {
+            cantidad_estrellas = 1;
+        }
+
+        private void rb_2estrellas_Click(object sender, EventArgs e)
+        {
+            cantidad_estrellas = 2;
+        }
+
+        private void rb_3estrellas_Click(object sender, EventArgs e)
+        {
+            cantidad_estrellas = 3;
+        }
+
+        private void rb_4estrellas_Click(object sender, EventArgs e)
+        {
+            cantidad_estrellas = 4;
+        }
+
+        private void rb_5estrellas_Click(object sender, EventArgs e)
+        {
+            cantidad_estrellas = 5;
+        }
+
+        #endregion
+
+        private void cmb_ciudad_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
 
 
 

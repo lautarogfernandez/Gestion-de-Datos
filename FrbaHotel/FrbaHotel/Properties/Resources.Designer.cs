@@ -60,9 +60,86 @@ namespace FrbaHotel.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Estrella {
+            get {
+                object obj = ResourceManager.GetObject("Estrella", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Estrella_mini {
+            get {
+                object obj = ResourceManager.GetObject("Estrella_mini", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap igual_click {
+            get {
+                object obj = ResourceManager.GetObject("igual_click", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap igual_hover {
+            get {
+                object obj = ResourceManager.GetObject("igual_hover", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap igual_no_hover {
+            get {
+                object obj = ResourceManager.GetObject("igual_no_hover", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap imagenHotel {
             get {
                 object obj = ResourceManager.GetObject("imagenHotel", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap mayor_click {
+            get {
+                object obj = ResourceManager.GetObject("mayor_click", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap mayor_hover {
+            get {
+                object obj = ResourceManager.GetObject("mayor_hover", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap mayor_no_hover {
+            get {
+                object obj = ResourceManager.GetObject("mayor_no_hover", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap menor_click {
+            get {
+                object obj = ResourceManager.GetObject("menor_click", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap menor_hover {
+            get {
+                object obj = ResourceManager.GetObject("menor_hover", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap menor_no_hover {
+            get {
+                object obj = ResourceManager.GetObject("menor_no_hover", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -42,6 +42,7 @@
             this.barra_progreso = new System.Windows.Forms.ToolStripProgressBar();
             this.label_progreso = new System.Windows.Forms.ToolStripStatusLabel();
             this.stat_BarraEstado = new System.Windows.Forms.StatusStrip();
+            this.lbl_usuario = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imagenHotel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_hoteles)).BeginInit();
@@ -109,16 +110,17 @@
             // 
             // button_login
             // 
-            this.button_login.Location = new System.Drawing.Point(402, 4);
+            this.button_login.Location = new System.Drawing.Point(406, 29);
             this.button_login.Name = "button_login";
             this.button_login.Size = new System.Drawing.Size(80, 25);
             this.button_login.TabIndex = 7;
             this.button_login.Text = "Loguearse";
             this.button_login.UseVisualStyleBackColor = true;
+            this.button_login.Click += new System.EventHandler(this.button_login_Click);
             // 
             // button_logout
             // 
-            this.button_logout.Location = new System.Drawing.Point(492, 4);
+            this.button_logout.Location = new System.Drawing.Point(492, 29);
             this.button_logout.Name = "button_logout";
             this.button_logout.Size = new System.Drawing.Size(80, 25);
             this.button_logout.TabIndex = 8;
@@ -185,11 +187,21 @@
             this.stat_BarraEstado.TabIndex = 3;
             this.stat_BarraEstado.Text = "Estado";
             // 
+            // lbl_usuario
+            // 
+            this.lbl_usuario.AutoSize = true;
+            this.lbl_usuario.Location = new System.Drawing.Point(403, 9);
+            this.lbl_usuario.Name = "lbl_usuario";
+            this.lbl_usuario.Size = new System.Drawing.Size(35, 13);
+            this.lbl_usuario.TabIndex = 12;
+            this.lbl_usuario.Text = "Guest";
+            // 
             // MenuPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 461);
+            this.Controls.Add(this.lbl_usuario);
             this.Controls.Add(this.dgv_hoteles);
             this.Controls.Add(this.button_ir);
             this.Controls.Add(this.button_logout);
@@ -230,5 +242,6 @@
         private System.Windows.Forms.ToolStripProgressBar barra_progreso;
         private System.Windows.Forms.ToolStripStatusLabel label_progreso;
         private System.Windows.Forms.StatusStrip stat_BarraEstado;
+        private System.Windows.Forms.Label lbl_usuario;
     }
 }

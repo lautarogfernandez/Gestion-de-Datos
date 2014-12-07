@@ -29,7 +29,7 @@ namespace FrbaHotel
 
         private void MenuPrincipal_Load(object sender, EventArgs e)
         {
-
+            lbl_usuario.Text = Home._nombreUsuario;
         }
 
         private void button_mostrar_hoteles_Click(object sender, EventArgs e)
@@ -175,6 +175,12 @@ namespace FrbaHotel
                 MessageBox.Show(msj,"Excepcion SQL",MessageBoxButtons.OK,MessageBoxIcon.Information);
             }
 
+        }
+
+        private void button_login_Click(object sender, EventArgs e)
+        {
+            Login.Formulario_login formularioLogin=new Login.Formulario_login();
+            formularioLogin.Show();
         }
 
     }

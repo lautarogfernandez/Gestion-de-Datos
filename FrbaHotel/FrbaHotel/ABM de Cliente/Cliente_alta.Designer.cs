@@ -40,7 +40,6 @@
             this.txt_localidad = new System.Windows.Forms.TextBox();
             this.txt_pais = new System.Windows.Forms.TextBox();
             this.txt_telefono = new System.Windows.Forms.TextBox();
-            this.cmb_tipo_documento = new System.Windows.Forms.ComboBox();
             this.txt_numero_documento = new System.Windows.Forms.TextBox();
             this.txt_mail = new System.Windows.Forms.TextBox();
             this.txt_apellido = new System.Windows.Forms.TextBox();
@@ -67,7 +66,11 @@
             this._obli_nacionalidad = new System.Windows.Forms.Label();
             this._obli_numeroDoc = new System.Windows.Forms.Label();
             this._obli_fechaNacimiento = new System.Windows.Forms.Label();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.cmb_tipo_documento = new System.Windows.Forms.ComboBox();
+            this.stat_BarraEstado = new System.Windows.Forms.StatusStrip();
+            this.barra_progreso = new System.Windows.Forms.ToolStripProgressBar();
+            this.label_progreso = new System.Windows.Forms.ToolStripStatusLabel();
+            this.stat_BarraEstado.SuspendLayout();
             this.SuspendLayout();
             // 
             // button_aceptar
@@ -166,14 +169,6 @@
             this.txt_telefono.Name = "txt_telefono";
             this.txt_telefono.Size = new System.Drawing.Size(306, 20);
             this.txt_telefono.TabIndex = 120;
-            // 
-            // cmb_tipo_documento
-            // 
-            this.cmb_tipo_documento.FormattingEnabled = true;
-            this.cmb_tipo_documento.Location = new System.Drawing.Point(236, 147);
-            this.cmb_tipo_documento.Name = "cmb_tipo_documento";
-            this.cmb_tipo_documento.Size = new System.Drawing.Size(306, 21);
-            this.cmb_tipo_documento.TabIndex = 119;
             // 
             // txt_numero_documento
             // 
@@ -423,21 +418,44 @@
             this._obli_fechaNacimiento.TabIndex = 153;
             this._obli_fechaNacimiento.Text = "*";
             // 
-            // statusStrip1
+            // cmb_tipo_documento
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 539);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(584, 22);
-            this.statusStrip1.TabIndex = 154;
-            this.statusStrip1.Text = "statusStrip1";
+            this.cmb_tipo_documento.FormattingEnabled = true;
+            this.cmb_tipo_documento.Location = new System.Drawing.Point(236, 148);
+            this.cmb_tipo_documento.Name = "cmb_tipo_documento";
+            this.cmb_tipo_documento.Size = new System.Drawing.Size(306, 21);
+            this.cmb_tipo_documento.TabIndex = 154;
+            // 
+            // stat_BarraEstado
+            // 
+            this.stat_BarraEstado.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.barra_progreso,
+            this.label_progreso});
+            this.stat_BarraEstado.Location = new System.Drawing.Point(0, 542);
+            this.stat_BarraEstado.Name = "stat_BarraEstado";
+            this.stat_BarraEstado.Size = new System.Drawing.Size(584, 22);
+            this.stat_BarraEstado.TabIndex = 155;
+            this.stat_BarraEstado.Text = "Estado";
+            // 
+            // barra_progreso
+            // 
+            this.barra_progreso.Name = "barra_progreso";
+            this.barra_progreso.Size = new System.Drawing.Size(100, 16);
+            // 
+            // label_progreso
+            // 
+            this.label_progreso.Name = "label_progreso";
+            this.label_progreso.Size = new System.Drawing.Size(42, 17);
+            this.label_progreso.Text = "Estado";
             // 
             // Cliente_alta
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 561);
-            this.Controls.Add(this.statusStrip1);
+            this.ClientSize = new System.Drawing.Size(584, 564);
+            this.Controls.Add(this.stat_BarraEstado);
+            this.Controls.Add(this.cmb_tipo_documento);
             this.Controls.Add(this._obli_fechaNacimiento);
             this.Controls.Add(this._obli_nacionalidad);
             this.Controls.Add(this._obli_numeroDoc);
@@ -470,7 +488,6 @@
             this.Controls.Add(this.txt_localidad);
             this.Controls.Add(this.txt_pais);
             this.Controls.Add(this.txt_telefono);
-            this.Controls.Add(this.cmb_tipo_documento);
             this.Controls.Add(this.txt_numero_documento);
             this.Controls.Add(this.txt_mail);
             this.Controls.Add(this.txt_apellido);
@@ -482,6 +499,8 @@
             this.Name = "Cliente_alta";
             this.Text = "Cliente_alta";
             this.Load += new System.EventHandler(this.Cliente_alta_Load);
+            this.stat_BarraEstado.ResumeLayout(false);
+            this.stat_BarraEstado.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -501,7 +520,6 @@
         private System.Windows.Forms.TextBox txt_localidad;
         private System.Windows.Forms.TextBox txt_pais;
         private System.Windows.Forms.TextBox txt_telefono;
-        private System.Windows.Forms.ComboBox cmb_tipo_documento;
         private System.Windows.Forms.TextBox txt_numero_documento;
         private System.Windows.Forms.TextBox txt_mail;
         private System.Windows.Forms.TextBox txt_apellido;
@@ -528,6 +546,9 @@
         private System.Windows.Forms.Label _obli_nacionalidad;
         private System.Windows.Forms.Label _obli_numeroDoc;
         private System.Windows.Forms.Label _obli_fechaNacimiento;
-        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ComboBox cmb_tipo_documento;
+        private System.Windows.Forms.StatusStrip stat_BarraEstado;
+        private System.Windows.Forms.ToolStripProgressBar barra_progreso;
+        private System.Windows.Forms.ToolStripStatusLabel label_progreso;
     }
 }

@@ -8,13 +8,10 @@ using System.Text;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 
+
 namespace FrbaHotel.ABM_de_Cliente
 {
-    public struct valoresDataGridView
-    {
-        public string _tipo_documento, _apellido, _nombre, _pais, _nacionalidad, _localidad,
-            _calle, _departamento, _mail, _telefono, _codigo, _numero_documento, _numero_calle, _piso, _fecha_nacimiento;
-    }
+
     public partial class Cliente_modificar : Form
     {
         private string _tabla = "vistaClientes";
@@ -257,9 +254,16 @@ namespace FrbaHotel.ABM_de_Cliente
                                 cmd.Parameters.AddWithValue("@Telefono", txt_telefono.Text);
                             if (cmb_tipo_documento.Enabled && cmb_tipo_documento.Text != string.Empty)
                                 cmd.Parameters.AddWithValue("@TipoDoc", cmb_tipo_documento.Text);
+                            string msj = "¿Está seguro que quiere modificar el cliente? \n";
+                            DialogResult resultado = MessageBox.Show(msj, "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            if (resultado == DialogResult.Yes)
+                            {
+                                int rows = cmd.ExecuteNonQuery();
+                                //rows number of record got updated
 
-                            int rows = cmd.ExecuteNonQuery();
-                            //rows number of record got updated
+                                string info = "Cliente modificado satisfactoriamente \n";
+                                MessageBox.Show(info, "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
                         }
                     }
                 }

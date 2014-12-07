@@ -10,6 +10,11 @@ using System.Data.SqlClient;
 
 namespace FrbaHotel.ABM_de_Cliente
 {
+    public struct valoresDataGridView
+    {
+        public string _tipo_documento, _apellido, _nombre, _pais, _nacionalidad, _localidad,
+            _calle, _departamento, _mail, _telefono, _codigo, _numero_documento, _numero_calle, _piso, _fecha_nacimiento;
+    }
     public partial class Cliente_modificacion : Form
     {
  #region Variables
@@ -425,12 +430,12 @@ namespace FrbaHotel.ABM_de_Cliente
             formularioModificar.Show();
         }
 
-        private void Cliente_modificacion_Load(object sender, EventArgs e)
+        private void Filtros_de_busqueda_Enter_1(object sender, EventArgs e)
         {
 
         }
 
-        private void Filtros_de_busqueda_Enter_1(object sender, EventArgs e)
+        private void Cliente_modificacion_Load(object sender, EventArgs e)
         {
 
         }

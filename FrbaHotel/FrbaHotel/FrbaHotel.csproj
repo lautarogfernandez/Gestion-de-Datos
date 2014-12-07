@@ -84,6 +84,24 @@
     <Compile Include="ABM de Habitacion\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="ABM de Hotel\Hotel_alta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Hotel\Hotel_alta.Designer.cs">
+      <DependentUpon>Hotel_alta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM de Hotel\Hotel_modificacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Hotel\Hotel_modificacion.Designer.cs">
+      <DependentUpon>Hotel_modificacion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM de Hotel\Hotel_modificar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Hotel\Hotel_modificar.Designer.cs">
+      <DependentUpon>Hotel_modificar.cs</DependentUpon>
+    </Compile>
     <Compile Include="ABM de Regimen\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -149,6 +167,15 @@
     <EmbeddedResource Include="ABM de Cliente\Cliente_modificar.resx">
       <DependentUpon>Cliente_modificar.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Hotel\Hotel_alta.resx">
+      <DependentUpon>Hotel_alta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Hotel\Hotel_modificacion.resx">
+      <DependentUpon>Hotel_modificacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Hotel\Hotel_modificar.resx">
+      <DependentUpon>Hotel_modificar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MenuPrincipal.resx">
       <DependentUpon>MenuPrincipal.cs</DependentUpon>
     </EmbeddedResource>
@@ -189,6 +216,39 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\imagenHotel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Estrella.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Estrella_mini.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mayor_no_hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\igual_click.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\igual_hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\igual_no_hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mayor_click.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mayor_hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\menor_click.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\menor_hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\menor_no_hover.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Facturacion\" />

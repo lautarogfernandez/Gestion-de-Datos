@@ -29,7 +29,6 @@ C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\ResolveAss
 C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Cliente.Cliente_alta.resources
 C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Cliente.Cliente_baja.resources
 C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Cliente.Cliente_listado.resources
-C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Cliente.Cliente_modificacion.resources
 C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Cliente.Cliente_modificar.resources
 C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.MenuPrincipal.resources
 C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.Modificar.resources
@@ -37,3 +36,7 @@ C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.
 C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.csproj.GenerateResource.Cache
 C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\bin\Debug\FrbaHotel.exe
 C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\bin\Debug\FrbaHotel.pdb
+C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Hotel.Hotel_alta.resources
+C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Cliente.Cliente_modificacion.resources
+C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Hotel.Hotel_modificacion.resources
+C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Hotel.Hotel_modificar.resources

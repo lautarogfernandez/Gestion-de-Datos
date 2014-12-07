@@ -65,7 +65,7 @@
             this.dgv_resultados.ReadOnly = true;
             this.dgv_resultados.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_resultados.Size = new System.Drawing.Size(560, 300);
-            this.dgv_resultados.TabIndex = 19;
+            this.dgv_resultados.TabIndex = 7;
             this.dgv_resultados.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_resultados_CellContentClick);
             // 
             // stat_BarraEstado
@@ -97,7 +97,7 @@
             this.button_volver.Location = new System.Drawing.Point(437, 479);
             this.button_volver.Name = "button_volver";
             this.button_volver.Size = new System.Drawing.Size(135, 45);
-            this.button_volver.TabIndex = 17;
+            this.button_volver.TabIndex = 10;
             this.button_volver.Text = "Volver";
             this.button_volver.UseVisualStyleBackColor = true;
             this.button_volver.Click += new System.EventHandler(this.button_volver_Click);
@@ -110,7 +110,7 @@
             this.button_limpiar.Location = new System.Drawing.Point(12, 479);
             this.button_limpiar.Name = "button_limpiar";
             this.button_limpiar.Size = new System.Drawing.Size(135, 45);
-            this.button_limpiar.TabIndex = 16;
+            this.button_limpiar.TabIndex = 8;
             this.button_limpiar.Text = "Limpiar";
             this.button_limpiar.UseVisualStyleBackColor = true;
             this.button_limpiar.Click += new System.EventHandler(this.button_limpiar_Click);
@@ -144,7 +144,7 @@
             this.button_Buscar.Location = new System.Drawing.Point(395, 100);
             this.button_Buscar.Name = "button_Buscar";
             this.button_Buscar.Size = new System.Drawing.Size(135, 45);
-            this.button_Buscar.TabIndex = 10;
+            this.button_Buscar.TabIndex = 6;
             this.button_Buscar.Text = "Buscar";
             this.button_Buscar.UseVisualStyleBackColor = true;
             this.button_Buscar.Click += new System.EventHandler(this.button_Buscar_Click);
@@ -155,7 +155,7 @@
             this.txt_numeroIdentificacion.Location = new System.Drawing.Point(170, 125);
             this.txt_numeroIdentificacion.Name = "txt_numeroIdentificacion";
             this.txt_numeroIdentificacion.Size = new System.Drawing.Size(200, 20);
-            this.txt_numeroIdentificacion.TabIndex = 9;
+            this.txt_numeroIdentificacion.TabIndex = 5;
             this.txt_numeroIdentificacion.Text = "Ingrese número de identificación";
             this.txt_numeroIdentificacion.TextChanged += new System.EventHandler(this.txt_numeroIdentificacion_TextChanged);
             this.txt_numeroIdentificacion.Click += new System.EventHandler(this.txt_numeroIdentificacion_Click);
@@ -168,7 +168,7 @@
             this.cmb_tipoIdentificacion.Location = new System.Drawing.Point(20, 125);
             this.cmb_tipoIdentificacion.Name = "cmb_tipoIdentificacion";
             this.cmb_tipoIdentificacion.Size = new System.Drawing.Size(121, 21);
-            this.cmb_tipoIdentificacion.TabIndex = 7;
+            this.cmb_tipoIdentificacion.TabIndex = 4;
             this.cmb_tipoIdentificacion.Text = "Seleccione tipo";
             this.cmb_tipoIdentificacion.SelectedIndexChanged += new System.EventHandler(this.cmb_tipoIdentificacion_SelectedIndexChanged);
             // 
@@ -178,7 +178,7 @@
             this.txt_Email.Location = new System.Drawing.Point(70, 60);
             this.txt_Email.Name = "txt_Email";
             this.txt_Email.Size = new System.Drawing.Size(460, 20);
-            this.txt_Email.TabIndex = 5;
+            this.txt_Email.TabIndex = 3;
             this.txt_Email.Text = "Ingrese e-mail";
             this.txt_Email.TextChanged += new System.EventHandler(this.txt_Email_TextChanged);
             this.txt_Email.Click += new System.EventHandler(this.txt_Email_Click);
@@ -190,7 +190,7 @@
             this.txt_Apellido.Location = new System.Drawing.Point(320, 25);
             this.txt_Apellido.Name = "txt_Apellido";
             this.txt_Apellido.Size = new System.Drawing.Size(210, 20);
-            this.txt_Apellido.TabIndex = 3;
+            this.txt_Apellido.TabIndex = 2;
             this.txt_Apellido.Text = "Ingrese apellido";
             this.txt_Apellido.TextChanged += new System.EventHandler(this.txt_Apellido_TextChanged);
             this.txt_Apellido.Click += new System.EventHandler(this.txt_Apellido_Click);
@@ -266,7 +266,7 @@
             this.button_modificar.Location = new System.Drawing.Point(222, 480);
             this.button_modificar.Name = "button_modificar";
             this.button_modificar.Size = new System.Drawing.Size(135, 45);
-            this.button_modificar.TabIndex = 20;
+            this.button_modificar.TabIndex = 9;
             this.button_modificar.Text = "Modificar";
             this.button_modificar.UseVisualStyleBackColor = true;
             this.button_modificar.Click += new System.EventHandler(this.button_modificar_Click);
