@@ -168,7 +168,8 @@ begin
 	values (@Cod_Reserva,@usuario,@fecha,@motivo);
 	update TEAM_CASTY.Reserva 
 	set Cod_Estado=@estado
-	where @Cod_Reserva=Cod_Reserva;
+	where @Cod_Reserva=Cod_Reserva;	
+	insert into TEAM_CASTY
 end
 else	
 begin

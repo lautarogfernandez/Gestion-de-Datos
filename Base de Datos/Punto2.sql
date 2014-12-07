@@ -43,7 +43,7 @@ end
 if (@error=1)
 begin
 	set @mensaje=@mensaje + 'No se realizó el log in.';
-	RAISERROR (@mensaje,10,1);
+	RAISERROR (@mensaje,15,1);
 end
 end
 

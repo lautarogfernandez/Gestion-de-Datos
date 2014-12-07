@@ -90,7 +90,7 @@ INSERT INTO TEAM_CASTY.Tipo_Habitacion SELECT DISTINCT t1.Habitacion_Tipo_Codigo
 							   ORDER BY t1.Habitacion_Tipo_Codigo
 							   
 --SELECT * FROM TEAM_CASTY.Tipo_Habitacion
-print('Tipos de  OK');
+print('Tipos de Habitación OK');
 --Recarga Estrella
 CREATE TABLE TEAM_CASTY.Recarga_Estrella ( 
 	Cod_Recarga numeric(18) NOT NULL PRIMARY KEY IDENTITY (1, 1),
@@ -102,7 +102,7 @@ DECLARE @recarga numeric(18);
 SET @fecha_modificacion= (SELECT MIN(t1.Reserva_Fecha_Inicio) FROM gd_esquema.Maestra t1);
 SET @recarga= (SELECT DISTINCT t1.Hotel_Recarga_Estrella FROM gd_esquema.Maestra t1);
 INSERT INTO TEAM_CASTY.Recarga_Estrella(Fecha_Modificacion,Recarga) VALUES (@fecha_modificacion, @recarga);
-
+print('Recarga Estrella OK');
 --Ciudades
 CREATE TABLE TEAM_CASTY.Ciudad (
 	Cod_Ciudad numeric(18) NOT NULL PRIMARY KEY IDENTITY (1, 1),
@@ -113,7 +113,7 @@ INSERT INTO TEAM_CASTY.Ciudad SELECT DISTINCT t1.Hotel_Ciudad
 							  ORDER BY t1.Hotel_Ciudad
 
 --SELECT * FROM TEAM_CASTY.Ciudad
-
+print('Ciudades OK');
 --Hoteles
 CREATE TABLE TEAM_CASTY.Hotel ( 
 	Cod_Ciudad numeric(18) NOT NULL,
@@ -133,7 +133,7 @@ INSERT INTO TEAM_CASTY.Hotel (Cod_Ciudad, Calle, Nro_Calle, CantEstrella, Pais) 
 																							ORDER BY TEAM_CASTY.Ciudad.Cod_Ciudad, t1.Hotel_Calle, t1.Hotel_Nro_Calle
 
 --SELECT * FROM TEAM_CASTY.Hotel
-
+print('Hoteles OK');
 --SELECT Cod_Hotel, Nombre,Calle, Nro_Calle, CantEstrella, Fecha_Creacion, Telefono, Mail
 --FROM TEAM_CASTY.Hotel h JOIN TEAM_CASTY.Ciudad c ON (c.Cod_Ciudad=h.Cod_Ciudad)
 --ORDER BY Cod_Hotel
@@ -205,7 +205,7 @@ INSERT INTO TEAM_CASTY.Estados(Nombre,Descripcion) VALUES ('Cancelada No-Show','
 INSERT INTO TEAM_CASTY.Estados(Nombre,Descripcion) VALUES ('Efectivizada','Reserva con ingreso (efectivizada)');
 
 --SELECT * FROM TEAM_CASTY.Estados
-
+print('Estados OK');
 --Consumibles
 CREATE TABLE TEAM_CASTY.Consumible ( 
 	Cod_Consumible numeric(18) NOT NULL PRIMARY KEY,
@@ -218,7 +218,7 @@ INSERT INTO TEAM_CASTY.Consumible(Cod_Consumible,Descripcion,Precio) SELECT DIST
 																	 ORDER BY t1.Consumible_Codigo
 																	 
 --SELECT * FROM TEAM_CASTY.Consumible
-
+print('Consumibles OK');
 --Formas de Pago
 CREATE TABLE TEAM_CASTY.Forma_Pago ( 
 	Cod_Forma_Pago numeric(18) NOT NULL PRIMARY KEY IDENTITY (1, 1),
@@ -229,7 +229,7 @@ INSERT INTO TEAM_CASTY.Forma_Pago(Descripcion) VALUES ('Tarjeta de Crédito');
 --INSERT INTO TEAM_CASTY.Forma_Pago(Descripcion) VALUES ('Tarjeta de Débito'); --¿va? ¿alguno más?
 
 --SELECT * FROM TEAM_CASTY.Forma_Pago
-
+print('Formas de Pago OK');
 --Tipos de Documento
 CREATE TABLE TEAM_CASTY.Tipo_Documento ( 
 	ID_Tipo_Documento numeric(18) NOT NULL PRIMARY KEY IDENTITY (1, 1),
@@ -238,7 +238,7 @@ CREATE TABLE TEAM_CASTY.Tipo_Documento (
 INSERT INTO TEAM_CASTY.Tipo_Documento (Tipo_Documento) values ('PASAPORTE');
 
 --SELECT * FROM TEAM_CASTY.Tipo_Documento
-
+print('Tipos de Documento OK');
 --Clientes
 CREATE TABLE TEAM_CASTY.Cliente ( 
 	ID_Cliente numeric(18) NOT NULL PRIMARY KEY IDENTITY (1, 1),
@@ -288,7 +288,7 @@ DROP TABLE #clientes_repetidos
 DROP TABLE #datos_completos_clientes
 
 --SELECT * FROM TEAM_CASTY.Cliente
-
+print('Clientes OK');
 --Usuarios
 CREATE TABLE TEAM_CASTY.Usuario ( 
 	Cod_Usuario numeric(18) NOT NULL PRIMARY KEY IDENTITY (1, 1),
@@ -298,7 +298,7 @@ CREATE TABLE TEAM_CASTY.Usuario (
 	Habilitado bit DEFAULT 1 NOT NULL,
 	Baja bit DEFAULT 0 NOT NULL);
 	
-INSERT INTO TEAM_CASTY.Usuario (Username,Contraseña) values ('admin','e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7');--la contraseña es CASTY
+INSERT INTO TEAM_CASTY.Usuario (Username,Contraseña) values ('admin','e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7');--la contraseña es w23e
 INSERT INTO TEAM_CASTY.Usuario (Username,Contraseña) values ('guest','16ceb2796ccd9d52d4f2a92134ef9ecfeb8f016150a82d36b299d09d5b9963f0');--la contraseña es GUEST
 
 --SELECT * FROM TEAM_CASTY.Usuario
@@ -315,6 +315,7 @@ CREATE TABLE TEAM_CASTY.Empleado (
 	Cod_Usuario numeric(18) NOT NULL,
 	FOREIGN KEY (Cod_Usuario) REFERENCES TEAM_CASTY.Usuario (Cod_Usuario));
 
+print('Empleados OK');
 --Roles de los Usuarios por cada Hotel
 CREATE TABLE TEAM_CASTY.RolXUsuarioXHotel (	
 	Cod_Usuario numeric(18) NOT NULL,	
@@ -336,7 +337,7 @@ FROM TEAM_CASTY.Hotel h
 INSERT INTO TEAM_CASTY.RolXUsuarioXHotel (Cod_Usuario,Cod_Hotel,Cod_Rol)
 SELECT *
 FROM #hoteles_admnistrador
-
+  
 INSERT INTO TEAM_CASTY.RolXUsuarioXHotel (Cod_Usuario,Cod_Hotel,Cod_Rol)
 SELECT *
 FROM #hoteles_guest
@@ -345,7 +346,7 @@ DROP TABLE #hoteles_admnistrador
 DROP TABLE #hoteles_guest
 
 --SELECT * FROM TEAM_CASTY.RolXUsuarioXHotel
-	
+print('Rol por Usuario por Hotel OK');
 --Inhabilitacion de los Hoteles	
 CREATE TABLE TEAM_CASTY.Periodo_Inhabilitado ( 
 	Cod_Hotel numeric(18) NOT NULL,
@@ -355,7 +356,7 @@ CREATE TABLE TEAM_CASTY.Periodo_Inhabilitado (
 	PRIMARY KEY (Cod_Hotel, Fecha_Inicio, Fecha_Fin),--ver
 	FOREIGN KEY (Cod_Hotel) REFERENCES TEAM_CASTY.Hotel (Cod_Hotel));	
 	
-
+print('Período inhabilitado OK');
 --Reservas
 CREATE TABLE TEAM_CASTY.Reserva ( 
 	Cod_Reserva numeric(18) NOT NULL PRIMARY KEY,
@@ -400,7 +401,7 @@ DROP TABLE #reservas
 DROP TABLE #reservas_new	
 
 --SELECT * FROM TEAM_CASTY.Reserva
-
+print('Reservas OK');
 --Habitacion X Reserva
 CREATE TABLE TEAM_CASTY.HabitacionXReserva ( 
 	Cod_Reserva numeric(18) NOT NULL,
@@ -425,9 +426,9 @@ WHERE hab.Cod_Tipo=t1.Habitacion_Tipo_Codigo AND
 ORDER BY t1.Reserva_Codigo
 
 --SELECT * FROM TEAM_CASTY.HabitacionXReserva
-
+print('Habitaciones por Reserva OK');
 --Usuario por reserva (para modificacion de Reserva)
-CREATE TABLE TEAM_CASTY.UsuarioXReserva ( 
+CREATE TABLE TEAM_CASTY.ModificacionXReserva ( 
 	Cod_Reserva numeric(18) NOT NULL,
 	Numero_Modificacion numeric(18) NOT NULL,
 	Cod_Usuario numeric(18) NOT NULL,
@@ -437,10 +438,10 @@ CREATE TABLE TEAM_CASTY.UsuarioXReserva (
 	FOREIGN KEY (Cod_Reserva) REFERENCES TEAM_CASTY.Reserva (Cod_Reserva),
 	FOREIGN KEY (Cod_Usuario) REFERENCES TEAM_CASTY.Usuario (Cod_Usuario));
 
-insert into TEAM_CASTY.UsuarioXReserva (Cod_Reserva,Numero_Modificacion,Cod_Usuario,Fecha,Descripcion)	
+insert into TEAM_CASTY.ModificacionXReserva (Cod_Reserva,Numero_Modificacion,Cod_Usuario,Fecha,Descripcion)	
 select res.Cod_Reserva,1,2,res.Fecha_Realizacion,'De la migración'
 from TEAM_CASTY.Reserva res
-
+print('Modificación Reservas OK');
 --Reservas canceladas
 CREATE TABLE TEAM_CASTY.Cancelacion ( 
 	Cod_Reserva numeric(18) NOT NULL,
@@ -449,7 +450,7 @@ CREATE TABLE TEAM_CASTY.Cancelacion (
 	Cod_Usuario numeric(18)NOT NULL,
 	FOREIGN KEY (Cod_Reserva) REFERENCES TEAM_CASTY.Reserva (Cod_Reserva),
 	FOREIGN KEY (Cod_Usuario) REFERENCES TEAM_CASTY.Usuario (Cod_Usuario));
-
+print('Reservas Canceladas OK');
 --Estadía	
 CREATE TABLE TEAM_CASTY.Estadia ( 
 	Cod_Estadia numeric(18) NOT NULL PRIMARY KEY IDENTITY (1,1),
@@ -466,7 +467,7 @@ where t.Estadia_Fecha_Inicio is not null
 order by t.Reserva_Codigo
 
 --select * from TEAM_CASTY.Estadia
-
+print('Estadías OK');
 --Clientes por Estadía
 CREATE TABLE TEAM_CASTY.ClienteXEstadia ( 	
 	Cod_Estadia numeric(18) NOT NULL,
@@ -485,7 +486,7 @@ e.Cod_Reserva=t.Reserva_Codigo
 ORDER BY e.Cod_Estadia,c.ID_Cliente
 
 --SELECT * FROM TEAM_CASTY.ClienteXEstadia	
-
+print('Clientes por Estadía OK');
 --Habitaciones por Estadía
 CREATE TABLE TEAM_CASTY.HabitacionXEstadia ( 	
 	Cod_Estadia numeric(18) NOT NULL,
@@ -502,7 +503,7 @@ res.Cod_Reserva=hxr.Cod_Reserva
 ORDER BY est.Cod_Estadia, hxr.Cod_Habitacion
 
 --select * from TEAM_CASTY.HabitacionXEstadia
-
+print('HAbitaciones por Estadía OK');
 --Consumibles por Estadia
 CREATE TABLE TEAM_CASTY.ConsumibleXHabitacionXEstadia ( 
 	Cod_ConsumibleXHabitacionXEstadia numeric(18)  NOT NULL PRIMARY KEY IDENTITY(1,1),
@@ -515,7 +516,7 @@ CREATE TABLE TEAM_CASTY.ConsumibleXHabitacionXEstadia (
 	FOREIGN KEY (Cod_Estadia) REFERENCES TEAM_CASTY.Estadia (Cod_Estadia),
 	FOREIGN KEY (Cod_Consumible) REFERENCES TEAM_CASTY.Consumible (Cod_Consumible));
 	
-SELECT  distinct est.Cod_Estadia,habXest.Cod_Habitacion, hab.Cod_Hotel, hot.Cod_Ciudad,Numero,Nombre,Calle,Nro_Calle
+SELECT  distinct est.Cod_Estadia,habXest.Cod_Habitacion, hab.Cod_Hotel, hot.Cod_Ciudad,Numero,ciu.Nombre,Calle,Nro_Calle
 INTO #auxiliar
 FROM TEAM_CASTY.HabitacionXEstadia habXest JOIN  TEAM_CASTY.Habitacion hab on (habXest.Cod_Habitacion= hab.Cod_Habitacion) 
                                            JOIN TEAM_CASTY.Hotel hot ON(hot.Cod_Hotel = hab.Cod_Hotel)
@@ -537,12 +538,12 @@ GROUP BY a.Cod_Estadia, a.Cod_Habitacion,m.Consumible_Codigo,m.Consumible_Precio
 DROP TABLE #auxiliar
 
 --select * from TEAM_CASTY.ConsumibleXHabitacionXEstadia
-
+print('Consumibles por Estadía OK');
 --Cambiar estado de las reservas con check in
 UPDATE res
 SET res.Cod_Estado=6
 from TEAM_CASTY.Reserva res join TEAM_CASTY.Estadia est on (res.Cod_Reserva=est.Cod_Reserva)
-
+print('Actualización Reservas por las Estadías OK');
 
 --Facturas
 CREATE TABLE TEAM_CASTY.Factura ( 
@@ -579,7 +580,7 @@ order by 1
 DROP TABLE TEAM_CASTY.Auxiliar_Item_Total
 
 --SELECT * FROM TEAM_CASTY.Factura
-
+print('Facturas OK');
 --Tarjetas, solo se crea, no tiene datos al principio
 CREATE TABLE TEAM_CASTY.Tarjeta ( 
 	Numero numeric(18) NOT NULL,
@@ -587,7 +588,7 @@ CREATE TABLE TEAM_CASTY.Tarjeta (
 	ID_Cliente numeric(18) NOT NULL,
 	PRIMARY KEY (Numero, Banco),
 	FOREIGN KEY (ID_Cliente) REFERENCES TEAM_CASTY.Cliente (ID_Cliente));
-
+print('Tarjetas OK');
 --TarjetaXFactura, solo se crea, no tiene datos al principio
 CREATE TABLE TEAM_CASTY.TarjetaXFactura ( 
 	Nro_Factura numeric(18) NOT NULL,
@@ -596,7 +597,7 @@ CREATE TABLE TEAM_CASTY.TarjetaXFactura (
 	PRIMARY KEY (Nro_Factura, Numero_Tarjeta, Banco),
 	FOREIGN KEY (Nro_Factura) REFERENCES TEAM_CASTY.Factura (Nro_Factura),
 	FOREIGN KEY (Numero_Tarjeta, Banco) REFERENCES TEAM_CASTY.Tarjeta (Numero, Banco));
-
+print('Tarjetas por Factura OK');
 --consumible, habitacion y factura
 CREATE TABLE TEAM_CASTY.item_ConsumibleXFactura ( 
 	Nro_Factura numeric(18) NOT NULL,
@@ -612,7 +613,7 @@ WHERE f.Cod_Estadia=est.Cod_Estadia and
 est.Cod_Estadia=chr.Cod_Estadia
 
 --select * from TEAM_CASTY.item_ConsumibleXFactura
-
+print('Item consumible de factura OK');
 --estadia, habitacion y factura
 CREATE TABLE TEAM_CASTY.item_habitacionXFactura ( 
 	Nro_Factura numeric(18) NOT NULL,
@@ -637,8 +638,11 @@ thab.Cod_Tipo=hab.Cod_Tipo and
 res.Cod_Reserva=est.Cod_Reserva
 
 --select * from TEAM_CASTY.item_habitacionXFactura
+print('Item habitación de factura OK');
 
-create procedure validarUsuario
+GO
+
+create procedure TEAM_CASTY.validarUsuario
 (@usuario nvarchar(255),@contraseña nvarchar(255))
 as
 begin
@@ -683,12 +687,12 @@ end
 if (@error=1)
 begin
 	set @mensaje=@mensaje + 'No se realizó el log in.';
-	RAISERROR (@mensaje,10,1);
+	RAISERROR (@mensaje,15,1);
 end
 end
 
 
-CREATE FUNCTION RolesDeUsuarioEnHotel
+CREATE FUNCTION TEAM_CASTY.RolesDeUsuarioEnHotel
 (@usuario numeric(18),@hotel numeric(18))
 RETURNS TABLE
 AS
@@ -698,7 +702,7 @@ RETURN
    where  RxUxH.Cod_Rol = r.Cod_Rol and RxUxH.Cod_Hotel = @hotel and RxUxH.Cod_Usuario = @usuario;
    
    
-CREATE FUNCTION FuncionesDeUnRol
+CREATE FUNCTION TEAM_CASTY.FuncionesDeUnRol
 (@Rol numeric(18))
 RETURNS TABLE
 AS

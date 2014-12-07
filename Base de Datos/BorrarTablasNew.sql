@@ -1,4 +1,5 @@
-DROP TABLE TEAM_CASTY.UsuarioXReserva;
+DROP TABLE TEAM_CASTY.Cancelacion;
+DROP TABLE TEAM_CASTY.ModificacionXReserva;
 DROP TABLE TEAM_CASTY.UsuarioXHotel;
 DROP TABLE TEAM_CASTY.TarjetaXFactura;
 drop table TEAM_CASTY.item_habitacionXFactura;
