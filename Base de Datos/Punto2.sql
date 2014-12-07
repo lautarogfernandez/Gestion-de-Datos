@@ -48,17 +48,18 @@ end
 end
 
 
-CREATE FUNCTION RolesDeUsuarioEnHotel (@usuario numeric(18),@hotel numeric(18))
+CREATE FUNCTION RolesDeUsuarioEnHotel
+(@usuario numeric(18),@hotel numeric(18))
 RETURNS TABLE
 AS
 RETURN 
    select distinct r.Cod_Rol as Codigo, r.Nombre ,r.Activo
    from TEAM_CASTY.RolXUsuarioXHotel RxUxH , TEAM_CASTY.Rol r 
-   where  RxUxH.Cod_Rol = r.Cod_Rol and RxUxH.Cod_Hotel = @hotel and RxUxH.Cod_Usuario = @usuario
+   where  RxUxH.Cod_Rol = r.Cod_Rol and RxUxH.Cod_Hotel = @hotel and RxUxH.Cod_Usuario = @usuario;
    
    
-
-CREATE FUNCTION FuncionesDeUnRol (@Rol numeric(18))
+CREATE FUNCTION FuncionesDeUnRol
+(@Rol numeric(18))
 RETURNS TABLE
 AS
 RETURN 

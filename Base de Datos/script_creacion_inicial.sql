@@ -3,7 +3,7 @@ USE [GD2C2014]
 GO
 CREATE SCHEMA [TEAM_CASTY] AUTHORIZATION [gd]
 GO
-
+print("Esquema creado");
 --Roles
 CREATE TABLE TEAM_CASTY.Rol ( 
 	Cod_Rol numeric(18) NOT NULL PRIMARY KEY IDENTITY (1, 1),
@@ -15,7 +15,7 @@ INSERT INTO TEAM_CASTY.Rol (Nombre, Activo) VALUES ('Recepcionista',1);
 INSERT INTO TEAM_CASTY.Rol (Nombre, Activo) VALUES ('Guest',1);
 
 --SELECT * FROM TEAM_CASTY.Rol
-
+print("Roloes OK");
 --Funciones
 CREATE TABLE TEAM_CASTY.Funcion ( 
 	Cod_Funcion numeric(18) NOT NULL PRIMARY KEY IDENTITY (1, 1),
@@ -35,7 +35,7 @@ INSERT INTO TEAM_CASTY.Funcion(Descripcion) VALUES ('Facturar Estadía');
 INSERT INTO TEAM_CASTY.Funcion(Descripcion) VALUES ('Listado Estadístico');
 
 --SELECT * FROM TEAM_CASTY.Funcion
-
+print("Funciones OK");
 --FuncionesXRol
 CREATE TABLE TEAM_CASTY.FuncionXRol ( 
 	Cod_Rol numeric(18) NOT NULL,
@@ -66,7 +66,7 @@ INSERT INTO TEAM_CASTY.FuncionXRol(Cod_Rol,Cod_Funcion) VALUES (3,7);
 INSERT INTO TEAM_CASTY.FuncionXRol(Cod_Rol,Cod_Funcion) VALUES (3,8);
 
 --SELECT * FROM TEAM_CASTY.FuncionXRol
-
+print("Funciones por Rol OK");
 --Regimenes
 CREATE TABLE TEAM_CASTY.Regimen ( 
 	Cod_Regimen numeric(18) NOT NULL PRIMARY KEY IDENTITY (1, 1),
@@ -78,7 +78,7 @@ INSERT INTO TEAM_CASTY.Regimen SELECT DISTINCT t1.Regimen_Descripcion, t1.Regime
 							   ORDER BY t1.Regimen_Descripcion
 														   
 --SELECT * FROM TEAM_CASTY.Regimen
-
+print("Regimenes OK");
 --Tipos de Habitaciones
 CREATE TABLE TEAM_CASTY.Tipo_Habitacion ( 
 	Cod_Tipo numeric(18) NOT NULL PRIMARY KEY,
@@ -686,5 +686,25 @@ begin
 	RAISERROR (@mensaje,10,1);
 end
 end
+
+
+CREATE FUNCTION RolesDeUsuarioEnHotel
+(@usuario numeric(18),@hotel numeric(18))
+RETURNS TABLE
+AS
+RETURN 
+   select distinct r.Cod_Rol as Codigo, r.Nombre ,r.Activo
+   from TEAM_CASTY.RolXUsuarioXHotel RxUxH , TEAM_CASTY.Rol r 
+   where  RxUxH.Cod_Rol = r.Cod_Rol and RxUxH.Cod_Hotel = @hotel and RxUxH.Cod_Usuario = @usuario;
+   
+   
+CREATE FUNCTION FuncionesDeUnRol
+(@Rol numeric(18))
+RETURNS TABLE
+AS
+RETURN 
+   select distinct f.Cod_Funcion, f.Descripcion
+   from TEAM_CASTY.Funcion f , TEAM_CASTY.Rol r , TEAM_CASTY.FuncionXRol fXr
+   where  @Rol = r.Cod_Rol and r.Cod_Rol = fXr.Cod_Rol and fXr.Cod_Funcion=f.Cod_Funcion
 
 GO
