@@ -15,5 +15,17 @@ namespace FrbaHotel.Login
         {
             InitializeComponent();
         }
+
+        private void grp_usuario_y_pass_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button_volver_Click(object sender, EventArgs e)
+        {
+            MenuPrincipal menuPrincipal = new MenuPrincipal();
+            menuPrincipal.Show();
+            this.Hide();
+        }
     }
 }

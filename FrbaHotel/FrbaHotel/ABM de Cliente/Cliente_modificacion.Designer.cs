@@ -160,6 +160,7 @@
             this.txt_numeroIdentificacion.TextChanged += new System.EventHandler(this.txt_numeroIdentificacion_TextChanged);
             this.txt_numeroIdentificacion.Click += new System.EventHandler(this.txt_numeroIdentificacion_Click);
             this.txt_numeroIdentificacion.Leave += new System.EventHandler(this.txt_numeroIdentificacion_Leave);
+            this.txt_numeroIdentificacion.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_numeroIdentificacion_KeyPress);
             // 
             // cmb_tipoIdentificacion
             // 

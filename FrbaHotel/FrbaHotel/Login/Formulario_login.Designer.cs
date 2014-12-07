@@ -31,11 +31,13 @@
             this.button_aceptar = new System.Windows.Forms.Button();
             this.button_volver = new System.Windows.Forms.Button();
             this.grp_usuario_y_pass = new System.Windows.Forms.GroupBox();
+            this._lbl_password = new System.Windows.Forms.Label();
+            this._lbl_nombre_usuario = new System.Windows.Forms.Label();
+            this._txt_password = new System.Windows.Forms.TextBox();
+            this._txt_usuario = new System.Windows.Forms.TextBox();
             this.stat_BarraEstado = new System.Windows.Forms.StatusStrip();
             this.barra_progreso = new System.Windows.Forms.ToolStripProgressBar();
             this.label_progreso = new System.Windows.Forms.ToolStripStatusLabel();
-            this._txt_usuario = new System.Windows.Forms.TextBox();
-            this._txt_password = new System.Windows.Forms.TextBox();
             this.grp_usuario_y_pass.SuspendLayout();
             this.stat_BarraEstado.SuspendLayout();
             this.SuspendLayout();
@@ -65,6 +67,8 @@
             // 
             // grp_usuario_y_pass
             // 
+            this.grp_usuario_y_pass.Controls.Add(this._lbl_password);
+            this.grp_usuario_y_pass.Controls.Add(this._lbl_nombre_usuario);
             this.grp_usuario_y_pass.Controls.Add(this._txt_password);
             this.grp_usuario_y_pass.Controls.Add(this._txt_usuario);
             this.grp_usuario_y_pass.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
@@ -74,6 +78,42 @@
             this.grp_usuario_y_pass.TabIndex = 18;
             this.grp_usuario_y_pass.TabStop = false;
             this.grp_usuario_y_pass.Text = "Usuario y contraseña";
+            this.grp_usuario_y_pass.Enter += new System.EventHandler(this.grp_usuario_y_pass_Enter);
+            // 
+            // _lbl_password
+            // 
+            this._lbl_password.AutoSize = true;
+            this._lbl_password.ForeColor = System.Drawing.SystemColors.WindowText;
+            this._lbl_password.Location = new System.Drawing.Point(16, 47);
+            this._lbl_password.Name = "_lbl_password";
+            this._lbl_password.Size = new System.Drawing.Size(61, 13);
+            this._lbl_password.TabIndex = 3;
+            this._lbl_password.Text = "Contraseña";
+            // 
+            // _lbl_nombre_usuario
+            // 
+            this._lbl_nombre_usuario.AutoSize = true;
+            this._lbl_nombre_usuario.ForeColor = System.Drawing.SystemColors.WindowText;
+            this._lbl_nombre_usuario.Location = new System.Drawing.Point(16, 21);
+            this._lbl_nombre_usuario.Name = "_lbl_nombre_usuario";
+            this._lbl_nombre_usuario.Size = new System.Drawing.Size(96, 13);
+            this._lbl_nombre_usuario.TabIndex = 2;
+            this._lbl_nombre_usuario.Text = "Nombre de usuario";
+            // 
+            // _txt_password
+            // 
+            this._txt_password.Location = new System.Drawing.Point(133, 44);
+            this._txt_password.Name = "_txt_password";
+            this._txt_password.PasswordChar = '*';
+            this._txt_password.Size = new System.Drawing.Size(220, 20);
+            this._txt_password.TabIndex = 1;
+            // 
+            // _txt_usuario
+            // 
+            this._txt_usuario.Location = new System.Drawing.Point(133, 18);
+            this._txt_usuario.Name = "_txt_usuario";
+            this._txt_usuario.Size = new System.Drawing.Size(220, 20);
+            this._txt_usuario.TabIndex = 0;
             // 
             // stat_BarraEstado
             // 
@@ -96,20 +136,6 @@
             this.label_progreso.Name = "label_progreso";
             this.label_progreso.Size = new System.Drawing.Size(42, 17);
             this.label_progreso.Text = "Estado";
-            // 
-            // _txt_usuario
-            // 
-            this._txt_usuario.Location = new System.Drawing.Point(133, 18);
-            this._txt_usuario.Name = "_txt_usuario";
-            this._txt_usuario.Size = new System.Drawing.Size(220, 20);
-            this._txt_usuario.TabIndex = 0;
-            // 
-            // _txt_password
-            // 
-            this._txt_password.Location = new System.Drawing.Point(133, 44);
-            this._txt_password.Name = "_txt_password";
-            this._txt_password.Size = new System.Drawing.Size(220, 20);
-            this._txt_password.TabIndex = 1;
             // 
             // Formulario_login
             // 
@@ -143,5 +169,7 @@
         private System.Windows.Forms.ToolStripStatusLabel label_progreso;
         private System.Windows.Forms.TextBox _txt_password;
         private System.Windows.Forms.TextBox _txt_usuario;
+        private System.Windows.Forms.Label _lbl_password;
+        private System.Windows.Forms.Label _lbl_nombre_usuario;
     }
 }

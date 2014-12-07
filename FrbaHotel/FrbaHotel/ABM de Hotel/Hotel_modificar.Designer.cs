@@ -583,6 +583,7 @@
             this.txt_numero_calle.Name = "txt_numero_calle";
             this.txt_numero_calle.Size = new System.Drawing.Size(184, 20);
             this.txt_numero_calle.TabIndex = 207;
+            this.txt_numero_calle.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_numero_calle_KeyPress);
             // 
             // txt_calle
             // 
@@ -618,6 +619,7 @@
             this.txt_telefono.Name = "txt_telefono";
             this.txt_telefono.Size = new System.Drawing.Size(184, 20);
             this.txt_telefono.TabIndex = 203;
+            this.txt_telefono.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_telefono_KeyPress);
             // 
             // lbl_original
             // 
@@ -694,6 +696,7 @@
             // 
             // _original_tipos_regimenes
             // 
+            this._original_tipos_regimenes.BackColor = System.Drawing.SystemColors.ButtonFace;
             this._original_tipos_regimenes.Enabled = false;
             this._original_tipos_regimenes.FormattingEnabled = true;
             this._original_tipos_regimenes.Location = new System.Drawing.Point(163, 90);

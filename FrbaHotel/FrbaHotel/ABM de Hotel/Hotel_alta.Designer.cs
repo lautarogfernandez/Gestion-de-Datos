@@ -236,6 +236,7 @@
             this.txt_numero_calle.Name = "txt_numero_calle";
             this.txt_numero_calle.Size = new System.Drawing.Size(306, 20);
             this.txt_numero_calle.TabIndex = 6;
+            this.txt_numero_calle.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_numero_calle_KeyPress);
             // 
             // txt_calle
             // 
@@ -257,6 +258,7 @@
             this.txt_telefono.Name = "txt_telefono";
             this.txt_telefono.Size = new System.Drawing.Size(306, 20);
             this.txt_telefono.TabIndex = 2;
+            this.txt_telefono.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_telefono_KeyPress);
             // 
             // txt_mail
             // 
@@ -629,7 +631,7 @@
             this.stat_BarraEstado.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.barra_progreso,
             this.label_progreso});
-            this.stat_BarraEstado.Location = new System.Drawing.Point(0, 542);
+            this.stat_BarraEstado.Location = new System.Drawing.Point(0, 539);
             this.stat_BarraEstado.Name = "stat_BarraEstado";
             this.stat_BarraEstado.Size = new System.Drawing.Size(584, 22);
             this.stat_BarraEstado.TabIndex = 202;
@@ -650,7 +652,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 564);
+            this.ClientSize = new System.Drawing.Size(584, 561);
             this.Controls.Add(this.stat_BarraEstado);
             this.Controls.Add(this.cmb_ciudad);
             this.Controls.Add(this.list_tipos_regimenes);
