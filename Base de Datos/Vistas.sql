@@ -62,9 +62,9 @@ select * from TEAM_CASTY.vistaReservas
  
 
 --vista hotel
-Create view TEAM_CASTY.vistaHoteles(Codigo,Ciudad,Calle,"Numero Calle",Telefono,Mail,"Cantidad de estrellas", "Recarga por estrella" )
+Create view TEAM_CASTY.vistaHoteles(Codigo,Nombre,Ciudad,Calle,"Numero Calle",Telefono,Mail,"Cantidad de estrellas", "Recarga por estrella" )
 AS
-select  h.Cod_Hotel, c.Nombre ,h.Calle,h.Nro_Calle,h.Telefono,h.Mail,h.CantEstrella,re.Recarga  
+select  h.Cod_Hotel, h.Nombre, c.Nombre ,h.Calle,h.Nro_Calle,h.Telefono,h.Mail,h.CantEstrella,re.Recarga  
 from TEAM_CASTY.Hotel h, TEAM_CASTY.Ciudad c , TEAM_CASTY.Recarga_Estrella re
 where h.Cod_Ciudad= c.Cod_Ciudad
 

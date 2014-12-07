@@ -650,12 +650,12 @@ begin
 declare @mensaje varchar(1000);
 declare @error int;
 set @error=0;
-set @mensaje='Error: ';
+set @mensaje='Error:';
 
 if exists (select * from TEAM_CASTY.Usuario u where u.Username=@usuario and u.Habilitado =0 ) -- si existe y esta inhabilitado
 begin  
 	set @error=1;
-	set @mensaje+='Usuario inhabilitado.';  
+	set @mensaje+=' Usuario inhabilitado.';  
 end
 else
 begin
@@ -668,29 +668,40 @@ begin
         end  
         else -- si la contraseña es incorrecta
         begin
+			set @error=1;
+			set @mensaje+=' Contraseña incorrecta.'; 
 			update TEAM_CASTY.Usuario set Cant_Intentos= Cant_Intentos + 1 where Username = @usuario
             update TEAM_CASTY.Usuario set Habilitado=0 where Username = @usuario and Cant_Intentos >= 3
             if((select u.Cant_Intentos from TEAM_CASTY.Usuario u where u.Username=@usuario)=3)
             begin
-				set @error=1;
-				set @mensaje+='Se inahabilitó al usuario.'; 
+				set @mensaje+=' Se inahabilitó al usuario.'; 
            end           
         end      
      end   
      else-- si no existe
      begin
          set @error=1;
-		 set @mensaje+='Usuario inexistente.'; 
+		 set @mensaje+=' Usuario inexistente.'; 
      end   
 end
 
 if (@error=1)
 begin
-	set @mensaje=@mensaje + 'No se realizó el log in.';
+	set @mensaje=@mensaje + ' No se realizó el log in.';
 	RAISERROR (@mensaje,15,1);
 end
 end
 
+CREATE FUNCTION TEAM_CASTY.HotelesPorUsario
+(@usuario nvarchar(255))
+RETURNS TABLE
+AS
+RETURN 
+   select h.*
+   from TEAM_CASTY.RolXUsuarioXHotel RxUxH,TEAM_CASTY.Usuario u, TEAM_CASTY.vistaHoteles h
+   where @usuario=u.Username and
+   RxUxH.Cod_Usuario = u.Cod_Usuario and
+   RxUxH.Cod_Hotel=h.Codigo;
 
 CREATE FUNCTION TEAM_CASTY.RolesDeUsuarioEnHotel
 (@usuario numeric(18),@hotel numeric(18))
@@ -710,5 +721,116 @@ RETURN
    select distinct f.Cod_Funcion, f.Descripcion
    from TEAM_CASTY.Funcion f , TEAM_CASTY.Rol r , TEAM_CASTY.FuncionXRol fXr
    where  @Rol = r.Cod_Rol and r.Cod_Rol = fXr.Cod_Rol and fXr.Cod_Funcion=f.Cod_Funcion
+
+GO
+
+create view TEAM_CASTY.vistaClientes
+(Codigo, Nombre, Apellido, Mail, "Tipo Documento", "Numero Documento",Telefono,Pais,Localidad,"Calle","Numero Calle",Piso, "Departamento", Nacionalidad,"Fecha Nacimiento")
+AS
+select c.ID_Cliente, c.Nombre, c.Apellido, c.Mail, d.Tipo_Documento, c.Nro_Documento, c.Telefono, c.Pais, c.Localidad, c.Nom_Calle, c.Nro_Calle, c.Piso ,c.Dto,c.Nacionalidad, c.Fecha_Nacimiento
+from TEAM_CASTY.Cliente c, TEAM_CASTY.Tipo_Documento d
+where c.Baja=0;
+
+Create view TEAM_CASTY.vistaHoteles(Codigo,Nombre,Ciudad,Calle,"Numero Calle",Telefono,Mail,"Cantidad de estrellas", "Recarga por estrella" )
+AS
+select  h.Cod_Hotel, h.Nombre, c.Nombre ,h.Calle,h.Nro_Calle,h.Telefono,h.Mail,h.CantEstrella,re.Recarga  
+from TEAM_CASTY.Hotel h, TEAM_CASTY.Ciudad c , TEAM_CASTY.Recarga_Estrella re
+where h.Cod_Ciudad= c.Cod_Ciudad;
+
+create trigger TEAM_CASTY.alta_clientes
+ON TEAM_CASTY.vistaClientes
+instead of insert
+AS
+begin
+
+declare @mensaje varchar(1000);
+declare @error int;
+set @error=0;
+set @mensaje='Error:';
+
+if(exists (select * from TEAM_CASTY.Cliente c,inserted ins where c.Mail=ins.Mail))
+begin
+set @error=1
+set @mensaje=@mensaje + ' Mail repetido.';
+end
+
+if(exists (select * from TEAM_CASTY.Cliente c,inserted ins,TEAM_CASTY.Tipo_Documento tdoc where c.Nro_Documento=ins.[Numero Documento] and c.ID_Tipo_Documento=tdoc.ID_Tipo_Documento and ins.[Tipo Documento]=tdoc.Tipo_Documento))
+begin
+set @error=1
+set @mensaje=@mensaje + ' Documento repetido.';
+end
+
+if(@error=0)
+begin
+insert into TEAM_CASTY.Cliente
+(Apellido,Nom_Calle,Dto,Fecha_Nacimiento,Localidad,Mail,Nacionalidad,Nombre,Nro_Calle,Nro_Documento,Pais,Piso,Telefono,ID_Tipo_Documento)
+select ins.Apellido,ins.Calle,ins.Departamento,ins.[Fecha Nacimiento],ins.Localidad,ins.Mail,ins.Nacionalidad,ins.Nombre,
+ins.[Numero Calle],ins.[Numero Documento],ins.Pais,ins.Piso,ins.Telefono,tdoc.ID_Tipo_Documento
+from inserted ins, TEAM_CASTY.Tipo_Documento tdoc
+where tdoc.Tipo_Documento=ins.[Tipo Documento]
+end
+
+else
+begin
+set @mensaje=@mensaje + ' No se realizó el alta.';
+RAISERROR (@mensaje,15,1);
+end
+
+end;
+
+
+create trigger TEAM_CASTY.baja_clientes
+ON TEAM_CASTY.vistaClientes
+instead of delete
+AS
+begin
+update clie
+set Baja=1
+from TEAM_CASTY.Cliente clie, deleted del
+where del.Codigo=clie.ID_Cliente;
+end;
+
+
+create trigger TEAM_CASTY.modif_clientes
+ON TEAM_CASTY.vistaClientes
+instead of update
+AS
+begin
+
+declare @mensaje varchar(1000);
+declare @error int;
+set @error=0;
+set @mensaje='Error:';
+
+if(exists (select * from TEAM_CASTY.Cliente c,inserted ins where c.Mail=ins.Mail and ins.Codigo<>c.ID_Cliente))
+begin
+set @error=1
+set @mensaje=@mensaje + ' Mail repetido.';
+end
+
+if(exists (select * from TEAM_CASTY.Cliente c,inserted ins,TEAM_CASTY.Tipo_Documento tdoc where c.Nro_Documento=ins.[Numero Documento] and tdoc.Tipo_Documento=ins.[Tipo Documento] and c.ID_Tipo_Documento=tdoc.ID_Tipo_Documento and c.ID_Cliente<>ins.Codigo))
+begin
+set @error=1
+set @mensaje=@mensaje + ' Documento repetido.';
+end
+
+if(@error=0)
+begin
+update c
+set c.Nombre=ins.Nombre,c.Apellido=ins.Apellido,c.Mail=ins.Mail,c.ID_Tipo_Documento=tdoc.ID_Tipo_Documento,
+c.Nro_Documento=ins.[Numero Documento],c.Telefono=ins.Telefono,c.Pais=ins.Pais,c.Localidad=ins.Localidad,
+c.Nom_Calle=ins.Calle,c.Nro_Calle=ins.[Numero Calle],c.Piso=ins.Piso,c.Dto=ins.Departamento,
+c.Nacionalidad=ins.Nacionalidad, c.Fecha_Nacimiento=ins.[Fecha Nacimiento]
+from TEAM_CASTY.Cliente c, inserted ins,TEAM_CASTY.Tipo_Documento tdoc
+where ins.Codigo=c.ID_Cliente and ins.[Tipo Documento] = tdoc.Tipo_Documento
+end
+
+else
+begin
+set @mensaje=@mensaje + ' No se realizó la modificación.';
+RAISERROR (@mensaje,10,1);
+end
+
+end;
 
 GO

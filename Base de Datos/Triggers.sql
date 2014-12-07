@@ -8,18 +8,18 @@ begin
 declare @mensaje varchar(1000);
 declare @error int;
 set @error=0;
-set @mensaje='Error: ';
+set @mensaje='Error:';
 
 if(exists (select * from TEAM_CASTY.Cliente c,inserted ins where c.Mail=ins.Mail))
 begin
 set @error=1
-set @mensaje=@mensaje + 'Mail repetido. ';
+set @mensaje=@mensaje + ' Mail repetido.';
 end
 
 if(exists (select * from TEAM_CASTY.Cliente c,inserted ins,TEAM_CASTY.Tipo_Documento tdoc where c.Nro_Documento=ins.[Numero Documento] and c.ID_Tipo_Documento=tdoc.ID_Tipo_Documento and ins.[Tipo Documento]=tdoc.Tipo_Documento))
 begin
 set @error=1
-set @mensaje=@mensaje + 'Documento repetido. ';
+set @mensaje=@mensaje + ' Documento repetido.';
 end
 
 if(@error=0)
@@ -34,8 +34,8 @@ end
 
 else
 begin
-set @mensaje=@mensaje + 'No se realizó el alta';
-RAISERROR (@mensaje,10,1);
+set @mensaje=@mensaje + ' No se realizó el alta.';
+RAISERROR (@mensaje,15,1);
 end
 
 end;
@@ -62,18 +62,18 @@ begin
 declare @mensaje varchar(1000);
 declare @error int;
 set @error=0;
-set @mensaje='Error: ';
+set @mensaje='Error:';
 
 if(exists (select * from TEAM_CASTY.Cliente c,inserted ins where c.Mail=ins.Mail and ins.Codigo<>c.ID_Cliente))
 begin
 set @error=1
-set @mensaje=@mensaje + 'Mail repetido. ';
+set @mensaje=@mensaje + ' Mail repetido.';
 end
 
 if(exists (select * from TEAM_CASTY.Cliente c,inserted ins,TEAM_CASTY.Tipo_Documento tdoc where c.Nro_Documento=ins.[Numero Documento] and tdoc.Tipo_Documento=ins.[Tipo Documento] and c.ID_Tipo_Documento=tdoc.ID_Tipo_Documento and c.ID_Cliente<>ins.Codigo))
 begin
 set @error=1
-set @mensaje=@mensaje + 'Documento repetido. ';
+set @mensaje=@mensaje + ' Documento repetido.';
 end
 
 if(@error=0)
@@ -89,7 +89,7 @@ end
 
 else
 begin
-set @mensaje=@mensaje + 'No se realizó el alta';
+set @mensaje=@mensaje + ' No se realizó la modificación.';
 RAISERROR (@mensaje,10,1);
 end
 
