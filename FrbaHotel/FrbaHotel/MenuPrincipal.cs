@@ -30,6 +30,15 @@ namespace FrbaHotel
         private void MenuPrincipal_Load(object sender, EventArgs e)
         {
             lbl_usuario.Text = Home._nombreUsuario;
+            if ((Home._nombreUsuario).ToLower() != "guest")
+            {
+                button_logout.Visible = true;
+                string msj = "Bienvenido: "+lbl_usuario.Text+".\n Seleccione un hotel y seleccione un rol para continuar.";
+                MessageBox.Show(msj, "Excepcion SQL", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                label_progreso.Text = "Seleccione un hotel para continuar.";
+            }
+            else
+                button_logout.Visible = false;
         }
 
         private void button_mostrar_hoteles_Click(object sender, EventArgs e)
@@ -44,8 +53,11 @@ namespace FrbaHotel
             DataTable tablaCiudad= new DataTable();
             try
             {
-                adaptador = new SqlDataAdapter("SELECT DISTINCT [Ciudad],[Calle],[Numero Calle] FROM [GD2C2014].[Team_Casty].[vistaHoteles]", conn);
-                adaptador.Fill(tablaCiudad);
+                //adaptador = new SqlDataAdapter("SELECT DISTINCT [Codigo],[Nombre],[Ciudad],[Calle],[Numero Calle],"+
+                //                               "[Telefono],[Cantidad de Estrellas] FROM [GD2C2014].[Team_Casty].[vistaHoteles]", conn);
+            
+            adaptador = new SqlDataAdapter("SELECT * FROM [TEAM_CASTY].HotelesPorUsario (1)", conn);
+            adaptador.Fill(tablaCiudad);
                 dgv_hoteles.DataSource = tablaCiudad;
                 barra_progreso.Value = 100;
                 label_progreso.Text = "Carga de Hoteles completa";
@@ -68,7 +80,8 @@ namespace FrbaHotel
 
         private void dgv_hoteles_MouseHover(object sender, EventArgs e)
         {
-            dgv_hoteles.Width = dgv_hoteles.PreferredSize.Width;
+            if(dgv_hoteles.DataSource!=null)
+            dgv_hoteles.Width = Math.Min(dgv_hoteles.PreferredSize.Width,this.Size.Width-100);
         }
 
         private void dgv_hoteles_MouseLeave(object sender, EventArgs e)

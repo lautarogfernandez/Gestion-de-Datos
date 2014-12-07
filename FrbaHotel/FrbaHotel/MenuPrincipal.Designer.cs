@@ -43,17 +43,19 @@
             this.label_progreso = new System.Windows.Forms.ToolStripStatusLabel();
             this.stat_BarraEstado = new System.Windows.Forms.StatusStrip();
             this.lbl_usuario = new System.Windows.Forms.Label();
+            this.grp_formularios = new System.Windows.Forms.GroupBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imagenHotel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_hoteles)).BeginInit();
             this.stat_BarraEstado.SuspendLayout();
+            this.grp_formularios.SuspendLayout();
             this.SuspendLayout();
             // 
             // button_mostrar_hoteles
             // 
             this.button_mostrar_hoteles.Location = new System.Drawing.Point(12, 60);
             this.button_mostrar_hoteles.Name = "button_mostrar_hoteles";
-            this.button_mostrar_hoteles.Size = new System.Drawing.Size(148, 57);
+            this.button_mostrar_hoteles.Size = new System.Drawing.Size(127, 57);
             this.button_mostrar_hoteles.TabIndex = 0;
             this.button_mostrar_hoteles.Text = "Mostrar Hoteles";
             this.button_mostrar_hoteles.UseVisualStyleBackColor = true;
@@ -67,7 +69,7 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.combo_objeto,
             this.combo_operacion});
-            this.menuStrip1.Location = new System.Drawing.Point(10, 25);
+            this.menuStrip1.Location = new System.Drawing.Point(12, 24);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(273, 27);
             this.menuStrip1.TabIndex = 5;
@@ -102,7 +104,7 @@
             // lbl_bienvenido
             // 
             this.lbl_bienvenido.AutoSize = true;
-            this.lbl_bienvenido.Location = new System.Drawing.Point(336, 9);
+            this.lbl_bienvenido.Location = new System.Drawing.Point(403, 9);
             this.lbl_bienvenido.Name = "lbl_bienvenido";
             this.lbl_bienvenido.Size = new System.Drawing.Size(60, 13);
             this.lbl_bienvenido.TabIndex = 6;
@@ -130,7 +132,7 @@
             // 
             // button_ir
             // 
-            this.button_ir.Location = new System.Drawing.Point(285, 27);
+            this.button_ir.Location = new System.Drawing.Point(279, 18);
             this.button_ir.Name = "button_ir";
             this.button_ir.Size = new System.Drawing.Size(40, 20);
             this.button_ir.TabIndex = 9;
@@ -190,25 +192,35 @@
             // lbl_usuario
             // 
             this.lbl_usuario.AutoSize = true;
-            this.lbl_usuario.Location = new System.Drawing.Point(403, 9);
+            this.lbl_usuario.Location = new System.Drawing.Point(470, 9);
             this.lbl_usuario.Name = "lbl_usuario";
             this.lbl_usuario.Size = new System.Drawing.Size(35, 13);
             this.lbl_usuario.TabIndex = 12;
             this.lbl_usuario.Text = "Guest";
+            // 
+            // grp_formularios
+            // 
+            this.grp_formularios.Controls.Add(this.button_ir);
+            this.grp_formularios.Location = new System.Drawing.Point(13, 9);
+            this.grp_formularios.Name = "grp_formularios";
+            this.grp_formularios.Size = new System.Drawing.Size(330, 45);
+            this.grp_formularios.TabIndex = 13;
+            this.grp_formularios.TabStop = false;
+            this.grp_formularios.Text = "Formularios Disponibles";
             // 
             // MenuPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 461);
+            this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.grp_formularios);
             this.Controls.Add(this.lbl_usuario);
             this.Controls.Add(this.dgv_hoteles);
-            this.Controls.Add(this.button_ir);
             this.Controls.Add(this.button_logout);
             this.Controls.Add(this.button_login);
             this.Controls.Add(this.lbl_bienvenido);
             this.Controls.Add(this.stat_BarraEstado);
-            this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.button_mostrar_hoteles);
             this.Controls.Add(this.imagenHotel);
             this.MaximumSize = new System.Drawing.Size(600, 500);
@@ -222,6 +234,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_hoteles)).EndInit();
             this.stat_BarraEstado.ResumeLayout(false);
             this.stat_BarraEstado.PerformLayout();
+            this.grp_formularios.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -243,5 +256,6 @@
         private System.Windows.Forms.ToolStripStatusLabel label_progreso;
         private System.Windows.Forms.StatusStrip stat_BarraEstado;
         private System.Windows.Forms.Label lbl_usuario;
+        private System.Windows.Forms.GroupBox grp_formularios;
     }
 }

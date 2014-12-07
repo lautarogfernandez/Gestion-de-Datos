@@ -35,7 +35,6 @@ namespace FrbaHotel.Login
         {
             string password = Encriptado.Encriptador.SHA256Encripta(_txt_password.Text);
             string username = _txt_usuario.Text;
-            int rows;
             try
             {
                 string connectionString = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;";
@@ -55,7 +54,9 @@ namespace FrbaHotel.Login
                             Home._nombreUsuario = username;
                             string msj = "Usuario validado con éxito \n";
                             MessageBox.Show(msj, "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-
+                            MenuPrincipal menuPrincipal = new MenuPrincipal();
+                            menuPrincipal.Show();
+                            this.Hide();
 
                     }
                 }
