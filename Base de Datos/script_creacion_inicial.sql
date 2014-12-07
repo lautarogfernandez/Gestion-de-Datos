@@ -3,7 +3,7 @@ USE [GD2C2014]
 GO
 CREATE SCHEMA [TEAM_CASTY] AUTHORIZATION [gd]
 GO
-print("Esquema creado");
+print('Esquema creado');
 --Roles
 CREATE TABLE TEAM_CASTY.Rol ( 
 	Cod_Rol numeric(18) NOT NULL PRIMARY KEY IDENTITY (1, 1),
@@ -15,7 +15,7 @@ INSERT INTO TEAM_CASTY.Rol (Nombre, Activo) VALUES ('Recepcionista',1);
 INSERT INTO TEAM_CASTY.Rol (Nombre, Activo) VALUES ('Guest',1);
 
 --SELECT * FROM TEAM_CASTY.Rol
-print("Roloes OK");
+print('Roloes OK');
 --Funciones
 CREATE TABLE TEAM_CASTY.Funcion ( 
 	Cod_Funcion numeric(18) NOT NULL PRIMARY KEY IDENTITY (1, 1),
@@ -35,7 +35,7 @@ INSERT INTO TEAM_CASTY.Funcion(Descripcion) VALUES ('Facturar Estadía');
 INSERT INTO TEAM_CASTY.Funcion(Descripcion) VALUES ('Listado Estadístico');
 
 --SELECT * FROM TEAM_CASTY.Funcion
-print("Funciones OK");
+print('Funciones OK');
 --FuncionesXRol
 CREATE TABLE TEAM_CASTY.FuncionXRol ( 
 	Cod_Rol numeric(18) NOT NULL,
@@ -66,7 +66,7 @@ INSERT INTO TEAM_CASTY.FuncionXRol(Cod_Rol,Cod_Funcion) VALUES (3,7);
 INSERT INTO TEAM_CASTY.FuncionXRol(Cod_Rol,Cod_Funcion) VALUES (3,8);
 
 --SELECT * FROM TEAM_CASTY.FuncionXRol
-print("Funciones por Rol OK");
+print('Funciones por Rol OK');
 --Regimenes
 CREATE TABLE TEAM_CASTY.Regimen ( 
 	Cod_Regimen numeric(18) NOT NULL PRIMARY KEY IDENTITY (1, 1),
@@ -78,7 +78,7 @@ INSERT INTO TEAM_CASTY.Regimen SELECT DISTINCT t1.Regimen_Descripcion, t1.Regime
 							   ORDER BY t1.Regimen_Descripcion
 														   
 --SELECT * FROM TEAM_CASTY.Regimen
-print("Regimenes OK");
+print('Regimenes OK');
 --Tipos de Habitaciones
 CREATE TABLE TEAM_CASTY.Tipo_Habitacion ( 
 	Cod_Tipo numeric(18) NOT NULL PRIMARY KEY,
@@ -90,7 +90,7 @@ INSERT INTO TEAM_CASTY.Tipo_Habitacion SELECT DISTINCT t1.Habitacion_Tipo_Codigo
 							   ORDER BY t1.Habitacion_Tipo_Codigo
 							   
 --SELECT * FROM TEAM_CASTY.Tipo_Habitacion
-
+print('Tipos de  OK');
 --Recarga Estrella
 CREATE TABLE TEAM_CASTY.Recarga_Estrella ( 
 	Cod_Recarga numeric(18) NOT NULL PRIMARY KEY IDENTITY (1, 1),
