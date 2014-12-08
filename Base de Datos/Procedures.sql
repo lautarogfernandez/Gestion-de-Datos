@@ -147,8 +147,6 @@ begin
 	set @error=1;
 	set @mensaje=@mensaje + 'El usuario no puede operar sobre ese hotel';
 end;
-
-
 	
 if (@error=0)	
 begin
@@ -220,23 +218,42 @@ end
 end;
 
 
-
-
 --PUNTO 12
 
 create function TEAM_CASTY.PrecioPorDiaEspecifico
 (@hotel numeric(18), @regimen numeric (18),@tipo_habitacion numeric (18))
-RETURNS @precio numeric (18,2)
+RETURNS numeric(18,2)
 AS
-begin
-INSERT  into @tablaPorDia 
-select distinct reg.Descripcion, thab.Descripcion, (reg.Precio*thab.Porcentual+(hot.CantEstrella*(select top 1 rec.Recarga from TEAM_CASTY.Recarga_Estrella rec order by rec.Fecha_Modificacion desc))) [Precio Por Dia]
-from TEAM_CASTY.Tipo_Habitacion thab,TEAM_CASTY.Hotel hot,TEAM_CASTY.Regimen reg, TEAM_CASTY.RegimenXHotel rxh
-where hot.Cod_Hotel=@hotel and rxh.Cod_Hotel=@hotel and rxh.Activo=1
-RETURN 
+begin 
+declare @precio numeric(18,2);
+@precio=
+
+declare @hotel numeric (18);
+declare @regimen numeric (18);
+declare @tipo_habitacion numeric (18);
+set @hotel=1;
+set @regimen=1;
+set @tipo_habitacion=1;
+
+select (reg.Precio*thab.Porcentual+(hot.CantEstrella*(select top 1 rec.Recarga from TEAM_CASTY.Recarga_Estrella rec order by rec.Fecha_Modificacion desc)))
+from TEAM_CASTY.Tipo_Habitacion thab,TEAM_CASTY.Hotel hot,TEAM_CASTY.Regimen reg
+where hot.Cod_Hotel=@hotel  and reg.Cod_Regimen=@regimen and
+thab.Cod_Tipo=@tipo_habitacion;
+return @precio;
 end;
 
+select * from TEAM_CASTY.Hotel
+select * from TEAM_CASTY.Regimen
+select * from TEAM_CASTY.Tipo_Habitacion
+select ((1.8*250)+1*10)
 
+declare @a numeric (18);
+declare @b numeric (18);
+declare @c numeric (18);
+set @a=1;
+set @b=1;
+set @c=1;
+select TEAM_CASTY.PrecioPorDiaEspecifico(@a,@b,@c);
 
 create procedure  TEAM_CASTY.Facturar
 @cod_Estadia numeric(18), @fecha datetime, @cod_forma_pago numeric(18)

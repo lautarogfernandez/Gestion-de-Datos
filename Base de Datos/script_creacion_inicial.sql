@@ -1184,3 +1184,9 @@ end
 end;
 
 GO
+
+create view TEAM_CASTY.vistasRoles
+AS  
+select   rol.Cod_Rol as [Codigo de Rol], rol.Nombre,rol.Activo
+from  TEAM_CASTY.Rol rol
+where rol.Cod_Rol<>1
