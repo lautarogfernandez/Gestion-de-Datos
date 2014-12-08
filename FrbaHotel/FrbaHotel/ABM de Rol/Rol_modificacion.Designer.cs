@@ -36,20 +36,19 @@
             this.button_volver = new System.Windows.Forms.Button();
             this.button_limpiar = new System.Windows.Forms.Button();
             this.Filtros_de_busqueda = new System.Windows.Forms.GroupBox();
+            this.rb_inactivo = new System.Windows.Forms.RadioButton();
+            this.rb_activo = new System.Windows.Forms.RadioButton();
+            this.lbl_inactivo = new System.Windows.Forms.Label();
             this.button_Buscar = new System.Windows.Forms.Button();
             this.txt_nombre = new System.Windows.Forms.TextBox();
             this.lbl_nombre = new System.Windows.Forms.Label();
             this.lbl_activo = new System.Windows.Forms.Label();
-            this.dgv_funciones = new System.Windows.Forms.DataGridView();
-            this.lbl_inactivo = new System.Windows.Forms.Label();
             this.lbl_roles = new System.Windows.Forms.Label();
             this.lbl_funciones = new System.Windows.Forms.Label();
-            this.rb_activo = new System.Windows.Forms.RadioButton();
-            this.rb_inactivo = new System.Windows.Forms.RadioButton();
+            this.list_funciones = new System.Windows.Forms.CheckedListBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_roles)).BeginInit();
             this.stat_BarraEstado.SuspendLayout();
             this.Filtros_de_busqueda.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_funciones)).BeginInit();
             this.SuspendLayout();
             // 
             // button_modificar
@@ -79,6 +78,7 @@
             this.dgv_roles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_roles.Size = new System.Drawing.Size(277, 343);
             this.dgv_roles.TabIndex = 198;
+            this.dgv_roles.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_roles_CellContentClick);
             // 
             // stat_BarraEstado
             // 
@@ -143,6 +143,36 @@
             this.Filtros_de_busqueda.TabStop = false;
             this.Filtros_de_busqueda.Text = "Filtros de búsqueda";
             // 
+            // rb_inactivo
+            // 
+            this.rb_inactivo.AutoSize = true;
+            this.rb_inactivo.Location = new System.Drawing.Point(364, 43);
+            this.rb_inactivo.Name = "rb_inactivo";
+            this.rb_inactivo.Size = new System.Drawing.Size(14, 13);
+            this.rb_inactivo.TabIndex = 9;
+            this.rb_inactivo.TabStop = true;
+            this.rb_inactivo.UseVisualStyleBackColor = true;
+            // 
+            // rb_activo
+            // 
+            this.rb_activo.AutoSize = true;
+            this.rb_activo.Location = new System.Drawing.Point(295, 43);
+            this.rb_activo.Name = "rb_activo";
+            this.rb_activo.Size = new System.Drawing.Size(14, 13);
+            this.rb_activo.TabIndex = 8;
+            this.rb_activo.TabStop = true;
+            this.rb_activo.UseVisualStyleBackColor = true;
+            // 
+            // lbl_inactivo
+            // 
+            this.lbl_inactivo.AutoSize = true;
+            this.lbl_inactivo.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.lbl_inactivo.Location = new System.Drawing.Point(343, 16);
+            this.lbl_inactivo.Name = "lbl_inactivo";
+            this.lbl_inactivo.Size = new System.Drawing.Size(57, 13);
+            this.lbl_inactivo.TabIndex = 7;
+            this.lbl_inactivo.Text = "INACTIVO";
+            // 
             // button_Buscar
             // 
             this.button_Buscar.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -163,6 +193,9 @@
             this.txt_nombre.Size = new System.Drawing.Size(179, 20);
             this.txt_nombre.TabIndex = 3;
             this.txt_nombre.Text = "Ingrese Nombre";
+            this.txt_nombre.TextChanged += new System.EventHandler(this.txt_nombre_TextChanged);
+            this.txt_nombre.Click += new System.EventHandler(this.txt_nombre_Click);
+            this.txt_nombre.Leave += new System.EventHandler(this.txt_nombre_Leave);
             // 
             // lbl_nombre
             // 
@@ -185,31 +218,6 @@
             this.lbl_activo.TabIndex = 2;
             this.lbl_activo.Text = "ACTIVO";
             // 
-            // dgv_funciones
-            // 
-            this.dgv_funciones.AllowUserToAddRows = false;
-            this.dgv_funciones.AllowUserToDeleteRows = false;
-            this.dgv_funciones.AllowUserToOrderColumns = true;
-            this.dgv_funciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_funciones.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.dgv_funciones.Location = new System.Drawing.Point(295, 126);
-            this.dgv_funciones.MultiSelect = false;
-            this.dgv_funciones.Name = "dgv_funciones";
-            this.dgv_funciones.ReadOnly = true;
-            this.dgv_funciones.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_funciones.Size = new System.Drawing.Size(277, 343);
-            this.dgv_funciones.TabIndex = 204;
-            // 
-            // lbl_inactivo
-            // 
-            this.lbl_inactivo.AutoSize = true;
-            this.lbl_inactivo.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lbl_inactivo.Location = new System.Drawing.Point(343, 16);
-            this.lbl_inactivo.Name = "lbl_inactivo";
-            this.lbl_inactivo.Size = new System.Drawing.Size(57, 13);
-            this.lbl_inactivo.TabIndex = 7;
-            this.lbl_inactivo.Text = "INACTIVO";
-            // 
             // lbl_roles
             // 
             this.lbl_roles.AutoSize = true;
@@ -231,34 +239,23 @@
             this.lbl_funciones.TabIndex = 206;
             this.lbl_funciones.Text = "Funciones del Rol";
             // 
-            // rb_activo
+            // list_funciones
             // 
-            this.rb_activo.AutoSize = true;
-            this.rb_activo.Location = new System.Drawing.Point(295, 43);
-            this.rb_activo.Name = "rb_activo";
-            this.rb_activo.Size = new System.Drawing.Size(14, 13);
-            this.rb_activo.TabIndex = 8;
-            this.rb_activo.TabStop = true;
-            this.rb_activo.UseVisualStyleBackColor = true;
-            // 
-            // rb_inactivo
-            // 
-            this.rb_inactivo.AutoSize = true;
-            this.rb_inactivo.Location = new System.Drawing.Point(364, 43);
-            this.rb_inactivo.Name = "rb_inactivo";
-            this.rb_inactivo.Size = new System.Drawing.Size(14, 13);
-            this.rb_inactivo.TabIndex = 9;
-            this.rb_inactivo.TabStop = true;
-            this.rb_inactivo.UseVisualStyleBackColor = true;
+            this.list_funciones.Enabled = false;
+            this.list_funciones.FormattingEnabled = true;
+            this.list_funciones.Location = new System.Drawing.Point(295, 126);
+            this.list_funciones.Name = "list_funciones";
+            this.list_funciones.Size = new System.Drawing.Size(277, 334);
+            this.list_funciones.TabIndex = 207;
             // 
             // Rol_modificacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 561);
+            this.Controls.Add(this.list_funciones);
             this.Controls.Add(this.lbl_funciones);
             this.Controls.Add(this.lbl_roles);
-            this.Controls.Add(this.dgv_funciones);
             this.Controls.Add(this.button_modificar);
             this.Controls.Add(this.dgv_roles);
             this.Controls.Add(this.stat_BarraEstado);
@@ -275,7 +272,6 @@
             this.stat_BarraEstado.PerformLayout();
             this.Filtros_de_busqueda.ResumeLayout(false);
             this.Filtros_de_busqueda.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_funciones)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -295,11 +291,11 @@
         private System.Windows.Forms.TextBox txt_nombre;
         private System.Windows.Forms.Label lbl_nombre;
         private System.Windows.Forms.Label lbl_activo;
-        private System.Windows.Forms.DataGridView dgv_funciones;
         private System.Windows.Forms.Label lbl_inactivo;
         private System.Windows.Forms.Label lbl_roles;
         private System.Windows.Forms.Label lbl_funciones;
         private System.Windows.Forms.RadioButton rb_inactivo;
         private System.Windows.Forms.RadioButton rb_activo;
+        private System.Windows.Forms.CheckedListBox list_funciones;
     }
 }

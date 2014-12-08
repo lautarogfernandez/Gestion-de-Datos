@@ -124,7 +124,7 @@ namespace FrbaHotel.ABM_de_Hotel
         {
             button_modificar.Enabled = false;
             button_modificar.ForeColor = SystemColors.ScrollBar;
-            string busqueda = "SELECT [Codigo], [Ciudad], [Calle], [Numero Calle], [Telefono], [Mail], [Pais], " +
+            string busqueda = "SELECT [Codigo],[Pais],[Nombre], [Ciudad], [Calle], [Numero Calle], [Telefono], [Mail], [Fecha Creacion], " +
                                            "[Cantidad de estrellas] FROM [GD2C2014].[Team_Casty].[vistaHoteles]";          //búsqueda básica
             button_Buscar.Enabled = false;            //Deshabilito búsqueda hasta que haya resultado
             label_progreso.Text = "Cargando Hoteles";       //Imprime en la barra de progreso

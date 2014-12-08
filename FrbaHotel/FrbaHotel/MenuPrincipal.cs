@@ -115,6 +115,7 @@ namespace FrbaHotel
                     {
                         rutaFormularioElegido = "ABM_de_Cliente.Cliente_";
                         combo_operacion.Items.AddRange(operaciones);
+                        combo_operacion.Items.Add("ClientesErroneos");
                         break;
                     }
                 case "Hotel":

@@ -60,6 +60,12 @@
     <Compile Include="ABM de Cliente\Cliente_baja.Designer.cs">
       <DependentUpon>Cliente_baja.cs</DependentUpon>
     </Compile>
+    <Compile Include="ABM de Cliente\Cliente_clienteserroneos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Cliente\Cliente_clienteserroneos.Designer.cs">
+      <DependentUpon>Cliente_clienteserroneos.cs</DependentUpon>
+    </Compile>
     <Compile Include="ABM de Cliente\Cliente_listado.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -120,6 +126,12 @@
     <Compile Include="ABM de Rol\Rol_modificacion.Designer.cs">
       <DependentUpon>Rol_modificacion.cs</DependentUpon>
     </Compile>
+    <Compile Include="ABM de Rol\Rol_modificar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Rol\Rol_modificar.Designer.cs">
+      <DependentUpon>Rol_modificar.cs</DependentUpon>
+    </Compile>
     <Compile Include="ABM de Usuario\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -166,6 +178,9 @@
     <EmbeddedResource Include="ABM de Cliente\Cliente_baja.resx">
       <DependentUpon>Cliente_baja.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Cliente\Cliente_clienteserroneos.resx">
+      <DependentUpon>Cliente_clienteserroneos.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ABM de Cliente\Cliente_listado.resx">
       <DependentUpon>Cliente_listado.cs</DependentUpon>
     </EmbeddedResource>
@@ -189,6 +204,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ABM de Rol\Rol_modificacion.resx">
       <DependentUpon>Rol_modificacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Rol\Rol_modificar.resx">
+      <DependentUpon>Rol_modificar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login\Formulario_login.resx">
       <DependentUpon>Formulario_login.cs</DependentUpon>

@@ -16,6 +16,30 @@ namespace FrbaHotel.ABM_de_Rol
         public Rol_modificacion()
         {
             InitializeComponent();
+            string busqueda = "SELECT [Cod_funcion], [Descripcion] FROM [TEAM_CASTY].Funcion";
+            string ConnStr = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;"; //ruta de la conexión
+            SqlConnection conn = new SqlConnection(ConnStr);                                                             //conexión
+            conn.Open();                                                                                                                                 //Abrir Conexión
+            SqlCommand cmd = new SqlCommand(busqueda, conn);
+            try
+            {
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    list_funciones.Items.Add(reader["Descripcion"].ToString());
+                }
+                reader.Close();
+
+            }
+            catch (SqlException exc)
+            {
+                string msj = "Errores de sql: \n";
+                for (int i = 0; i < exc.Errors.Count; i++)
+                    msj += exc.Errors[i].Message + "\n";
+                MessageBox.Show(msj, "Excepcion SQL", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            }
+
+            conn.Close();
         }
 
         private void Rol_modificacion_Load(object sender, EventArgs e)
@@ -66,7 +90,7 @@ namespace FrbaHotel.ABM_de_Rol
         {
             button_modificar.Enabled = false;
             button_modificar.ForeColor = SystemColors.ScrollBar;
-            string busqueda = "SELECT [Codigo de Rol], [Nombre], [Activo] FROM [GD2C2014].[Team_Casty].[vistaRoles]";          //búsqueda básica
+            string busqueda = "SELECT [Codigo de Rol], [Nombre], [Activo] FROM [GD2C2014].[TEAM_CASTY].[vistaRoles]";          //búsqueda básica
             button_Buscar.Enabled = false;            //Deshabilito búsqueda hasta que haya resultado
             label_progreso.Text = "Cargando Roles";       //Imprime en la barra de progreso
             SqlConnection conn = Home.obtenerConexion();                                                                                                                                 //Abrir Conexión
@@ -125,15 +149,52 @@ namespace FrbaHotel.ABM_de_Rol
         private void button_limpiar_Click(object sender, EventArgs e)
         {
             dgv_roles.DataSource = null;
-            dgv_funciones.DataSource = null;
+            list_funciones.ClearSelected();
             button_limpiar.Enabled = false;
             button_limpiar.ForeColor = SystemColors.ScrollBar;    
             label_progreso.Text = "Tabla de resultados vacía";
             button_modificar.Enabled = false;
             button_modificar.ForeColor = SystemColors.ScrollBar;
+            for (int i = 0; i < list_funciones.Items.Count; i++)
+                list_funciones.SetItemChecked(i, false);
         }
 
         private void button_modificar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dgv_roles_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            string busqueda = "SELECT [Cod_Funcion], [Descripcion] FROM [TEAM_CASTY].FuncionesDeUnRol ("+dgv_roles.SelectedCells[0].Value+")";
+            string ConnStr = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;"; //ruta de la conexión
+            SqlConnection conn = new SqlConnection(ConnStr);                                                             //conexión
+            conn.Open();                                                                                                                                 //Abrir Conexión
+            SqlCommand cmd = new SqlCommand(busqueda, conn);
+            for (int i = 0; i < list_funciones.Items.Count; i++)
+                list_funciones.SetItemChecked(i, false);
+            try
+            {
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    list_funciones.SetItemChecked(Convert.ToInt32(reader["Cod_Funcion"])-1,true);
+                }
+                reader.Close();
+
+            }
+            catch (SqlException exc)
+            {
+                string msj = "Errores de sql: \n";
+                for (int i = 0; i < exc.Errors.Count; i++)
+                    msj += exc.Errors[i].Message + "\n";
+                MessageBox.Show(msj, "Excepcion SQL", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            }
+
+            conn.Close();
+        }
+
+        private void dgv_funciones_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
