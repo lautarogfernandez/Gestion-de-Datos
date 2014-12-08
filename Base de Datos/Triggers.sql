@@ -213,27 +213,90 @@ end;
 -----------------------------------------PUNTO 3--------------------------------------------------------
 
 
-create view vistaUsuarios
-as
-select u.Cod_Usuario as Codigo, u.Username, u.Contraseña, u.Habilitado
- from TEAM_CASTY.Usuario u join TEAM_CASTY.RolXUsuarioXHotel rxuxh
+--create view vistaUsuarios
+--as
+--select u.Cod_Usuario as Codigo, u.Username, u.Contraseña, u.Habilitado
+ --from TEAM_CASTY.Usuario u join TEAM_CASTY.RolXUsuarioXHotel rxuxh
  
  
  -----------------------------------------------------------------------------------------------------------
  
  ---------------------------------------PUNTO 5--------------------------------------------------------------
  
- create view vistaHoteles
+--vista hotel OK
+--create view TEAM_CASTY.vistaHoteles
+--(Codigo,Pais,Nombre,Ciudad,Calle,[Numero Calle],Telefono,Mail,[Fecha Creacion],[Cantidad de estrellas], [Recarga por estrella])
+--AS
+--select  h.Cod_Hotel, h.Pais,h.Nombre, c.Nombre ,h.Calle,h.Nro_Calle,h.Telefono,h.Mail,h.Fecha_Creacion,h.CantEstrella,re.Recarga  
+--from TEAM_CASTY.Hotel h, TEAM_CASTY.Ciudad c , TEAM_CASTY.Recarga_Estrella re
+--where h.Cod_Ciudad= c.Cod_Ciudad
+
+--GO
+
+ create trigger TEAM_CASTY.alta_Hotel
+ on TEAM_CASTY.vistaHoteles
+ instead of insert
  as
- select
- from TEAM_CASTY.Hotel h join TEAM_CASTY.Ciudad c on (c.Cod_Ciudad= h.Cod_Ciudad)
-                         join TEAM_CASTY.RegimenXHotel rxh on (rxh.Cod_Hotel = h.Cod_Hotel)
-                         join TEAM_CASTY.Regimen r on (r.Cod_Regimen = rxh.Cod_Regimen)
-                         join TEAM_CASTY.Periodo_Inhabilitado pinh on (pinh.Cod_Hotel = h.Cod_Hotel)
+ begin
+ insert into Team_Casty.Hotel (Nombre,Pais,Cod_Ciudad,Calle,Nro_Calle,Telefono,Mail,CantEstrella,Fecha_Creacion)
+            select i.Nombre,i.Pais,c.Cod_Ciudad,i.Calle,i.[Numero Calle] as Nro_Calle,i.Telefono,i.Mail,
+            i.[Cantidad de estrellas] as CantEstrella, i.[Fecha Creacion] as Fecha_Creacion
+             from inserted i , Team_Casty.Ciudad c where i.Ciudad=c.Nombre   
+ end
+ go
  
- create procedure
  
- --------------------------------------------------------------------------------------------------------------                         
+ 
+ create procedure TEAM_CASTY.agregarRegimenesHotel(@codHotel numeric(18), @codRegimen numeric(18))
+ as
+ begin
+   insert into Team_Casty.RegimenXHotel (Cod_Hotel,Cod_Regimen) values (@codHotel,@codRegimen)
+ end
+ go
+ 
+ 
+ 
+ 
+ create procedure TEAM_CASTY.agregarAdministradorNuevoHotel(@codHotel numeric(18), @codUsuario numeric(18))
+ as
+ begin
+   insert into Team_Casty.RolXUsuarioXHotel(Cod_Hotel,Cod_Rol,Cod_Usuario) values (@codHotel,1,@codUsuario)
+   insert into Team_Casty.RolXUsuarioXHotel(Cod_Hotel,Cod_Rol,Cod_Usuario) values (@codHotel,3,2)
+ end
+ go
+ 
+ 
+ 
+ 
+ create procedure TEAM_CASTY.baja_hotel(@codHotel numeric(18),@fechaInicio datetime, @fechaFin datetime,@descripcion nvarchar(255))
+as
+begin
+  if not exists (select* from Team_Casty.Reserva res,Team_Casty.HabitacionXReserva hxr,Team_Casty.Habitacion hab
+   where hab.Cod_Hotel=@codHotel and hab.Cod_Habitacion=hxr.Cod_Habitacion and hxr.Cod_Reserva= res.Cod_Reserva
+   and  periodosSinInterseccion(@fechaInicio,@fechaFin,res.Fecha_Reserva,DATEADD(DAY,res.Cant_Noches,res.Fecha_Reserva))=0 )
+   begin
+     insert into Team_Casty.Periodo_Inhabilitado (Cod_Hotel,Fecha_Inicio,Fecha_Fin,Descripcion) values(@codHotel ,@fechaInicio, @fechaFin,@descripcion)
+   end
+   else
+   begin
+     -- no se puede borrar
+   end
+end
+go
+
+
+create procedure TEAM_CASTY.baja_regimenHotel(@codHotel numeric(18),@codRegimen numeric(18),@fechaActual)
+as
+begin
+  if not exists (select * from )--- controlar q no haya reservas 
+end
+go
+
+ 
+ -------------------------------------------------------------------------
+ 
+ 
+ -------------------------------------                         
  
  ----------------------------------------PUNTO6-----------------------------------------------------------------
  create view vistaHabitaciones
