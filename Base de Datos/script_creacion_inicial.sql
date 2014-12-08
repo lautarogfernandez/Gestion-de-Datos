@@ -1187,6 +1187,17 @@ GO
 
 create view TEAM_CASTY.vistasRoles
 AS  
-select   rol.Cod_Rol as [Codigo de Rol], rol.Nombre,rol.Activo
+select rol.Cod_Rol as [Codigo de Rol], rol.Nombre,rol.Activo
 from  TEAM_CASTY.Rol rol
 where rol.Cod_Rol<>1
+
+GO
+
+create view TEAM_CASTY.vistaHoteles
+(Codigo,Pais,Nombre,Ciudad,Calle,[Numero Calle],Telefono,Mail,[Fecha Creacion],[Cantidad de estrellas], [Recarga por estrella])
+AS
+select  h.Cod_Hotel, h.Pais,h.Nombre, c.Nombre ,h.Calle,h.Nro_Calle,h.Telefono,h.Mail,h.Fecha_Creacion,h.CantEstrella,re.Recarga  
+from TEAM_CASTY.Hotel h, TEAM_CASTY.Ciudad c , TEAM_CASTY.Recarga_Estrella re
+where h.Cod_Ciudad= c.Cod_Ciudad
+
+GO

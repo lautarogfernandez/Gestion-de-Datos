@@ -1,3 +1,6 @@
+DROP VIEW TEAM_CASTY.vistaClientes;
+DROP VIEW TEAM_CASTY.vistaHoteles;
+DROP VIEW TEAM_CASTY.vistaRoles;
 DROP TABLE TEAM_CASTY.Cancelacion;
 DROP TABLE TEAM_CASTY.ModificacionXReserva;
 DROP TABLE TEAM_CASTY.UsuarioXHotel;
