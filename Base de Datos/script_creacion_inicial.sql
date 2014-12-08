@@ -1102,7 +1102,7 @@ end;
 GO
 
 create procedure  TEAM_CASTY.Modificacion_Rol
-(@nombre varchar(250), @funciones TEAM_CASTY.t_funcion READONLY, @activo numeric(18))
+(@codigo numeric (18), @nombre varchar(250), @funciones TEAM_CASTY.t_funcion READONLY, @activo numeric(18))
 AS
 begin
 declare @mensaje varchar(1000);
@@ -1118,31 +1118,30 @@ set @error=1;
 set @mensaje=@mensaje + ' Función inexistente.';
 end
 
-if (exists(select *
+if (not exists(select *
 		   from TEAM_CASTY.Rol r
-		   where @nombre=r.Nombre))
+		   where @codigo=r.Cod_Rol))
 begin
 set @error=1;
-set @mensaje=@mensaje + ' Rol existente.';
+set @mensaje=@mensaje + ' Rol inexistente.';
 end
 
 if (@error=0) 
 begin
-declare @cod_rol numeric(18); 
-select @cod_rol=r.Cod_Rol
-from TEAM_CASTY.Rol r
-where @nombre=Nombre;
+update TEAM_CASTY.Rol
+set Nombre=@nombre
+where Cod_Rol=@codigo;
 delete from TEAM_CASTY.FuncionXRol
-where @cod_rol=Cod_Rol;
+where @codigo=Cod_Rol;
 insert into TEAM_CASTY.FuncionXRol
 select r.Cod_Rol,fun.Cod_Funcion
 from @funciones f join TEAM_CASTY.Funcion fun on (f.funcion = fun.Descripcion)
-				  join TEAM_CASTY.Rol r on (r.Nombre=@nombre);
-if(@cod_rol=1)
+				  join TEAM_CASTY.Rol r on (@codigo=r.Cod_Rol);
+if(@activo=1)
 begin
 update TEAM_CASTY.Rol
 set Activo=1
-where @cod_rol=Cod_Rol;
+where @codigo=Cod_Rol;
 end
 end
 
@@ -1220,3 +1219,106 @@ where c.Baja=0 and c.Erroneo=1
 
 GO
 
+create trigger TEAM_CASTY.alta_clientes
+ON TEAM_CASTY.vistaClientes
+instead of insert
+AS
+begin
+
+declare @mensaje varchar(1000);
+declare @error int;
+set @error=0;
+set @mensaje='Error:';
+
+if(exists (select * from TEAM_CASTY.Cliente c,inserted ins where c.Mail=ins.Mail))
+begin
+set @error=1
+set @mensaje=@mensaje + ' Mail repetido.';
+end
+
+if(exists (select * from TEAM_CASTY.Cliente c,inserted ins,TEAM_CASTY.Tipo_Documento tdoc where c.Nro_Documento=ins.[Numero Documento] and c.ID_Tipo_Documento=tdoc.ID_Tipo_Documento and ins.[Tipo Documento]=tdoc.Tipo_Documento))
+begin
+set @error=1
+set @mensaje=@mensaje + ' Documento repetido.';
+end
+
+if(@error=0)
+begin
+insert into TEAM_CASTY.Cliente
+(Apellido,Nom_Calle,Dto,Fecha_Nacimiento,Localidad,Mail,Nacionalidad,Nombre,Nro_Calle,Nro_Documento,Pais,Piso,Telefono,ID_Tipo_Documento)
+select ins.Apellido,ins.Calle,ins.Departamento,ins.[Fecha Nacimiento],UPPER (ins.Localidad),ins.Mail,UPPER (ins.Nacionalidad,UPPER (ins.Nombre)),
+ins.[Numero Calle],ins.[Numero Documento],UPPER (ins.Pais),ins.Piso,ins.Telefono,tdoc.ID_Tipo_Documento
+from inserted ins, TEAM_CASTY.Tipo_Documento tdoc
+where tdoc.Tipo_Documento=UPPER (ins.[Tipo Documento]);
+end
+
+else
+begin
+set @mensaje=@mensaje + ' No se realizó el alta.';
+RAISERROR (@mensaje,15,1);
+end
+
+end;
+
+GO
+
+create trigger TEAM_CASTY.modificacion_clientes
+ON TEAM_CASTY.vistaClientes
+instead of update
+AS
+begin
+
+declare @mensaje varchar(1000);
+declare @error int;
+set @error=0;
+set @mensaje='Error:';
+
+if(exists (select * from TEAM_CASTY.Cliente c,inserted ins where c.Mail=ins.Mail))
+begin
+set @error=1
+set @mensaje=@mensaje + ' Mail repetido.';
+end
+
+if(exists (select * from TEAM_CASTY.Cliente c,inserted ins,TEAM_CASTY.Tipo_Documento tdoc where c.Nro_Documento=ins.[Numero Documento] and c.ID_Tipo_Documento=tdoc.ID_Tipo_Documento and ins.[Tipo Documento]=tdoc.Tipo_Documento))
+begin
+set @error=1
+set @mensaje=@mensaje + ' Documento repetido.';
+end
+
+if(@error=0)
+begin
+declare @id_tipo_doc numeric(18);
+select @id_tipo_doc=td.ID_Tipo_Documento from TEAM_CASTY.Tipo_Documento td, inserted ins where td.Tipo_Documento=UPPER(ins.[Tipo Documento]);
+declare @codigo numeric (18);
+select @codigo=d.Codigo from deleted d;
+update clie
+set Apellido=ins.Apellido, Nom_Calle=ins.Calle,Dto=ins.Departamento,Fecha_Nacimiento=ins.[Fecha Nacimiento],
+Localidad=UPPER (ins.Localidad),Mail=ins.Mail,Nacionalidad=UPPER (ins.Nacionalidad),
+Nombre=UPPER (ins.Nombre),Nro_Calle=ins.[Numero Calle],Nro_Documento=ins.[Numero Documento],
+Pais=UPPER (ins.Pais),Piso=ins.Piso,Telefono=ins.Telefono,ID_Tipo_Documento=@id_tipo_doc, Inhabilitado=ins.Inhabilitado
+from TEAM_CASTY.Cliente clie, inserted ins
+where @codigo=ID_Cliente;
+end
+
+else
+begin
+set @mensaje=@mensaje + ' No se realizó la modificación.';
+RAISERROR (@mensaje,15,1);
+end
+
+end;
+
+GO
+
+create trigger TEAM_CASTY.baja_clientes
+ON TEAM_CASTY.vistaClientes
+instead of delete
+AS
+begin
+update clie
+set Baja=1
+from TEAM_CASTY.Cliente clie, deleted del
+where del.Codigo=clie.ID_Cliente;
+end;
+
+GO
