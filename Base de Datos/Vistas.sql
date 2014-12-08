@@ -263,20 +263,45 @@ SELECT * FROM vistaTOP5HabitacionesHabitadas('2013-01-01 00:00:00.000','2013-01-
 drop function vistaTOP5HabitacionesHabitadas
 --------------------------------------------------------------------
 
-CREATE FUNCTION vistaTOP5ClienteConPuntos (@pFecha_Inicio date,@pFecha_Fin date)
+CREATE FUNCTION vistaTOP5ClienteConPuntosAux (@pFecha_Inicio date,@pFecha_Fin date)
 RETURNS TABLE
 AS
 RETURN 
-select top 5 vc.Codigo,vc.Nombre,vc.Apellido,vc.Mail, vc.[Tipo Documento], vc.[Numero Documento], vc.Telefono, vc.Pais, vc.Localidad, vc.Calle, vc.[Numero Calle], vc.Piso, vc.Departamento, vc.Nacionalidad, vc.[Fecha Nacimiento] , sum(CxHxE.Precio)/5 as puntos
+select  top 5 vc.Codigo,vc.Nombre,vc.Apellido,vc.Mail, vc.[Tipo Documento], vc.[Numero Documento], vc.Telefono, vc.Pais, vc.Localidad, vc.Calle, vc.[Numero Calle], vc.Piso, vc.Departamento, vc.Nacionalidad, vc.[Fecha Nacimiento], sum(TEAM_CASTY.precioConsumiblesHabitacion(CxHxE.Cod_Habitacion,r.Cod_Reserva)/5 + r.Cant_Noches* Team_Casty.precioPorDia(CxHxE.Cod_Habitacion,r.Cod_Regimen)/10) as puntos
 from TEAM_CASTY.Factura f,TEAM_CASTY.Estadia e,TEAM_CASTY.Reserva r , TEAM_CASTY.ConsumibleXHabitacionXEstadia CxHxE, TEAM_CASTY.vistaClientes vc--- ID_Cliente_Reservador
-where f.Cod_Estadia = e.Cod_Estadia and r.Cod_Reserva = e.Cod_Reserva and CxHxE.Cod_Estadia = e.Cod_Estadia and vc.Codigo = r.ID_Cliente_Reservador
-group by  vc.Codigo,vc.Nombre,vc.Apellido,vc.Mail, vc.[Tipo Documento], vc.[Numero Documento], vc.Telefono, vc.Pais, vc.Localidad, vc.Calle, vc.[Numero Calle], vc.Piso, vc.Departamento, vc.Nacionalidad, vc.[Fecha Nacimiento] 
-order by puntos desc
+where f.Cod_Estadia = e.Cod_Estadia and r.Cod_Reserva = e.Cod_Reserva and CxHxE.Cod_Estadia = e.Cod_Estadia and vc.Codigo = r.ID_Cliente_Reservador 
+group by  vc.Codigo,vc.Nombre,vc.Apellido,vc.Mail, vc.[Tipo Documento], vc.[Numero Documento], vc.Telefono, vc.Pais, vc.Localidad, vc.Calle, vc.[Numero Calle], vc.Piso, vc.Departamento, vc.Nacionalidad, vc.[Fecha Nacimiento]
+order by Puntos desc
 
 
-SELECT * FROM vistaTOP5ClienteConPuntos('2013-01-01 ','2024-12-28')
+CREATE FUNCTION vistaTOP5ClienteConPuntos (@pFecha_Inicio date,@pFecha_Fin date)
+returns table
+return 
+select top 5  aux.Codigo,aux.Nombre,aux.Apellido,aux.Mail, aux.[Tipo Documento], aux.[Numero Documento], aux.Telefono, aux.Pais, aux.Localidad, aux.Calle, aux.[Numero Calle], aux.Piso, aux.Departamento, aux.Nacionalidad, aux.[Fecha Nacimiento] , sum(aux.puntos) as Puntos
+from vistaTOP5ClienteConPuntosAux(@pFecha_Inicio,@pFecha_Fin)aux
+group by aux.Codigo,aux.Nombre,aux.Apellido,aux.Mail, aux.[Tipo Documento], aux.[Numero Documento], aux.Telefono, aux.Pais, aux.Localidad, aux.Calle, aux.[Numero Calle], aux.Piso, aux.Departamento, aux.Nacionalidad, aux.[Fecha Nacimiento]
+order by Puntos desc
+
+
+
+drop function vistaTOP5ClienteConPuntosAux
 
 drop function vistaTOP5ClienteConPuntos
+
+SELECT * FROM vistaTOP5ClienteConPuntosAux('2013-01-01 ','2024-12-28')
+
+
+select * from gd_esquema.Maestra where Cliente_Apellido ='Rojas' and Cliente_Nombre = 'LORELEY'
+
+create function Team_Casty.precioPorDia(@codHabitacion numeric(18), @codRegimen numeric(18))
+returns numeric(18,2)
+as
+begin 
+  RETURN (select distinct (reg.Precio *th.Porcentual + hot.CantEstrella*recarga.Recarga)  as precioDia
+   from Team_Casty.Habitacion hab , Team_Casty.Tipo_Habitacion th, Team_Casty.Hotel hot, Team_Casty.Regimen reg,(select top 1 re.Recarga,re.Fecha_Modificacion from Team_Casty.Recarga_Estrella re order by  re.Fecha_Modificacion desc) as recarga
+               where reg.Cod_Regimen=@codRegimen and hab.Cod_Habitacion=@codHabitacion and hab.Cod_Tipo=th.Cod_Tipo and hab.Cod_Hotel=hot.Cod_Hotel)
+end
+go
 
 
 create function TEAM_CASTY.tablaPuntosCliente
@@ -293,6 +318,7 @@ where vc.Codigo=cok.ID_Cliente
 order by Puntos desc
 );
 
+<<<<<<< HEAD
 GO
 
 create function TEAM_CASTY.PuntosCliente
@@ -317,3 +343,24 @@ return @puntos;
 end;
 
 GO
+=======
+create function TEAM_CASTY.precioConsumible(@precio numeric(18,2), @codReserva numeric(18))
+returns numeric(18,2)
+as 
+begin
+  if  exists(select * 
+                from TEAM_CASTY.Reserva res,TEAM_CASTY.Regimen  reg 
+                where res.Cod_Reserva  =@codReserva and reg.Cod_Regimen = res.Cod_Regimen and reg.Descripcion = 'All inclusive') set @precio=0
+  
+  return @precio
+end
+
+create function TEAM_CASTY.precioConsumiblesHabitacion(@codHabitacion numeric(18),@codEstadia numeric(18))
+returns numeric(18,2)
+as
+begin
+declare @precio  numeric(18,2)
+set @precio = (select sum (tabla.Precio* tabla.Cantidad) as Precio  from Team_Casty.ConsumibleXHabitacionXEstadia tabla where tabla.Cod_Estadia=@codEstadia and tabla.Cod_Habitacion=@codHabitacion)
+return @precio
+end
+>>>>>>> origin/master
