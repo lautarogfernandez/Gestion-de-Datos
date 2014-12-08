@@ -14,6 +14,7 @@ namespace FrbaHotel.ABM_de_Rol
     public partial class Rol_modificar : Form
     {
         public int codigo;
+        public bool _activo = false;
         public Rol_modificar(valoresDataGridView _valores)
         {
             InitializeComponent();
@@ -50,16 +51,19 @@ namespace FrbaHotel.ABM_de_Rol
                 MessageBox.Show(msj, "Excepcion SQL", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             }
             codigo = Convert.ToInt32(_valores._codigo);
+            _activo = _valores._activo=="True";
+            if (!_activo)
+            {
+                chk_activo.Enabled = true;
+                chk_activo.Visible = true;
+                lbl_activo.Text = "Rol INACTIVO";
+                lbl_activar.Visible = true;
+            }
             conn.Close();
         }
         private void establecerAtributosOriginales(valoresDataGridView _valoresDGV)
         {
             _lbl_nombre_original.Text = _valoresDGV._nombre;
-            if (_valoresDGV._activo == "1")
-            {
-                rb_activo.Checked = true;
-            }
-            else rb_inactivo.Checked = true;
         }
         private void cambiarTodosLosControles(bool _enable)
         {
@@ -73,7 +77,6 @@ namespace FrbaHotel.ABM_de_Rol
             {
                 checks[i].Checked = _enable;
             }
-            habilitar_o_deshabilitar_grp(_enable);
             habilitar_o_deshabilitar_list(_enable);
         }
         private bool espacio(char _unCaracter)
@@ -85,11 +88,7 @@ namespace FrbaHotel.ABM_de_Rol
             list_funciones.Enabled = _unBooleano;
 
         }
-        private void habilitar_o_deshabilitar_grp(bool _unBooleano)
-        {
-            grp_activo.Enabled = _unBooleano;
-            
-        }
+
         private void habilitar_o_deshabilitar_control(Control _unControl, bool _unBooleano)
         {
             _unControl.Enabled = _unBooleano;
@@ -110,46 +109,9 @@ namespace FrbaHotel.ABM_de_Rol
 
         private bool validado()
         {
-            return rb_activo.Checked;
+                return _activo;
         }
-        private void button_aceptar_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                DataTable table = new DataTable("Funciones");
-                table.Columns.Add(new DataColumn("Descripcion", typeof(string)));
-                for (int i = 0; i < list_funciones.CheckedItems.Count; i++)
-                    table.Rows.Add(list_funciones.CheckedItems[i]);
-                using (SqlConnection conn = Home.obtenerConexion())
-                {
-                    using (SqlCommand cmd = conn.CreateCommand())
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.CommandText = "[TEAM_CASTY].Alta_Rol";
-                        cmd.Parameters.Add(new SqlParameter("@nombre", txt_nombre.Text));
-                        cmd.Parameters.Add(new SqlParameter("@funciones", table));
-                        cmd.Parameters.Add(new SqlParameter("@Activo", validado()));
-                        cmd.ExecuteNonQuery();
-                        //rows number of record got updated
-                        string msj = "Usuario validado con éxito \n";
-                        MessageBox.Show(msj, "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                        MenuPrincipal menuPrincipal = new MenuPrincipal();
-                        menuPrincipal.Show();
-                        this.Hide();
-
-                    }
-                }
-
-            }
-            catch (SqlException exc)
-            {
-                string msj = "Errores de sql: \n";
-                for (int i = 0; i < exc.Errors.Count; i++)
-                    msj += exc.Errors[i].Message + "\n";
-                MessageBox.Show(msj, "Excepcion SQL", MessageBoxButtons.OK, MessageBoxIcon.Question);
-            }
-        }
-
+      
         private void Rol_modificar_Load(object sender, EventArgs e)
         {
            
@@ -171,7 +133,7 @@ namespace FrbaHotel.ABM_de_Rol
                     }
                 case "chk_activo":
                     {
-                        habilitar_o_deshabilitar_grp(_checker.Checked);
+                        _activo=chk_activo.Enabled;
                         break;
                     }
                 case "chk_funciones":
@@ -204,10 +166,19 @@ namespace FrbaHotel.ABM_de_Rol
         {
             try
             {
+
                 DataTable table = new DataTable("Funciones");
                 table.Columns.Add(new DataColumn("Descripcion", typeof(string)));
-                for (int i = 0; i < list_funciones.CheckedItems.Count; i++)
-                    table.Rows.Add(list_funciones.CheckedItems[i]);
+                if (chk_funciones.Checked)
+                {
+                    for (int i = 0; i < list_funciones.CheckedItems.Count; i++)
+                        table.Rows.Add(list_funciones.CheckedItems[i]);
+                }
+                else
+                {
+                    for (int i = 0; i < _list_funciones_original.CheckedItems.Count; i++)
+                        table.Rows.Add(_list_funciones_original.CheckedItems[i]);
+                }
                 using (SqlConnection conn = Home.obtenerConexion())
                 {
                     using (SqlCommand cmd = conn.CreateCommand())
@@ -215,7 +186,10 @@ namespace FrbaHotel.ABM_de_Rol
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = "[TEAM_CASTY].Modificacion_Rol";
                         cmd.Parameters.Add(new SqlParameter("@codigo", codigo));
+                        if(txt_nombre.Enabled==true && txt_nombre.Text!=string.Empty)
                         cmd.Parameters.Add(new SqlParameter("@nombre", txt_nombre.Text));
+                        else
+                        cmd.Parameters.Add(new SqlParameter("@nombre", _lbl_nombre_original.Text));
                         cmd.Parameters.Add(new SqlParameter("@funciones", table));
                         cmd.Parameters.Add(new SqlParameter("@Activo", validado()));
                         cmd.ExecuteNonQuery();
@@ -234,6 +208,11 @@ namespace FrbaHotel.ABM_de_Rol
                     msj += exc.Errors[i].Message + "\n";
                 MessageBox.Show(msj, "Excepcion SQL", MessageBoxButtons.OK, MessageBoxIcon.Question);
             }
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

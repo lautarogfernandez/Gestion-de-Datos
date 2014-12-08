@@ -32,12 +32,7 @@
             this.barra_progreso = new System.Windows.Forms.ToolStripProgressBar();
             this.label_progreso = new System.Windows.Forms.ToolStripStatusLabel();
             this.list_funciones = new System.Windows.Forms.CheckedListBox();
-            this.grp_activo = new System.Windows.Forms.GroupBox();
-            this.lbl_inactivo = new System.Windows.Forms.Label();
             this.chk_activo = new System.Windows.Forms.CheckBox();
-            this.lbl_activo = new System.Windows.Forms.Label();
-            this.rb_activo = new System.Windows.Forms.RadioButton();
-            this.rb_inactivo = new System.Windows.Forms.RadioButton();
             this.lbl_atributo = new System.Windows.Forms.Label();
             this.lbl_funciones = new System.Windows.Forms.Label();
             this.lbl_nombre = new System.Windows.Forms.Label();
@@ -51,8 +46,9 @@
             this._lbl_nombre_original = new System.Windows.Forms.Label();
             this._list_funciones_original = new System.Windows.Forms.CheckedListBox();
             this.chk_nombre = new System.Windows.Forms.CheckBox();
+            this.lbl_activo = new System.Windows.Forms.Label();
+            this.lbl_activar = new System.Windows.Forms.Label();
             this.stat_BarraEstado.SuspendLayout();
-            this.grp_activo.SuspendLayout();
             this.SuspendLayout();
             // 
             // stat_BarraEstado
@@ -88,67 +84,16 @@
             this.list_funciones.TabIndex = 233;
             this.list_funciones.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
-            // grp_activo
-            // 
-            this.grp_activo.Controls.Add(this.lbl_inactivo);
-            this.grp_activo.Controls.Add(this.lbl_activo);
-            this.grp_activo.Controls.Add(this.rb_activo);
-            this.grp_activo.Controls.Add(this.rb_inactivo);
-            this.grp_activo.Location = new System.Drawing.Point(13, 363);
-            this.grp_activo.Name = "grp_activo";
-            this.grp_activo.Size = new System.Drawing.Size(537, 82);
-            this.grp_activo.TabIndex = 243;
-            this.grp_activo.TabStop = false;
-            this.grp_activo.Text = "Seleccione actividad";
-            this.grp_activo.EnabledChanged += new System.EventHandler(this.control_enabled_change);
-            // 
-            // lbl_inactivo
-            // 
-            this.lbl_inactivo.AutoSize = true;
-            this.lbl_inactivo.Location = new System.Drawing.Point(403, 32);
-            this.lbl_inactivo.Name = "lbl_inactivo";
-            this.lbl_inactivo.Size = new System.Drawing.Size(57, 13);
-            this.lbl_inactivo.TabIndex = 204;
-            this.lbl_inactivo.Text = "INACTIVO";
-            // 
             // chk_activo
             // 
             this.chk_activo.AutoSize = true;
-            this.chk_activo.Location = new System.Drawing.Point(558, 373);
+            this.chk_activo.Location = new System.Drawing.Point(557, 402);
             this.chk_activo.Name = "chk_activo";
             this.chk_activo.Size = new System.Drawing.Size(15, 14);
             this.chk_activo.TabIndex = 247;
             this.chk_activo.UseVisualStyleBackColor = true;
+            this.chk_activo.Visible = false;
             this.chk_activo.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
-            // 
-            // lbl_activo
-            // 
-            this.lbl_activo.AutoSize = true;
-            this.lbl_activo.Location = new System.Drawing.Point(101, 32);
-            this.lbl_activo.Name = "lbl_activo";
-            this.lbl_activo.Size = new System.Drawing.Size(46, 13);
-            this.lbl_activo.TabIndex = 203;
-            this.lbl_activo.Text = "ACTIVO";
-            // 
-            // rb_activo
-            // 
-            this.rb_activo.AutoSize = true;
-            this.rb_activo.Location = new System.Drawing.Point(121, 63);
-            this.rb_activo.Name = "rb_activo";
-            this.rb_activo.Size = new System.Drawing.Size(14, 13);
-            this.rb_activo.TabIndex = 9;
-            this.rb_activo.TabStop = true;
-            this.rb_activo.UseVisualStyleBackColor = true;
-            // 
-            // rb_inactivo
-            // 
-            this.rb_inactivo.AutoSize = true;
-            this.rb_inactivo.Location = new System.Drawing.Point(425, 63);
-            this.rb_inactivo.Name = "rb_inactivo";
-            this.rb_inactivo.Size = new System.Drawing.Size(14, 13);
-            this.rb_inactivo.TabIndex = 13;
-            this.rb_inactivo.TabStop = true;
-            this.rb_inactivo.UseVisualStyleBackColor = true;
             // 
             // lbl_atributo
             // 
@@ -281,11 +226,33 @@
             this.chk_nombre.UseVisualStyleBackColor = true;
             this.chk_nombre.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
+            // lbl_activo
+            // 
+            this.lbl_activo.AutoSize = true;
+            this.lbl_activo.Location = new System.Drawing.Point(380, 402);
+            this.lbl_activo.Name = "lbl_activo";
+            this.lbl_activo.Size = new System.Drawing.Size(65, 13);
+            this.lbl_activo.TabIndex = 252;
+            this.lbl_activo.Text = "Rol ACTIVO";
+            // 
+            // lbl_activar
+            // 
+            this.lbl_activar.AutoSize = true;
+            this.lbl_activar.Location = new System.Drawing.Point(492, 403);
+            this.lbl_activar.Name = "lbl_activar";
+            this.lbl_activar.Size = new System.Drawing.Size(40, 13);
+            this.lbl_activar.TabIndex = 253;
+            this.lbl_activar.Text = "Activar";
+            this.lbl_activar.Visible = false;
+            this.lbl_activar.Click += new System.EventHandler(this.label2_Click);
+            // 
             // Rol_modificar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 561);
+            this.Controls.Add(this.lbl_activar);
+            this.Controls.Add(this.lbl_activo);
             this.Controls.Add(this.chk_nombre);
             this.Controls.Add(this.chk_activo);
             this.Controls.Add(this._list_funciones_original);
@@ -295,7 +262,6 @@
             this.Controls.Add(this.lbl_original);
             this.Controls.Add(this.stat_BarraEstado);
             this.Controls.Add(this.list_funciones);
-            this.Controls.Add(this.grp_activo);
             this.Controls.Add(this.lbl_atributo);
             this.Controls.Add(this.lbl_funciones);
             this.Controls.Add(this.lbl_nombre);
@@ -310,8 +276,6 @@
             this.Load += new System.EventHandler(this.Rol_modificar_Load);
             this.stat_BarraEstado.ResumeLayout(false);
             this.stat_BarraEstado.PerformLayout();
-            this.grp_activo.ResumeLayout(false);
-            this.grp_activo.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -323,11 +287,6 @@
         private System.Windows.Forms.ToolStripProgressBar barra_progreso;
         private System.Windows.Forms.ToolStripStatusLabel label_progreso;
         private System.Windows.Forms.CheckedListBox list_funciones;
-        private System.Windows.Forms.GroupBox grp_activo;
-        private System.Windows.Forms.Label lbl_inactivo;
-        private System.Windows.Forms.Label lbl_activo;
-        private System.Windows.Forms.RadioButton rb_activo;
-        private System.Windows.Forms.RadioButton rb_inactivo;
         private System.Windows.Forms.Label lbl_atributo;
         private System.Windows.Forms.Label lbl_funciones;
         private System.Windows.Forms.Label lbl_nombre;
@@ -342,5 +301,7 @@
         private System.Windows.Forms.Label _lbl_nombre_original;
         private System.Windows.Forms.CheckedListBox _list_funciones_original;
         private System.Windows.Forms.CheckBox chk_nombre;
+        private System.Windows.Forms.Label lbl_activo;
+        private System.Windows.Forms.Label lbl_activar;
     }
 }

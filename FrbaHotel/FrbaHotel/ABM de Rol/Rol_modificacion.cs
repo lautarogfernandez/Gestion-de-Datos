@@ -170,7 +170,7 @@ namespace FrbaHotel.ABM_de_Rol
             {
                 switch (dgv_roles.Columns[i].HeaderText)
                 {
-                    case "Codigo":
+                    case "Codigo de Rol":
                         {
                             _valores._codigo = dgv_roles.SelectedCells[i].Value.ToString();
                             break;
