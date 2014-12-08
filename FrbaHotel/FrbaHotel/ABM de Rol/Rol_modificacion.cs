@@ -10,9 +10,15 @@ using System.Data.SqlClient;
 
 namespace FrbaHotel.ABM_de_Rol
 {
+    public struct valoresDataGridView
+    {
+        public string _nombre, _codigo, _activo;
+        public List<int> codigos_funciones;
+    }
     public partial class Rol_modificacion : Form
     {
         private bool _buscanombre = false;
+        private valoresDataGridView _valores;
         public Rol_modificacion()
         {
             InitializeComponent();
@@ -143,8 +149,7 @@ namespace FrbaHotel.ABM_de_Rol
             button_Buscar.Enabled = true;                                                                                                     //Habilito Otra búsqueda
             button_limpiar.Enabled = true;
             button_limpiar.ForeColor = SystemColors.MenuText;                            //habilita el boton limpiar
-            button_modificar.Enabled = true;
-            button_modificar.ForeColor = SystemColors.MenuText;
+
         }
         private void button_limpiar_Click(object sender, EventArgs e)
         {
@@ -161,7 +166,41 @@ namespace FrbaHotel.ABM_de_Rol
 
         private void button_modificar_Click(object sender, EventArgs e)
         {
-
+            for (int i = 0; i < dgv_roles.SelectedCells.Count; i++)
+            {
+                switch (dgv_roles.Columns[i].HeaderText)
+                {
+                    case "Codigo":
+                        {
+                            _valores._codigo = dgv_roles.SelectedCells[i].Value.ToString();
+                            break;
+                        }
+                    case "Nombre":
+                        {
+                            _valores._nombre = dgv_roles.SelectedCells[i].Value.ToString();
+                            break;
+                        }
+                    case "Activo":
+                        {
+                            _valores._activo = dgv_roles.SelectedCells[i].Value.ToString();
+                            break;
+                        }
+                }
+            }
+            Rol_modificar formularioModificar = new Rol_modificar(_valores);
+            //for (int i = 0; i < dgv_resultados.SelectedCells.Count; i++)
+            //{
+            //    ObjetoModificable obj = new ObjetoModificable();
+            //    obj._header
+            //}
+            //List<int> seleccionesAcotadas = new List<int>();
+            //List<int> seleccionesMultiples = new List<int>();
+            //for(int i=0;i<dgv_resultados.Columns.Count;i++){
+            //    if (dgv_resultados.Columns[i].HeaderText == "Tipo Documento")
+            //        seleccionesAcotadas.Add(i);
+            //}
+            //Modificar formularioModificar = new Modificar(dgv_resultados.SelectedCells,dgv_resultados.Columns,"vistaClientes",seleccionesAcotadas,seleccionesMultiples);
+            formularioModificar.Show();
         }
 
         private void dgv_roles_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -176,9 +215,11 @@ namespace FrbaHotel.ABM_de_Rol
             try
             {
                 SqlDataReader reader = cmd.ExecuteReader();
+                _valores.codigos_funciones = new List<int>();
                 while (reader.Read())
                 {
                     list_funciones.SetItemChecked(Convert.ToInt32(reader["Cod_Funcion"])-1,true);
+                    _valores.codigos_funciones.Add(Convert.ToInt32(reader["Cod_Funcion"]));
                 }
                 reader.Close();
 
@@ -190,7 +231,8 @@ namespace FrbaHotel.ABM_de_Rol
                     msj += exc.Errors[i].Message + "\n";
                 MessageBox.Show(msj, "Excepcion SQL", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             }
-
+            button_modificar.Enabled = true;
+            button_modificar.ForeColor = SystemColors.MenuText;
             conn.Close();
         }
 

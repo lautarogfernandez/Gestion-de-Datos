@@ -34,6 +34,7 @@
             this.list_funciones = new System.Windows.Forms.CheckedListBox();
             this.grp_activo = new System.Windows.Forms.GroupBox();
             this.lbl_inactivo = new System.Windows.Forms.Label();
+            this.chk_activo = new System.Windows.Forms.CheckBox();
             this.lbl_activo = new System.Windows.Forms.Label();
             this.rb_activo = new System.Windows.Forms.RadioButton();
             this.rb_inactivo = new System.Windows.Forms.RadioButton();
@@ -46,8 +47,10 @@
             this.txt_nombre = new System.Windows.Forms.TextBox();
             this.lbl_original = new System.Windows.Forms.Label();
             this.chk_todos = new System.Windows.Forms.CheckBox();
-            this.chk_telefono = new System.Windows.Forms.CheckBox();
-            this.chk_tipos_regimenes = new System.Windows.Forms.CheckBox();
+            this.chk_funciones = new System.Windows.Forms.CheckBox();
+            this._lbl_nombre_original = new System.Windows.Forms.Label();
+            this._list_funciones_original = new System.Windows.Forms.CheckedListBox();
+            this.chk_nombre = new System.Windows.Forms.CheckBox();
             this.stat_BarraEstado.SuspendLayout();
             this.grp_activo.SuspendLayout();
             this.SuspendLayout();
@@ -76,26 +79,28 @@
             // 
             // list_funciones
             // 
+            this.list_funciones.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.list_funciones.CheckOnClick = true;
             this.list_funciones.FormattingEnabled = true;
             this.list_funciones.Location = new System.Drawing.Point(345, 99);
             this.list_funciones.Name = "list_funciones";
             this.list_funciones.Size = new System.Drawing.Size(205, 259);
             this.list_funciones.TabIndex = 233;
+            this.list_funciones.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // grp_activo
             // 
             this.grp_activo.Controls.Add(this.lbl_inactivo);
-            this.grp_activo.Controls.Add(this.chk_telefono);
             this.grp_activo.Controls.Add(this.lbl_activo);
             this.grp_activo.Controls.Add(this.rb_activo);
             this.grp_activo.Controls.Add(this.rb_inactivo);
             this.grp_activo.Location = new System.Drawing.Point(13, 363);
             this.grp_activo.Name = "grp_activo";
-            this.grp_activo.Size = new System.Drawing.Size(560, 82);
+            this.grp_activo.Size = new System.Drawing.Size(537, 82);
             this.grp_activo.TabIndex = 243;
             this.grp_activo.TabStop = false;
             this.grp_activo.Text = "Seleccione actividad";
+            this.grp_activo.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // lbl_inactivo
             // 
@@ -105,6 +110,16 @@
             this.lbl_inactivo.Size = new System.Drawing.Size(57, 13);
             this.lbl_inactivo.TabIndex = 204;
             this.lbl_inactivo.Text = "INACTIVO";
+            // 
+            // chk_activo
+            // 
+            this.chk_activo.AutoSize = true;
+            this.chk_activo.Location = new System.Drawing.Point(558, 373);
+            this.chk_activo.Name = "chk_activo";
+            this.chk_activo.Size = new System.Drawing.Size(15, 14);
+            this.chk_activo.TabIndex = 247;
+            this.chk_activo.UseVisualStyleBackColor = true;
+            this.chk_activo.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
             // lbl_activo
             // 
@@ -183,6 +198,7 @@
             this.button_modificar.TabIndex = 235;
             this.button_modificar.Text = "Modificar";
             this.button_modificar.UseVisualStyleBackColor = true;
+            this.button_modificar.Click += new System.EventHandler(this.button_modificar_Click);
             // 
             // button_volver
             // 
@@ -194,19 +210,22 @@
             this.button_volver.TabIndex = 236;
             this.button_volver.Text = "Volver";
             this.button_volver.UseVisualStyleBackColor = true;
+            this.button_volver.Click += new System.EventHandler(this.button_volver_Click);
             // 
             // txt_nombre
             // 
+            this.txt_nombre.ForeColor = System.Drawing.SystemColors.ScrollBar;
             this.txt_nombre.Location = new System.Drawing.Point(345, 63);
             this.txt_nombre.Name = "txt_nombre";
             this.txt_nombre.Size = new System.Drawing.Size(205, 20);
             this.txt_nombre.TabIndex = 234;
+            this.txt_nombre.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // lbl_original
             // 
             this.lbl_original.AutoSize = true;
             this.lbl_original.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_original.Location = new System.Drawing.Point(181, 4);
+            this.lbl_original.Location = new System.Drawing.Point(128, 4);
             this.lbl_original.Name = "lbl_original";
             this.lbl_original.Size = new System.Drawing.Size(107, 31);
             this.lbl_original.TabIndex = 245;
@@ -215,37 +234,64 @@
             // chk_todos
             // 
             this.chk_todos.AutoSize = true;
-            this.chk_todos.Location = new System.Drawing.Point(558, 66);
+            this.chk_todos.Location = new System.Drawing.Point(557, 37);
             this.chk_todos.Name = "chk_todos";
             this.chk_todos.Size = new System.Drawing.Size(15, 14);
             this.chk_todos.TabIndex = 248;
             this.chk_todos.UseVisualStyleBackColor = true;
+            this.chk_todos.CheckedChanged += new System.EventHandler(this.check_todos_change);
             // 
-            // chk_telefono
+            // chk_funciones
             // 
-            this.chk_telefono.AutoSize = true;
-            this.chk_telefono.Location = new System.Drawing.Point(121, 0);
-            this.chk_telefono.Name = "chk_telefono";
-            this.chk_telefono.Size = new System.Drawing.Size(15, 14);
-            this.chk_telefono.TabIndex = 247;
-            this.chk_telefono.UseVisualStyleBackColor = true;
+            this.chk_funciones.AutoSize = true;
+            this.chk_funciones.Location = new System.Drawing.Point(558, 101);
+            this.chk_funciones.Name = "chk_funciones";
+            this.chk_funciones.Size = new System.Drawing.Size(15, 14);
+            this.chk_funciones.TabIndex = 246;
+            this.chk_funciones.UseVisualStyleBackColor = true;
+            this.chk_funciones.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
-            // chk_tipos_regimenes
+            // _lbl_nombre_original
             // 
-            this.chk_tipos_regimenes.AutoSize = true;
-            this.chk_tipos_regimenes.Location = new System.Drawing.Point(558, 101);
-            this.chk_tipos_regimenes.Name = "chk_tipos_regimenes";
-            this.chk_tipos_regimenes.Size = new System.Drawing.Size(15, 14);
-            this.chk_tipos_regimenes.TabIndex = 246;
-            this.chk_tipos_regimenes.UseVisualStyleBackColor = true;
+            this._lbl_nombre_original.AutoSize = true;
+            this._lbl_nombre_original.Location = new System.Drawing.Point(131, 66);
+            this._lbl_nombre_original.Name = "_lbl_nombre_original";
+            this._lbl_nombre_original.Size = new System.Drawing.Size(44, 13);
+            this._lbl_nombre_original.TabIndex = 249;
+            this._lbl_nombre_original.Text = "Nombre";
+            // 
+            // _list_funciones_original
+            // 
+            this._list_funciones_original.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this._list_funciones_original.CheckOnClick = true;
+            this._list_funciones_original.Enabled = false;
+            this._list_funciones_original.FormattingEnabled = true;
+            this._list_funciones_original.Location = new System.Drawing.Point(134, 98);
+            this._list_funciones_original.Name = "_list_funciones_original";
+            this._list_funciones_original.Size = new System.Drawing.Size(205, 259);
+            this._list_funciones_original.TabIndex = 250;
+            // 
+            // chk_nombre
+            // 
+            this.chk_nombre.AutoSize = true;
+            this.chk_nombre.Location = new System.Drawing.Point(558, 66);
+            this.chk_nombre.Name = "chk_nombre";
+            this.chk_nombre.Size = new System.Drawing.Size(15, 14);
+            this.chk_nombre.TabIndex = 251;
+            this.chk_nombre.UseVisualStyleBackColor = true;
+            this.chk_nombre.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
             // Rol_modificar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 561);
+            this.Controls.Add(this.chk_nombre);
+            this.Controls.Add(this.chk_activo);
+            this.Controls.Add(this._list_funciones_original);
+            this.Controls.Add(this._lbl_nombre_original);
             this.Controls.Add(this.chk_todos);
-            this.Controls.Add(this.chk_tipos_regimenes);
+            this.Controls.Add(this.chk_funciones);
             this.Controls.Add(this.lbl_original);
             this.Controls.Add(this.stat_BarraEstado);
             this.Controls.Add(this.list_funciones);
@@ -290,8 +336,11 @@
         private System.Windows.Forms.Button button_volver;
         private System.Windows.Forms.TextBox txt_nombre;
         private System.Windows.Forms.Label lbl_original;
-        private System.Windows.Forms.CheckBox chk_telefono;
+        private System.Windows.Forms.CheckBox chk_activo;
         private System.Windows.Forms.CheckBox chk_todos;
-        private System.Windows.Forms.CheckBox chk_tipos_regimenes;
+        private System.Windows.Forms.CheckBox chk_funciones;
+        private System.Windows.Forms.Label _lbl_nombre_original;
+        private System.Windows.Forms.CheckedListBox _list_funciones_original;
+        private System.Windows.Forms.CheckBox chk_nombre;
     }
 }
