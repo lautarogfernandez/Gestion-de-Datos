@@ -74,3 +74,9 @@ begin
                where reg.Cod_Regimen=@codRegimen and hab.Cod_Habitacion=@codHabitacion and hab.Cod_Tipo=th.Cod_Tipo and hab.Cod_Hotel=hot.Cod_Hotel)
 end
 go
+
+
+
+
+
+
