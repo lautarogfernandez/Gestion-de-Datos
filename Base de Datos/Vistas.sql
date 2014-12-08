@@ -279,7 +279,41 @@ SELECT * FROM vistaTOP5ClienteConPuntos('2013-01-01 ','2024-12-28')
 drop function vistaTOP5ClienteConPuntos
 
 
-Cliente con mayor cantidad de puntos, donde cada $10 en estadías vale 1 puntos y cada $5 de consumibles es 1 punto,
- de la sumatoria de todas las facturaciones que haya tenido dentro de un periodo independientemente del Hotel. 
- Tener en cuenta que la facturación siempre es a quien haya realizado la reserva.
+create function TEAM_CASTY.tablaPuntosCliente
+(@fecha_inicio datetime, @fecha_fin datetime)
+RETURNS TABLE
+AS
+return (select top 5 vc.*,PuntosCliente(cok.ID_Cliente,@fecha_inicio,@fecha_fin) as Puntos
+from
 
+(select c.ID_Cliente
+from TEAM_CASTY.Cliente c, TEAM_CASTY.Reserva res, TEAM_CASTY.Factura f
+where f.Fecha>=@fecha_inicio and f.Fecha<=@fecha_fin and res.ID_Cliente_Reservador=c.ID_Cliente) cok, TEAM_CASTY.vistaClientes vc,TEAM_CASTY.v
+where vc.Codigo=cok.ID_Cliente
+order by Puntos desc
+);
+
+GO
+
+create function TEAM_CASTY.PuntosCliente
+(@id_cliente numeric(18), @fecha_inicio datetime, @fecha_fin datetime)
+RETURNS numeric(18)
+AS
+begin 
+declare @puntos numeric (18)=0;
+declare @monto_c numeric (18)=0;
+declare @monto_h numeric (18)=0;
+
+select @monto_c= sum(TEAM_CASTY.MontoConsumibles(et.Cod_Estadia)),
+ @monto_h=sum(TEAM_CASTY.MontoHabitaciones(et.Cod_Estadia))
+from
+(select est.Cod_Estadia
+from TEAM_CASTY.Reserva res, TEAM_CASTY.Estadia est, TEAM_CASTY.Factura fac
+where res.ID_Cliente_Reservador=@id_cliente and est.Cod_Reserva=res.Cod_Reserva and
+fac.Cod_Estadia=est.Cod_Estadia and fac.Fecha>=@fecha_inicio and fac.Fecha<=@fecha_fin) et;
+
+set @puntos=round(@monto_c/5,0,1)+round(@monto_h/10,0,1);
+return @puntos;
+end;
+
+GO
