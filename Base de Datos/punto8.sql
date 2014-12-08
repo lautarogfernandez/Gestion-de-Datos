@@ -62,8 +62,8 @@ as
 return select hab.* 
        from Team_Casty.Habitacion hab,Team_Casty.Reserva res,Team_Casty.HabitacionXReserva hxr
         where Cod_Hotel = @codHotel and hab.Baja = 0 and not(hab.Cod_Habitacion= hxr.Cod_Habitacion
-              and hxr.Cod_Reserva=res.Cod_Reserva and 
-              periodosSinInterseccion(@fechaInicio,@fechaSalida,res.Fecha_Reserva,DATEADD(DAY,1,res.Fecha_Reserva))=0)
+              and hxr.Cod_Reserva=res.Cod_Reserva and periodosSinInterseccion(@fechaInicio,@fechaSalida,
+                                                       res.Fecha_Reserva,DATEADD(DAY,1,res.Fecha_Reserva))=0)
 go
 
 create procedure Team_Casty.precioPorDia(@codHabitacion numeric(18), @codRegimen numeric(18),@precio numeric(18) output)
