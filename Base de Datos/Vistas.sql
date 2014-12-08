@@ -61,7 +61,7 @@ select r.Cod_Reserva, r.ID_Cliente_Reservador,r.Descripcion_Regimen,r.Precio_Reg
 select * from TEAM_CASTY.vistaReservas
  
 
---vista hotel
+--vista hotel OK
 create view TEAM_CASTY.vistaHoteles
 (Codigo,Pais,Nombre,Ciudad,Calle,[Numero Calle],Telefono,Mail,[Fecha Creacion],[Cantidad de estrellas], [Recarga por estrella])
 AS

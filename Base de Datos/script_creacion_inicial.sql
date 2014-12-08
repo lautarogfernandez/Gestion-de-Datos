@@ -1045,6 +1045,14 @@ CREATE TYPE [TEAM_CASTY].[t_funcion] AS TABLE(
 	
 GO
 
+create view TEAM_CASTY.vistasRoles
+AS  
+select rol.Cod_Rol as [Codigo de Rol], rol.Nombre,rol.Activo
+from  TEAM_CASTY.Rol rol
+where rol.Cod_Rol<>1
+
+GO
+
 create procedure  TEAM_CASTY.Alta_Rol
 @nombre varchar(250), @funciones TEAM_CASTY.t_funcion READONLY, @Activo numeric(18)
 AS
@@ -1182,14 +1190,6 @@ set @mensaje=@mensaje + ' No se realizó la baja.';
 RAISERROR (@mensaje,15,1);
 end
 end;
-
-GO
-
-create view TEAM_CASTY.vistasRoles
-AS  
-select rol.Cod_Rol as [Codigo de Rol], rol.Nombre,rol.Activo
-from  TEAM_CASTY.Rol rol
-where rol.Cod_Rol<>1
 
 GO
 
