@@ -1040,6 +1040,11 @@ end;
 
 GO
 
+CREATE TYPE [TEAM_CASTY].[t_funcion] AS TABLE(
+	[funcion] [nvarchar](50) NULL)
+	
+GO
+
 create procedure  TEAM_CASTY.Alta_Rol
 @nombre varchar(250), @funciones TEAM_CASTY.t_funcion READONLY, @Activo numeric(18)
 AS
@@ -1073,7 +1078,7 @@ insert into TEAM_CASTY.Rol
 values (1,@nombre);
 
 insert into TEAM_CASTY.FuncionXRol
-select r.Cod_Rol,fun.Cod_Funcion,@Activo
+select r.Cod_Rol,fun.Cod_Funcion
 from @funciones f join TEAM_CASTY.Funcion fun on (f.funcion = fun.Descripcion)
 				  join TEAM_CASTY.Rol r on (r.Nombre=@nombre)
 

@@ -225,6 +225,17 @@ end;
 --PUNTO 12
 
 create function TEAM_CASTY.PrecioPorDiaEspecifico
+(@hotel numeric(18), @regimen numeric (18),@tipo_habitacion numeric (18))
+RETURNS @precio numeric (18,2)
+AS
+begin
+INSERT  into @tablaPorDia 
+select distinct reg.Descripcion, thab.Descripcion, (reg.Precio*thab.Porcentual+(hot.CantEstrella*(select top 1 rec.Recarga from TEAM_CASTY.Recarga_Estrella rec order by rec.Fecha_Modificacion desc))) [Precio Por Dia]
+from TEAM_CASTY.Tipo_Habitacion thab,TEAM_CASTY.Hotel hot,TEAM_CASTY.Regimen reg, TEAM_CASTY.RegimenXHotel rxh
+where hot.Cod_Hotel=@hotel and rxh.Cod_Hotel=@hotel and rxh.Activo=1
+RETURN 
+end;
+
 
 
 create procedure  TEAM_CASTY.Facturar
