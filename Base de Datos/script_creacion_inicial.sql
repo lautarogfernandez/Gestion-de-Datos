@@ -1322,3 +1322,60 @@ where del.Codigo=clie.ID_Cliente;
 end;
 
 GO
+
+CREATE TYPE TEAM_CASTY.t_tablaConsumibles AS TABLE(
+	Cod_Habitacion numeric (18),
+	Nombre nvarchar (50),
+	Cantidad numeric (18));
+	
+GO
+
+create procedure  TEAM_CASTY.RegistrarConsumibles
+@cod_Estadia numeric(18),@tabla TEAM_CASTY.t_tablaConsumibles READONLY
+AS
+begin
+declare @mensaje varchar(1000);
+declare @error int;
+set @error=0;
+set @mensaje='Error: ';
+
+if(not exists (select * from TEAM_CASTY.Estadia e where e.Cod_Estadia=@cod_Estadia))
+begin
+	set @error=1;
+	set @mensaje+=' No existe esa estadía.';
+end
+
+if (exists (select * from @tabla t where t.Nombre not in (select c.Descripcion from TEAM_CASTY.Consumible c)))
+begin
+	set @error=1;
+	set @mensaje+=' Consumible inexistente.';
+end
+ 
+if(exists(select * from @tabla t where t.Cod_Habitacion not in (select hxe.Cod_Habitacion from TEAM_CASTY.HabitacionXEstadia hxe where hxe.Cod_Estadia=@cod_Estadia)))
+begin
+	set @error=1;
+	set @mensaje+=' Habitación no correspondiente a estadía.';
+end 
+ 
+if(exists (select * from @tabla t where t.Cantidad<0))
+begin
+	set @error=1;
+	set @mensaje+=' Cantidad incorrecta.';
+end 
+ 
+if (@error=0)	
+begin
+	insert into TEAM_CASTY.ConsumibleXHabitacionXEstadia
+	(Cod_Estadia,Cod_Habitacion,Cod_Consumible,Precio,Cantidad)
+	select @cod_Estadia,t.Cod_Habitacion,con.Cod_Consumible,con.Precio,t.Cantidad
+	from TEAM_CASTY.Consumible con, @tabla t
+	where t.Nombre=con.Descripcion;
+end
+else
+begin
+	set @mensaje=@mensaje + 'No se realizó el registro de consumibles.';
+	RAISERROR (@mensaje,15,1);
+end
+end;
+
+GO
