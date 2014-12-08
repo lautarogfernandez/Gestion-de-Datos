@@ -622,14 +622,17 @@ CREATE TABLE TEAM_CASTY.item_habitacionXFactura (
 	Nro_Factura numeric(18) NOT NULL,
 	Cod_Habitacion numeric(18) NOT NULL,
 	Cod_Regimen numeric(18) NOT NULL,
-	Monto numeric(18,2) NOT NULL,
+	Dias_Completados numeric(18) NOT NULL,
+	Monto_Completados numeric(18,2) NOT NULL,
+	Dias_Faltantes numeric(18) DEFAULT 0 NOT NULL,
+	Monto_Faltantes numeric(18,2) DEFAULT 0 NOT NULL,
 	PRIMARY KEY (Nro_Factura,Cod_Habitacion,Cod_Regimen),
 	FOREIGN KEY (Cod_Habitacion) REFERENCES TEAM_CASTY.Habitacion (Cod_Habitacion),
 	FOREIGN KEY (Nro_Factura) REFERENCES TEAM_CASTY.Factura (Nro_Factura),
 	FOREIGN KEY (Cod_Regimen) REFERENCES TEAM_CASTY.Regimen (Cod_Regimen));
 
-INSERT INTO TEAM_CASTY.item_habitacionXFactura (Nro_Factura,Cod_Habitacion,Cod_Regimen,Monto)
-SELECT f.Nro_Factura, hxe.Cod_Habitacion, res.Cod_Regimen, res.Cant_Noches*reg.Precio*thab.Porcentual+hot.CantEstrella*rec.Recarga AS Monto
+INSERT INTO TEAM_CASTY.item_habitacionXFactura (Nro_Factura,Cod_Habitacion,Cod_Regimen,Monto_Completados,Dias_Completados)
+SELECT f.Nro_Factura, hxe.Cod_Habitacion, res.Cod_Regimen, res.Cant_Noches*reg.Precio*thab.Porcentual+hot.CantEstrella*rec.Recarga AS Monto,res.Cant_Noches
 FROM TEAM_CASTY.Factura f, TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXEstadia hxe, TEAM_CASTY.Hotel hot, TEAM_CASTY.Recarga_Estrella rec, TEAM_CASTY.Regimen reg, TEAM_CASTY.Estadia est,TEAM_CASTY.Tipo_Habitacion thab, TEAM_CASTY.Reserva res
 WHERE f.Cod_Estadia=est.Cod_Estadia and
 est.Cod_Estadia=hxe.Cod_Estadia and
@@ -641,7 +644,7 @@ thab.Cod_Tipo=hab.Cod_Tipo and
 res.Cod_Reserva=est.Cod_Reserva
 
 --select * from TEAM_CASTY.item_habitacionXFactura
-print('Item habitación de factura OK');
+print('Item habitación de factura OK')
 
 GO
 
@@ -742,6 +745,8 @@ select  h.Cod_Hotel, h.Nombre, c.Nombre ,h.Calle,h.Nro_Calle,h.Telefono,h.Mail,h
 from TEAM_CASTY.Hotel h, TEAM_CASTY.Ciudad c , TEAM_CASTY.Recarga_Estrella re
 where h.Cod_Ciudad= c.Cod_Ciudad;
 
+GO
+
 create trigger TEAM_CASTY.alta_clientes
 ON TEAM_CASTY.vistaClientes
 instead of insert
@@ -783,6 +788,7 @@ end
 
 end;
 
+GO
 
 create trigger TEAM_CASTY.baja_clientes
 ON TEAM_CASTY.vistaClientes
@@ -795,6 +801,7 @@ from TEAM_CASTY.Cliente clie, deleted del
 where del.Codigo=clie.ID_Cliente;
 end;
 
+GO
 
 create trigger TEAM_CASTY.modif_clientes
 ON TEAM_CASTY.vistaClientes
@@ -884,6 +891,7 @@ end
 
 end;
 
+GO
 
 create procedure TEAM_CASTY.ModificarHabitacion
 (@hotel numeric(18), @numero numeric(18),@piso numeric(18),@frente char(1),@tipo nvarchar(255),@descripcion nvarchar(255), @baja numeric(18))
@@ -922,6 +930,7 @@ end
 
 end;
 
+GO
 create procedure TEAM_CASTY.BajarHabitacion
 (@hotel numeric(18), @numero numeric(18),@piso numeric(18),@fecha datetime)
 as
@@ -980,7 +989,7 @@ end
 
 end;
 
-go
+GO
 
 create function  TEAM_CASTY.Precios_Por_Dia
 (@hotel numeric(18))
@@ -997,6 +1006,8 @@ where hot.Cod_Hotel=@hotel and rxh.Cod_Hotel=@hotel and rxh.Activo=1
 RETURN 
 end;
 
+GO
+
 create function TEAM_CASTY.FuncionesAsignables
 ()
 RETURNS @tabla TABLE(
@@ -1010,6 +1021,8 @@ from TEAM_CASTY.Funcion f
 where f.Cod_Funcion not in (2,4,5,6)
 return;
 end;
+
+GO
 
 create function TEAM_CASTY.RegimenesElegibles
 (@hotel numeric (18))
@@ -1025,8 +1038,10 @@ where reg.Cod_Regimen=rxh.Cod_Regimen and rxh.Cod_Hotel=@hotel and rxh.Activo=1
 return;
 end;
 
+GO
+
 create procedure  TEAM_CASTY.Alta_Rol
-@nombre varchar(250), @funciones TEAM_CASTY.t_funcion READONLY
+@nombre varchar(250), @funciones TEAM_CASTY.t_funcion READONLY, @Activo numeric(18)
 AS
 begin
 declare @mensaje varchar(1000);
@@ -1058,7 +1073,7 @@ insert into TEAM_CASTY.Rol
 values (1,@nombre);
 
 insert into TEAM_CASTY.FuncionXRol
-select r.Cod_Rol,fun.Cod_Funcion
+select r.Cod_Rol,fun.Cod_Funcion,@Activo
 from @funciones f join TEAM_CASTY.Funcion fun on (f.funcion = fun.Descripcion)
 				  join TEAM_CASTY.Rol r on (r.Nombre=@nombre)
 
@@ -1070,6 +1085,8 @@ set @mensaje=@mensaje + ' No se realizó el alta.';
 RAISERROR (@mensaje,15,1);
 end
 end;
+
+GO
 
 create procedure  TEAM_CASTY.Modificacion_Rol
 (@nombre varchar(250), @funciones TEAM_CASTY.t_funcion READONLY, @activo numeric(18))
@@ -1122,6 +1139,8 @@ set @mensaje=@mensaje + ' No se realizó la modificación.';
 RAISERROR (@mensaje,15,1);
 end
 end;
+
+GO
 
 create procedure  TEAM_CASTY.Baja_Rol
 @nombre varchar(250)

@@ -218,3 +218,89 @@ begin
 	RAISERROR (@mensaje,15,1);
 end
 end;
+
+
+
+
+--PUNTO 12
+
+create function TEAM_CASTY.PrecioPorDiaEspecifico
+
+
+create procedure  TEAM_CASTY.Facturar
+@cod_Estadia numeric(18), @fecha datetime, @cod_forma_pago numeric(18)
+AS
+begin
+declare @mensaje nvarchar(1000);
+declare @error int;
+set @error=0;
+set @mensaje='Error: ';
+
+
+if (exists(select * from TEAM_CASTY.Estadia e where e.Cod_Estadia=@cod_Estadia))
+begin
+	if ((select e.Fecha_Salida from TEAM_CASTY.Estadia e) is null)
+	begin
+		set @error=1;
+		set @mensaje+=' No se realizó el Check OUT aún.';
+	end
+	else
+	begin
+		if ((select e.Fecha_Salida from TEAM_CASTY.Estadia e where e.Cod_Estadia=@cod_Estadia)=@fecha)
+		begin
+			set @error=1;
+			set @mensaje+=' Fecha incorrecta.';
+		end
+	end
+end
+else
+	set @error=1; 
+	set @mensaje+=' Estadía inexistente.';
+end
+
+if (not exists(select * from TEAM_CASTY.Forma_Pago fp where @cod_forma_pago=fp.Cod_Forma_Pago))
+begin
+	set @error=1; 
+	set @mensaje+=' Forma de pago inexistente.';
+end
+
+if (@error=0)
+begin
+	begin try
+		declare @nro_factura numeric (18);
+		select @nro_factura=max(f.Nro_Factura)+1 from TEAM_CASTY.Factura f;
+		insert into TEAM_CASTY.Factura
+		(Cod_Estadia,Cod_Forma_Pago,Fecha,Nro_Factura,Total)
+		values (@cod_Estadia,@cod_forma_pago,@fecha,@nro_factura,0);
+		insert into TEAM_CASTY.item_ConsumibleXFactura
+		select @nro_factura, cxhxe.Cod_ConsumibleXHabitacionXEstadia
+		from TEAM_CASTY.ConsumibleXHabitacionXEstadia cxhxe
+		where cxhxe.Cod_Estadia=@cod_Estadia;
+		declare @dias_completados numeric (18);
+		select @dias_completados=DATEDIFF(day,est.Fecha_Inicio,est.Fecha_Salida)
+		from TEAM_CASTY.Estadia est
+		where @cod_Estadia=est.Cod_Estadia;
+		declare @dias_faltantes numeric (18);
+		select @dias_faltantes=res.Cant_Noches-@dias_completados
+		from TEAM_CASTY.Reserva res, TEAM_CASTY.Estadia est
+		where @cod_Estadia=est.Cod_Estadia and est.Cod_Reserva=res.Cod_Reserva;
+		insert into TEAM_CASTY.item_habitacionXFactura
+		(Cod_Habitacion,Cod_Regimen,Nro_Factura,Monto_Completados,Monto_Completados,Dias_Faltantes,Monto_Faltantes)
+		select hab.Cod_Habitacion,res.Cod_Regimen,@nro_factura,,,res.Cant_Noches-datediff(day,est.Fecha_Inicio,est.Fecha_Salida),,
+		from TEAM_CASTY.Reserva res, TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXEstadia hxe, TEAM_CASTY.Estadia est
+		where @cod_Estadia=est.Cod_Estadia and res.Cod_Reserva=est.Cod_Reserva and est.Cod_Estadia=hxe.Cod_Estadia and
+		hxe.Cod_Habitacion=hab.Cod_Habitacion
+	end try
+	begin catch
+		set @mensaje=@mensaje + 'No se realizó la factura.';
+		RAISERROR (@mensaje,15,1);
+	end catch
+end
+else
+begin
+	set @mensaje=@mensaje + 'No se realizó la factura.';
+	RAISERROR (@mensaje,15,1);
+end
+end;
+
+GO
