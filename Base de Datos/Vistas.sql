@@ -267,19 +267,50 @@ CREATE FUNCTION vistaTOP5ClienteConPuntos (@pFecha_Inicio date,@pFecha_Fin date)
 RETURNS TABLE
 AS
 RETURN 
-select top 5 vc.Codigo,vc.Nombre,vc.Apellido,vc.Mail, vc.[Tipo Documento], vc.[Numero Documento], vc.Telefono, vc.Pais, vc.Localidad, vc.Calle, vc.[Numero Calle], vc.Piso, vc.Departamento, vc.Nacionalidad, vc.[Fecha Nacimiento] , sum(CxHxE.Precio)/5 as puntos
+select top 1000  vc.Codigo,vc.Nombre,vc.Apellido,vc.Mail, vc.[Tipo Documento], vc.[Numero Documento], vc.Telefono, vc.Pais, vc.Localidad, vc.Calle, vc.[Numero Calle], vc.Piso, vc.Departamento, vc.Nacionalidad, vc.[Fecha Nacimiento] , sum(TEAM_CASTY.precioConsumible(CxHxE.Precio,r.Cod_Reserva)/5 + r.Cant_Noches* Team_Casty.precioPorDia(CxHxE.Cod_Habitacion,r.Cod_Regimen)/10) as puntos
 from TEAM_CASTY.Factura f,TEAM_CASTY.Estadia e,TEAM_CASTY.Reserva r , TEAM_CASTY.ConsumibleXHabitacionXEstadia CxHxE, TEAM_CASTY.vistaClientes vc--- ID_Cliente_Reservador
-where f.Cod_Estadia = e.Cod_Estadia and r.Cod_Reserva = e.Cod_Reserva and CxHxE.Cod_Estadia = e.Cod_Estadia and vc.Codigo = r.ID_Cliente_Reservador
+where f.Cod_Estadia = e.Cod_Estadia and r.Cod_Reserva = e.Cod_Reserva and CxHxE.Cod_Estadia = e.Cod_Estadia and vc.Codigo = r.ID_Cliente_Reservador and vc.Nombre = 'LORELEY'
+group by  vc.Codigo,vc.Nombre,vc.Apellido,vc.Mail, vc.[Tipo Documento], vc.[Numero Documento], vc.Telefono, vc.Pais, vc.Localidad, vc.Calle, vc.[Numero Calle], vc.Piso, vc.Departamento, vc.Nacionalidad, vc.[Fecha Nacimiento] 
+order by puntos desc
+
+--, sum(TEAM_CASTY.precioConsumible(CxHxE.Precio,r.Cod_Reserva)/5 +
+select top 1000  vc.Codigo,vc.Nombre,vc.Apellido,vc.Mail, vc.[Tipo Documento], vc.[Numero Documento], vc.Telefono, vc.Pais, vc.Localidad, vc.Calle, vc.[Numero Calle], vc.Piso, vc.Departamento, vc.Nacionalidad, vc.[Fecha Nacimiento]  ,sum(r.Cant_Noches* Team_Casty.precioPorDia(CxHxE.Cod_Habitacion,r.Cod_Regimen)/10) as puntos
+from TEAM_CASTY.Factura f,TEAM_CASTY.Estadia e,TEAM_CASTY.Reserva r , TEAM_CASTY.ConsumibleXHabitacionXEstadia CxHxE, TEAM_CASTY.vistaClientes vc--- ID_Cliente_Reservador
+where f.Cod_Estadia = e.Cod_Estadia and r.Cod_Reserva = e.Cod_Reserva and CxHxE.Cod_Estadia = e.Cod_Estadia and vc.Codigo = r.ID_Cliente_Reservador 
 group by  vc.Codigo,vc.Nombre,vc.Apellido,vc.Mail, vc.[Tipo Documento], vc.[Numero Documento], vc.Telefono, vc.Pais, vc.Localidad, vc.Calle, vc.[Numero Calle], vc.Piso, vc.Departamento, vc.Nacionalidad, vc.[Fecha Nacimiento] 
 order by puntos desc
 
 
-SELECT * FROM vistaTOP5ClienteConPuntos('2013-01-01 ','2024-12-28')
 
 drop function vistaTOP5ClienteConPuntos
+
+SELECT * FROM vistaTOP5ClienteConPuntos('2013-01-01 ','2024-12-28')
+
+
+select * from gd_esquema.Maestra where Cliente_Apellido ='Rojas' and Cliente_Nombre = 'LORELEY'
+
+create function Team_Casty.precioPorDia(@codHabitacion numeric(18), @codRegimen numeric(18))
+returns numeric(18,2)
+as
+begin 
+  RETURN (select distinct (reg.Precio *th.Porcentual + hot.CantEstrella*recarga.Recarga)  as precioDia
+   from Team_Casty.Habitacion hab , Team_Casty.Tipo_Habitacion th, Team_Casty.Hotel hot, Team_Casty.Regimen reg,(select top 1 re.Recarga,re.Fecha_Modificacion from Team_Casty.Recarga_Estrella re order by  re.Fecha_Modificacion desc) as recarga
+               where reg.Cod_Regimen=@codRegimen and hab.Cod_Habitacion=@codHabitacion and hab.Cod_Tipo=th.Cod_Tipo and hab.Cod_Hotel=hot.Cod_Hotel)
+end
+go
 
 
 Cliente con mayor cantidad de puntos, donde cada $10 en estadías vale 1 puntos y cada $5 de consumibles es 1 punto,
  de la sumatoria de todas las facturaciones que haya tenido dentro de un periodo independientemente del Hotel. 
  Tener en cuenta que la facturación siempre es a quien haya realizado la reserva.
 
+create function TEAM_CASTY.precioConsumible(@precio numeric(18,2), @codReserva numeric(18))
+returns numeric(18,2)
+as 
+begin
+  if  exists(select * 
+                from TEAM_CASTY.Reserva res,TEAM_CASTY.Regimen  reg 
+                where res.Cod_Reserva  =@codReserva and reg.Cod_Regimen = res.Cod_Regimen and reg.Descripcion = 'All inclusive') set @precio=0
+  
+  return @precio
+end
