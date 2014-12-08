@@ -33,6 +33,8 @@
             this.label_progreso = new System.Windows.Forms.ToolStripStatusLabel();
             this.list_funciones = new System.Windows.Forms.CheckedListBox();
             this.grp_activo = new System.Windows.Forms.GroupBox();
+            this.lbl_inactivo = new System.Windows.Forms.Label();
+            this.lbl_activo = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.rb_activo = new System.Windows.Forms.RadioButton();
             this.rb_inactivo = new System.Windows.Forms.RadioButton();
@@ -45,8 +47,6 @@
             this.button_volver = new System.Windows.Forms.Button();
             this.txt_nombre = new System.Windows.Forms.TextBox();
             this._obli_nombre = new System.Windows.Forms.Label();
-            this.lbl_activo = new System.Windows.Forms.Label();
-            this.lbl_inactivo = new System.Windows.Forms.Label();
             this.stat_BarraEstado.SuspendLayout();
             this.grp_activo.SuspendLayout();
             this.SuspendLayout();
@@ -95,6 +95,24 @@
             this.grp_activo.TabIndex = 226;
             this.grp_activo.TabStop = false;
             this.grp_activo.Text = "Seleccione actividad";
+            // 
+            // lbl_inactivo
+            // 
+            this.lbl_inactivo.AutoSize = true;
+            this.lbl_inactivo.Location = new System.Drawing.Point(403, 32);
+            this.lbl_inactivo.Name = "lbl_inactivo";
+            this.lbl_inactivo.Size = new System.Drawing.Size(57, 13);
+            this.lbl_inactivo.TabIndex = 204;
+            this.lbl_inactivo.Text = "INACTIVO";
+            // 
+            // lbl_activo
+            // 
+            this.lbl_activo.AutoSize = true;
+            this.lbl_activo.Location = new System.Drawing.Point(101, 32);
+            this.lbl_activo.Name = "lbl_activo";
+            this.lbl_activo.Size = new System.Drawing.Size(46, 13);
+            this.lbl_activo.TabIndex = 203;
+            this.lbl_activo.Text = "ACTIVO";
             // 
             // label6
             // 
@@ -200,6 +218,7 @@
             this.button_volver.TabIndex = 212;
             this.button_volver.Text = "Volver";
             this.button_volver.UseVisualStyleBackColor = true;
+            this.button_volver.Click += new System.EventHandler(this.button_volver_Click);
             // 
             // txt_nombre
             // 
@@ -219,24 +238,6 @@
             this._obli_nombre.Size = new System.Drawing.Size(15, 20);
             this._obli_nombre.TabIndex = 223;
             this._obli_nombre.Text = "*";
-            // 
-            // lbl_activo
-            // 
-            this.lbl_activo.AutoSize = true;
-            this.lbl_activo.Location = new System.Drawing.Point(101, 32);
-            this.lbl_activo.Name = "lbl_activo";
-            this.lbl_activo.Size = new System.Drawing.Size(46, 13);
-            this.lbl_activo.TabIndex = 203;
-            this.lbl_activo.Text = "ACTIVO";
-            // 
-            // lbl_inactivo
-            // 
-            this.lbl_inactivo.AutoSize = true;
-            this.lbl_inactivo.Location = new System.Drawing.Point(403, 32);
-            this.lbl_inactivo.Name = "lbl_inactivo";
-            this.lbl_inactivo.Size = new System.Drawing.Size(57, 13);
-            this.lbl_inactivo.TabIndex = 204;
-            this.lbl_inactivo.Text = "INACTIVO";
             // 
             // Rol_alta
             // 

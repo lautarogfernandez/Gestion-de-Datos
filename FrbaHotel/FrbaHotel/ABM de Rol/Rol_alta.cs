@@ -51,30 +51,47 @@ namespace FrbaHotel.ABM_de_Rol
         }
         private void button_aceptar_Click(object sender, EventArgs e)
         {
-            DataTable table = new DataTable("Funciones");
-            table.Columns.Add(new DataColumn("Descripcion", typeof(string)));
-            for(int i=0;i<list_funciones.SelectedItems.Count;i++)
-            table.Rows.Add(list_funciones.SelectedItems[i]);
-            using (SqlConnection conn =Home.obtenerConexion())
+            try
             {
-                using (SqlCommand cmd = conn.CreateCommand())
+                DataTable table = new DataTable("Funciones");
+                table.Columns.Add(new DataColumn("Descripcion", typeof(string)));
+                for (int i = 0; i < list_funciones.CheckedItems.Count; i++)
+                    table.Rows.Add(list_funciones.CheckedItems[i]);
+                using (SqlConnection conn = Home.obtenerConexion())
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandText = "[TEAM_CASTY].validarUsuario";
-                    cmd.Parameters.Add(new SqlParameter("@usuario", txt_nombre.Text));
-                    cmd.Parameters.Add(new SqlParameter("@tabla",table));
-                    cmd.Parameters.Add(new SqlParameter("@contraseña", validado()));
-                    cmd.ExecuteNonQuery();
-                    //rows number of record got updated
-                    string msj = "Usuario validado con éxito \n";
-                    MessageBox.Show(msj, "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                    MenuPrincipal menuPrincipal = new MenuPrincipal();
-                    menuPrincipal.Show();
-                    this.Hide();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = "[TEAM_CASTY].Alta_Rol";
+                        cmd.Parameters.Add(new SqlParameter("@nombre", txt_nombre.Text));
+                        cmd.Parameters.Add(new SqlParameter("@funciones", table));
+                        cmd.Parameters.Add(new SqlParameter("@Activo", validado()));
+                        cmd.ExecuteNonQuery();
+                        //rows number of record got updated
+                        string msj = "Usuario validado con éxito \n";
+                        MessageBox.Show(msj, "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                        MenuPrincipal menuPrincipal = new MenuPrincipal();
+                        menuPrincipal.Show();
+                        this.Hide();
 
+                    }
                 }
-            }
 
+            }
+            catch(SqlException exc)
+            {
+                string msj = "Errores de sql: \n";
+                for (int i = 0; i < exc.Errors.Count; i++)
+                    msj += exc.Errors[i].Message + "\n";
+                MessageBox.Show(msj, "Excepcion SQL", MessageBoxButtons.OK, MessageBoxIcon.Question);
+            }
+        }
+
+        private void button_volver_Click(object sender, EventArgs e)
+        {
+            MenuPrincipal menuPrincipal = new MenuPrincipal();
+            this.Hide();
+            menuPrincipal.Show();
         }
     }
 }
