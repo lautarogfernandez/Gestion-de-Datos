@@ -1164,12 +1164,10 @@ set @error=0;
 set @mensaje='Error:';
 
 
-if (exists(select *
-		   from TEAM_CASTY.Rol r
-		   where @nombre=r.Nombre))
+if (not exists(select * from TEAM_CASTY.Rol r where @nombre=r.Nombre))
 begin
-set @error=1;
-set @mensaje=@mensaje + ' Rol existente.';
+	set @error=1;
+	set @mensaje=@mensaje + ' Rol inexistente.';
 end
 
 if (@error=0) 
