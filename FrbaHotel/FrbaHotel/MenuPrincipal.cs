@@ -33,30 +33,29 @@ namespace FrbaHotel
             if ((Home._nombreUsuario).ToLower() != "guest")
             {
                 button_logout.Visible = true;
-                string msj = "Bienvenido: "+lbl_usuario.Text+".\n Seleccione un hotel y seleccione un rol para continuar.";
+                string msj = "Bienvenido: " + lbl_usuario.Text + ".\n Seleccione un hotel y seleccione un rol para continuar.";
                 MessageBox.Show(msj, "Excepcion SQL", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 label_progreso.Text = "Seleccione un hotel para continuar.";
             }
             else
+            {
+
                 button_logout.Visible = false;
+            }
         }
 
         private void button_mostrar_hoteles_Click(object sender, EventArgs e)
         {
+            SqlConnection conn = Home.obtenerConexion();
             button_mostrar_hoteles.Enabled = false;
             label_progreso.Text = "Cargando Hoteles";
-            string ConnStr = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;";
-            SqlConnection conn = new SqlConnection(ConnStr);
-            conn.Open();
-            SqlDataAdapter adaptador;
+                        SqlDataAdapter adaptador;
             barra_progreso.Value = 0;
             DataTable tablaCiudad= new DataTable();
             try
             {
-                //adaptador = new SqlDataAdapter("SELECT DISTINCT [Codigo],[Nombre],[Ciudad],[Calle],[Numero Calle],"+
-                //                               "[Telefono],[Cantidad de Estrellas] FROM [GD2C2014].[Team_Casty].[vistaHoteles]", conn);
-            
-            adaptador = new SqlDataAdapter("SELECT * FROM [TEAM_CASTY].HotelesPorUsario (1)", conn);
+              adaptador = new SqlDataAdapter("SELECT DISTINCT [Codigo],[Nombre],[Ciudad],[Calle],[Numero Calle],"+
+                                              "[Telefono],[Cantidad de Estrellas] FROM [GD2C2014].[Team_Casty].[vistaHoteles]", conn);
             adaptador.Fill(tablaCiudad);
                 dgv_hoteles.DataSource = tablaCiudad;
                 barra_progreso.Value = 100;
@@ -195,6 +194,48 @@ namespace FrbaHotel
             Login.Formulario_login formularioLogin=new Login.Formulario_login();
             formularioLogin.Show();
             this.Hide();
+        }
+        private void dgv_hoteles_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int codigoHotel=Convert.ToInt32(dgv_hoteles.SelectedCells[0].Value);
+            SqlConnection conn = Home.obtenerConexion();
+            SqlDataAdapter adaptador;
+            barra_progreso.Value = 0;
+            DataTable tablaCiudad = new DataTable();
+            try
+            {
+                adaptador = new SqlDataAdapter("SELECT * FROM [Team_Casty].RolesDeUsuarioEnHotel ('"+Home._nombreUsuario
+                    +"',"+codigoHotel.ToString()+")", conn);
+                adaptador.Fill(tablaCiudad);
+                dgv_roles.DataSource = tablaCiudad;
+                if (tablaCiudad.Rows.Count > 1)
+                {
+                    dgv_roles.Visible = true;
+                    dgv_hoteles.Height = 180;
+                    barra_progreso.Value = 100;
+                    label_progreso.Text = "Seleccione un rol para continuar";
+                }
+                else
+                {
+                    barra_progreso.Value = 100;
+                    label_progreso.Text = "Rol cargado con éxito";
+                    Home.cargarFuncionalidadesDeRol(Convert.ToInt32(dgv_roles.Rows[0].Cells[0].Value));
+                    combo_objeto.Items.AddRange(Home.funcionalidadesHabilitadas.ToArray());
+                }
+            }
+            catch (Exception)
+            {
+
+                barra_progreso.Value = 0;
+                label_progreso.Text = "Error - Carga de Roles Invalida";
+            }
+            conn.Close();
+        }
+
+        private void dgv_roles_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Home.cargarFuncionalidadesDeRol(Convert.ToInt32(dgv_roles.SelectedCells[0].Value));
+            combo_objeto.Items.AddRange(Home.funcionalidadesHabilitadas.ToArray());
         }
 
     }

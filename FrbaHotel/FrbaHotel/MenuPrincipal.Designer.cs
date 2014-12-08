@@ -44,11 +44,13 @@
             this.stat_BarraEstado = new System.Windows.Forms.StatusStrip();
             this.lbl_usuario = new System.Windows.Forms.Label();
             this.grp_formularios = new System.Windows.Forms.GroupBox();
+            this.dgv_roles = new System.Windows.Forms.DataGridView();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imagenHotel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_hoteles)).BeginInit();
             this.stat_BarraEstado.SuspendLayout();
             this.grp_formularios.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_roles)).BeginInit();
             this.SuspendLayout();
             // 
             // button_mostrar_hoteles
@@ -78,17 +80,6 @@
             // 
             // combo_objeto
             // 
-            this.combo_objeto.Items.AddRange(new object[] {
-            "Rol",
-            "Usuario",
-            "Cliente",
-            "Hotel",
-            "Habitacion",
-            "Reserva",
-            "Estadía",
-            "Consumible",
-            "Facturación",
-            "Listado Estadístico"});
             this.combo_objeto.Name = "combo_objeto";
             this.combo_objeto.Size = new System.Drawing.Size(121, 23);
             this.combo_objeto.Text = "Seleccione Objeto";
@@ -162,10 +153,11 @@
             this.dgv_hoteles.Name = "dgv_hoteles";
             this.dgv_hoteles.ReadOnly = true;
             this.dgv_hoteles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_hoteles.Size = new System.Drawing.Size(230, 310);
+            this.dgv_hoteles.Size = new System.Drawing.Size(230, 312);
             this.dgv_hoteles.TabIndex = 11;
             this.dgv_hoteles.MouseHover += new System.EventHandler(this.dgv_hoteles_MouseHover);
             this.dgv_hoteles.MouseLeave += new System.EventHandler(this.dgv_hoteles_MouseLeave);
+            this.dgv_hoteles.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_hoteles_CellContentClick);
             // 
             // barra_progreso
             // 
@@ -194,9 +186,9 @@
             this.lbl_usuario.AutoSize = true;
             this.lbl_usuario.Location = new System.Drawing.Point(470, 9);
             this.lbl_usuario.Name = "lbl_usuario";
-            this.lbl_usuario.Size = new System.Drawing.Size(35, 13);
+            this.lbl_usuario.Size = new System.Drawing.Size(33, 13);
             this.lbl_usuario.TabIndex = 12;
-            this.lbl_usuario.Text = "Guest";
+            this.lbl_usuario.Text = "guest";
             // 
             // grp_formularios
             // 
@@ -208,11 +200,22 @@
             this.grp_formularios.TabStop = false;
             this.grp_formularios.Text = "Formularios Disponibles";
             // 
+            // dgv_roles
+            // 
+            this.dgv_roles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_roles.Location = new System.Drawing.Point(13, 311);
+            this.dgv_roles.Name = "dgv_roles";
+            this.dgv_roles.Size = new System.Drawing.Size(230, 125);
+            this.dgv_roles.TabIndex = 14;
+            this.dgv_roles.Visible = false;
+            this.dgv_roles.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_roles_CellContentClick);
+            // 
             // MenuPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 461);
+            this.Controls.Add(this.dgv_roles);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.grp_formularios);
             this.Controls.Add(this.lbl_usuario);
@@ -235,6 +238,7 @@
             this.stat_BarraEstado.ResumeLayout(false);
             this.stat_BarraEstado.PerformLayout();
             this.grp_formularios.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_roles)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -257,5 +261,6 @@
         private System.Windows.Forms.StatusStrip stat_BarraEstado;
         private System.Windows.Forms.Label lbl_usuario;
         private System.Windows.Forms.GroupBox grp_formularios;
+        private System.Windows.Forms.DataGridView dgv_roles;
     }
 }
