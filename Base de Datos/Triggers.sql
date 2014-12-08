@@ -1,4 +1,5 @@
 --Triggers
+
 create trigger TEAM_CASTY.alta_clientes
 ON TEAM_CASTY.vistaClientes
 instead of insert
@@ -26,15 +27,62 @@ if(@error=0)
 begin
 insert into TEAM_CASTY.Cliente
 (Apellido,Nom_Calle,Dto,Fecha_Nacimiento,Localidad,Mail,Nacionalidad,Nombre,Nro_Calle,Nro_Documento,Pais,Piso,Telefono,ID_Tipo_Documento)
-select ins.Apellido,ins.Calle,ins.Departamento,ins.[Fecha Nacimiento],ins.Localidad,ins.Mail,ins.Nacionalidad,ins.Nombre,
-ins.[Numero Calle],ins.[Numero Documento],ins.Pais,ins.Piso,ins.Telefono,tdoc.ID_Tipo_Documento
+select ins.Apellido,ins.Calle,ins.Departamento,ins.[Fecha Nacimiento],UPPER (ins.Localidad),ins.Mail,UPPER (ins.Nacionalidad,UPPER (ins.Nombre)),
+ins.[Numero Calle],ins.[Numero Documento],UPPER (ins.Pais),ins.Piso,ins.Telefono,tdoc.ID_Tipo_Documento
 from inserted ins, TEAM_CASTY.Tipo_Documento tdoc
-where tdoc.Tipo_Documento=ins.[Tipo Documento]
+where tdoc.Tipo_Documento=UPPER (ins.[Tipo Documento]);
 end
 
 else
 begin
 set @mensaje=@mensaje + ' No se realizó el alta.';
+RAISERROR (@mensaje,15,1);
+end
+
+end;
+
+
+create trigger TEAM_CASTY.modificacion_clientes
+ON TEAM_CASTY.vistaClientes
+instead of insert
+AS
+begin
+
+declare @mensaje varchar(1000);
+declare @error int;
+set @error=0;
+set @mensaje='Error:';
+
+if(exists (select * from TEAM_CASTY.Cliente c,inserted ins where c.Mail=ins.Mail))
+begin
+set @error=1
+set @mensaje=@mensaje + ' Mail repetido.';
+end
+
+if(exists (select * from TEAM_CASTY.Cliente c,inserted ins,TEAM_CASTY.Tipo_Documento tdoc where c.Nro_Documento=ins.[Numero Documento] and c.ID_Tipo_Documento=tdoc.ID_Tipo_Documento and ins.[Tipo Documento]=tdoc.Tipo_Documento))
+begin
+set @error=1
+set @mensaje=@mensaje + ' Documento repetido.';
+end
+
+if(@error=0)
+begin
+declare @id_tipo_doc numeric(18);
+select @id_tipo_doc=td.ID_Tipo_Documento from TEAM_CASTY.Tipo_Documento td, inserted ins where td.Tipo_Documento=UPPER(ins.[Tipo Documento]);
+declare @codigo numeric (18);
+select @codigo=d.Codigo from deleted d;
+update clie
+set Apellido=ins.Apellido, Nom_Calle=ins.Calle,Dto=ins.Departamento,Fecha_Nacimiento=ins.[Fecha Nacimiento],
+Localidad=UPPER (ins.Localidad),Mail=ins.Mail,Nacionalidad=UPPER (ins.Nacionalidad),
+Nombre=UPPER (ins.Nombre),Nro_Calle=ins.[Numero Calle],Nro_Documento=ins.[Numero Documento],
+Pais=UPPER (ins.Pais),Piso=ins.Piso,Telefono=ins.Telefono,ID_Tipo_Documento=@id_tipo_doc, Inhabilitado=ins.Inhabilitado
+from TEAM_CASTY.Cliente clie, inserted ins
+where @codigo=ID_Cliente;
+end
+
+else
+begin
+set @mensaje=@mensaje + ' No se realizó la modificación.';
 RAISERROR (@mensaje,15,1);
 end
 
@@ -53,49 +101,49 @@ where del.Codigo=clie.ID_Cliente;
 end;
 
 
-create trigger TEAM_CASTY.modif_clientes
-ON TEAM_CASTY.vistaClientes
-instead of update
-AS
-begin
+--create trigger TEAM_CASTY.modif_clientes
+--ON TEAM_CASTY.vistaClientes
+--instead of update
+--AS
+--begin
 
-declare @mensaje varchar(1000);
-declare @error int;
-set @error=0;
-set @mensaje='Error:';
+--declare @mensaje varchar(1000);
+--declare @error int;
+--set @error=0;
+--set @mensaje='Error:';
 
-if(exists (select * from TEAM_CASTY.Cliente c,inserted ins where c.Mail=ins.Mail and ins.Codigo<>c.ID_Cliente))
-begin
-set @error=1
-set @mensaje=@mensaje + ' Mail repetido.';
-end
+--if(exists (select * from TEAM_CASTY.Cliente c,inserted ins where c.Mail=ins.Mail and ins.Codigo<>c.ID_Cliente))
+--begin
+--set @error=1
+--set @mensaje=@mensaje + ' Mail repetido.';
+--end
 
-if(exists (select * from TEAM_CASTY.Cliente c,inserted ins,TEAM_CASTY.Tipo_Documento tdoc where c.Nro_Documento=ins.[Numero Documento] and tdoc.Tipo_Documento=ins.[Tipo Documento] and c.ID_Tipo_Documento=tdoc.ID_Tipo_Documento and c.ID_Cliente<>ins.Codigo))
-begin
-set @error=1
-set @mensaje=@mensaje + ' Documento repetido.';
-end
+--if(exists (select * from TEAM_CASTY.Cliente c,inserted ins,TEAM_CASTY.Tipo_Documento tdoc where c.Nro_Documento=ins.[Numero Documento] and tdoc.Tipo_Documento=ins.[Tipo Documento] and c.ID_Tipo_Documento=tdoc.ID_Tipo_Documento and c.ID_Cliente<>ins.Codigo))
+--begin
+--set @error=1
+--set @mensaje=@mensaje + ' Documento repetido.';
+--end
 
-if(@error=0)
-begin
-update c
-set c.Nombre=ins.Nombre,c.Apellido=ins.Apellido,c.Mail=ins.Mail,c.ID_Tipo_Documento=tdoc.ID_Tipo_Documento,
-c.Nro_Documento=ins.[Numero Documento],c.Telefono=ins.Telefono,c.Pais=ins.Pais,c.Localidad=ins.Localidad,
-c.Nom_Calle=ins.Calle,c.Nro_Calle=ins.[Numero Calle],c.Piso=ins.Piso,c.Dto=ins.Departamento,
-c.Nacionalidad=ins.Nacionalidad, c.Fecha_Nacimiento=ins.[Fecha Nacimiento]
-from TEAM_CASTY.Cliente c, inserted ins,TEAM_CASTY.Tipo_Documento tdoc
-where ins.Codigo=c.ID_Cliente and ins.[Tipo Documento] = tdoc.Tipo_Documento
-end
+--if(@error=0)
+--begin
+--update c
+--set c.Nombre=ins.Nombre,c.Apellido=ins.Apellido,c.Mail=ins.Mail,c.ID_Tipo_Documento=tdoc.ID_Tipo_Documento,
+--c.Nro_Documento=ins.[Numero Documento],c.Telefono=ins.Telefono,c.Pais=ins.Pais,c.Localidad=ins.Localidad,
+--c.Nom_Calle=ins.Calle,c.Nro_Calle=ins.[Numero Calle],c.Piso=ins.Piso,c.Dto=ins.Departamento,
+--c.Nacionalidad=ins.Nacionalidad, c.Fecha_Nacimiento=ins.[Fecha Nacimiento]
+--from TEAM_CASTY.Cliente c, inserted ins,TEAM_CASTY.Tipo_Documento tdoc
+--where ins.Codigo=c.ID_Cliente and ins.[Tipo Documento] = tdoc.Tipo_Documento
+--end
 
-else
-begin
-set @mensaje=@mensaje + ' No se realizó la modificación.';
-RAISERROR (@mensaje,10,1);
-end
+--else
+--begin
+--set @mensaje=@mensaje + ' No se realizó la modificación.';
+--RAISERROR (@mensaje,15,1);
+--end
 
-end;
+--end;
 
-GO
+--GO
 -----------------------------------------------------------------------------------------------------------------------
 insert into TEAM_CASTY.vistaClientes
 (Nombre,Apellido,[Tipo Documento],[Numero Documento],Mail,Telefono,Pais,Localidad,Calle,[Numero Calle],Piso,Departamento,Nacionalidad,[Fecha Nacimiento])

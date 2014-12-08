@@ -1045,7 +1045,7 @@ CREATE TYPE [TEAM_CASTY].[t_funcion] AS TABLE(
 	
 GO
 
-create view TEAM_CASTY.vistasRoles
+create view TEAM_CASTY.vistaRoles
 AS  
 select rol.Cod_Rol as [Codigo de Rol], rol.Nombre,rol.Activo
 from  TEAM_CASTY.Rol rol
@@ -1201,3 +1201,22 @@ from TEAM_CASTY.Hotel h, TEAM_CASTY.Ciudad c , TEAM_CASTY.Recarga_Estrella re
 where h.Cod_Ciudad= c.Cod_Ciudad
 
 GO
+
+create view TEAM_CASTY.vistaClientes
+(Codigo, Nombre, Apellido, Mail, "Tipo Documento", "Numero Documento",Telefono,Pais,Localidad,"Calle","Numero Calle",Piso, "Departamento", Nacionalidad,"Fecha Nacimiento",Inhabilitado)
+AS
+select c.ID_Cliente, c.Nombre, c.Apellido, c.Mail, d.Tipo_Documento, c.Nro_Documento, c.Telefono, c.Pais, c.Localidad, c.Nom_Calle, c.Nro_Calle, c.Piso ,c.Dto,c.Nacionalidad, c.Fecha_Nacimiento,c.Inhabilitado
+from TEAM_CASTY.Cliente c, TEAM_CASTY.Tipo_Documento d
+where c.Baja=0
+
+GO
+
+create view TEAM_CASTY.vistaClientesErroneos
+(Codigo, Nombre, Apellido, Mail, "Tipo Documento", "Numero Documento",Telefono,Pais,Localidad,"Calle","Numero Calle",Piso, "Departamento", Nacionalidad,"Fecha Nacimiento",Inhabilitado)
+AS
+select c.ID_Cliente, c.Nombre, c.Apellido, c.Mail, d.Tipo_Documento, c.Nro_Documento, c.Telefono, c.Pais, c.Localidad, c.Nom_Calle, c.Nro_Calle, c.Piso ,c.Dto,c.Nacionalidad, c.Fecha_Nacimiento,c.Inhabilitado
+from TEAM_CASTY.Cliente c, TEAM_CASTY.Tipo_Documento d
+where c.Baja=0 and c.Erroneo=1
+
+GO
+
