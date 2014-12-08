@@ -18,8 +18,10 @@ create function periodosSinInterseccion(@FechaInicio1 date, @FechaFin1 date, @Fe
 RETURNS bit
 AS 
 BEGIN
-    if ((@FechaInicio1 > @FechaFin2 or  @FechaInicio2 > @FechaFin1 ))  RETURN 0
-   else    RETURN 1
+declare @aux bit
+    if ((@FechaInicio1 > @FechaFin2 or  @FechaInicio2 > @FechaFin1 ))  set @aux= 0
+   else  set @aux = 1
+   return @aux
 END;
 GO
 
@@ -55,10 +57,12 @@ return select reg.Cod_Regimen as Codigo ,reg.Descripcion,reg.Precio from Team_Ca
 go
 
 
-create function Team_Casty.habitacionesEnHotel(@codHotel numeric(18))
+create function Team_Casty.habitacionesLibresEnHotel(@codHotel numeric(18),@fechaInicio datetime,@fechaSalida datetime)
 returns table
 as
---return select hab.* from Team_Casty.Habitacion hab where Cod_Hotel = @codHotel and hab.Baja = 0 and hab.
+return select hab.* 
+       from Team_Casty.Habitacion hab,Team_Casty.Reserva res,Team_Casty.HabitacionXReserva
+        where Cod_Hotel = @codHotel and hab.Baja = 0 and 
 go
 
 create procedure Team_Casty.precioPorDia(@codHabitacion numeric(18), @codRegimen numeric(18),@precio numeric(18) output)
