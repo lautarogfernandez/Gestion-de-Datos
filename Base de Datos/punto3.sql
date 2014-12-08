@@ -26,20 +26,20 @@ begin
       end
 end  
 
-
+-----------------------------------------------------------------
 create procedure Team_Casty.bajaUsuario(@username nvarchar(255))
 as
 begin
   update Team_Casty.Usuario set Baja=1 where @username=Username
 end
  
- 
+ -------------------------------------------------------------------------
 create procedure Team_Casty.agregarUsuarioRolHotel(@usuario numeric(18), @rol numeric(18), @hotel numeric(18))
 as
 begin
   insert into Team_Casty.RolXUsuarioXHotel (Cod_Usuario,Cod_Rol,Cod_Hotel) values (@usuario, @rol, @hotel)
 end 
-
+-----------------------------------------------------------------------------------------
 
 create procedure Team_Casty.modificarUsuarioContraseña (@password nvarchar(255),@username nvarchar(255))
 as
@@ -47,7 +47,7 @@ begin
   update Team_Casty.Usuario set  Contraseña= @password where @username = Username
 end
 
-
+------------------------------------------------------------------------------------
 
 create procedure Team_Casty.habilitarUsuario (@username nvarchar(255))
 as

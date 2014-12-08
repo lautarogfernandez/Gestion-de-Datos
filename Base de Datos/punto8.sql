@@ -26,9 +26,9 @@ GO
 
 
 
---------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------
 
-create procedure Team_Casty.habitacionReserva(@codHabitacion numeric(18),@codReserva numeric(18))
+create procedure Team_Casty.agregarHabitacionReserva(@codHabitacion numeric(18),@codReserva numeric(18))
 as
 begin
   insert into Team_Casty.HabitacionXReserva (Cod_Habitacion,Cod_Reserva) values (@codHabitacion,@codReserva)
@@ -47,9 +47,25 @@ begin
 end
 go
 
+
+create function Team_Casty.regimenesEnHotel (@codHotel numeric(18))
+returns table
+as
+return select reg.Cod_Regimen as Codigo ,reg.Descripcion,reg.Precio from Team_Casty.Regimen reg, Team_Casty.RegimenXHotel rxh where @codHotel= rxh.Cod_Hotel and rxh.Cod_Regimen=reg.Cod_Regimen and rxh.Activo =1
+go
+
+
 create function Team_Casty.habitacionesEnHotel(@codHotel numeric(18))
 returns table
 as
 --return select hab.* from Team_Casty.Habitacion hab where Cod_Hotel = @codHotel and hab.Baja = 0 and hab.
+go
 
-
+create procedure Team_Casty.precioPorDia(@codHabitacion numeric(18), @codRegimen numeric(18),@precio numeric(18) output)
+as
+begin 
+  set @precio= (select distinct (reg.Precio *th.Porcentual + hot.CantEstrella*recarga.Recarga)  as precioDia
+   from Team_Casty.Habitacion hab , Team_Casty.Tipo_Habitacion th, Team_Casty.Hotel hot, Team_Casty.Regimen reg,(select top 1 re.Recarga,re.Fecha_Modificacion from Team_Casty.Recarga_Estrella re order by  re.Fecha_Modificacion dec) as recarga
+               where hab.Cod_Tipo=th.Cod_Tipo and hab.Cod_Hotel=hot.Cod_Hotel)
+end
+go
