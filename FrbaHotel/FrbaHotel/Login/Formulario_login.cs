@@ -71,5 +71,10 @@ namespace FrbaHotel.Login
                 //Display Error message
             }
         }
+
+        private void Formulario_login_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

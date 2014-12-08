@@ -41,3 +41,5 @@ C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.
 C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Hotel.Hotel_modificacion.resources
 C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Hotel.Hotel_modificar.resources
 C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.Login.Formulario_login.resources
+C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Rol.Rol_alta.resources
+C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Rol.Rol_modificacion.resources

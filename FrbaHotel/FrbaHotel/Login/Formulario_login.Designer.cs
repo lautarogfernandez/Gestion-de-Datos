@@ -151,6 +151,7 @@
             this.MinimumSize = new System.Drawing.Size(400, 200);
             this.Name = "Formulario_login";
             this.Text = "Formulario_login";
+            this.Load += new System.EventHandler(this.Formulario_login_Load);
             this.grp_usuario_y_pass.ResumeLayout(false);
             this.grp_usuario_y_pass.PerformLayout();
             this.stat_BarraEstado.ResumeLayout(false);
