@@ -1852,17 +1852,14 @@ end;
 
 GO
 
+
 create function  TEAM_CASTY.Disponibilidad_Reserva
-(@fecha_desde datetime,@fecha_hasta datetime,@tipo_habitacion nvarchar(255),@hotel numeric(18))
-returns numeric (18)
+(@fecha_desde datetime,@fecha_hasta datetime,@hotel numeric(18),@tabla TEAM_CASTY.t_reserva readonly)
+returns numeric(18)
 AS
 begin
 
-declare @sePuede numeric(18)=0;
-declare @cod_tipo_habitacion numeric(18);
-select @cod_tipo_habitacion=th.Cod_Tipo
-from TEAM_CASTY.Tipo_Habitacion th
-where @tipo_habitacion=th.Descripcion;
+declare @sePuede numeric(18)=1;
 
 if(datediff(day,@fecha_desde,@fecha_hasta)>0)
 begin
@@ -1872,19 +1869,36 @@ begin
 	where pein.Cod_Hotel=@hotel and
 	TEAM_CASTY.periodoOK(pein.Fecha_Inicio,pein.Fecha_Fin,@fecha_desde,@fecha_hasta)=0))
 	begin
-		if (exists (
-		select * 
-		from TEAM_CASTY.Habitacion hab
-		where hab.Cod_Tipo=@cod_tipo_habitacion and hab.Cod_Hotel=@hotel and hab.Baja=0 and hab.Cod_Habitacion not in		
-		(select distinct hxr.Cod_Habitacion 
-		from TEAM_CASTY.Reserva res, TEAM_CASTY.HabitacionXReserva hxr
-		where res.Cod_Reserva=hxr.Cod_Reserva and
-		TEAM_CASTY.periodoOK(@fecha_desde,@fecha_hasta,res.Fecha_Reserva,res.Fecha_Reserva+res.Cant_Noches)=0 and
-		hab.Cod_Tipo=@cod_tipo_habitacion)))
-		begin
-			set @sePuede=1;
-		end
+		DECLARE _cursor CURSOR FOR
+		select * from @tabla;
+		OPEN _cursor;
+		DECLARE @t_hab nvarchar(255), @cant numeric(18),@cod_t_hab numeric(18),@seguir  numeric(18)=1;
+		FETCH NEXT FROM _cursor INTO @t_hab, @cant;
+		WHILE (@@FETCH_STATUS = 0 and @seguir=1)
+		BEGIN
+			select @cod_t_hab=th.Cod_Tipo
+			from TEAM_CASTY.Tipo_Habitacion th
+			where th.Descripcion=@t_hab;
+			
+			if(TEAM_CASTY.Cant_Hab_Disponibles(@fecha_desde,@fecha_hasta,@hotel,@cod_t_hab)<@cant)
+			begin
+				set @seguir=0;
+				set @sePuede=0;
+			end;
+			
+			FETCH NEXT FROM _cursor INTO @t_hab, @cant;					
+		END;		
+		CLOSE _cursor;
+		DEALLOCATE _cursor;	
 	end
+	else
+	begin
+		set @sePuede=0;
+	end
+end
+else
+begin
+	set @sePuede=0;
 end
 RETURN @sePuede;
 end;

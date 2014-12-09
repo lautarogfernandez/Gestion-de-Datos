@@ -15,7 +15,7 @@ end;
 GO
 
 
-create function  TEAM_CASTY.Disponibilidad_Reserva
+create function  TEAM_CASTY.Disponibilidad_Reserva1--anda OK
 (@fecha_desde datetime,@fecha_hasta datetime,@tipo_habitacion nvarchar(255),@hotel numeric(18))
 returns numeric (18)
 AS
@@ -53,6 +53,114 @@ RETURN @sePuede;
 end;
 
 GO
+
+create type TEAM_CASTY.t_reserva AS TABLE(
+Tipo_habitacion nvarchar(255),
+Cantidad numeric(18));
+
+GO
+
+create function  TEAM_CASTY.estaReservada
+(@fecha_desde datetime,@fecha_hasta datetime,@cod_hab numeric(18))
+returns numeric(18)
+AS
+begin
+	declare @si numeric(18)=1;
+	if (exists(
+	select *
+	from TEAM_CASTY.Reserva res, TEAM_CASTY.HabitacionXReserva hxr
+	where hxr.Cod_Habitacion=@cod_hab and
+	TEAM_CASTY.periodoOK(@fecha_desde,@fecha_hasta,res.Fecha_Reserva,res.Fecha_Reserva+res.Cant_Noches)=0
+	))
+	begin
+		set @si=0;
+	end
+	return @si;
+end;
+
+GO
+
+create function TEAM_CASTY.Cant_Hab_Disponibles
+(@fecha_desde datetime,@fecha_hasta datetime,@hotel numeric(18),@cod_tipo_hab numeric(18))
+returns numeric(18)
+AS
+begin
+	return(
+	select COUNT(distinct hab.Cod_Habitacion)
+	from TEAM_CASTY.Habitacion hab
+	where hab.Cod_Hotel=@hotel and hab.Baja=0 and hab.Cod_Tipo=@cod_tipo_hab and 
+	TEAM_CASTY.estaReservada(@fecha_desde,@fecha_hasta,hab.Cod_Habitacion)=1)
+end;
+
+GO
+
+declare @f1 datetime=convert(datetime,'2018-02-02',111);
+declare @f2 datetime=convert(datetime,'2018-02-04',111);
+select TEAM_CASTY.Cant_Hab_Disponibles(@f1,@f2,1,1001);
+
+
+select * from TEAM_CASTY.Reserva
+select * from TEAM_CASTY.HabitacionXReserva
+select * from TEAM_CASTY.Habitacion
+
+create function  TEAM_CASTY.Disponibilidad_Reserva
+(@fecha_desde datetime,@fecha_hasta datetime,@hotel numeric(18),@tabla TEAM_CASTY.t_reserva readonly)
+returns numeric(18)
+AS
+begin
+
+declare @sePuede numeric(18)=1;
+
+if(datediff(day,@fecha_desde,@fecha_hasta)>0)
+begin
+	if(not exists(
+	select *
+	from TEAM_CASTY.Periodo_Inhabilitado pein
+	where pein.Cod_Hotel=@hotel and
+	TEAM_CASTY.periodoOK(pein.Fecha_Inicio,pein.Fecha_Fin,@fecha_desde,@fecha_hasta)=0))
+	begin
+		DECLARE _cursor CURSOR FOR
+		select * from @tabla;
+		OPEN _cursor;
+		DECLARE @t_hab nvarchar(255), @cant numeric(18),@cod_t_hab numeric(18),@seguir  numeric(18)=1;
+		FETCH NEXT FROM _cursor INTO @t_hab, @cant;
+		WHILE (@@FETCH_STATUS = 0 and @seguir=1)
+		BEGIN
+			select @cod_t_hab=th.Cod_Tipo
+			from TEAM_CASTY.Tipo_Habitacion th
+			where th.Descripcion=@t_hab;
+			
+			if(TEAM_CASTY.Cant_Hab_Disponibles(@fecha_desde,@fecha_hasta,@hotel,@cod_t_hab)<@cant)
+			begin
+				set @seguir=0;
+				set @sePuede=0;
+			end;
+			
+			FETCH NEXT FROM _cursor INTO @t_hab, @cant;					
+		END;		
+		CLOSE _cursor;
+		DEALLOCATE _cursor;	
+	end
+	else
+	begin
+		set @sePuede=0;
+	end
+end
+else
+begin
+	set @sePuede=0;
+end
+RETURN @sePuede;
+end;
+
+GO
+
+
+
+
+
+
+
 
 --probar
 --PUNTO 9
