@@ -246,6 +246,9 @@ select Habitacion_Numero, Habitacion_Piso, Reserva_Codigo, Reserva_Fecha_Inicio,
  select MAX(m.Reserva_Codigo) from gd_esquema.Maestra m
 select MAX(m.Factura_Fecha) from gd_esquema.Maestra m
 
+select MAX(e.Fecha_Salida) from TEAM_CASTY.Estadia e
+select MAX(f.Fecha) from TEAM_CASTY.Factura f
+
 --consulta genérica
 SELECT *
 FROM gd_esquema.Maestra t1
