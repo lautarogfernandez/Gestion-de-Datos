@@ -1398,3 +1398,205 @@ select reg.Descripcion
 from TEAM_CASTY.Regimen reg);
 
 go
+
+CREATE TYPE TEAM_CASTY.t_tablaRegimenes AS TABLE(
+	Descripcion nvarchar (255));
+	
+GO
+
+create procedure TEAM_CASTY.alta_Hotel
+(@nombre nvarchar(255),@mail nvarchar(255),@telefono nvarchar(50),@pais nvarchar(255),@cidudad nvarchar(255),@cant_Estrellas numeric (18),
+@calle nvarchar(255),@num_calle numeric (18),@fecha_creacion datetime, @tabla t_tablaRegimenes readonly)
+as
+begin
+declare @mensaje varchar(1000);
+declare @error int;
+set @error=0;
+set @mensaje='Error: ';
+
+ if (exists (
+ select *
+ from TEAM_CASTY.Hotel h, TEAM_CASTY.Ciudad c
+ where h.Calle=@calle and @num_calle=h.Nro_Calle and h.Pais=upper(@pais) and c.Nombre=@cidudad))
+ begin
+	set @error=1;
+	set @mensaje+=' El hotel ya existe.';
+ end
+
+if(exists(
+select * from TEAM_CASTY.Hotel h where h.Mail=@mail
+))
+begin
+	set @error=1;
+	set @mensaje+='Mail repetido.';
+end
+ 
+if (@error=0)
+begin
+	declare @cod_ciudad numeric (18);
+	if (not exists (
+	select * from TEAM_CASTY.Hotel h, TEAM_CASTY.Ciudad c where h.Pais=@pais and c.Nombre=@cidudad))
+	begin
+		INSERT INTO TEAM_CASTY.Ciudad (Nombre) values (@cidudad);
+	end
+	select @cod_ciudad=c.Cod_Ciudad	from TEAM_CASTY.Ciudad c where c.Nombre=@cidudad;	
+	
+	insert into Team_Casty.Hotel
+	(Nombre,Pais,Cod_Ciudad,Calle,Nro_Calle,Telefono,Mail,CantEstrella,Fecha_Creacion)
+	values(@nombre,upper(@pais),@cod_ciudad,@calle,@num_calle,@telefono,@mail,@cant_Estrellas,@fecha_creacion);
+	
+	declare @cod_hotel numeric (18);
+	select @cod_hotel=MAX(h.Cod_Hotel) from TEAM_CASTY.Hotel h;
+	
+	insert into TEAM_CASTY.RegimenXHotel
+	(Cod_Hotel,Cod_Regimen,Activo)
+	select @cod_hotel,r.Cod_Regimen,1
+	from  TEAM_CASTY.Regimen r, @tabla t
+	where r.Descripcion=t.Descripcion;
+	
+end	
+else
+begin
+	set @mensaje=@mensaje + 'No se realizó el alta.';
+	RAISERROR (@mensaje,15,1);
+end
+end;
+ 
+ GO
+ 
+ create procedure TEAM_CASTY.modificacion_Hotel
+(@cod_hotel numeric (18),@nombre nvarchar(255),@mail nvarchar(255),@telefono nvarchar(50),@pais nvarchar(255),@cidudad nvarchar(255),@cant_Estrellas numeric (18),
+@calle nvarchar(255),@num_calle numeric (18),@fecha_creacion datetime, @tabla t_tablaRegimenes readonly)
+ as
+ begin
+ declare @mensaje varchar(1000);
+declare @error int;
+set @error=0;
+set @mensaje='Error: ';
+
+ if (not exists (
+ select *
+ from TEAM_CASTY.Hotel h
+ where h.Cod_Hotel=@cod_hotel))
+ begin
+	set @error=1;
+	set @mensaje+=' El hotel no existe.';
+ end
+ 
+ if(exists(
+select * from TEAM_CASTY.Hotel h where h.Mail=@mail and @cod_hotel<>h.Cod_Hotel
+))
+begin
+	set @error=1;
+	set @mensaje+='Mail repetido.';
+end
+ 
+if (@error=0)
+begin	
+	declare @cod_ciudad numeric (18);
+	if (not exists (
+	select * from TEAM_CASTY.Hotel h, TEAM_CASTY.Ciudad c where h.Pais=upper(@pais) and c.Nombre=@cidudad))
+	begin
+		INSERT INTO TEAM_CASTY.Ciudad (Nombre) values (@cidudad);
+	end
+	select @cod_ciudad=c.Cod_Ciudad	from TEAM_CASTY.Ciudad c where c.Nombre=@cidudad;
+	
+	update Team_Casty.Hotel
+	set Nombre=@nombre,Pais=@pais,Calle=@calle,Nro_Calle=@num_calle,Telefono=@telefono,
+	Mail=@mail,CantEstrella=@cant_Estrellas,Fecha_Creacion=@fecha_creacion,Cod_Ciudad=@cod_ciudad
+	where @cod_hotel=Cod_Hotel;
+	
+	delete TEAM_CASTY.RegimenXHotel	
+	where Cod_Hotel=@cod_hotel;
+	
+	insert into TEAM_CASTY.RegimenXHotel
+	(Cod_Hotel,Cod_Regimen,Activo)
+	select @cod_hotel,r.Cod_Regimen,1
+	from  TEAM_CASTY.Regimen r, @tabla t
+	where r.Descripcion=t.Descripcion;	
+end	
+else
+begin
+	set @mensaje=@mensaje + 'No se realizó la modificación.';
+	RAISERROR (@mensaje,15,1);
+end
+end;
+ 
+ GO
+ 
+ create function TEAM_CASTY.periodoOK
+(@fi1 datetime, @ff1 datetime, @fi2 datetime, @ff2 datetime)
+RETURNS numeric(18)
+AS
+begin
+declare @ok numeric (18);
+
+if( (@ff2<@fi1) or (@fi2>@ff1) )
+begin
+	set @ok=1;
+end
+else
+begin
+	set @ok=0;
+end
+
+return @ok;
+end;
+
+GO
+ 
+create procedure TEAM_CASTY.baja_Hotel
+(@cod_hotel numeric (18),@fecha_inicio datetime, @fecha_fin datetime,@motivo nvarchar(255))
+ as
+ begin
+ declare @mensaje varchar(1000);
+declare @error int;
+set @error=0;
+set @mensaje='Error:';
+
+ if (not exists (
+ select *
+ from TEAM_CASTY.Hotel h
+ where h.Cod_Hotel=@cod_hotel))
+ begin
+	set @error=1;
+	set @mensaje+=' El hotel no existe.';
+ end
+ 
+if(exists(
+select * from
+(select r.Fecha_Reserva as Fecha_Inicio, r.Fecha_Reserva+r.Cant_Noches as Fecha_Fin
+from TEAM_CASTY.Reserva r, TEAM_CASTY.HabitacionXReserva hxr,TEAM_CASTY.Habitacion hab
+where r.Cod_Reserva=hxr.Cod_Reserva and hxr.Cod_Habitacion=hab.Cod_Habitacion
+and @cod_hotel=hab.Cod_Hotel and r.Cod_Estado in(1,2,6)) t
+where TEAM_CASTY.periodoOK(@fecha_inicio,@fecha_fin,Fecha_Inicio,Fecha_Fin)=0
+))
+begin
+	set @error=1;
+	set @mensaje+=' El hotel no se puede inhabilitar.';
+end
+
+if(exists(
+select *
+from TEAM_CASTY.Periodo_Inhabilitado pein
+where TEAM_CASTY.periodoOK(@fecha_inicio,@fecha_fin,pein.Fecha_Inicio,pein.Fecha_Fin)=0
+))
+begin
+	set @error=1;
+	set @mensaje+=' El hotel ya está inhabilitado.';
+end
+ 
+if (@error=0)
+begin
+	insert into TEAM_CASTY.Periodo_Inhabilitado
+	(Cod_Hotel,Fecha_Inicio,Fecha_Fin,Descripcion)
+	values (@cod_hotel,@fecha_inicio,@fecha_fin,@motivo);	
+end	
+else
+begin
+	set @mensaje=@mensaje + ' No se realizó la modificación.';
+	RAISERROR (@mensaje,15,1);
+end
+end;
+ 
+ GO

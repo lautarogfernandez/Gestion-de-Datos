@@ -246,6 +246,9 @@ end;
  go
  
  
+
+ 
+ 
  
  create procedure TEAM_CASTY.agregarRegimenesHotel(@codHotel numeric(18), @codRegimen numeric(18))
  as
