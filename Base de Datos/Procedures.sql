@@ -1,42 +1,55 @@
 --Procedures
+
 create procedure  TEAM_CASTY.Actualizar_Reservas
 @fecha_actual datetime
 AS
+begin
 update res
 set res.Cod_Estado=5
 from TEAM_CASTY.Reserva res
-where res.Fecha_Reserva<@fecha_actual AND
+where datediff(day,res.Fecha_Reserva,@fecha_actual)>0 AND
 res.Cod_Estado=1 AND	  
 res.Cod_Reserva not in (select est.Cod_Reserva from TEAM_CASTY.Estadia est)
+end;
+
 GO
 
-create procedure  TEAM_CASTY.Disponibilidad_Reserva
-@fecha_desde datetime,@fecha_hasta datetime,@tipo_habitacion numeric(18),@hotel numeric(18),@sePuede numeric(18) out
+
+create function  TEAM_CASTY.Disponibilidad_Reserva
+(@fecha_desde datetime,@fecha_hasta datetime,@tipo_habitacion nvarchar(255),@hotel numeric(18))
+returns numeric (18)
 AS
 begin
-set @sePuede=1;
 
-if(@fecha_desde<@fecha_hasta)
+declare @sePuede numeric(18)=0;
+declare @cod_tipo_habitacion numeric(18);
+select @cod_tipo_habitacion=th.Cod_Tipo
+from TEAM_CASTY.Tipo_Habitacion th
+where @tipo_habitacion=th.Descripcion;
+
+if(datediff(day,@fecha_desde,@fecha_hasta)>0)
 begin
-
-if (exists (
-select *
-from TEAM_CASTY.Habitacion hab,TEAM_CASTY.Hotel hot,TEAM_CASTY.Reserva
-where hab.Baja=0 and
-hab.Cod_Hotel=@hotel and
-hab.Cod_Habitacion in 
-(select distinct hxr.Cod_Habitacion 
-from TEAM_CASTY.Reserva res, TEAM_CASTY.HabitacionXReserva hxr
-where res.Cod_Reserva=hxr.Cod_Reserva and
-(@fecha_desde>res.Fecha_Reserva+res.Cant_Noches or @fecha_hasta<res.Fecha_Reserva)
-) and
-hab.Cod_Tipo=@tipo_habitacion
-))
-begin
-set @sePuede=0;
+	if(not exists(
+	select *
+	from TEAM_CASTY.Periodo_Inhabilitado pein
+	where pein.Cod_Hotel=@hotel and
+	TEAM_CASTY.periodoOK(pein.Fecha_Inicio,pein.Fecha_Fin,@fecha_desde,@fecha_hasta)=0))
+	begin
+		if (exists (
+		select * 
+		from TEAM_CASTY.Habitacion hab
+		where hab.Cod_Tipo=@cod_tipo_habitacion and hab.Cod_Hotel=@hotel and hab.Baja=0 and hab.Cod_Habitacion not in		
+		(select distinct hxr.Cod_Habitacion 
+		from TEAM_CASTY.Reserva res, TEAM_CASTY.HabitacionXReserva hxr
+		where res.Cod_Reserva=hxr.Cod_Reserva and
+		TEAM_CASTY.periodoOK(@fecha_desde,@fecha_hasta,res.Fecha_Reserva,res.Fecha_Reserva+res.Cant_Noches)=0 and
+		hab.Cod_Tipo=@cod_tipo_habitacion)))
+		begin
+			set @sePuede=1;
+		end
+	end
 end
-
-end
+RETURN @sePuede;
 end;
 
 GO

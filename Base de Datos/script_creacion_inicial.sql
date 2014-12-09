@@ -698,6 +698,8 @@ begin
 end
 end
 
+GO
+
 --CREATE FUNCTION TEAM_CASTY.HotelesPorUsario
 --(@usuario nvarchar(255))
 --RETURNS TABLE
@@ -721,6 +723,8 @@ RETURN
    RxUxH.Cod_Hotel = @hotel and
    RxUxH.Cod_Usuario = u.Cod_Usuario;
    
+  GO
+   
 CREATE FUNCTION TEAM_CASTY.FuncionesDeUnRol
 (@Rol numeric(18))
 RETURNS TABLE
@@ -739,7 +743,10 @@ select c.ID_Cliente, c.Nombre, c.Apellido, c.Mail, d.Tipo_Documento, c.Nro_Docum
 from TEAM_CASTY.Cliente c, TEAM_CASTY.Tipo_Documento d
 where c.Baja=0;
 
-Create view TEAM_CASTY.vistaHoteles(Codigo,Nombre,Ciudad,Calle,"Numero Calle",Telefono,Mail,"Cantidad de estrellas", "Recarga por estrella" )
+GO
+
+Create view TEAM_CASTY.vistaHoteles
+(Codigo,Nombre,Ciudad,Calle,"Numero Calle",Telefono,Mail,"Cantidad de estrellas", "Recarga por estrella" )
 AS
 select  h.Cod_Hotel, h.Nombre, c.Nombre ,h.Calle,h.Nro_Calle,h.Telefono,h.Mail,h.CantEstrella,re.Recarga  
 from TEAM_CASTY.Hotel h, TEAM_CASTY.Ciudad c , TEAM_CASTY.Recarga_Estrella re
@@ -856,6 +863,8 @@ set Contraseña=@contraseña
 where @usuario=Cod_Usuario;
 end;
 
+GO
+
 create procedure TEAM_CASTY.CargarHabitacion
 (@hotel numeric(18), @numero numeric(18),@piso numeric(18),@frente char(1),@tipo nvarchar(255),@descripcion nvarchar(255))
 as
@@ -931,6 +940,7 @@ end
 end;
 
 GO
+
 create procedure TEAM_CASTY.BajarHabitacion
 (@hotel numeric(18), @numero numeric(18),@piso numeric(18),@fecha datetime)
 as
@@ -1706,7 +1716,6 @@ end;
 
 GO
 
-
 create procedure TEAM_CASTY.modificarUsuario
 (@cod_usuario numeric(18),@username nvarchar(255),@password nvarchar(255),@nombre nvarchar(255),@apellido nvarchar(255),
  @tipoDocumento nvarchar(255), @numeroDocumento numeric(18), @mail nvarchar(255), @telefono nvarchar(50),
@@ -1808,7 +1817,6 @@ end;
 
 GO
 
-
 create procedure TEAM_CASTY.bajaUsuario
 (@username nvarchar(255))
 as
@@ -1828,4 +1836,57 @@ begin
 end  
 end;
   
+GO
+
+create procedure  TEAM_CASTY.Actualizar_Reservas
+@fecha_actual datetime
+AS
+begin
+update res
+set res.Cod_Estado=5
+from TEAM_CASTY.Reserva res
+where datediff(day,res.Fecha_Reserva,@fecha_actual)>0 AND
+res.Cod_Estado=1 AND	  
+res.Cod_Reserva not in (select est.Cod_Reserva from TEAM_CASTY.Estadia est)
+end;
+
+GO
+
+create function  TEAM_CASTY.Disponibilidad_Reserva
+(@fecha_desde datetime,@fecha_hasta datetime,@tipo_habitacion nvarchar(255),@hotel numeric(18))
+returns numeric (18)
+AS
+begin
+
+declare @sePuede numeric(18)=0;
+declare @cod_tipo_habitacion numeric(18);
+select @cod_tipo_habitacion=th.Cod_Tipo
+from TEAM_CASTY.Tipo_Habitacion th
+where @tipo_habitacion=th.Descripcion;
+
+if(datediff(day,@fecha_desde,@fecha_hasta)>0)
+begin
+	if(not exists(
+	select *
+	from TEAM_CASTY.Periodo_Inhabilitado pein
+	where pein.Cod_Hotel=@hotel and
+	TEAM_CASTY.periodoOK(pein.Fecha_Inicio,pein.Fecha_Fin,@fecha_desde,@fecha_hasta)=0))
+	begin
+		if (exists (
+		select * 
+		from TEAM_CASTY.Habitacion hab
+		where hab.Cod_Tipo=@cod_tipo_habitacion and hab.Cod_Hotel=@hotel and hab.Baja=0 and hab.Cod_Habitacion not in		
+		(select distinct hxr.Cod_Habitacion 
+		from TEAM_CASTY.Reserva res, TEAM_CASTY.HabitacionXReserva hxr
+		where res.Cod_Reserva=hxr.Cod_Reserva and
+		TEAM_CASTY.periodoOK(@fecha_desde,@fecha_hasta,res.Fecha_Reserva,res.Fecha_Reserva+res.Cant_Noches)=0 and
+		hab.Cod_Tipo=@cod_tipo_habitacion)))
+		begin
+			set @sePuede=1;
+		end
+	end
+end
+RETURN @sePuede;
+end;
+
 GO
