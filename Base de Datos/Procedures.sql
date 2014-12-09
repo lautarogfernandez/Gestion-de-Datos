@@ -453,6 +453,8 @@ from TEAM_CASTY.item_habitacionXFactura ihf, TEAM_CASTY.Factura f
 where f.Cod_Estadia=@cod_estadia and ihf.Nro_Factura=f.Nro_Factura);
 end;
 
+go
+
 create procedure  TEAM_CASTY.RegistrarPagoTarjeta
 @cod_Estadia numeric(18), @numero_tajeta numeric(18), @banco nvarchar(255)
 AS
@@ -502,3 +504,24 @@ end
 end;
 
 GO
+
+create function TEAM_CASTY.RegimenesDeUnHotel
+(@cod_hotel numeric (18))
+RETURNS TABLE
+AS 
+return (
+select reg.Descripcion
+from TEAM_CASTY.RegimenXHotel rxh, TEAM_CASTY.Regimen reg
+where rxh.Cod_Hotel=@cod_hotel and rxh.Activo=1 and reg.Cod_Regimen=rxh.Cod_Regimen);
+
+go
+
+create function TEAM_CASTY.Regimenes
+()
+RETURNS TABLE
+AS 
+return (
+select reg.Descripcion
+from TEAM_CASTY.Regimen reg);
+
+go
