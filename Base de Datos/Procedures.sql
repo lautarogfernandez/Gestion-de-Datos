@@ -1,5 +1,6 @@
 --Procedures
 
+--PUNTO 8
 create procedure  TEAM_CASTY.Actualizar_Reservas
 @fecha_actual datetime
 AS
@@ -54,13 +55,15 @@ end;
 
 GO
 
+
+----------------------------------------------------------------------------------------------------
 create type TEAM_CASTY.t_reserva AS TABLE(
 Tipo_habitacion nvarchar(255),
 Cantidad numeric(18));
 
 GO
 
-create function  TEAM_CASTY.estaReservada
+create function  TEAM_CASTY.estaReservada--NO esta reservada=1
 (@fecha_desde datetime,@fecha_hasta datetime,@cod_hab numeric(18))
 returns numeric(18)
 AS
@@ -69,7 +72,7 @@ begin
 	if (exists(
 	select *
 	from TEAM_CASTY.Reserva res, TEAM_CASTY.HabitacionXReserva hxr
-	where hxr.Cod_Habitacion=@cod_hab and
+	where hxr.Cod_Habitacion=@cod_hab and res.Cod_Reserva=hxr.Cod_Reserva and
 	TEAM_CASTY.periodoOK(@fecha_desde,@fecha_hasta,res.Fecha_Reserva,res.Fecha_Reserva+res.Cant_Noches)=0
 	))
 	begin
@@ -93,15 +96,6 @@ begin
 end;
 
 GO
-
-declare @f1 datetime=convert(datetime,'2018-02-02',111);
-declare @f2 datetime=convert(datetime,'2018-02-04',111);
-select TEAM_CASTY.Cant_Hab_Disponibles(@f1,@f2,1,1001);
-
-
-select * from TEAM_CASTY.Reserva
-select * from TEAM_CASTY.HabitacionXReserva
-select * from TEAM_CASTY.Habitacion
 
 create function  TEAM_CASTY.Disponibilidad_Reserva
 (@fecha_desde datetime,@fecha_hasta datetime,@hotel numeric(18),@tabla TEAM_CASTY.t_reserva readonly)
@@ -155,10 +149,91 @@ end;
 
 GO
 
+----------------------------------------------------------------------------------------------------------------
+create function  TEAM_CASTY.Ultimo_Codigo_Reserva
+()
+returns numeric(18)
+as
+begin
+	return (select MAX(r.Cod_Reserva) from TEAM_CASTY.Reserva r)
+end;
 
+GO
 
+create function  TEAM_CASTY.Obtener_Habitacion
+(@fecha_desde datetime,@fecha_hasta datetime,@hotel numeric(18),@cod_tipo_hab numeric(18))
+returns numeric(18)
+as
+begin
+	return(	
+	select TOP 1 hab.Cod_Habitacion
+	from TEAM_CASTY.Habitacion hab
+	where hab.Cod_Hotel=@hotel and hab.Baja=0 and hab.Cod_Tipo=@cod_tipo_hab and 
+	TEAM_CASTY.estaReservada(@fecha_desde,@fecha_hasta,hab.Cod_Habitacion)=1)
+end;
 
+GO
 
+select * from TEAM_CASTY.Habitacion hab where hab.Cod_Hotel=1 and hab.Cod_Tipo=1001;
+select * from TEAM_CASTY.Reserva
+
+select * from TEAM_CASTY.HabitacionXReserva hxr where hxr.Cod_Habitacion=18;
+select * from TEAM_CASTY.HabitacionXReserva hxr where hxr.Cod_Reserva=12;
+select * from TEAM_CASTY.Reserva r where r.Cod_Reserva=12;
+
+declare @f1 datetime=convert(datetime,'2019-02-14',111);
+declare @f2 datetime=convert(datetime,'2019-02-24',111);
+insert into TEAM_CASTY.Reserva
+(Cant_Noches,Cod_Estado,Cod_Regimen,Cod_Reserva,Fecha_Realizacion,Fecha_Reserva,ID_Cliente_Reservador)
+values (2,1,2,12,@f1+2,@f1+4,2);
+insert into TEAM_CASTY.HabitacionXReserva
+(Cod_Habitacion,Cod_Reserva)
+values(2,12);
+declare @f1 datetime=convert(datetime,'2019-02-14',111);
+declare @f2 datetime=convert(datetime,'2019-02-24',111);
+select TEAM_CASTY.Cant_Hab_Disponibles(@f1,@f2,1,1001);
+select TEAM_CASTY.Obtener_Habitacion(@f1,@f2,1,1001);
+
+create procedure  TEAM_CASTY.Realizar_Reserva
+(@fecha_realizacion datetime,@fecha_reserva datetime,@cant_noches numeric(18),@id_cliente numeric(18),
+@regimen nvarchar(255),@tabla TEAM_CASTY.t_reserva readonly)
+as
+begin
+	declare @cod_t_reg numeric(18);
+	select @cod_t_reg=r.Cod_Regimen
+	from TEAM_CASTY.Regimen r
+	where r.Descripcion=@regimen;
+	
+	insert into TEAM_CASTY.Reserva
+	(Cant_Noches,Cod_Estado,Cod_Regimen,Cod_Reserva,Fecha_Realizacion,Fecha_Reserva,ID_Cliente_Reservador)
+	values (@cant_noches,1,@cod_t_reg,TEAM_CASTY.Ultimo_Codigo_Reserva()+1,@fecha_realizacion,@fecha_reserva,@id_cliente);
+	
+	
+	DECLARE _cursor CURSOR FOR
+		select * from @tabla;
+		OPEN _cursor;
+		DECLARE @t_hab nvarchar(255), @cant numeric(18),@cod_t_hab numeric(18);
+		FETCH NEXT FROM _cursor INTO @t_hab, @cant;
+		WHILE (@@FETCH_STATUS = 0)
+		BEGIN
+			select @cod_t_hab=th.Cod_Tipo
+			from TEAM_CASTY.Tipo_Habitacion th
+			where th.Descripcion=@t_hab;
+						
+			
+			
+			FETCH NEXT FROM _cursor INTO @t_hab, @cant;					
+		END;		
+		CLOSE _cursor;
+		DEALLOCATE _cursor;	
+	
+	
+	
+end;
+
+GO
+
+select * from TEAM_CASTY.Reserva
 
 
 
