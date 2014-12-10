@@ -56,7 +56,7 @@ end;
 GO
 
 
-----------------------------------------------------------------------------------------------------
+
 create type TEAM_CASTY.t_reserva AS TABLE(
 Tipo_habitacion nvarchar(255),
 Cantidad numeric(18));
@@ -173,8 +173,9 @@ end;
 
 GO
 
+----------------------------------------------------------------------------------------------------
 
-create procedure  TEAM_CASTY.Realizar_Reserva
+create procedure  TEAM_CASTY.Reservar
 (@usuario nvarchar(255),@fecha_realizacion datetime,@fecha_reserva datetime,@cant_noches numeric(18),@id_cliente numeric(18),
 @regimen nvarchar(255),@hotel numeric(18),@tabla TEAM_CASTY.t_reserva readonly)
 as
@@ -197,89 +198,237 @@ begin
 	
 	insert into TEAM_CASTY.ModificacionXReserva
 	(Cod_Reserva,Cod_Usuario,Descripcion,Fecha,Numero_Modificacion)
-	values (@cod_reserva,@cod_usuario,'Creación',@fecha_realizacion,1,);
+	values (@cod_reserva,@cod_usuario,'Creación',@fecha_realizacion,1);
 	
+	exec TEAM_CASTY.Reservar_Habitaciones @cod_reserva,@fecha_reserva,@cant_noches,@hotel,@tabla;
+	
+end;
+
+
+create procedure  TEAM_CASTY.Reservar_Habitaciones
+(@cod_reserva numeric(18),@fecha_reserva datetime,@cant_noches numeric(18),
+@hotel numeric(18),@tabla TEAM_CASTY.t_reserva readonly)
+as
+begin
 	declare @i int;
 	
 	DECLARE _cursor CURSOR FOR
-		select * from @tabla;
-		OPEN _cursor;
-		DECLARE @t_hab nvarchar(255), @cant numeric(18),@cod_t_hab numeric(18);
-		FETCH NEXT FROM _cursor INTO @t_hab, @cant;
-		WHILE (@@FETCH_STATUS = 0)
-		BEGIN
-			select @cod_t_hab=th.Cod_Tipo
-			from TEAM_CASTY.Tipo_Habitacion th
-			where th.Descripcion=@t_hab;
+	select * from @tabla;
+	OPEN _cursor;
+	DECLARE @t_hab nvarchar(255), @cant numeric(18),@cod_t_hab numeric(18);
+	FETCH NEXT FROM _cursor INTO @t_hab, @cant;
+	WHILE (@@FETCH_STATUS = 0)
+	BEGIN
+		select @cod_t_hab=th.Cod_Tipo
+		from TEAM_CASTY.Tipo_Habitacion th
+		where th.Descripcion=@t_hab;
+		
+		set @i=0;
+		while (@i<@cant)
+		begin
+			insert into TEAM_CASTY.HabitacionXReserva (Cod_Reserva,Cod_Habitacion)
+			values (@cod_reserva,TEAM_CASTY.Obtener_Habitacion(@fecha_reserva,@fecha_reserva+@cant_noches,@hotel,@cod_t_hab));
+			set @i=@i+1;
+		end
+		
+		FETCH NEXT FROM _cursor INTO @t_hab, @cant;					
+	END;		
+	CLOSE _cursor;
+	DEALLOCATE _cursor;			
+end;
+
+
+
+--create procedure  TEAM_CASTY.Realizar_Reserva
+--(@usuario nvarchar(255),@fecha_realizacion datetime,@fecha_reserva datetime,@cant_noches numeric(18),@id_cliente numeric(18),
+--@regimen nvarchar(255),@hotel numeric(18),@tabla TEAM_CASTY.t_reserva readonly)
+--as
+--begin
+--	declare @cod_t_reg numeric(18);
+--	select @cod_t_reg=r.Cod_Regimen
+--	from TEAM_CASTY.Regimen r
+--	where r.Descripcion=@regimen;
+	
+--	declare @cod_usuario numeric(18);
+--	select @cod_usuario=u.Cod_Usuario
+--	from TEAM_CASTY.Usuario u
+--	where @usuario=u.Username;
+	
+--	declare @cod_reserva numeric(18)=TEAM_CASTY.Ultimo_Codigo_Reserva()+1;
+	
+--	insert into TEAM_CASTY.Reserva
+--	(Cant_Noches,Cod_Estado,Cod_Regimen,Cod_Reserva,Fecha_Realizacion,Fecha_Reserva,ID_Cliente_Reservador)
+--	values (@cant_noches,1,@cod_t_reg,@cod_reserva,@fecha_realizacion,@fecha_reserva,@id_cliente);
+	
+--	insert into TEAM_CASTY.ModificacionXReserva
+--	(Cod_Reserva,Cod_Usuario,Descripcion,Fecha,Numero_Modificacion)
+--	values (@cod_reserva,@cod_usuario,'Creación',@fecha_realizacion,1);
+	
+--	declare @i int;
+	
+--	DECLARE _cursor CURSOR FOR
+--		select * from @tabla;
+--		OPEN _cursor;
+--		DECLARE @t_hab nvarchar(255), @cant numeric(18),@cod_t_hab numeric(18);
+--		FETCH NEXT FROM _cursor INTO @t_hab, @cant;
+--		WHILE (@@FETCH_STATUS = 0)
+--		BEGIN
+--			select @cod_t_hab=th.Cod_Tipo
+--			from TEAM_CASTY.Tipo_Habitacion th
+--			where th.Descripcion=@t_hab;
 			
-			set @i=0;
-			while (@i<@cant)
-			begin
-				insert into TEAM_CASTY.HabitacionXReserva (Cod_Reserva,Cod_Habitacion)
-				values (@cod_reserva,TEAM_CASTY.Obtener_Habitacion(@fecha_reserva,@cant_noches,@hotel,@cod_t_hab));
-				set @i=@i+1;
-			end
+--			set @i=0;
+--			while (@i<@cant)
+--			begin
+--				insert into TEAM_CASTY.HabitacionXReserva (Cod_Reserva,Cod_Habitacion)
+--				values (@cod_reserva,TEAM_CASTY.Obtener_Habitacion(@fecha_reserva,@fecha_reserva+@cant_noches,@hotel,@cod_t_hab));
+--				set @i=@i+1;
+--			end
 			
-			FETCH NEXT FROM _cursor INTO @t_hab, @cant;					
-		END;		
-		CLOSE _cursor;
-		DEALLOCATE _cursor;		
+--			FETCH NEXT FROM _cursor INTO @t_hab, @cant;					
+--		END;		
+--	CLOSE _cursor;
+--	DEALLOCATE _cursor;		
+--end;
+
+--GO
+
+
+create procedure  TEAM_CASTY.Modificar_Reserva
+(@usuario nvarchar(255),@cod_reserva numeric(18),@fecha_realizacion datetime,@fecha_reserva datetime,@cant_noches numeric(18),
+@id_cliente numeric(18),@regimen nvarchar(255),@hotel numeric(18),@tabla TEAM_CASTY.t_reserva readonly)
+as
+begin	
+	declare @mensaje varchar(1000);
+	declare @error int;
+	set @error=0;
+	set @mensaje='Error:';
+	
+	begin transaction
+	
+		delete TEAM_CASTY.HabitacionXReserva
+		where Cod_Reserva=@cod_reserva;
+	
+		if(TEAM_CASTY.Disponibilidad_Reserva(@fecha_reserva,@fecha_reserva+@cant_noches,@hotel,@tabla)=0)
+		begin
+			set @error=1;
+			set @mensaje+=' No hay disponibilidad.';
+		end
+	
+	if(@error=0)		
+	begin
+		exec TEAM_CASTY.Reservar_Habitaciones @cod_reserva,@fecha_reserva,@cant_noches,@hotel,@tabla;
+		declare @cod_usuario numeric(18);
+		select @cod_usuario=u.Cod_Usuario from TEAM_CASTY.Usuario u where u.Username=@usuario;
+		declare @num numeric(18);
+		select @num=(1+max(mxr.Numero_Modificacion)) from TEAM_CASTY.ModificacionXReserva mxr;
+		insert into TEAM_CASTY.ModificacionXReserva
+		(Cod_Reserva,Cod_Usuario,Descripcion,Fecha,Numero_Modificacion)
+		values (@cod_reserva,@cod_usuario,'Modificación',@fecha_realizacion,@num);
+		commit transaction	
+	end
+	else
+	begin
+		rollback transaction	
+		set @mensaje+=' No se realizó la modifición.';
+		RAISERROR(@mensaje,15,1);
+	end
 end;
 
 GO
+
+
+
+
 
 select * from TEAM_CASTY.Regimen;
 select * from TEAM_CASTY.Reserva r order by r.Cod_Reserva desc;
 select * from TEAM_CASTY.Tipo_Habitacion;
 select * from TEAM_CASTY.Habitacion hab where hab.Cod_Hotel=1 and hab.Cod_Tipo=1005;
+select * from TEAM_CASTY.Habitacion hab where hab.Cod_Hotel=1 and hab.Cod_Tipo=1003;
 select * from TEAM_CASTY.Habitacion hab where hab.Cod_Habitacion in (2,15);
-select * from TEAM_CASTY.HabitacionXReserva hxr where hxr.Cod_Reserva=110741;
+select * from TEAM_CASTY.HabitacionXReserva hxr where hxr.Cod_Reserva=110747;
+select * from TEAM_CASTY.Usuario;
+select * from TEAM_CASTY.ModificacionXReserva mxr where mxr.Cod_Reserva=110747;
+select * from TEAM_CASTY.Reserva mxr where mxr.Cod_Reserva=110747;
+
 
 declare @tab TEAM_CASTY.t_reserva;
 insert into @tab (Tipo_habitacion,Cantidad) values ('Base Simple',2);
 insert into @tab (Tipo_habitacion,Cantidad) values ('King',2);
-declare @f1 datetime=convert(datetime,'2039-04-09',111);
+insert into @tab (Tipo_habitacion,Cantidad) values ('Base Triple',5);
+declare @f1 datetime=convert(datetime,'2043-04-09',111);
 declare @f2 datetime=@f1-1;
 select TEAM_CASTY.Obtener_Habitacion(@f1,@f1+5,1,1005);
-exec  TEAM_CASTY.Realizar_Reserva @f2,@f1,5,111,'Pension Completa',@tab;
+exec  TEAM_CASTY.Realizar_Reserva 'admin',@f2,@f1,5,111,'All Inclusive moderado',1,@tab;
 
+
+declare @f1 datetime=convert(datetime,'2043-04-09',111);
+declare @f2 datetime=@f1-1;
+declare @tab TEAM_CASTY.t_reserva;
+insert into @tab (Tipo_habitacion,Cantidad) values ('Base Simple',1);
+insert into @tab (Tipo_habitacion,Cantidad) values ('King',2);
+insert into @tab (Tipo_habitacion,Cantidad) values ('Base Triple',5);
+exec  TEAM_CASTY.Modificar_Reserva 'admin',110747,@f2,@f1,5,111,'Pension Completa',1,@tab;
+
+declare @f1 datetime=convert(datetime,'2043-04-08',111);
+exec TEAM_CASTY.Cancelar_Reserva 110747,@f1,'Porque siiiiiiiiiii','admin';
+
+select * from TEAM_CASTY.Cancelacion
 
 
 --probar
 --PUNTO 9
 create procedure  TEAM_CASTY.Cancelar_Reserva
-@Cod_Reserva numeric(18),@fecha datetime,@motivo varchar(255), @usuario numeric(18)
+@cod_Reserva numeric(18),@fecha datetime,@motivo varchar(255), @usuario nvarchar(255)
 AS
 declare @mensaje varchar(1000);
 declare @error int;
 set @error=0;
 set @mensaje='Error:';
 
-if(not exists (select * from TEAM_CASTY.Reserva r where @Cod_Reserva=r.Cod_Reserva))
+if (not exists (select * from TEAM_CASTY.Usuario u where u.Username=@usuario))
 begin
 	set @error=1;
-	set @mensaje=@mensaje + ' No existe la Reserva.';
+	set @mensaje=' No existe ese usuario.';
+end
+
+else
+begin
+	declare @cod_user numeric(18);
+	select @cod_user=u.Cod_Usuario from TEAM_CASTY.Usuario u where u.Username=@usuario;
+	if(not exists (select * from TEAM_CASTY.Reserva r where @Cod_Reserva=r.Cod_Reserva))
+	begin
+		set @error=1;
+		set @mensaje=@mensaje + ' No existe la Reserva.';
+	end;
+	if(exists (select * from TEAM_CASTY.Reserva r where @Cod_Reserva=r.Cod_Reserva and datediff(day,r.Fecha_Reserva,@fecha)>0))
+	begin
+		set @error=1;
+		set @mensaje=@mensaje + ' Fecha inválida.';
+	end;
+	if(not exists(select distinct h.Cod_Hotel
+	from TEAM_CASTY.Hotel h, TEAM_CASTY.Reserva r,TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXReserva hxr
+	where h.Cod_Hotel=hab.Cod_Hotel and
+	r.Cod_Reserva=@Cod_Reserva and
+	hxr.Cod_Reserva=@Cod_Reserva and		
+	hxr.Cod_Habitacion=hab.Cod_Habitacion and
+	h.Cod_Hotel in(select rxuxh.Cod_Hotel from TEAM_CASTY.RolXUsuarioXHotel rxuxh where @cod_user=rxuxh.Cod_Usuario)))
+	begin
+		set @error=1;
+		set @mensaje=@mensaje + ' El usuario no puede operar sobre ese hotel.';
+	end	;
+	if(exists (select * from TEAM_CASTY.Cancelacion c where @Cod_Reserva=c.Cod_Reserva))
+	begin
+		set @error=1;
+		set @mensaje=@mensaje + ' La reserva ya fue cancelada.';
+	end;	
+
 end;
-if(not exists (select * from TEAM_CASTY.Reserva r where @Cod_Reserva=r.Cod_Reserva and datediff(day,r.Fecha_Reserva,@fecha)>0))
-begin
-	set @error=1;
-	set @mensaje=@mensaje + ' Fecha inválida.';
-end;
-if(not exists(select distinct h.Cod_Hotel
-from TEAM_CASTY.Hotel h, TEAM_CASTY.Reserva r,TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXReserva hxr
-where h.Cod_Hotel=hab.Cod_Hotel and
-r.Cod_Reserva=@Cod_Reserva and
-hxr.Cod_Reserva=@Cod_Reserva and		
-hxr.Cod_Habitacion=hab.Cod_Habitacion and
-h.Cod_Hotel in(select rxuxh.Cod_Hotel from TEAM_CASTY.RolXUsuarioXHotel rxuxh where @usuario=rxuxh.Cod_Usuario)))
-begin
-	set @error=1;
-	set @mensaje=@mensaje + ' El usuario no puede operar sobre ese hotel.';
-end	;
 if (@error=0)	
 begin
 	declare @estado numeric(18);
-	if(@usuario=3)
+	if(@cod_user=3)
 	begin
 		set @estado=4 
 	end
@@ -288,52 +437,88 @@ begin
 		set @estado=5
 	end
 	insert into TEAM_CASTY.Cancelacion (Cod_Reserva,Cod_Usuario,Fecha,Motivo)
-	values (@Cod_Reserva,@usuario,@fecha,@motivo);
+	values (@Cod_Reserva,@cod_user,@fecha,@motivo);
 	update TEAM_CASTY.Reserva 
 	set Cod_Estado=@estado
 	where @Cod_Reserva=Cod_Reserva;	
 	declare @num numeric (18);
-	declare @cod_user numeric (18);
-	select @num=MAX(mxr.Numero_Modificacion) from TEAM_CASTY.ModificacionXReserva mxr where mxr.Cod_Reserva=@Cod_Reserva;
-	select @num=u.Cod_Usuario from TEAM_CASTY.Usuario u where u.Username=@usuario
+	select @num=(1+MAX(mxr.Numero_Modificacion)) from TEAM_CASTY.ModificacionXReserva mxr where mxr.Cod_Reserva=@Cod_Reserva;	
 	insert into TEAM_CASTY.ModificacionXReserva
 	(Cod_Reserva,Cod_Usuario,Descripcion,Fecha,Numero_Modificacion)
-	values (@Cod_Reserva,@cod_user,@fecha,@num,@motivo);
+	values (@Cod_Reserva,@cod_user,@motivo,@fecha,@num);
 end
 else	
 begin
-	set @mensaje=@mensaje + 'No se realizó cancelación.';
+	set @mensaje=@mensaje + ' No se realizó cancelación.';
 	RAISERROR (@mensaje,15,1);
 end
+
+GO
+
+
+declare @f1 datetime=convert(datetime,'2045-04-09',111);
+declare @f2 datetime=@f1-1;
+declare @tab TEAM_CASTY.t_reserva;
+insert into @tab (Tipo_habitacion,Cantidad) values ('Base Simple',1);
+insert into @tab (Tipo_habitacion,Cantidad) values ('King',2);
+exec  TEAM_CASTY.Reservar 'guest',@f2,@f1,5,111,'Pension Completa',1,@tab;
+
+select * from TEAM_CASTY.Reserva r order by r.Cod_Reserva desc
+
+declare @f1 datetime=convert(datetime,'2045-04-09',111);
+exec TEAM_CASTY.Check_IN 110748,@f1,'admin',1
+
+select * from TEAM_CASTY.Estadia e order by e.Cod_Estadia desc;
+select * from TEAM_CASTY.HabitacionXEstadia hxe order by hxe.Cod_Estadia desc;
+select * from TEAM_CASTY.HabitacionXEstadia hxe where hxe.Cod_Estadia=89604;
 
 --probar
 --PUNTO 10
 --check in
+
+create function  TEAM_CASTY.Utimo_Codigo_Estadia
+()
+returns numeric(18)
+AS
+begin
+	return(select MAX(e.Cod_Estadia) from TEAM_CASTY.Estadia e);
+end;
+
+GO
+
 create procedure  TEAM_CASTY.Check_IN
-@Cod_Reserva numeric(18),@fecha datetime, @usuario numeric(18),@hotel numeric(18)
+@Cod_Reserva numeric(18),@fecha datetime, @usuario nvarchar(255),@hotel numeric(18)
 AS
 begin
 declare @mensaje varchar(1000);
 declare @error int;
 set @error=0;
-set @mensaje='Error: ';
+set @mensaje='Error:';
+declare @cod_user numeric(18);
+select @cod_user=u.Cod_Usuario from TEAM_CASTY.Usuario u where u.Username=@usuario;
 
 if(not exists (select * from TEAM_CASTY.Reserva r where @Cod_Reserva=r.Cod_Reserva))
 begin
 	set @error=1;
-	set @mensaje=@mensaje + 'No existe la Reserva';
+	set @mensaje=@mensaje + ' No existe la Reserva';
+end;
+
+if(exists (select * from TEAM_CASTY.Estadia e where @Cod_Reserva=e.Cod_Reserva))
+begin
+	set @error=1;
+	set @mensaje=@mensaje + ' Ya se hizo el Check IN.';
 end;
 
 if (exists (select * from TEAM_CASTY.Reserva r where @Cod_Reserva=r.Cod_Reserva and datediff(day,r.Fecha_Reserva,@fecha)>0))
 begin
 		set @error=1;
-		set @mensaje=@mensaje + 'Fecha inválida: es en el futuro';
+		set @mensaje=@mensaje + ' Fecha inválida: es en el futuro';
 end;
 
 if (exists (select * from TEAM_CASTY.Reserva r where @Cod_Reserva=r.Cod_Reserva and datediff(day,r.Fecha_Reserva,@fecha)<0))
 begin
 		set @error=1;
-		set @mensaje=@mensaje + 'Fecha inválida: no se presentó cuando debía';
+		set @mensaje=@mensaje + ' Fecha inválida: no se presentó cuando debía';
 		update TEAM_CASTY.Reserva
 		set Cod_Estado=5
 		where Cod_Reserva=@Cod_Reserva;
@@ -345,54 +530,112 @@ where hab.Cod_Hotel=h.Cod_Hotel and
 h.Cod_Hotel=@hotel and
 hxr.Cod_Habitacion=hab.Cod_Habitacion and
 hxr.Cod_Reserva=@Cod_Reserva and
-u.Cod_Usuario=@usuario and
+u.Cod_Usuario=@cod_user and
 u.Cod_Usuario=uxrxh.Cod_Usuario))
 begin		
 	set @error=1;
-	set @mensaje=@mensaje + 'El usuario no puede operar sobre ese hotel';
+	set @mensaje=@mensaje + ' El usuario no puede operar sobre ese hotel';
 end;
 	
 if (@error=0)	
 begin
-	insert into TEAM_CASTY.Estadia (Cod_Reserva,Fecha_Inicio)
-	values(@Cod_Reserva,@fecha);
+	insert into TEAM_CASTY.Estadia (Cod_Reserva,Fecha_Inicio,Usuario_Inicio)
+	values(@Cod_Reserva,@fecha,@cod_user);
 	update TEAM_CASTY.Reserva
 	set Cod_Estado=6
-	where @Cod_Reserva=Cod_Reserva;
+	where @Cod_Reserva=Cod_Reserva;	
+	insert into TEAM_CASTY.HabitacionXEstadia(Cod_Estadia,Cod_Habitacion)
+	select TEAM_CASTY.Utimo_Codigo_Estadia(),hxr.Cod_Habitacion
+	from TEAM_CASTY.HabitacionXReserva hxr
+	where hxr.Cod_Reserva=@Cod_Reserva;
 end
 else
 begin
-	set @mensaje=@mensaje + 'No se realizó el Check IN.';
+	set @mensaje=@mensaje + ' No se realizó el Check IN.';
 	RAISERROR (@mensaje,15,1);
 end
 end;
 
+GO
+
+
+
+declare @f1 datetime=convert(datetime,'2045-04-09',111);
+declare @f2 datetime=@f1-1;
+declare @tab TEAM_CASTY.t_reserva;
+insert into @tab (Tipo_habitacion,Cantidad) values ('Base Simple',1);
+insert into @tab (Tipo_habitacion,Cantidad) values ('King',2);
+exec  TEAM_CASTY.Reservar 'guest',@f2,@f1,5,111,'Pension Completa',1,@tab;
+
+select * from TEAM_CASTY.Reserva r order by r.Cod_Reserva desc
+
+declare @f1 datetime=convert(datetime,'2045-04-09',111);
+exec TEAM_CASTY.Check_IN 110748,@f1,'admin',1
+
+declare @f1 datetime=convert(datetime,'2045-04-11',111);
+exec TEAM_CASTY.Check_IN 110748,@f1,'admin',1
+
+select * from TEAM_CASTY.Estadia e order by e.Cod_Estadia desc;
+select * from TEAM_CASTY.HabitacionXEstadia hxe order by hxe.Cod_Estadia desc;
+select * from TEAM_CASTY.HabitacionXEstadia hxe where hxe.Cod_Estadia=89604;
+
+create type TEAM_CASTY.t_agregar_clientes as table (
+cod_cliente numeric(18));
+
+GO
+
+create procedure  TEAM_CASTY.Agregar_Clientes_A_Estadia
+(@Cod_Reserva numeric(18),@tabla TEAM_CASTY.t_agregar_clientes readonly)
+AS
+begin
+	declare @cod_est numeric(18);
+	select @cod_est=est.Cod_Estadia from TEAM_CASTY.Estadia est where est.Cod_Reserva=@Cod_Reserva;
+	
+	insert into TEAM_CASTY.ClienteXEstadia
+	(Cod_Estadia,ID_Cliente)
+	select @cod_est,t.cod_cliente
+	from @tabla t;	
+	
+	insert into TEAM_CASTY.ClienteXEstadia
+	(Cod_Estadia,ID_Cliente)
+	select @cod_est,r.ID_Cliente_Reservador
+	from TEAM_CASTY.Reserva r;
+end;
+
+GO
+
+declare @tab TEAM_CASTY.t_agregar_clientes;
+insert into @tab (cod_cliente) values(2);
+insert into @tab (cod_cliente) values(3);
+
 --check out
 create procedure  TEAM_CASTY.Check_OUT
-@Cod_Reserva numeric(18),@fecha datetime, @usuario numeric(18),@hotel numeric(18)
+@Cod_Reserva numeric(18),@fecha datetime, @usuario nvarchar(255),@hotel numeric(18)
 AS
 begin
 declare @mensaje varchar(1000);
 declare @error int;
 set @error=0;
-set @mensaje='Error: ';
+set @mensaje='Error:';
+declare @cod_user numeric(18);
+select @cod_user=u.Cod_Usuario from TEAM_CASTY.Usuario u where u.Username=@usuario;
 
 if(not exists (select * from TEAM_CASTY.Reserva r where @Cod_Reserva=r.Cod_Reserva))
 begin
 	set @error=1;
-	set @mensaje=@mensaje + 'No existe la Reserva';
+	set @mensaje=@mensaje + ' No existe la Reserva';
 end;
 
-if(not exists (select * from TEAM_CASTY.Estadia r where @Cod_Reserva=r.Cod_Reserva and))
+if(not exists (select * from TEAM_CASTY.Estadia r where @Cod_Reserva=r.Cod_Reserva))
 begin
 	set @error=1;
-	set @mensaje=@mensaje + 'No se realizó el Check IN previamente';
+	set @mensaje=@mensaje + ' No se realizó el Check IN previamente';
 end;
 
 if (exists (select * from TEAM_CASTY.Estadia e where @Cod_Reserva=e.Cod_Reserva and datediff(day,e.Fecha_Inicio,@fecha)<0))
 begin
 	set @error=1;
-	set @mensaje=@mensaje + 'No concuerdan las fechas';
+	set @mensaje=@mensaje + ' No concuerdan las fechas';
 end;
 
 if(not exists(select *
@@ -401,25 +644,45 @@ where hab.Cod_Hotel=h.Cod_Hotel and
 h.Cod_Hotel=@hotel and
 hxr.Cod_Habitacion=hab.Cod_Habitacion and
 hxr.Cod_Reserva=@Cod_Reserva and
-u.Cod_Usuario=@usuario and
+u.Cod_Usuario=@cod_user and
 u.Cod_Usuario=uxrxh.Cod_Usuario))
 begin		
 	set @error=1;
-	set @mensaje=@mensaje + 'El usuario no puede operar sobre ese hotel';
+	set @mensaje=@mensaje + ' El usuario no puede operar sobre ese hotel';
 end;
 
 if (@error=0)	
 begin
 	update TEAM_CASTY.Estadia
-	set Fecha_Salida=@fecha
+	set Fecha_Salida=@fecha,Usuario_Salida=@cod_user
 	where @Cod_Reserva=Cod_Reserva;
 end
 else
 begin
-	set @mensaje=@mensaje + 'No se realizó el Check OUT.';
+	set @mensaje=@mensaje + ' No se realizó el Check OUT.';
 	RAISERROR (@mensaje,15,1);
 end
 end;
+
+create type TEAM_CASTY.t_agregar_clientes as table (
+cod_cliente numeric(18));
+
+GO
+
+create procedure  TEAM_CASTY.Agregar_Clientes_A_Estadia
+(@Cod_Reserva numeric(18),@tabla TEAM_CASTY.t_agregar_clientes readonly)
+AS
+begin
+	declare @cod_est numeric(18);
+	select @cod_est=est.Cod_Estadia from TEAM_CASTY.Estadia est where est.Cod_Reserva=@Cod_Reserva;
+	
+	insert into TEAM_CASTY.ClienteXEstadia
+	(Cod_Estadia,ID_Cliente)
+	select @cod_est,t.cod_cliente
+	from @tabla t;	
+end;
+
+GO
 
 
 --PUNTO 11
