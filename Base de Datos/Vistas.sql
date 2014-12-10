@@ -369,7 +369,7 @@ end
 
 
 
-
+------------------------------------------------------- verrsion 1.3----------------------------------------------
 
 CREATE FUNCTION TEAM_CASTY.vistaTOP5ClienteConPuntos (@pFecha_Inicio date,@pFecha_Fin date)
 returns table
@@ -384,7 +384,7 @@ order by Puntos desc
 
 
 
-SELECT * FROM TEAM_CASTY.vistaTOP5ClienteConPuntos('2013-01-01 ','2013-12-28')
+SELECT * FROM TEAM_CASTY.vistaTOP5ClienteConPuntos('2013-01-01 ','2013-04-01')
 
 (Codigo, Nombre, Apellido, Mail, "Tipo Documento", "Numero Documento",Telefono,Pais,Localidad,"Calle","Numero Calle",Piso, "Departamento", Nacionalidad,"Fecha Nacimiento",Inhabilitado)
 AS
@@ -399,3 +399,28 @@ declare @gastado numeric(18,2)
 set @gastado = (TEAM_CASTY.MontoHabitaciones(@codEstadia)/10)  + (TEAM_CASTY.MontoConsumibles(@codEstadia)/5)
 return @gastado
 end
+
+
+
+
+
+
+
+--------------------------------------------------- version 1.48-------------------------------------------------------------
+
+CREATE FUNCTION TEAM_CASTY.vistaTOP5ClienteConPuntosAux (@pFecha_Inicio date,@pFecha_Fin date)
+returns table
+return
+select  vc.Codigo,est.Cod_Estadia
+from (select f.* from TEAM_CASTY.Factura f where f.Fecha between @pFecha_Inicio and @pFecha_Fin )fact,TEAM_CASTY.vistaClientes vc, TEAM_CASTY.Reserva res , TEAM_CASTY.Estadia est 
+where  est.Cod_Reserva = res.Cod_Reserva and vc.Codigo = res.ID_Cliente_Reservador and fact.Cod_Estadia=est.Cod_Estadia 
+
+
+CREATE FUNCTION TEAM_CASTY.vistaTOP5ClienteConPuntos (@pFecha_Inicio date,@pFecha_Fin date)
+returns table
+return 
+select top 5  aux.Codigo, sum ((TEAM_CASTY.MontoHabitaciones(aux.Cod_Estadia)/10)  + (TEAM_CASTY.MontoConsumibles(aux.Cod_Estadia)/5)) as Puntos
+from  TEAM_CASTY.vistaTOP5ClienteConPuntosAux (@pFecha_Inicio,@pFecha_Fin ) aux
+group by aux.Codigo
+order by Puntos desc
+

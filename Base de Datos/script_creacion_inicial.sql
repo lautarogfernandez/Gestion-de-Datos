@@ -1931,13 +1931,13 @@ end;
 
 GO
 
-create function  TEAM_CASTY.Disponibilidad_Reserva--OK=1; NO=0;
-(@fecha_desde datetime,@fecha_hasta datetime,@hotel numeric(18),@tabla TEAM_CASTY.t_reserva readonly)
-returns numeric(18)
+create procedure  TEAM_CASTY.Disponibilidad_Reserva--OK=1; NO=0;
+(@fecha_desde datetime,@fecha_hasta datetime,@hotel numeric(18),@tabla TEAM_CASTY.t_reserva readonly,@sePuede bit output)
+
 AS
 begin
 
-declare @sePuede numeric(18)=1;
+set @sePuede =1;
 
 if(datediff(day,@fecha_desde,@fecha_hasta)>0)
 begin
@@ -1978,7 +1978,6 @@ else
 begin
 	set @sePuede=0;
 end
-RETURN @sePuede;
 end;
 
 GO
