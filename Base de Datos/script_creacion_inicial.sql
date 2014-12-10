@@ -2425,3 +2425,174 @@ end
 end;
 
 GO
+
+create function TEAM_CASTY.PrecioPorDiaEspecifico
+(@hotel numeric(18), @regimen numeric (18),@tipo_habitacion numeric (18))
+RETURNS numeric(18,2)
+AS
+begin 
+
+declare @adicional_hotel numeric (18,2);
+declare @precio_regimen numeric (18,2);
+declare @precio_tipo_habitacion numeric (18,2);
+
+select @adicional_hotel=(hot.CantEstrella*(select top 1 rec.Recarga from TEAM_CASTY.Recarga_Estrella rec order by rec.Fecha_Modificacion desc))
+from TEAM_CASTY.Hotel hot
+where hot.Cod_Hotel=@hotel;
+
+select @precio_regimen=reg.Precio
+from TEAM_CASTY.Regimen reg
+where reg.Cod_Regimen=@regimen;
+
+select @precio_tipo_habitacion=thab.Porcentual
+from TEAM_CASTY.Tipo_Habitacion thab
+where thab.Cod_Tipo=@tipo_habitacion;
+
+return @precio_tipo_habitacion*@precio_regimen+@adicional_hotel;
+end;
+
+GO
+
+create function TEAM_CASTY.MontoConsumibles
+(@cod_estadia numeric(18))
+RETURNS numeric(18,2)
+AS
+begin 
+declare @monto numeric(18,2)=0;
+select @monto=SUM(cxhxe.Precio*cxhxe.Cantidad)
+from TEAM_CASTY.ConsumibleXHabitacionXEstadia cxhxe 
+where cxhxe.Cod_Estadia=@cod_estadia;
+if(@monto is null)
+begin
+	set @monto=0;
+end
+return @monto;
+end;
+
+GO
+
+create function TEAM_CASTY.MontoHabitaciones
+(@cod_estadia numeric(18))
+RETURNS numeric(18,2)
+AS
+begin 
+declare @monto numeric(18,2)=0;
+
+select @monto=SUM(ihf.Monto_Completados+ihf.Monto_Faltantes)
+from TEAM_CASTY.item_habitacionXFactura ihf, TEAM_CASTY.Factura f
+where f.Cod_Estadia=@cod_estadia and ihf.Nro_Factura=f.Nro_Factura;
+
+return @monto;
+end;
+
+GO
+
+create procedure  TEAM_CASTY.Facturar
+@cod_Estadia numeric(18), @fecha datetime, @cod_forma_pago numeric(18)
+AS
+begin
+declare @mensaje nvarchar(1000);
+declare @error int;
+set @error=0;
+set @mensaje='Error: ';
+
+if (exists(select * from TEAM_CASTY.Estadia e where e.Cod_Estadia=@cod_Estadia))
+begin
+	if ((select e.Fecha_Salida from TEAM_CASTY.Estadia e where e.Cod_Estadia=@cod_Estadia) is null)
+	begin
+		set @error=1;
+		set @mensaje+=' No se realizó el Check OUT aún.';
+	end
+	else
+	begin
+		if (datediff(day,(select e.Fecha_Salida from TEAM_CASTY.Estadia e where e.Cod_Estadia=@cod_Estadia),@fecha)<>0)
+		begin
+			set @error=1;
+			set @mensaje+=' Fecha incorrecta.';
+		end
+	end
+end
+else
+begin
+	set @error=1; 
+	set @mensaje+=' Estadía inexistente.';
+end
+
+if (not exists(select * from TEAM_CASTY.Forma_Pago fp where @cod_forma_pago=fp.Cod_Forma_Pago))
+begin
+	set @error=1; 
+	set @mensaje+=' Forma de pago inexistente.';
+end
+
+if (@error=0)
+begin
+	begin try
+		declare @nro_factura numeric (18);
+		select @nro_factura=max(f.Nro_Factura)+1 from TEAM_CASTY.Factura f;
+		
+		declare @hotel numeric (18);
+		select distinct @hotel=hab.Cod_Hotel
+		from TEAM_CASTY.Estadia est,TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXEstadia hxe
+		where est.Cod_Estadia=@cod_Estadia and est.Cod_Estadia=hxe.Cod_Estadia and hxe.Cod_Habitacion=hab.Cod_Habitacion;
+		
+		insert into TEAM_CASTY.Factura
+		(Cod_Estadia,Cod_Forma_Pago,Fecha,Nro_Factura,Total)
+		values (@cod_Estadia,@cod_forma_pago,@fecha,@nro_factura,0);
+		
+		insert into TEAM_CASTY.item_ConsumibleXFactura
+		select @nro_factura, cxhxe.Cod_ConsumibleXHabitacionXEstadia
+		from TEAM_CASTY.ConsumibleXHabitacionXEstadia cxhxe
+		where cxhxe.Cod_Estadia=@cod_Estadia;
+				
+		declare @dias_completados numeric (18);
+		
+		select @dias_completados=DATEDIFF(day,est.Fecha_Inicio,est.Fecha_Salida)
+		from TEAM_CASTY.Estadia est
+		where est.Cod_Estadia=@cod_Estadia;
+		
+		declare @dias_faltantes numeric (18);
+		select @dias_faltantes=res.Cant_Noches-@dias_completados
+		from TEAM_CASTY.Reserva res, TEAM_CASTY.Estadia est
+		where @cod_Estadia=est.Cod_Estadia and est.Cod_Reserva=res.Cod_Reserva;
+		
+		insert into TEAM_CASTY.item_habitacionXFactura
+		(Cod_Habitacion,Cod_Regimen,Nro_Factura,Dias_Completados,Monto_Completados,Dias_Faltantes,Monto_Faltantes)
+		select hab.Cod_Habitacion,res.Cod_Regimen,@nro_factura,@dias_completados,
+		(@dias_completados*TEAM_CASTY.PrecioPorDiaEspecifico(@hotel,res.Cod_Regimen,hab.Cod_Tipo)),
+		@dias_faltantes,
+		(@dias_faltantes*TEAM_CASTY.PrecioPorDiaEspecifico(@hotel,res.Cod_Regimen,hab.Cod_Tipo))
+		from TEAM_CASTY.Reserva res, TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXEstadia hxe,
+		TEAM_CASTY.Estadia est
+		where @cod_Estadia=est.Cod_Estadia and res.Cod_Reserva=est.Cod_Reserva and
+		est.Cod_Estadia=hxe.Cod_Estadia and hxe.Cod_Habitacion=hab.Cod_Habitacion;
+		
+		declare @monto_consumibles numeric(18,2);
+		set @monto_consumibles=TEAM_CASTY.MontoConsumibles(@cod_Estadia);
+		declare @monto_habitaciones numeric(18,2);
+		set @monto_habitaciones=TEAM_CASTY.MontoHabitaciones(@cod_Estadia);
+		declare @monto_total numeric(18,2);
+		set @monto_total=@monto_habitaciones;
+		if((select res.Cod_Regimen
+		from TEAM_CASTY.Reserva res, TEAM_CASTY.Estadia est
+		where est.Cod_Estadia=@cod_Estadia and res.Cod_Reserva=est.Cod_Reserva)<>1)
+		begin
+			set @monto_total+=@monto_consumibles;
+		end
+		
+		update TEAM_CASTY.Factura
+		set Total=@monto_total
+		where Cod_Estadia=@cod_Estadia;		
+	end try
+	begin catch	
+		set @mensaje=@mensaje + 'No se realizó la factura.';
+		RAISERROR (@mensaje,15,1);
+	end catch
+end
+else
+begin	
+	set @mensaje=@mensaje + 'No se realizó la factura.';
+	RAISERROR (@mensaje,15,1);
+end
+end;
+
+GO
