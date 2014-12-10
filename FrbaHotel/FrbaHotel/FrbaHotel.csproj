@@ -148,6 +148,12 @@
     </Compile>
     <Compile Include="Encriptado\Encriptador.cs" />
     <Compile Include="Home.cs" />
+    <Compile Include="Listado Estadistico\ListadoEstadistico.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Listado Estadistico\ListadoEstadistico.Designer.cs">
+      <DependentUpon>ListadoEstadistico.cs</DependentUpon>
+    </Compile>
     <Compile Include="Login\Formulario_login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -164,12 +170,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Reserva\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Listado Estadistico\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Listado Estadistico\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="MenuPrincipal.cs">
@@ -218,6 +218,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ABM de Rol\Rol_modificar.resx">
       <DependentUpon>Rol_modificar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Listado Estadistico\ListadoEstadistico.resx">
+      <DependentUpon>ListadoEstadistico.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login\Formulario_login.resx">
       <DependentUpon>Formulario_login.cs</DependentUpon>

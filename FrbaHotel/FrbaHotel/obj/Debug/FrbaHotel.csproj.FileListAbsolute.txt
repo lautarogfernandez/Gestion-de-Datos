@@ -55,3 +55,4 @@ C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHote
 C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Rol.Rol_modificacion.resources
 C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Rol.Rol_modificar.resources
 C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.Login.Formulario_login.resources
+C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.Listado_Estadistico.ListadoEstadistico.resources

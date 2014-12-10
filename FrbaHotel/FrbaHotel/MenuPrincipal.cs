@@ -156,7 +156,7 @@ namespace FrbaHotel
                     }
                 case "Listado Estadístico":
                     {
-                        rutaFormularioElegido = "Listado_Estadistico.Listados";
+                        rutaFormularioElegido = "Listado_Estadistico.ListadoEstadistico";
                         combo_operacion.Enabled=false;
                         break;
                     }
@@ -175,8 +175,11 @@ namespace FrbaHotel
         {
             try
             {
-                string oper = combo_operacion.SelectedItem.ToString();
-                rutaFormularioElegido += oper.ToLower();
+                if (combo_operacion.SelectedItem != null)
+                {
+                    string oper = combo_operacion.SelectedItem.ToString();
+                    rutaFormularioElegido += oper.ToLower();
+                }
                 Type t = Type.GetType("FrbaHotel." + rutaFormularioElegido);
                 formulario_elegido = Activator.CreateInstance(t) as Form;
                 formulario_elegido.Show();

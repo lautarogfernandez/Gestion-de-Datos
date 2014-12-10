@@ -24,7 +24,7 @@ namespace FrbaHotel.ABM_de_Hotel
                                                          + "FROM [GD2C2014].[TEAM_CASTY].[Regimen]";          //búsqueda básica de regímenes
             string busqueda2 = "SELECT DISTINCT [Nombre] "
                                                          + "FROM [GD2C2014].[TEAM_CASTY].[Ciudad]";          //búsqueda básica de ciudades
-            SqlConnection conn;                                                                                                                               //Abrir Conexión
+            SqlConnection conn=Home_Hotel.obtenerConexion();                                                                                                                               //Abrir Conexión
             SqlCommand cmd = new SqlCommand(busqueda, conn);
             SqlCommand cmd2 = new SqlCommand(busqueda2, conn);
             try

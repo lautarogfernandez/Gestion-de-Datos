@@ -17,9 +17,7 @@ namespace FrbaHotel.ABM_de_Cliente
             InitializeComponent();
             string busqueda = "SELECT DISTINCT [Tipo_Documento] "
                                                          + "FROM [GD2C2014].[Team_Casty].[Tipo_Documento]";          //búsqueda básica
-            string ConnStr = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;"; //ruta de la conexión
-            SqlConnection conn = new SqlConnection(ConnStr);                                                             //conexión
-            conn.Open();                                                                                                                                 //Abrir Conexión
+            SqlConnection conn = Home_Cliente.obtenerConexion();
             SqlCommand cmd = new SqlCommand(busqueda, conn);
             try
             {
