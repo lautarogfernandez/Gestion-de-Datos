@@ -33,8 +33,9 @@ namespace FrbaHotel.ABM_de_Cliente
         public Cliente_listado()
         {
             InitializeComponent();
-            string busqueda = "SELECT DISTINCT [Tipo Documento] "
-                                                         + "FROM [GD2C2014].[Team_Casty].[vistaClientes]";          //búsqueda básica
+            string busqueda = "SELECT Codigo, Nombre, Apellido, Mail, [Tipo Documento], [Numero Documento], Telefono, " +
+                                           "Pais, Localidad, Calle, [Numero Calle], Piso, Departamento, Nacionalidad, [Fecha Nacimiento]Inhabilitado "
+                                                                     + "FROM [GD2C2014].[Team_Casty].[vistaClientesErroneos]";           //búsqueda básica
             button_Buscar.Enabled = false;            //Deshabilito búsqueda hasta que haya resultado
             string ConnStr = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;"; //ruta de la conexión
             SqlConnection conn = new SqlConnection(ConnStr);                                                             //conexión

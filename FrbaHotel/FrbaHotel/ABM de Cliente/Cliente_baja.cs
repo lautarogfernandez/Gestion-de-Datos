@@ -202,7 +202,7 @@ namespace FrbaHotel.ABM_de_Cliente
             button_eliminar.Enabled = false;
             button_eliminar.ForeColor = SystemColors.ScrollBar;
             string busqueda = "SELECT Codigo, Nombre, Apellido, Mail, [Tipo Documento], [Numero Documento], Telefono, "+
-                                           "Pais, Localidad, Calle, [Numero Calle], Piso, Departamento, Nacionalidad, [Fecha Nacimiento] "
+                                           "Pais, Localidad, Calle, [Numero Calle], Piso, Departamento, Nacionalidad, [Fecha Nacimiento], Inhabilitado "
                                                                      + "FROM [GD2C2014].[Team_Casty].[vistaClientes]";          //búsqueda básica
             button_Buscar.Enabled = false;            //Deshabilito búsqueda hasta que haya resultado
             label_progreso.Text = "Cargando Clientes";       //Imprime en la barra de progreso

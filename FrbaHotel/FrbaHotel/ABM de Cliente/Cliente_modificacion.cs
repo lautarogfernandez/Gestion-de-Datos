@@ -14,6 +14,7 @@ namespace FrbaHotel.ABM_de_Cliente
     {
         public string _tipo_documento, _apellido, _nombre, _pais, _nacionalidad, _localidad,
             _calle, _departamento, _mail, _telefono, _codigo, _numero_documento, _numero_calle, _piso, _fecha_nacimiento;
+        public bool _inhabilitado=false;
     }
     public partial class Cliente_modificacion : Form
     {
@@ -207,9 +208,9 @@ namespace FrbaHotel.ABM_de_Cliente
         {
             button_modificar.Enabled = false;
             button_modificar.ForeColor = SystemColors.ScrollBar;
-            string busqueda = "SELECT Codigo, Nombre, Apellido, Mail, [Tipo Documento], [Numero Documento], Telefono, "+
-                                           "Pais, Localidad, Calle, [Numero Calle], Piso, Departamento, Nacionalidad, [Fecha Nacimiento] "
-                                                                     + "FROM [GD2C2014].[Team_Casty].[vistaClientes]";          //búsqueda básica
+            string busqueda = "SELECT Codigo, Nombre, Apellido, Mail, [Tipo Documento], [Numero Documento], Telefono, " +
+                                           "Pais, Localidad, Calle, [Numero Calle], Piso, Departamento, Nacionalidad, [Fecha Nacimiento]Inhabilitado "
+                                                                     + "FROM [GD2C2014].[Team_Casty].[vistaClientesErroneos]";           //búsqueda básica
             button_Buscar.Enabled = false;            //Deshabilito búsqueda hasta que haya resultado
             label_progreso.Text = "Cargando Clientes";       //Imprime en la barra de progreso
             string ConnStr = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;"; //ruta de la conexión
@@ -410,6 +411,12 @@ namespace FrbaHotel.ABM_de_Cliente
                     case "Fecha Nacimiento":
                     {
                         _valores._fecha_nacimiento = dgv_resultados.SelectedCells[i].Value.ToString();
+                        break;
+                    }
+                    case "Inhabilitado":
+                    {
+                        if (Convert.ToInt32(dgv_resultados.SelectedCells[i].Value)!=0)
+                        _valores._inhabilitado = true;
                         break;
                     }
                 }
