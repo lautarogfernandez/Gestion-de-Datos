@@ -97,7 +97,7 @@ end;
 
 GO
 
-create function  TEAM_CASTY.Disponibilidad_Reserva
+create function  TEAM_CASTY.Disponibilidad_Reserva--OK=1; NO=0;
 (@fecha_desde datetime,@fecha_hasta datetime,@hotel numeric(18),@tabla TEAM_CASTY.t_reserva readonly)
 returns numeric(18)
 AS
@@ -149,7 +149,6 @@ end;
 
 GO
 
-----------------------------------------------------------------------------------------------------------------
 create function  TEAM_CASTY.Ultimo_Codigo_Reserva
 ()
 returns numeric(18)
@@ -174,29 +173,10 @@ end;
 
 GO
 
-select * from TEAM_CASTY.Habitacion hab where hab.Cod_Hotel=1 and hab.Cod_Tipo=1001;
-select * from TEAM_CASTY.Reserva
-
-select * from TEAM_CASTY.HabitacionXReserva hxr where hxr.Cod_Habitacion=18;
-select * from TEAM_CASTY.HabitacionXReserva hxr where hxr.Cod_Reserva=12;
-select * from TEAM_CASTY.Reserva r where r.Cod_Reserva=12;
-
-declare @f1 datetime=convert(datetime,'2019-02-14',111);
-declare @f2 datetime=convert(datetime,'2019-02-24',111);
-insert into TEAM_CASTY.Reserva
-(Cant_Noches,Cod_Estado,Cod_Regimen,Cod_Reserva,Fecha_Realizacion,Fecha_Reserva,ID_Cliente_Reservador)
-values (2,1,2,12,@f1+2,@f1+4,2);
-insert into TEAM_CASTY.HabitacionXReserva
-(Cod_Habitacion,Cod_Reserva)
-values(2,12);
-declare @f1 datetime=convert(datetime,'2019-02-14',111);
-declare @f2 datetime=convert(datetime,'2019-02-24',111);
-select TEAM_CASTY.Cant_Hab_Disponibles(@f1,@f2,1,1001);
-select TEAM_CASTY.Obtener_Habitacion(@f1,@f2,1,1001);
 
 create procedure  TEAM_CASTY.Realizar_Reserva
-(@fecha_realizacion datetime,@fecha_reserva datetime,@cant_noches numeric(18),@id_cliente numeric(18),
-@regimen nvarchar(255),@tabla TEAM_CASTY.t_reserva readonly)
+(@usuario nvarchar(255),@fecha_realizacion datetime,@fecha_reserva datetime,@cant_noches numeric(18),@id_cliente numeric(18),
+@regimen nvarchar(255),@hotel numeric(18),@tabla TEAM_CASTY.t_reserva readonly)
 as
 begin
 	declare @cod_t_reg numeric(18);
@@ -204,10 +184,22 @@ begin
 	from TEAM_CASTY.Regimen r
 	where r.Descripcion=@regimen;
 	
+	declare @cod_usuario numeric(18);
+	select @cod_usuario=u.Cod_Usuario
+	from TEAM_CASTY.Usuario u
+	where @usuario=u.Username;
+	
+	declare @cod_reserva numeric(18)=TEAM_CASTY.Ultimo_Codigo_Reserva()+1;
+	
 	insert into TEAM_CASTY.Reserva
 	(Cant_Noches,Cod_Estado,Cod_Regimen,Cod_Reserva,Fecha_Realizacion,Fecha_Reserva,ID_Cliente_Reservador)
-	values (@cant_noches,1,@cod_t_reg,TEAM_CASTY.Ultimo_Codigo_Reserva()+1,@fecha_realizacion,@fecha_reserva,@id_cliente);
+	values (@cant_noches,1,@cod_t_reg,@cod_reserva,@fecha_realizacion,@fecha_reserva,@id_cliente);
 	
+	insert into TEAM_CASTY.ModificacionXReserva
+	(Cod_Reserva,Cod_Usuario,Descripcion,Fecha,Numero_Modificacion)
+	values (@cod_reserva,@cod_usuario,'Creación',@fecha_realizacion,1,);
+	
+	declare @i int;
 	
 	DECLARE _cursor CURSOR FOR
 		select * from @tabla;
@@ -219,21 +211,37 @@ begin
 			select @cod_t_hab=th.Cod_Tipo
 			from TEAM_CASTY.Tipo_Habitacion th
 			where th.Descripcion=@t_hab;
-						
 			
+			set @i=0;
+			while (@i<@cant)
+			begin
+				insert into TEAM_CASTY.HabitacionXReserva (Cod_Reserva,Cod_Habitacion)
+				values (@cod_reserva,TEAM_CASTY.Obtener_Habitacion(@fecha_reserva,@cant_noches,@hotel,@cod_t_hab));
+				set @i=@i+1;
+			end
 			
 			FETCH NEXT FROM _cursor INTO @t_hab, @cant;					
 		END;		
 		CLOSE _cursor;
-		DEALLOCATE _cursor;	
-	
-	
-	
+		DEALLOCATE _cursor;		
 end;
 
 GO
 
-select * from TEAM_CASTY.Reserva
+select * from TEAM_CASTY.Regimen;
+select * from TEAM_CASTY.Reserva r order by r.Cod_Reserva desc;
+select * from TEAM_CASTY.Tipo_Habitacion;
+select * from TEAM_CASTY.Habitacion hab where hab.Cod_Hotel=1 and hab.Cod_Tipo=1005;
+select * from TEAM_CASTY.Habitacion hab where hab.Cod_Habitacion in (2,15);
+select * from TEAM_CASTY.HabitacionXReserva hxr where hxr.Cod_Reserva=110741;
+
+declare @tab TEAM_CASTY.t_reserva;
+insert into @tab (Tipo_habitacion,Cantidad) values ('Base Simple',2);
+insert into @tab (Tipo_habitacion,Cantidad) values ('King',2);
+declare @f1 datetime=convert(datetime,'2039-04-09',111);
+declare @f2 datetime=@f1-1;
+select TEAM_CASTY.Obtener_Habitacion(@f1,@f1+5,1,1005);
+exec  TEAM_CASTY.Realizar_Reserva @f2,@f1,5,111,'Pension Completa',@tab;
 
 
 
