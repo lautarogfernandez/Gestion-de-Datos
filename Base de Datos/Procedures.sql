@@ -456,7 +456,7 @@ end
 GO
 
 
-declare @f1 datetime=convert(datetime,'2045-04-09',111);
+declare @f1 datetime=convert(datetime,'2046-04-09',111);
 declare @f2 datetime=@f1-1;
 declare @tab TEAM_CASTY.t_reserva;
 insert into @tab (Tipo_habitacion,Cantidad) values ('Base Simple',1);
@@ -464,9 +464,10 @@ insert into @tab (Tipo_habitacion,Cantidad) values ('King',2);
 exec  TEAM_CASTY.Reservar 'guest',@f2,@f1,5,111,'Pension Completa',1,@tab;
 
 select * from TEAM_CASTY.Reserva r order by r.Cod_Reserva desc
+select * from TEAM_CASTY.Reserva r  where r.Cod_Reserva=110741;
 
-declare @f1 datetime=convert(datetime,'2045-04-09',111);
-exec TEAM_CASTY.Check_IN 110748,@f1,'admin',1
+declare @f1 datetime=convert(datetime,'2046-04-09',111);
+exec TEAM_CASTY.Check_IN 110741,@f1,'admin',1
 
 select * from TEAM_CASTY.Estadia e order by e.Cod_Estadia desc;
 select * from TEAM_CASTY.HabitacionXEstadia hxe order by hxe.Cod_Estadia desc;
@@ -482,6 +483,21 @@ returns numeric(18)
 AS
 begin
 	return(select MAX(e.Cod_Estadia) from TEAM_CASTY.Estadia e);
+end;
+
+GO
+
+create procedure  TEAM_CASTY.Agregar_Clientes_A_Estadia
+(@Cod_Reserva numeric(18),@tabla TEAM_CASTY.t_agregar_clientes readonly)
+AS
+begin
+	declare @cod_est numeric(18);
+	select @cod_est=est.Cod_Estadia from TEAM_CASTY.Estadia est where est.Cod_Reserva=@Cod_Reserva;
+	
+	insert into TEAM_CASTY.ClienteXEstadia
+	(Cod_Estadia,ID_Cliente)
+	select @cod_est,t.cod_cliente
+	from @tabla t;	
 end;
 
 GO
@@ -579,6 +595,8 @@ select * from TEAM_CASTY.Estadia e order by e.Cod_Estadia desc;
 select * from TEAM_CASTY.HabitacionXEstadia hxe order by hxe.Cod_Estadia desc;
 select * from TEAM_CASTY.HabitacionXEstadia hxe where hxe.Cod_Estadia=89604;
 
+
+
 create type TEAM_CASTY.t_agregar_clientes as table (
 cod_cliente numeric(18));
 
@@ -604,13 +622,17 @@ end;
 
 GO
 
+
 declare @tab TEAM_CASTY.t_agregar_clientes;
 insert into @tab (cod_cliente) values(2);
-insert into @tab (cod_cliente) values(3);
+insert into @tab (cod_cliente) values(5);
+select * from TEAM_CASTY.ClienteXEstadia e where e.Cod_Estadia=89603;
+exec TEAM_CASTY.Check_OUT 
+
 
 --check out
 create procedure  TEAM_CASTY.Check_OUT
-@Cod_Reserva numeric(18),@fecha datetime, @usuario nvarchar(255),@hotel numeric(18)
+@cod_estadia numeric(18),@fecha datetime, @usuario nvarchar(255),@hotel numeric(18)
 AS
 begin
 declare @mensaje varchar(1000);
@@ -620,30 +642,31 @@ set @mensaje='Error:';
 declare @cod_user numeric(18);
 select @cod_user=u.Cod_Usuario from TEAM_CASTY.Usuario u where u.Username=@usuario;
 
-if(not exists (select * from TEAM_CASTY.Reserva r where @Cod_Reserva=r.Cod_Reserva))
+
+if(not exists (select * from TEAM_CASTY.Reserva r where @cod_estadia=r.Cod_Reserva))
 begin
 	set @error=1;
-	set @mensaje=@mensaje + ' No existe la Reserva';
+	set @mensaje=@mensaje + ' No existe la estadía';
 end;
 
-if(not exists (select * from TEAM_CASTY.Estadia r where @Cod_Reserva=r.Cod_Reserva))
+if(not exists (select * from TEAM_CASTY.Estadia e where @cod_estadia=e.Cod_Estadia))
 begin
 	set @error=1;
 	set @mensaje=@mensaje + ' No se realizó el Check IN previamente';
 end;
 
-if (exists (select * from TEAM_CASTY.Estadia e where @Cod_Reserva=e.Cod_Reserva and datediff(day,e.Fecha_Inicio,@fecha)<0))
+if (exists (select * from TEAM_CASTY.Estadia e where @cod_estadia=e.Cod_Estadia and datediff(day,e.Fecha_Inicio,@fecha)<0))
 begin
 	set @error=1;
 	set @mensaje=@mensaje + ' No concuerdan las fechas';
 end;
 
 if(not exists(select *
-from TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXReserva hxr,TEAM_CASTY.Hotel h, TEAM_CASTY.Usuario u, TEAM_CASTY.RolXUsuarioXHotel uxrxh
+from TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXEstadia hxe,TEAM_CASTY.Hotel h, TEAM_CASTY.Usuario u, TEAM_CASTY.RolXUsuarioXHotel uxrxh
 where hab.Cod_Hotel=h.Cod_Hotel and
 h.Cod_Hotel=@hotel and
-hxr.Cod_Habitacion=hab.Cod_Habitacion and
-hxr.Cod_Reserva=@Cod_Reserva and
+hxe.Cod_Habitacion=hab.Cod_Habitacion and
+hxe.Cod_Estadia=@cod_estadia and
 u.Cod_Usuario=@cod_user and
 u.Cod_Usuario=uxrxh.Cod_Usuario))
 begin		
@@ -655,7 +678,7 @@ if (@error=0)
 begin
 	update TEAM_CASTY.Estadia
 	set Fecha_Salida=@fecha,Usuario_Salida=@cod_user
-	where @Cod_Reserva=Cod_Reserva;
+	where @cod_estadia=Cod_Estadia;
 end
 else
 begin
@@ -664,25 +687,14 @@ begin
 end
 end;
 
+GO
+
 create type TEAM_CASTY.t_agregar_clientes as table (
 cod_cliente numeric(18));
 
 GO
 
-create procedure  TEAM_CASTY.Agregar_Clientes_A_Estadia
-(@Cod_Reserva numeric(18),@tabla TEAM_CASTY.t_agregar_clientes readonly)
-AS
-begin
-	declare @cod_est numeric(18);
-	select @cod_est=est.Cod_Estadia from TEAM_CASTY.Estadia est where est.Cod_Reserva=@Cod_Reserva;
-	
-	insert into TEAM_CASTY.ClienteXEstadia
-	(Cod_Estadia,ID_Cliente)
-	select @cod_est,t.cod_cliente
-	from @tabla t;	
-end;
 
-GO
 
 
 --PUNTO 11

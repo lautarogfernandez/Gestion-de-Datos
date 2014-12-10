@@ -1333,6 +1333,15 @@ end;
 
 GO
 
+create function TEAM_CASTY.HabitacionesDeEstadia
+(@cod_estadia datetime)
+returns table
+as
+return (
+select hxe.Cod_Habitacion from TEAM_CASTY.HabitacionXEstadia hxe where hxe.Cod_Estadia=@cod_estadia);
+
+GO
+
 create function TEAM_CASTY.Clientes_Estadia_Fecha
 (@fecha datetime,@hotel numeric(18))
 returns table
