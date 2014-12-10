@@ -6,6 +6,11 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.Reflection;
+
+
 
 namespace FrbaHotel.Listado_Estadistico
 {
@@ -18,11 +23,11 @@ namespace FrbaHotel.Listado_Estadistico
             comboBox1.Items.Add("2");
             comboBox1.Items.Add("3");
             comboBox1.Items.Add("4");
-            comboBox2.Items.Add("Hoteles con mayor cantidad de reservas canceladas");
+            comboBox2.Items.Add("Hoteles con mayor cantidad de reservas canceladas.");
             comboBox2.Items.Add("Hoteles con mayor cantidad de consumibles facturados.");
-            comboBox2.Items.Add("Hoteles con mayor cantidad de días fuera de servicio");
-            comboBox2.Items.Add("Habitaciones con mayor cantidad de días y veces que fueron ocupadas");
-            comboBox2.Items.Add("Cliente con mayor cantidad de puntos");
+            comboBox2.Items.Add("Hoteles con mayor cantidad de días fuera de servicio.");
+            comboBox2.Items.Add("Habitaciones con mayor cantidad de días y veces que fueron ocupadas.");
+            comboBox2.Items.Add("Cliente con mayor cantidad de puntos.");
             comboBox1.Enabled = false;
             comboBox2.Enabled = false;
             button1.Enabled = false;
@@ -55,60 +60,85 @@ namespace FrbaHotel.Listado_Estadistico
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string fechaInicial="-01-01";
-            string fechaFinal="-01-01";
+            string fechaInicial="";
+            string fechaFinal="";
             string busqueda;
 
+            busqueda = "";
             if (comboBox1.SelectedItem.ToString() == "1")
             {
-                    fechaInicial = "'"+ textBox1.Text + "-01-01";          
-                    fechaFinal = "'" + textBox1.Text + "-03-31"; 
+                    fechaInicial = textBox1.Text + "-01-01";          
+                    fechaFinal =  textBox1.Text + "-03-31"; 
             }
             if (comboBox1.SelectedItem.ToString() == "2")
             {
-                 fechaInicial = "'" + textBox1.Text + "-04-01";          
-                 fechaFinal = "'" + textBox1.Text + "-06-30";
+                 fechaInicial = textBox1.Text + "-04-01";          
+                 fechaFinal = textBox1.Text + "-06-30";
             }
             if (comboBox1.SelectedItem.ToString() == "3")
             {
-                 fechaInicial = "'" + textBox1.Text + "-07-01";         
-                 fechaFinal = "'" + textBox1.Text + "-09-30";
+                 fechaInicial =  textBox1.Text + "-07-01";         
+                 fechaFinal =  textBox1.Text + "-09-30";
             }
             if (comboBox1.SelectedItem.ToString() == "4")
             {
-                 fechaInicial = "'" + textBox1.Text + "-10-01";          
-                 fechaFinal = "'" + textBox1.Text + "-12-31";
+                 fechaInicial = textBox1.Text + "-10-01";          
+                 fechaFinal = textBox1.Text + "-12-31";
             }
 
 
-            if (comboBox2.SelectedItem.ToString() == "Hoteles con mayor cantidad de reservas canceladas")
+            if (comboBox2.SelectedItem.ToString() == "Hoteles con mayor cantidad de reservas canceladas.")
             {
-                 busqueda =    "SELECT * FROM   vistaTOP5ReservasCanceladas('"+ fechaInicial + "','"+ fechaFinal +"')";
+                 busqueda =    "SELECT * FROM   TEAM_CASTY.vistaTOP5ReservasCanceladas('"+ fechaInicial + "','"+ fechaFinal +"')";
             }
 
 
 
-            if (comboBox2.SelectedItem.ToString() == "Hoteles con mayor cantidad de consumibles facturados")
+            if (comboBox2.SelectedItem.ToString() == "Hoteles con mayor cantidad de consumibles facturados.")
             {
-                 busqueda =    "SELECT * FROM   vistaTOP5ConsumiblesFacturados('"+ fechaInicial + "','"+ fechaFinal +"')";
+                busqueda = "SELECT * FROM   TEAM_CASTY.vistaTOP5ConsumiblesFacturados('" + fechaInicial + "','" + fechaFinal + "')";
             }
 
-            if (comboBox2.SelectedItem.ToString() == "Hoteles con mayor cantidad de días fuera de servicio")
+            if (comboBox2.SelectedItem.ToString() == "Hoteles con mayor cantidad de días fuera de servicio.")
                             {
-                 busqueda =    "SELECT * FROM   vistaTOP5CantidadDeDiasFueraDeServicio('"+ fechaInicial + "','"+ fechaFinal +"')";
+                                busqueda = "SELECT * FROM   TEAM_CASTY.vistaTOP5CantidadDeDiasFueraDeServicio('" + fechaInicial + "','" + fechaFinal + "')";
             }
 
 
-            if (comboBox2.SelectedItem.ToString() == "Habitaciones con mayor cantidad de días y veces que fueron ocupadas")
+            if (comboBox2.SelectedItem.ToString() == "Habitaciones con mayor cantidad de días y veces que fueron ocupadas.")
                             {
-                 busqueda =    "SELECT * FROM   vistaTOP5HabitacionesHabitadas('"+ fechaInicial + "','"+ fechaFinal +"')";
+                                busqueda = "SELECT * FROM   TEAM_CASTY.vistaTOP5HabitacionesHabitadas('" + fechaInicial + "','" + fechaFinal + "')";
             }
 
 
-            if (comboBox2.SelectedItem.ToString() == "Cliente con mayor cantidad de puntos")
+            if (comboBox2.SelectedItem.ToString() == "Cliente con mayor cantidad de puntos.")
                          {
-                             busqueda = "SELECT * FROM   vistaTOP5ClienteConPuntos('" + fechaInicial + "','" + fechaFinal + "')";
-            }   
+                             busqueda = "SELECT * FROM   TEAM_CASTY.vistaTOP5ClienteConPuntos('" + fechaInicial + "','" + fechaFinal + "')";
+            }
+
+            SqlConnection conn = Home.obtenerConexion();
+        //    button_mostrar_hoteles.Enabled = false;
+         //   label_progreso.Text = "Cargando Hoteles";
+            SqlDataAdapter adaptador;
+           // barra_progreso.Value = 0;
+            DataTable tablaListado = new DataTable();
+            try
+            {
+                adaptador = new SqlDataAdapter(busqueda, conn);
+                adaptador.Fill(tablaListado);
+                dataGridView1.DataSource = tablaListado;
+                //barra_progreso.Value = 100;
+                // label_progreso.Text = "Carga de Hoteles completa";
+            }
+            //    catch (Exception)
+            //    {
+
+        //        barra_progreso.Value = 0;
+            //      label_progreso.Text = "Error - Carga de Hoteles Inválida";
+            //   }
+            finally { }
+            conn.Close();
+         //   button_mostrar_hoteles.Enabled = true;
           
         }
 

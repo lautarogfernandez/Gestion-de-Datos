@@ -156,7 +156,7 @@ drop view TEAM_CASTY.vistaConsumibleXHabitacionXReserva
 --LISTADOS
  ---- agregar resto de campos en select y en group by
 -----------------------------------------------------------------------------------------------------------------------------------
-CREATE FUNCTION vistaTOP5ReservasCanceladas (@pFecha_Inicio date,@pFecha_Fin date)
+CREATE FUNCTION TEAM_CASTY.vistaTOP5ReservasCanceladas (@pFecha_Inicio date,@pFecha_Fin date)
 RETURNS TABLE
 AS
 RETURN 
@@ -169,7 +169,7 @@ RETURN
 
    SELECT * FROM   vistaTOP5ReservasCanceladas('2013-01-01 00:00:00.000','2024-12-28 00:00:00.000')
 
-drop function vistaTOP5ReservasCanceladas
+drop VIEW TEAM_CASTY.vistaTOP5ReservasCanceladas
 
 -- vista q no sirve
 create view TEAM_CASTY.vistaTOP5ReservasCanceladas
@@ -185,7 +185,7 @@ select * from TEAM_CASTY.vistaTOP5ReservasCanceladas
 drop view TEAM_CASTY.vistaTOP5ReservasCanceladas
 
 ------------------------------------------------------------------------------------------------------
-CREATE FUNCTION vistaTOP5ConsumiblesFacturados (@pFecha_Inicio date,@pFecha_Fin date)
+CREATE FUNCTION TEAM_CASTY.vistaTOP5ConsumiblesFacturados (@pFecha_Inicio date,@pFecha_Fin date)
 RETURNS TABLE
 AS
 RETURN
@@ -196,7 +196,7 @@ where vh.Codigo = hab.Cod_Hotel and hab.Cod_Habitacion=CxHxE.Cod_Habitacion  and
 group by  vh.Codigo, vh.Ciudad, vh.Calle,vh.[Numero Calle], vh.Telefono, vh.Mail, vh.[Cantidad de estrellas], vh.[Recarga por estrella]
 order by [Cantidad Consumibles] desc
 
-drop function vistaTOP5ConsumiblesFacturados
+drop VIEW TEAM_CASTY.vistaTOP5ConsumiblesFacturados
 
 SELECT * FROM vistaTOP5ConsumiblesFacturados('2013-01-01 00:00:00.000','2013-12-28 00:00:00.000')
 
@@ -230,7 +230,7 @@ END
 
 
 
-CREATE FUNCTION vistaTOP5CantidadDeDiasFueraDeServicio (@pFecha_Inicio date,@pFecha_Fin date)
+CREATE FUNCTION TEAM_CASTY.vistaTOP5CantidadDeDiasFueraDeServicio (@pFecha_Inicio date,@pFecha_Fin date)
 RETURNS TABLE
 AS
 RETURN
@@ -244,10 +244,10 @@ order by [Total Dias Fuera De Servicio] desc
 
 SELECT * FROM vistaTOP5CantidadDeDiasFueraDeServicio('2013-01-01 00:00:00.000','2024-12-28 00:00:00.000')
 
-drop function vistaTOP5CantidadDeDiasFueraDeServicio
+drop VIEW TEAM_CASTY.vistaTOP5CantidadDeDiasFueraDeServicio
 ------------------------------------------------------------------------------------
 
-CREATE FUNCTION vistaTOP5HabitacionesHabitadas (@pFecha_Inicio date,@pFecha_Fin date)
+CREATE FUNCTION TEAM_CASTY.vistaTOP5HabitacionesHabitadas (@pFecha_Inicio date,@pFecha_Fin date)
 RETURNS TABLE
 AS
 RETURN
@@ -260,10 +260,10 @@ order by  [Dias Ocupada] desc, [Cantidad De Veces Ocupada] desc
 
 SELECT * FROM vistaTOP5HabitacionesHabitadas('2013-01-01 00:00:00.000','2013-01-28 00:00:00.000')
 
-drop function vistaTOP5HabitacionesHabitadas
+drop FUNCTION TEAM_CASTY.vistaTOP5HabitacionesHabitadas
 --------------------------------------------------------------------
 
-CREATE FUNCTION vistaTOP5ClienteConPuntosAux (@pFecha_Inicio date,@pFecha_Fin date)
+CREATE FUNCTION TEAM_CASTY.vistaTOP5ClienteConPuntosAux (@pFecha_Inicio date,@pFecha_Fin date)
 RETURNS TABLE
 AS
 RETURN 
@@ -274,19 +274,19 @@ group by  vc.Codigo,vc.Nombre,vc.Apellido,vc.Mail, vc.[Tipo Documento], vc.[Nume
 order by Puntos desc
 
 
-CREATE FUNCTION vistaTOP5ClienteConPuntos (@pFecha_Inicio date,@pFecha_Fin date)
+CREATE FUNCTION TEAM_CASTY.vistaTOP5ClienteConPuntos (@pFecha_Inicio date,@pFecha_Fin date)
 returns table
 return 
 select top 5  aux.Codigo,aux.Nombre,aux.Apellido,aux.Mail, aux.[Tipo Documento], aux.[Numero Documento], aux.Telefono, aux.Pais, aux.Localidad, aux.Calle, aux.[Numero Calle], aux.Piso, aux.Departamento, aux.Nacionalidad, aux.[Fecha Nacimiento] , sum(aux.puntos) as Puntos
-from vistaTOP5ClienteConPuntosAux(@pFecha_Inicio,@pFecha_Fin)aux
+from TEAM_CASTY.vistaTOP5ClienteConPuntosAux(@pFecha_Inicio,@pFecha_Fin)aux
 group by aux.Codigo,aux.Nombre,aux.Apellido,aux.Mail, aux.[Tipo Documento], aux.[Numero Documento], aux.Telefono, aux.Pais, aux.Localidad, aux.Calle, aux.[Numero Calle], aux.Piso, aux.Departamento, aux.Nacionalidad, aux.[Fecha Nacimiento]
 order by Puntos desc
 
 
 
-drop function vistaTOP5ClienteConPuntosAux
+drop function TEAM_CASTY.vistaTOP5ClienteConPuntosAux
 
-drop function vistaTOP5ClienteConPuntos
+drop function TEAM_CASTY.vistaTOP5ClienteConPuntos
 
 SELECT * FROM vistaTOP5ClienteConPuntosAux('2013-01-01 ','2024-12-28')
 
