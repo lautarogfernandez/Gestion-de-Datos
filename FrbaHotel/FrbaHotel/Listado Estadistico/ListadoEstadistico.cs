@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace FrbaHotel.Listado_Estadistico
 {
-    public partial class Form1 : Form
+    public partial class ListadoEstadistico : Form
     {
-        public Form1()
+        public ListadoEstadistico()
         {
             InitializeComponent();
             comboBox1.Items.Add("1");
