@@ -1364,6 +1364,9 @@ declare @error int;
 set @error=0;
 set @mensaje='Error: ';
 
+if(not exists (select * from TEAM_CASTY.Factura f where f.Cod_Estadia=@cod_Estadia))
+begin
+
 if(not exists (select * from TEAM_CASTY.Estadia e where e.Cod_Estadia=@cod_Estadia))
 begin
 	set @error=1;
@@ -1387,7 +1390,13 @@ begin
 	set @error=1;
 	set @mensaje+=' Cantidad incorrecta.';
 end 
- 
+end
+else
+begin
+	set @error=1;
+	set @mensaje+=' La estadía ya fue facturada.';
+end 
+
 if (@error=0)	
 begin
 	insert into TEAM_CASTY.ConsumibleXHabitacionXEstadia
@@ -2368,7 +2377,7 @@ end;
 if (exists (select * from TEAM_CASTY.Estadia e where @cod_estadia=e.Cod_Estadia and datediff(day,e.Fecha_Inicio,@fecha)<0))
 begin
 	set @error=1;
-	set @mensaje=@mensaje + ' No concuerdan las fechas';
+	set @mensaje=@mensaje + ' No concuerdan las fechas.';
 end
 else
 begin
@@ -2378,8 +2387,14 @@ begin
 	if (datediff(day,@fecha,@fs)<0)
 	begin
 		set @error=1;
-		set @mensaje=@mensaje + ' No concuerdan las fechas';
+		set @mensaje=@mensaje + ' No concuerdan las fechas.';
 	end
+end
+
+if (exists (select * from TEAM_CASTY.Estadia e where @cod_estadia=e.Cod_Estadia and datediff(day,e.Fecha_Inicio,@fecha)=0))
+begin
+	set @error=1;
+	set @mensaje=@mensaje + ' No ha pasado un día aún.';
 end
 
 if(not exists(select *
@@ -2392,7 +2407,7 @@ u.Cod_Usuario=@cod_user and
 u.Cod_Usuario=uxrxh.Cod_Usuario))
 begin		
 	set @error=1;
-	set @mensaje=@mensaje + ' El usuario no puede operar sobre ese hotel';
+	set @mensaje=@mensaje + ' El usuario no puede operar sobre ese hotel.';
 end;
 end
 
