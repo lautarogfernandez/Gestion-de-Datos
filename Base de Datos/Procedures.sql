@@ -456,7 +456,7 @@ end
 GO
 
 
-declare @f1 datetime=convert(datetime,'2046-04-09',111);
+declare @f1 datetime=convert(datetime,'2046-05-22',111);
 declare @f2 datetime=@f1-1;
 declare @tab TEAM_CASTY.t_reserva;
 insert into @tab (Tipo_habitacion,Cantidad) values ('Base Simple',1);
@@ -466,8 +466,8 @@ exec  TEAM_CASTY.Reservar 'guest',@f2,@f1,5,111,'Pension Completa',1,@tab;
 select * from TEAM_CASTY.Reserva r order by r.Cod_Reserva desc
 select * from TEAM_CASTY.Reserva r  where r.Cod_Reserva=110741;
 
-declare @f1 datetime=convert(datetime,'2046-04-09',111);
-exec TEAM_CASTY.Check_IN 110741,@f1,'admin',1
+declare @f1 datetime=convert(datetime,'2046-05-22',111);
+exec TEAM_CASTY.Check_IN 110748,@f1,'admin',1;
 
 select * from TEAM_CASTY.Estadia e order by e.Cod_Estadia desc;
 select * from TEAM_CASTY.HabitacionXEstadia hxe order by hxe.Cod_Estadia desc;
@@ -478,6 +478,43 @@ select * from TEAM_CASTY.HabitacionXEstadia hxe where hxe.Cod_Estadia=89604;
 --check in
 
 -------------------------------------------------------------------------------------------------------------------
+
+--CREATE FUNCTION TEAM_CASTY.HotelesPorUsario
+--(@usuario nvarchar(255))
+--RETURNS TABLE
+--AS
+--RETURN 
+--   select vistaClientes.*
+--   from TEAM_CASTY.RolXUsuarioXHotel RxUxH,TEAM_CASTY.Usuario u, TEAM_CASTY.vistaHoteles h
+--   where @usuario=u.Username and
+--   RxUxH.Cod_Usuario = u.Cod_Usuario and
+--   RxUxH.Cod_Hotel=h.Codigo;
+
+create function  TEAM_CASTY.Reservas_Para_Check_IN
+(@fecha datetime, @hotel numeric(18))
+returns table
+AS
+	return(
+	select distinct res.Cod_Reserva
+	from TEAM_CASTY.Reserva res,TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXReserva hxr
+	where res.Cod_Reserva=hxr.Cod_Reserva and hxr.Cod_Habitacion=hab.Cod_Habitacion and hab.Cod_Hotel=@hotel and
+	datediff(day,res.Fecha_Reserva,@fecha)=0);
+
+GO
+
+create function  TEAM_CASTY.Estadias_Para_Check_OUT
+(@hotel numeric(18))
+returns table
+AS
+	return(
+	select distinct est.Cod_Estadia,c.Nombre,c.Apellido,td.Tipo_Documento,c.Nro_Documento,c.Telefono,c.Mail
+	from TEAM_CASTY.Estadia est,TEAM_CASTY.HabitacionXEstadia hxe, TEAM_CASTY.Habitacion hab,TEAM_CASTY.Cliente c,
+	TEAM_CASTY.Reserva res,TEAM_CASTY.Tipo_Documento td
+	where est.Fecha_Salida is null and est.Fecha_Inicio is not null and hab.Cod_Habitacion=hxe.Cod_Habitacion and
+	est.Cod_Estadia=hxe.Cod_Estadia and hab.Cod_Hotel=@hotel and res.Cod_Reserva=est.Cod_Reserva and
+	res.ID_Cliente_Reservador=c.ID_Cliente and td.ID_Tipo_Documento=c.ID_Tipo_Documento);
+
+GO
 
 create function  TEAM_CASTY.Utimo_Codigo_Estadia
 ()
@@ -795,6 +832,7 @@ where thab.Cod_Tipo=@tipo_habitacion;
 return @precio_tipo_habitacion*@precio_regimen+@adicional_hotel;
 end;
 
+GO
 
 create function TEAM_CASTY.MontoConsumibles
 (@cod_estadia numeric(18))
@@ -807,6 +845,8 @@ from TEAM_CASTY.ConsumibleXHabitacionXEstadia cxhxe
 where cxhxe.Cod_Estadia=@cod_estadia);
 end;
 
+GO
+
 create function TEAM_CASTY.MontoHabitaciones
 (@cod_estadia numeric(18))
 RETURNS numeric(18,2)
@@ -818,6 +858,8 @@ from TEAM_CASTY.item_habitacionXFactura ihf, TEAM_CASTY.Factura f
 where f.Cod_Estadia=@cod_estadia and ihf.Nro_Factura=f.Nro_Factura);
 end;
 
+GO
+
 create procedure  TEAM_CASTY.Facturar
 @cod_Estadia numeric(18), @fecha datetime, @cod_forma_pago numeric(18)
 AS
@@ -827,10 +869,9 @@ declare @error int;
 set @error=0;
 set @mensaje='Error: ';
 
-
 if (exists(select * from TEAM_CASTY.Estadia e where e.Cod_Estadia=@cod_Estadia))
 begin
-	if ((select e.Fecha_Salida from TEAM_CASTY.Estadia e) is null)
+	if ((select e.Fecha_Salida from TEAM_CASTY.Estadia e where e.Cod_Estadia=@cod_Estadia) is null)
 	begin
 		set @error=1;
 		set @mensaje+=' No se realizó el Check OUT aún.';
@@ -845,6 +886,7 @@ begin
 	end
 end
 else
+begin
 	set @error=1; 
 	set @mensaje+=' Estadía inexistente.';
 end
@@ -889,6 +931,7 @@ begin
 		(Cod_Habitacion,Cod_Regimen,Nro_Factura,Dias_Completados,Monto_Completados,Dias_Faltantes,Monto_Faltantes)
 		select hab.Cod_Habitacion,res.Cod_Regimen,@nro_factura,@dias_completados,
 		@dias_completados*TEAM_CASTY.PrecioPorDiaEspecifico(@hotel,res.Cod_Regimen,hab.Cod_Habitacion),
+		res.Cant_Noches-@dias_completados,
 		(res.Cant_Noches-@dias_completados)*TEAM_CASTY.PrecioPorDiaEspecifico(@hotel,res.Cod_Regimen,hab.Cod_Habitacion)
 		from TEAM_CASTY.Reserva res, TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXEstadia hxe,
 		TEAM_CASTY.Estadia est
@@ -927,7 +970,11 @@ end;
 
 GO
 
+select * from TEAM_CASTY.Factura
+select * from TEAM_CASTY.Estadia e order by e.Cod_Estadia desc
 
+declare @f datetime=convert(datetime,'2046-05-24',111);
+exec TEAM_CASTY.Facturar 89610,@f,1;
 
 select * from TEAM_CASTY.Tarjeta
 select * from TEAM_CASTY.TarjetaXFactura

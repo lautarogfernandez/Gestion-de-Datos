@@ -660,39 +660,41 @@ declare @error int;
 set @error=0;
 set @mensaje='Error:';
 
-if exists (select * from TEAM_CASTY.Usuario u where u.Username=@usuario and u.Habilitado =0 ) -- si existe y esta inhabilitado
-begin  
-	set @error=1;
-	set @mensaje+=' Usuario inhabilitado.';  
-end
-else
+if(@usuario<>'guest')
 begin
-     if exists (select * from TEAM_CASTY.Usuario u where u.Username=@usuario and u.Habilitado =1 )-- si  existe y esta habilitado
-     begin  
-		if  exists (select * from TEAM_CASTY.Usuario u where u.Username=@usuario and u.Contraseña = @contraseña )-- si la contraseña es correcta
-        begin
-			update TEAM_CASTY.Usuario set Cant_Intentos=0 where Username = @usuario;
-           --tiene q devolver 1??
-        end  
-        else -- si la contraseña es incorrecta
-        begin
-			set @error=1;
-			set @mensaje+=' Contraseña incorrecta.'; 
-			update TEAM_CASTY.Usuario set Cant_Intentos= Cant_Intentos + 1 where Username = @usuario
-            update TEAM_CASTY.Usuario set Habilitado=0 where Username = @usuario and Cant_Intentos >= 3
-            if((select u.Cant_Intentos from TEAM_CASTY.Usuario u where u.Username=@usuario)=3)
-            begin
-				set @mensaje+=' Se inahabilitó al usuario.'; 
-           end           
-        end      
-     end   
-     else-- si no existe
-     begin
-         set @error=1;
-		 set @mensaje+=' Usuario inexistente.'; 
-     end   
-end
 
+if exists (select * from TEAM_CASTY.Usuario u where u.Username=@usuario and u.Habilitado =0 ) -- si existe y esta inhabilitado
+	begin  
+		set @error=1;
+		set @mensaje+=' Usuario inhabilitado.';  
+	end
+	else
+	begin
+		 if exists (select * from TEAM_CASTY.Usuario u where u.Username=@usuario and u.Habilitado =1 )-- si  existe y esta habilitado
+		 begin  
+			if  exists (select * from TEAM_CASTY.Usuario u where u.Username=@usuario and u.Contraseña = @contraseña )-- si la contraseña es correcta
+			begin
+				update TEAM_CASTY.Usuario set Cant_Intentos=0 where Username = @usuario;
+			end  
+			else -- si la contraseña es incorrecta
+			begin
+				set @error=1;
+				set @mensaje+=' Contraseña incorrecta.'; 
+				update TEAM_CASTY.Usuario set Cant_Intentos= Cant_Intentos + 1 where Username = @usuario
+				update TEAM_CASTY.Usuario set Habilitado=0 where Username = @usuario and Cant_Intentos >= 3
+				if((select u.Cant_Intentos from TEAM_CASTY.Usuario u where u.Username=@usuario)=3)
+				begin
+					set @mensaje+=' Se inahabilitó al usuario.'; 
+			   end           
+			end      
+		 end   
+		 else-- si no existe
+		 begin
+			 set @error=1;
+			 set @mensaje+=' Usuario inexistente.'; 
+		 end   
+	end
+end
 if (@error=1)
 begin
 	set @mensaje=@mensaje + ' No se realizó el log in.';
@@ -702,16 +704,6 @@ end
 
 GO
 
---CREATE FUNCTION TEAM_CASTY.HotelesPorUsario
---(@usuario nvarchar(255))
---RETURNS TABLE
---AS
---RETURN 
---   select vistaClientes.*
---   from TEAM_CASTY.RolXUsuarioXHotel RxUxH,TEAM_CASTY.Usuario u, TEAM_CASTY.vistaHoteles h
---   where @usuario=u.Username and
---   RxUxH.Cod_Usuario = u.Cod_Usuario and
---   RxUxH.Cod_Hotel=h.Codigo;
 
 CREATE FUNCTION TEAM_CASTY.RolesDeUsuarioEnHotel
 (@usuario nvarchar(255),@hotel numeric(18))
@@ -1863,6 +1855,17 @@ end;
   
 GO
 
+create function  TEAM_CASTY.Tipos_Habitaciones_Hotel
+(@hotel numeric(18))
+returns table
+AS
+return(
+select distinct th.Descripcion
+from TEAM_CASTY.Tipo_Habitacion th, TEAM_CASTY.Habitacion hab
+where hab.Cod_Tipo=th.Cod_Tipo and @hotel=hab.Cod_Hotel);
+
+GO
+
 create procedure  TEAM_CASTY.Actualizar_Reservas
 @fecha_actual datetime
 AS
@@ -2175,6 +2178,32 @@ begin
 	set @mensaje=@mensaje + ' No se realizó cancelación.';
 	RAISERROR (@mensaje,15,1);
 end
+
+GO
+
+create function  TEAM_CASTY.Reservas_Para_Check_IN
+(@fecha datetime, @hotel numeric(18))
+returns table
+AS
+	return(
+	select distinct res.Cod_Reserva
+	from TEAM_CASTY.Reserva res,TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXReserva hxr
+	where res.Cod_Reserva=hxr.Cod_Reserva and hxr.Cod_Habitacion=hab.Cod_Habitacion and hab.Cod_Hotel=@hotel and
+	datediff(day,res.Fecha_Reserva,@fecha)=0);
+
+GO
+
+create function  TEAM_CASTY.Estadias_Para_Check_OUT
+(@hotel numeric(18))
+returns table
+AS
+	return(
+	select distinct est.Cod_Estadia,c.Nombre,c.Apellido,td.Tipo_Documento,c.Nro_Documento,c.Telefono,c.Mail
+	from TEAM_CASTY.Estadia est,TEAM_CASTY.HabitacionXEstadia hxe, TEAM_CASTY.Habitacion hab,TEAM_CASTY.Cliente c,
+	TEAM_CASTY.Reserva res,TEAM_CASTY.Tipo_Documento td
+	where est.Fecha_Salida is null and est.Fecha_Inicio is not null and hab.Cod_Habitacion=hxe.Cod_Habitacion and
+	est.Cod_Estadia=hxe.Cod_Estadia and hab.Cod_Hotel=@hotel and res.Cod_Reserva=est.Cod_Reserva and
+	res.ID_Cliente_Reservador=c.ID_Cliente and td.ID_Tipo_Documento=c.ID_Tipo_Documento);
 
 GO
 
