@@ -477,6 +477,8 @@ select * from TEAM_CASTY.HabitacionXEstadia hxe where hxe.Cod_Estadia=89604;
 --PUNTO 10
 --check in
 
+-------------------------------------------------------------------------------------------------------------------
+
 create function  TEAM_CASTY.Utimo_Codigo_Estadia
 ()
 returns numeric(18)
@@ -528,13 +530,13 @@ end;
 if (exists (select * from TEAM_CASTY.Reserva r where @Cod_Reserva=r.Cod_Reserva and datediff(day,r.Fecha_Reserva,@fecha)>0))
 begin
 		set @error=1;
-		set @mensaje=@mensaje + ' Fecha inválida: es en el futuro';
+		set @mensaje=@mensaje + ' Fecha inválida.';
 end;
 
 if (exists (select * from TEAM_CASTY.Reserva r where @Cod_Reserva=r.Cod_Reserva and datediff(day,r.Fecha_Reserva,@fecha)<0))
 begin
 		set @error=1;
-		set @mensaje=@mensaje + ' Fecha inválida: no se presentó cuando debía';
+		set @mensaje=@mensaje + ' Fecha inválida.';
 		update TEAM_CASTY.Reserva
 		set Cod_Estado=5
 		where Cod_Reserva=@Cod_Reserva;
@@ -574,29 +576,6 @@ end;
 
 GO
 
-
-
-declare @f1 datetime=convert(datetime,'2045-04-09',111);
-declare @f2 datetime=@f1-1;
-declare @tab TEAM_CASTY.t_reserva;
-insert into @tab (Tipo_habitacion,Cantidad) values ('Base Simple',1);
-insert into @tab (Tipo_habitacion,Cantidad) values ('King',2);
-exec  TEAM_CASTY.Reservar 'guest',@f2,@f1,5,111,'Pension Completa',1,@tab;
-
-select * from TEAM_CASTY.Reserva r order by r.Cod_Reserva desc
-
-declare @f1 datetime=convert(datetime,'2045-04-09',111);
-exec TEAM_CASTY.Check_IN 110748,@f1,'admin',1
-
-declare @f1 datetime=convert(datetime,'2045-04-11',111);
-exec TEAM_CASTY.Check_IN 110748,@f1,'admin',1
-
-select * from TEAM_CASTY.Estadia e order by e.Cod_Estadia desc;
-select * from TEAM_CASTY.HabitacionXEstadia hxe order by hxe.Cod_Estadia desc;
-select * from TEAM_CASTY.HabitacionXEstadia hxe where hxe.Cod_Estadia=89604;
-
-
-
 create type TEAM_CASTY.t_agregar_clientes as table (
 cod_cliente numeric(18));
 
@@ -617,20 +596,12 @@ begin
 	insert into TEAM_CASTY.ClienteXEstadia
 	(Cod_Estadia,ID_Cliente)
 	select @cod_est,r.ID_Cliente_Reservador
-	from TEAM_CASTY.Reserva r;
+	from TEAM_CASTY.Reserva r
+	where r.Cod_Reserva=@Cod_Reserva;
 end;
 
 GO
 
-
-declare @tab TEAM_CASTY.t_agregar_clientes;
-insert into @tab (cod_cliente) values(2);
-insert into @tab (cod_cliente) values(5);
-select * from TEAM_CASTY.ClienteXEstadia e where e.Cod_Estadia=89603;
-exec TEAM_CASTY.Check_OUT 
-
-
---check out
 create procedure  TEAM_CASTY.Check_OUT
 @cod_estadia numeric(18),@fecha datetime, @usuario nvarchar(255),@hotel numeric(18)
 AS
@@ -642,12 +613,13 @@ set @mensaje='Error:';
 declare @cod_user numeric(18);
 select @cod_user=u.Cod_Usuario from TEAM_CASTY.Usuario u where u.Username=@usuario;
 
-
-if(not exists (select * from TEAM_CASTY.Reserva r where @cod_estadia=r.Cod_Reserva))
+if(exists(select * from TEAM_CASTY.Estadia est where est.Cod_Estadia=@cod_estadia and est.Fecha_Salida is not null))
 begin
 	set @error=1;
-	set @mensaje=@mensaje + ' No existe la estadía';
-end;
+set @mensaje=' Ya se había realizado el Check OUT.';
+end
+else
+begin
 
 if(not exists (select * from TEAM_CASTY.Estadia e where @cod_estadia=e.Cod_Estadia))
 begin
@@ -659,7 +631,18 @@ if (exists (select * from TEAM_CASTY.Estadia e where @cod_estadia=e.Cod_Estadia 
 begin
 	set @error=1;
 	set @mensaje=@mensaje + ' No concuerdan las fechas';
-end;
+end
+else
+begin
+	declare @fs datetime;
+	select @fs=(res.Fecha_Reserva+res.Cant_Noches) from TEAM_CASTY.Reserva res, TEAM_CASTY.Estadia est
+	where est.Cod_Estadia=@cod_estadia and est.Cod_Reserva=res.Cod_Reserva;
+	if (datediff(day,@fecha,@fs)<0)
+	begin
+		set @error=1;
+		set @mensaje=@mensaje + ' No concuerdan las fechas';
+	end
+end
 
 if(not exists(select *
 from TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXEstadia hxe,TEAM_CASTY.Hotel h, TEAM_CASTY.Usuario u, TEAM_CASTY.RolXUsuarioXHotel uxrxh
@@ -673,6 +656,7 @@ begin
 	set @error=1;
 	set @mensaje=@mensaje + ' El usuario no puede operar sobre ese hotel';
 end;
+end
 
 if (@error=0)	
 begin
@@ -689,11 +673,40 @@ end;
 
 GO
 
-create type TEAM_CASTY.t_agregar_clientes as table (
-cod_cliente numeric(18));
 
-GO
 
+
+
+select * from TEAM_CASTY.Usuario u where u.Username='guest';
+
+declare @f1 datetime=convert(datetime,'2045-11-09',111);
+declare @f2 datetime=@f1-1;
+declare @tab TEAM_CASTY.t_reserva;
+insert into @tab (Tipo_habitacion,Cantidad) values ('Base Simple',1);
+insert into @tab (Tipo_habitacion,Cantidad) values ('King',2);
+exec  TEAM_CASTY.Reservar 'guest',@f2,@f1,5,111,'Pension Completa',1,@tab;
+
+select * from TEAM_CASTY.Reserva r order by r.Cod_Reserva desc;
+
+declare @f1 datetime=convert(datetime,'2045-11-09',111);
+exec TEAM_CASTY.Check_IN 110747,@f1,'admin',1;
+
+select * from TEAM_CASTY.Estadia e order by e.Cod_Estadia desc;
+select * from TEAM_CASTY.HabitacionXEstadia hxe order by hxe.Cod_Estadia desc;
+select * from TEAM_CASTY.HabitacionXEstadia hxe where hxe.Cod_Estadia=89607;
+select * from TEAM_CASTY.ClienteXEstadia cxe where cxe.Cod_Estadia=89607;
+
+select * from TEAM_CASTY.ClienteXEstadia cxe where cxe.Cod_Estadia=89609;
+declare @tab TEAM_CASTY.t_agregar_clientes;
+insert into @tab (cod_cliente) values(9);
+insert into @tab (cod_cliente) values(4);
+exec TEAM_CASTY.Agregar_Clientes_A_Estadia 110747,@tab;
+select * from TEAM_CASTY.ClienteXEstadia cxe where cxe.Cod_Estadia=89609;
+
+declare @f1 datetime=convert(datetime,'2045-11-12',111);
+exec TEAM_CASTY.Check_OUT 89609,@f1,'guest',1;
+
+select * from TEAM_CASTY.Estadia e where e.Cod_Estadia=89609;
 
 
 
