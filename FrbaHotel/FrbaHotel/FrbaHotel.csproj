@@ -84,12 +84,14 @@
     <Compile Include="ABM de Cliente\Cliente_modificar.Designer.cs">
       <DependentUpon>Cliente_modificar.cs</DependentUpon>
     </Compile>
+    <Compile Include="ABM de Cliente\Home_Cliente.cs" />
     <Compile Include="ABM de Habitacion\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ABM de Habitacion\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="ABM de Hotel\Home_Hotel.cs" />
     <Compile Include="ABM de Hotel\Hotel_alta.cs">
       <SubType>Form</SubType>
     </Compile>

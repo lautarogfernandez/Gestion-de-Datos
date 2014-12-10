@@ -14,7 +14,6 @@ namespace FrbaHotel.ABM_de_Hotel
 
     public partial class Hotel_modificar : Form
     {
-        private string _tabla = "vistaClientes";
         private string codigo;
         public Hotel_modificar(valoresDataGridView _valoresDGV)
         {
@@ -25,9 +24,7 @@ namespace FrbaHotel.ABM_de_Hotel
                                                          + "FROM [GD2C2014].[TEAM_CASTY].[Regimen]";          //búsqueda básica de regímenes
             string busqueda2 = "SELECT DISTINCT [Nombre] "
                                                          + "FROM [GD2C2014].[TEAM_CASTY].[Ciudad]";          //búsqueda básica de ciudades
-            string ConnStr = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;"; //ruta de la conexión
-            SqlConnection conn = new SqlConnection(ConnStr);                                                             //conexión
-            conn.Open();                                                                                                                                 //Abrir Conexión
+            SqlConnection conn;                                                                                                                               //Abrir Conexión
             SqlCommand cmd = new SqlCommand(busqueda, conn);
             SqlCommand cmd2 = new SqlCommand(busqueda2, conn);
             try

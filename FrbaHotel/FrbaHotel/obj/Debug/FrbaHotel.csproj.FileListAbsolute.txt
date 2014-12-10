@@ -46,3 +46,12 @@ C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.
 C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Cliente.Cliente_clienteserroneos.resources
 C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Rol.Rol_modificar.resources
 C:\Users\Ariel\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Rol.Rol_baja.resources
+C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Cliente.Cliente_clienteserroneos.resources
+C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Hotel.Hotel_alta.resources
+C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Hotel.Hotel_modificacion.resources
+C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Hotel.Hotel_modificar.resources
+C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Rol.Rol_alta.resources
+C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Rol.Rol_baja.resources
+C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Rol.Rol_modificacion.resources
+C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Rol.Rol_modificar.resources
+C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.Login.Formulario_login.resources

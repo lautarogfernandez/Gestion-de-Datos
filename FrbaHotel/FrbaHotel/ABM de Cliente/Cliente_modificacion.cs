@@ -14,7 +14,7 @@ namespace FrbaHotel.ABM_de_Cliente
     {
         public string _tipo_documento, _apellido, _nombre, _pais, _nacionalidad, _localidad,
             _calle, _departamento, _mail, _telefono, _codigo, _numero_documento, _numero_calle, _piso, _fecha_nacimiento;
-        public bool _inhabilitado=false;
+        public bool _inhabilitado;
     }
     public partial class Cliente_modificacion : Form
     {
@@ -415,8 +415,9 @@ namespace FrbaHotel.ABM_de_Cliente
                     }
                     case "Inhabilitado":
                     {
-                        if (Convert.ToInt32(dgv_resultados.SelectedCells[i].Value)!=0)
-                        _valores._inhabilitado = true;
+                        if (Convert.ToInt32(dgv_resultados.SelectedCells[i].Value) != 0)
+                            _valores._inhabilitado = true;
+                        else _valores._inhabilitado = false;
                         break;
                     }
                 }

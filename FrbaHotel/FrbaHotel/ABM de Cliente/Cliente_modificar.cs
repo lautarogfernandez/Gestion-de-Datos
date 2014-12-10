@@ -212,15 +212,23 @@ namespace FrbaHotel.ABM_de_Cliente
                 }
                 else mensaje += ", [Fecha Nacimiento] = @FechaNacimiento";
             }
+            if (cmb_inhabilitado.Enabled && cmb_inhabilitado.Text != string.Empty)
+            {
+                if (prim == true)
+                {
+                    prim = false;
+                    mensaje += " [Inhabilitado] = @Inhab";
+                }
+                else mensaje += ", [Inhabilitado] = @Inhab";
+            }
+
             #endregion
             if (prim == false)
             {
                 mensaje += " WHERE [Codigo] = " + codigo;
                 try
                 {
-                    string connectionString = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;";
-                    using (SqlConnection conn =
-                        new SqlConnection(connectionString))
+                    SqlConnection conn = Home_Cliente.obtenerConexion();
                     {
                         conn.Open();
                         using (SqlCommand cmd =
@@ -254,6 +262,13 @@ namespace FrbaHotel.ABM_de_Cliente
                                 cmd.Parameters.AddWithValue("@Telefono", txt_telefono.Text);
                             if (cmb_tipo_documento.Enabled && cmb_tipo_documento.Text != string.Empty)
                                 cmd.Parameters.AddWithValue("@TipoDoc", cmb_tipo_documento.Text);
+                            if (cmb_inhabilitado.Enabled && cmb_inhabilitado.Text != string.Empty)
+                            {
+                                if(cmb_inhabilitado.Text=="INHABILITAR")
+                                    cmd.Parameters.AddWithValue("@Inhab", "1");
+                                else
+                                    cmd.Parameters.AddWithValue("@Inhab", "0");
+                            }
                             string msj = "¿Está seguro que quiere modificar el cliente? \n";
                             DialogResult resultado = MessageBox.Show(msj, "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                             if (resultado == DialogResult.Yes)
