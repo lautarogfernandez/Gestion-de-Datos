@@ -15,10 +15,8 @@ namespace FrbaHotel.ABM_de_Cliente
         public Cliente_alta()
         {
             InitializeComponent();
-            string busqueda = "SELECT DISTINCT [Tipo_Documento] "
-                                                         + "FROM [GD2C2014].[Team_Casty].[Tipo_Documento]";          //búsqueda básica
             SqlConnection conn = Home_Cliente.obtenerConexion();
-            SqlCommand cmd = new SqlCommand(busqueda, conn);
+            SqlCommand cmd=Home_Cliente.obtenerComandoTipo_Documento(conn);
             try
             {
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -30,10 +28,7 @@ namespace FrbaHotel.ABM_de_Cliente
             }
             catch (SqlException exc)
             {
-                string msj = "Errores de sql: \n";
-                for (int i = 0; i < exc.Errors.Count; i++)
-                    msj += exc.Errors[i].Message + "\n";
-                MessageBox.Show(msj, "Excepcion SQL", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                Home_Cliente.mostrarMensajeErrorSql(exc);
             }
 
             conn.Close();
@@ -60,11 +55,9 @@ namespace FrbaHotel.ABM_de_Cliente
                                 ",@Piso,@Telefono,@TipoDoc,@FechaNacimiento)";
                 try
                 {
-                    string connectionString = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;";
                     using (SqlConnection conn =
-                        new SqlConnection(connectionString))
+                    Home_Cliente.obtenerConexion())
                     {
-                        conn.Open();
                         using (SqlCommand cmd =
                             new SqlCommand(mensaje, conn))
                         {
@@ -107,12 +100,7 @@ namespace FrbaHotel.ABM_de_Cliente
                 }
                 catch (SqlException exc)
                 {
-                    string msj = "Errores de sql: \n";
-                    for (int i = 0; i < exc.Errors.Count; i++)
-                        msj += exc.Errors[i].Message + "\n";
-                    MessageBox.Show(msj, "Excepcion SQL", MessageBoxButtons.OK, MessageBoxIcon.Question);
-                    //Log exception
-                    //Display Error message
+                    Home_Cliente.mostrarMensajeErrorSql(exc);
                 }
 
             }
@@ -130,8 +118,7 @@ namespace FrbaHotel.ABM_de_Cliente
             form.Show();
             this.Hide();
         }
-
-        private void txt_numero_documento_KeyPress(object sender, KeyPressEventArgs e)
+        private void txt_numero_documento_KeyPress_1(object sender, KeyPressEventArgs e)
         {
             if (Char.IsDigit(e.KeyChar))
                 e.Handled = false;
@@ -143,40 +130,9 @@ namespace FrbaHotel.ABM_de_Cliente
                 e.Handled = true;
         }
 
-        private void txt_telefono_KeyPress(object sender, KeyPressEventArgs e)
+        private void _obli_numeroDoc_Click(object sender, EventArgs e)
         {
-            if (Char.IsDigit(e.KeyChar))
-                e.Handled = false;
-            else if (Char.IsControl(e.KeyChar))
-                e.Handled = false;
-            else if (Char.IsSeparator(e.KeyChar))
-                e.Handled = true;
-            else
-                e.Handled = true;
-        }
 
-        private void txt_numero_calle_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (Char.IsDigit(e.KeyChar))
-                e.Handled = false;
-            else if (Char.IsControl(e.KeyChar))
-                e.Handled = false;
-            else if (Char.IsSeparator(e.KeyChar))
-                e.Handled = true;
-            else
-                e.Handled = true;
-        }
-
-        private void txt_piso_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (Char.IsDigit(e.KeyChar))
-                e.Handled = false;
-            else if (Char.IsControl(e.KeyChar))
-                e.Handled = false;
-            else if (Char.IsSeparator(e.KeyChar))
-                e.Handled = true;
-            else
-                e.Handled = true;
         }
 
 

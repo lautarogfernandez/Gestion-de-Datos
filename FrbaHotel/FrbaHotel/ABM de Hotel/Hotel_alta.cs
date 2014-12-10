@@ -17,15 +17,9 @@ namespace FrbaHotel.ABM_de_Hotel
         public Hotel_alta()
         {
             InitializeComponent();
-            string busqueda = "SELECT DISTINCT [Descripcion] "
-                                                         + "FROM [GD2C2014].[TEAM_CASTY].[Regimen]";          //búsqueda básica de regímenes
-            string busqueda2 = "SELECT DISTINCT [Nombre] "
-                                                         + "FROM [GD2C2014].[TEAM_CASTY].[Ciudad]";          //búsqueda básica de ciudades
-            string ConnStr = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;"; //ruta de la conexión
-            SqlConnection conn = new SqlConnection(ConnStr);                                                             //conexión
-            conn.Open();                                                                                                                                 //Abrir Conexión
-            SqlCommand cmd = new SqlCommand(busqueda, conn);
-            SqlCommand cmd2 = new SqlCommand(busqueda2, conn);
+            SqlConnection conn = Home_Hotel.obtenerConexion();
+            SqlCommand cmd2 = Home_Hotel.obtenerComandoCiudades(conn);
+            SqlCommand cmd = Home_Hotel.obtenerComandoRegimenes(conn);
             try
             {
                 SqlDataReader reader2 = cmd2.ExecuteReader();
@@ -44,10 +38,7 @@ namespace FrbaHotel.ABM_de_Hotel
             }
             catch (SqlException exc)
             {
-                string msj = "Errores de sql: \n";
-                for (int i = 0; i < exc.Errors.Count; i++)
-                    msj += exc.Errors[i].Message + "\n";
-                MessageBox.Show(msj, "Excepcion SQL", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                Home_Hotel.mostrarMensajeErrorSql(exc);
             }
 
             conn.Close();
@@ -57,9 +48,6 @@ namespace FrbaHotel.ABM_de_Hotel
         {
             
         }
-
-
-
         private void button_aceptar_Click(object sender, EventArgs e)
         {
             //barra_progreso.ForeColor = Color.Green;
@@ -72,11 +60,9 @@ namespace FrbaHotel.ABM_de_Hotel
                                 " VALUES ()";
                 try
                 {
-                    string connectionString = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;";
                     using (SqlConnection conn =
-                        new SqlConnection(connectionString))
+                        Home_Hotel.obtenerConexion())
                     {
-                        conn.Open();
                         using (SqlCommand cmd =
                             new SqlCommand(mensaje, conn))
                         {
@@ -100,12 +86,7 @@ namespace FrbaHotel.ABM_de_Hotel
                 }
                 catch (SqlException exc)
                 {
-                    string msj = "Errores de sql: \n";
-                    for (int i = 0; i < exc.Errors.Count; i++)
-                        msj += exc.Errors[i].Message + "\n";
-                    MessageBox.Show(msj, "Excepcion SQL", MessageBoxButtons.OK, MessageBoxIcon.Question);
-                    //Log exception
-                    //Display Error message
+                    Home_Hotel.mostrarMensajeErrorSql(exc);
                 }
 
             }
@@ -174,19 +155,6 @@ namespace FrbaHotel.ABM_de_Hotel
         {
 
         }
-
-        private void txt_telefono_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (Char.IsDigit(e.KeyChar))
-                e.Handled = false;
-            else if (Char.IsControl(e.KeyChar))
-                e.Handled = false;
-            else if (Char.IsSeparator(e.KeyChar))
-                e.Handled = true;
-            else
-                e.Handled = true;
-        }
-
         private void txt_numero_calle_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (Char.IsDigit(e.KeyChar))

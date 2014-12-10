@@ -157,7 +157,7 @@
             this.dgv_hoteles.TabIndex = 11;
             this.dgv_hoteles.MouseHover += new System.EventHandler(this.dgv_hoteles_MouseHover);
             this.dgv_hoteles.MouseLeave += new System.EventHandler(this.dgv_hoteles_MouseLeave);
-            this.dgv_hoteles.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_hoteles_CellContentClick);
+            this.dgv_hoteles.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_hoteles_CellContentClick);
             // 
             // barra_progreso
             // 
@@ -208,7 +208,7 @@
             this.dgv_roles.Size = new System.Drawing.Size(230, 125);
             this.dgv_roles.TabIndex = 14;
             this.dgv_roles.Visible = false;
-            this.dgv_roles.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_roles_CellContentClick);
+            this.dgv_roles.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_roles_CellContentClick);
             // 
             // MenuPrincipal
             // 

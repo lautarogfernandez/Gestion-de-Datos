@@ -16,6 +16,12 @@ namespace FrbaHotel.ABM_de_Cliente
     }
     class Home_Cliente : Home
     {
-
+        public static SqlCommand obtenerComandoTipo_Documento(SqlConnection conn)
+        {
+            string busqueda = "SELECT DISTINCT [Tipo_Documento] "
+                                             + "FROM [GD2C2014].[Team_Casty].[Tipo_Documento]";          //búsqueda básica
+            SqlCommand cmd = new SqlCommand(busqueda, conn);
+            return cmd;
+        }
     }
 }

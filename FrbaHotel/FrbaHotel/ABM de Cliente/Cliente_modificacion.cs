@@ -53,17 +53,19 @@ namespace FrbaHotel.ABM_de_Cliente
         public Cliente_modificacion()
         {
             InitializeComponent();
-            string busqueda = "SELECT DISTINCT [Tipo Documento] "
-                                                         + "FROM [GD2C2014].[Team_Casty].[vistaClientes]";          //búsqueda básica
-            button_Buscar.Enabled = false;            //Deshabilito búsqueda hasta que haya resultado
-            string ConnStr = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;"; //ruta de la conexión
-            SqlConnection conn = new SqlConnection(ConnStr);                                                             //conexión
-            conn.Open();                                                                                                                                 //Abrir Conexión
-            SqlCommand cmd = new SqlCommand(busqueda, conn);
+            SqlConnection conn = Home_Cliente.obtenerConexion();
+            SqlCommand cmd = Home_Cliente.obtenerComandoTipo_Documento(conn);
             SqlDataReader reader = cmd.ExecuteReader();                                                       //Busco en la sesión abierta
-            while (reader.Read())
+            try
             {
-                cmb_tipoIdentificacion.Items.Add(reader["Tipo Documento"].ToString()); 
+                while (reader.Read())
+                {
+                    cmb_tipoIdentificacion.Items.Add(reader["Tipo Documento"].ToString());
+                }
+            }
+            catch (SqlException exc)
+            {
+                Home_Cliente.mostrarMensajeErrorSql(exc);
             }
             button_Buscar.Enabled = true;
             reader.Close();
@@ -208,9 +210,7 @@ namespace FrbaHotel.ABM_de_Cliente
                                                                      + "FROM [GD2C2014].[Team_Casty].[vistaClientesErroneos]";           //búsqueda básica
             button_Buscar.Enabled = false;            //Deshabilito búsqueda hasta que haya resultado
             label_progreso.Text = "Cargando Clientes";       //Imprime en la barra de progreso
-            string ConnStr = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;"; //ruta de la conexión
-            SqlConnection conn = new SqlConnection(ConnStr);                                                             //conexión
-            conn.Open();                                                                                                                                 //Abrir Conexión
+            SqlConnection conn = Home_Cliente.obtenerConexion();                       //Abrir Conexión
             SqlDataAdapter adaptador;                                                                                                          //Creo adaptador para la busqueda
             barra_progreso.Value = 5;                                                                                                            //0% de la barra de progreso
             DataTable tablaClientes = new DataTable();                                                                                 //Creo Tabla para los resultados
@@ -257,10 +257,10 @@ namespace FrbaHotel.ABM_de_Cliente
                 barra_progreso.Value = 100;                                                                                                    //Aviso que terminó la búsqueda
                 label_progreso.Text = tablaClientes.Rows.Count.ToString()+" Clientes encontrados";      //Le digo la cantidad de filas encontradas
             }
-            catch (Exception)                                                                                                                             //En un error le aviso
+            catch (SqlException exc)                                                                                                                             //En un error le aviso
             {
                 barra_progreso.Value = 0;
-                label_progreso.Text = "Error - Búsqueda de Clientes Inválida";
+                Home_Cliente.mostrarMensajeErrorSql(exc);
             }
             conn.Close();                                                                                                                                 //Cierro conexión
             button_Buscar.Enabled = true;                                                                                                     //Habilito Otra búsqueda

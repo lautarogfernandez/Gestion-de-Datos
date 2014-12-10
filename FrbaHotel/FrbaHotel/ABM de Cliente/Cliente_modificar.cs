@@ -21,12 +21,9 @@ namespace FrbaHotel.ABM_de_Cliente
             InitializeComponent();
             establecerAtributosOriginales(_valoresDGV);
             cambiarTodosLosControles(false);
-            string busqueda = "SELECT DISTINCT [Tipo_Documento] "
-                                                         + "FROM [GD2C2014].[Team_Casty].[Tipo_Documento]";          //búsqueda básica
-            string ConnStr = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;"; //ruta de la conexión
-            SqlConnection conn = new SqlConnection(ConnStr);                                                             //conexión
-            conn.Open();                                                                                                                                 //Abrir Conexión
-            SqlCommand cmd = new SqlCommand(busqueda, conn);
+
+            SqlConnection conn = Home_Cliente.obtenerConexion();
+            SqlCommand cmd = Home_Cliente.obtenerComandoTipo_Documento(conn);
             SqlDataReader reader = cmd.ExecuteReader();                                                       //Busco en la sesión abierta
             while (reader.Read())
             {
@@ -284,12 +281,7 @@ namespace FrbaHotel.ABM_de_Cliente
                 }
                 catch (SqlException exc)
                 {
-                    string msj = "Errores de sql: \n";
-                    for (int i = 0; i < exc.Errors.Count; i++)
-                        msj += exc.Errors[i].Message + "\n";
-                    MessageBox.Show(msj, "Excepcion SQL", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    //Log exception
-                    //Display Error message
+                    Home_Cliente.mostrarMensajeErrorSql(exc);
                 }
 
 
@@ -444,44 +436,7 @@ namespace FrbaHotel.ABM_de_Cliente
             cambiarTodosLosControles((sender as CheckBox).Checked);
         }
 
-
         private void txt_numero_documento_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (Char.IsDigit(e.KeyChar))
-                e.Handled = false;
-            else if (Char.IsControl(e.KeyChar))
-                e.Handled = false;
-            else if (Char.IsSeparator(e.KeyChar))
-                e.Handled = true;
-            else
-                e.Handled = true;
-        }
-
-        private void txt_telefono_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (Char.IsDigit(e.KeyChar))
-                e.Handled = false;
-            else if (Char.IsControl(e.KeyChar))
-                e.Handled = false;
-            else if (Char.IsSeparator(e.KeyChar))
-                e.Handled = true;
-            else
-                e.Handled = true;
-        }
-
-        private void txt_numero_calle_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (Char.IsDigit(e.KeyChar))
-                e.Handled = false;
-            else if (Char.IsControl(e.KeyChar))
-                e.Handled = false;
-            else if (Char.IsSeparator(e.KeyChar))
-                e.Handled = true;
-            else
-                e.Handled = true;
-        }
-
-        private void txt_piso_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (Char.IsDigit(e.KeyChar))
                 e.Handled = false;

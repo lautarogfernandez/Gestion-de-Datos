@@ -467,7 +467,6 @@
             this.txt_telefono.Name = "txt_telefono";
             this.txt_telefono.Size = new System.Drawing.Size(210, 20);
             this.txt_telefono.TabIndex = 64;
-            this.txt_telefono.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_telefono_KeyPress);
             this.txt_telefono.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_piso
@@ -476,7 +475,7 @@
             this.txt_piso.Name = "txt_piso";
             this.txt_piso.Size = new System.Drawing.Size(210, 20);
             this.txt_piso.TabIndex = 69;
-            this.txt_piso.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_piso_KeyPress);
+            this.txt_piso.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_numero_documento_KeyPress);
             this.txt_piso.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_numero_calle
@@ -485,7 +484,7 @@
             this.txt_numero_calle.Name = "txt_numero_calle";
             this.txt_numero_calle.Size = new System.Drawing.Size(210, 20);
             this.txt_numero_calle.TabIndex = 68;
-            this.txt_numero_calle.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_numero_calle_KeyPress);
+            this.txt_numero_calle.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_numero_documento_KeyPress);
             this.txt_numero_calle.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_calle

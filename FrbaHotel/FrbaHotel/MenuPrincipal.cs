@@ -144,7 +144,7 @@ namespace FrbaHotel
                     }
                 case "Consumible":
                     {
-                        rutaFormularioElegido = "Registrar_Consumible.";
+                        rutaFormularioElegido = "Registrar_Consumible.Consumible_";
                         combo_operacion.Items.Add(consumibles);
                         break;
                     }
@@ -234,6 +234,7 @@ namespace FrbaHotel
                 label_progreso.Text = "Error - Carga de Roles Invalida";
             }
             conn.Close();
+            Home._codigo_hotel = codigoHotel;
         }
 
         private void dgv_roles_CellContentClick(object sender, DataGridViewCellEventArgs e)

@@ -134,7 +134,7 @@
             this.txt_piso.Name = "txt_piso";
             this.txt_piso.Size = new System.Drawing.Size(306, 20);
             this.txt_piso.TabIndex = 125;
-            this.txt_piso.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_piso_KeyPress);
+            this.txt_piso.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_numero_documento_KeyPress_1);
             // 
             // txt_numero_calle
             // 
@@ -142,7 +142,7 @@
             this.txt_numero_calle.Name = "txt_numero_calle";
             this.txt_numero_calle.Size = new System.Drawing.Size(306, 20);
             this.txt_numero_calle.TabIndex = 124;
-            this.txt_numero_calle.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_numero_calle_KeyPress);
+            this.txt_numero_calle.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_numero_documento_KeyPress_1);
             // 
             // txt_calle
             // 
@@ -171,7 +171,6 @@
             this.txt_telefono.Name = "txt_telefono";
             this.txt_telefono.Size = new System.Drawing.Size(306, 20);
             this.txt_telefono.TabIndex = 120;
-            this.txt_telefono.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_telefono_KeyPress);
             // 
             // txt_numero_documento
             // 
@@ -179,7 +178,7 @@
             this.txt_numero_documento.Name = "txt_numero_documento";
             this.txt_numero_documento.Size = new System.Drawing.Size(306, 20);
             this.txt_numero_documento.TabIndex = 118;
-            this.txt_numero_documento.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_numero_documento_KeyPress);
+            this.txt_numero_documento.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_numero_documento_KeyPress_1);
             // 
             // txt_mail
             // 
@@ -409,6 +408,7 @@
             this._obli_numeroDoc.Size = new System.Drawing.Size(15, 20);
             this._obli_numeroDoc.TabIndex = 151;
             this._obli_numeroDoc.Text = "*";
+            this._obli_numeroDoc.Click += new System.EventHandler(this._obli_numeroDoc_Click);
             // 
             // _obli_fechaNacimiento
             // 

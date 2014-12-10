@@ -1,17 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Reflection;
 namespace FrbaHotel
 {
     public class Home
     {
         public static List<string> funcionalidadesHabilitadas=new List<string>();
         public static string _nombreUsuario = "guest";
+        public static int _codigo_hotel;
+        public static DateTime _fechaHoy=DateTime.Today;
+        public static string _fechaHoySql()
+        {
+
+            var sqlFormattedDate = _fechaHoy.Date.ToString("yyyy-MM-dd HH:mm:ss");
+            return sqlFormattedDate;
+        }
         public static SqlConnection obtenerConexion()
         {
             string ConnStr = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;";
@@ -105,6 +116,23 @@ namespace FrbaHotel
         public static void cerrarConexion()
         {
 
+        }
+        public static void mostrarMensajeErrorSql(SqlException exc)
+        {
+            string msj = "Errores de sql: \n";
+            for (int i = 0; i < exc.Errors.Count; i++)
+                msj += exc.Errors[i].Message + "\n";
+            MessageBox.Show(msj, "Excepcion SQL", MessageBoxButtons.YesNo, MessageBoxIcon.Question); 
+        }
+        public static void habilitar_boton(Button _unBoton)
+        {
+            _unBoton.Enabled = true;
+            _unBoton.ForeColor = SystemColors.MenuText;
+        }
+        public static void deshabilitar_boton(Button _unBoton)
+        {
+            _unBoton.Enabled = false;
+            _unBoton.ForeColor = SystemColors.ScrollBar;
         }
     }
 }
