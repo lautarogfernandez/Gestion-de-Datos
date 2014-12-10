@@ -308,12 +308,11 @@ create function TEAM_CASTY.tablaPuntosCliente
 (@fecha_inicio datetime, @fecha_fin datetime)
 RETURNS TABLE
 AS
-return (select top 5 vc.*,PuntosCliente(cok.ID_Cliente,@fecha_inicio,@fecha_fin) as Puntos
+return (select top 5 vc.*,PuntosCliente(casty.ID_Cliente,@fecha_inicio,@fecha_fin) as Puntos
 from
-
 (select c.ID_Cliente
 from TEAM_CASTY.Cliente c, TEAM_CASTY.Reserva res, TEAM_CASTY.Factura f
-where f.Fecha>=@fecha_inicio and f.Fecha<=@fecha_fin and res.ID_Cliente_Reservador=c.ID_Cliente) cok, TEAM_CASTY.vistaClientes vc,TEAM_CASTY.v
+where f.Fecha>=@fecha_inicio and f.Fecha<=@fecha_fin and res.ID_Cliente_Reservador=c.ID_Cliente) casty, TEAM_CASTY.vistaClientes vc,TEAM_CASTY.v
 where vc.Codigo=cok.ID_Cliente
 order by Puntos desc
 );
@@ -342,6 +341,8 @@ set @puntos=round(@monto_c/5,0,1)+round(@monto_h/10,0,1);
 return @puntos;
 end;
 
+select * from TEAM_CASTY.PuntosCliente()
+
 GO
 =======
 create function TEAM_CASTY.precioConsumible(@precio numeric(18,2), @codReserva numeric(18))
@@ -364,3 +365,37 @@ set @precio = (select sum (tabla.Precio* tabla.Cantidad) as Precio  from Team_Ca
 return @precio
 end
 >>>>>>> origin/master
+
+
+
+
+
+
+CREATE FUNCTION TEAM_CASTY.vistaTOP5ClienteConPuntos (@pFecha_Inicio date,@pFecha_Fin date)
+returns table
+return 
+select top 5  vc.Codigo, sum (TEAM_CASTY.puntosEstadia(est.Cod_Estadia)) as Puntos
+from TEAM_CASTY.vistaClientes vc, TEAM_CASTY.Reserva res , TEAM_CASTY.Estadia est
+
+where  est.Cod_Reserva = res.Cod_Reserva and vc.Codigo = res.ID_Cliente_Reservador and
+ dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,est.Fecha_Inicio,est.Fecha_Salida) >0
+group by vc.Codigo
+order by Puntos desc
+
+
+
+SELECT * FROM TEAM_CASTY.vistaTOP5ClienteConPuntos('2013-01-01 ','2013-12-28')
+
+(Codigo, Nombre, Apellido, Mail, "Tipo Documento", "Numero Documento",Telefono,Pais,Localidad,"Calle","Numero Calle",Piso, "Departamento", Nacionalidad,"Fecha Nacimiento",Inhabilitado)
+AS
+
+
+
+create function TEAM_CASTY.puntosEstadia(@codEstadia numeric(18))
+returns numeric(18,2)
+as
+begin
+declare @gastado numeric(18,2)
+set @gastado = (TEAM_CASTY.MontoHabitaciones(@codEstadia)/10)  + (TEAM_CASTY.MontoConsumibles(@codEstadia)/5)
+return @gastado
+end

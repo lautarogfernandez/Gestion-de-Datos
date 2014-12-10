@@ -322,6 +322,7 @@ as
 begin
 insert into TEAM_CASTY.Habitacion (Numero ,Piso ,Descripcion ,Cod_Hotel , Frente , Cod_Tipo ) select i.Numero, i.Piso,i.Descripcion, i.Codigo as Cod_Hotel , i.Frente , th.Cod_Tipo from inserted i , TEAM_CASTY.Tipo_Habitacion th 
                                                                                                                              where i.[Descripcion de tipo] = th.Descripcion  
+
 end
 
 create trigger TEAM_CASTY.modificacion_Habitaciones
@@ -329,14 +330,16 @@ ON TEAM_CASTY.vistaHabitaciones
 instead of update
 as
 begin
-if not exists (select from inserted i, TEAM_CASTY.Habitacion h  where i.Numero= h.Numero and i.Hotel = h.Cod_Hotel)
+if not exists (select h.* from inserted i, TEAM_CASTY.Habitacion h  where i.Numero= h.Numero and i.Hotel = h.Cod_Hotel)
  begin
   update h set h.Piso = i.Piso , h.Numero = i.Numero , h.Frente = i.Frente , h.Descripcion = i.Descripcion 
   from TEAM_CASTY.Habitacion h join inserted i on (i.Codigo = h.Cod_Habitacion)
-
+ end
+end;
+go 
 
 create trigger TEAM_CASTY.baja_Habitaciones
-ON TEAM_CASTY.vistaRoles
+ON TEAM_CASTY.vistaHabitaciones
 instead of delete
 as
 begin

@@ -1083,6 +1083,17 @@ end;
  
  GO
  
+ select r.Descripcion
+ into #casty
+ from TEAM_CASTY.Regimen r
+ 
+ exec TEAM_CASTY.alta_Hotel('casty','casty','casty','casty','casty',2,'casty',2,'2013-04-04',#casty)
+ 
+(@nombre nvarchar(255),@mail nvarchar(255),@telefono nvarchar(50),@pais nvarchar(255),@cidudad nvarchar(255),@cant_Estrellas numeric (18),
+@calle nvarchar(255),@num_calle numeric (18),@fecha_creacion datetime, @tabla t_tablaRegimenes readonly)
+ 
+ 
+ 
  create procedure TEAM_CASTY.modificacion_Hotel
 (@cod_hotel numeric (18),@nombre nvarchar(255),@mail nvarchar(255),@telefono nvarchar(50),@pais nvarchar(255),@cidudad nvarchar(255),@cant_Estrellas numeric (18),
 @calle nvarchar(255),@num_calle numeric (18),@fecha_creacion datetime, @tabla t_tablaRegimenes readonly)
