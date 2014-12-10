@@ -6,14 +6,12 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-
-namespace FrbaHotel.Generar_Modificar_Reserva
+using System.Data.SqlClient;
+using System.Configuration;
+using System.Reflection;
+namespace FrbaHotel.Reserva
 {
-    public partial class Form1 : Form
+    class Home_Reserva:Home
     {
-        public Form1()
-        {
-            InitializeComponent();
-        }
     }
 }

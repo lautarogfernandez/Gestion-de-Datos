@@ -94,6 +94,7 @@
             this.dgv_habitaciones.Size = new System.Drawing.Size(264, 229);
             this.dgv_habitaciones.TabIndex = 9;
             this.dgv_habitaciones.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_habitaciones_CellClick);
+            this.dgv_habitaciones.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_habitaciones_CellContentClick);
             // 
             // button_aceptar
             // 
@@ -141,6 +142,7 @@
             this.button_volver.TabIndex = 21;
             this.button_volver.Text = "Volver";
             this.button_volver.UseVisualStyleBackColor = true;
+            this.button_volver.Click += new System.EventHandler(this.button_volver_Click);
             // 
             // button_limpiar
             // 

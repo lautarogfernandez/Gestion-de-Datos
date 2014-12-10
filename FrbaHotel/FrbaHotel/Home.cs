@@ -17,6 +17,10 @@ namespace FrbaHotel
         public static string _nombreUsuario = "guest";
         public static int _codigo_hotel;
         public static DateTime _fechaHoy=DateTime.Today;
+        public static string transformarFechaASql(DateTime fecha)
+        {
+            return fecha.Date.ToString("yyyy-MM-dd HH:mm:ss");
+        }
         public static string _fechaHoySql()
         {
 

@@ -202,5 +202,17 @@ namespace FrbaHotel.Registrar_Consumible
             button_aceptar.Enabled = false;
             button_limpiar.Enabled = false;
         }
+
+        private void button_volver_Click(object sender, EventArgs e)
+        {
+            Form formularioPrincipal = new MenuPrincipal();
+            formularioPrincipal.Show();
+            this.Hide();
+        }
+
+        private void dgv_habitaciones_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

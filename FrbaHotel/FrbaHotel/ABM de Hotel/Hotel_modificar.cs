@@ -111,7 +111,7 @@ namespace FrbaHotel.ABM_de_Hotel
 
         private void button_volver_Click(object sender, EventArgs e)
         {
-
+            this.Hide();
         }
 
         private void button_modificar_Click(object sender, EventArgs e)
