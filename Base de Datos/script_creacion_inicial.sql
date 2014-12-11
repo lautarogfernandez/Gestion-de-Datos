@@ -2040,12 +2040,7 @@ begin
 	
 		delete TEAM_CASTY.HabitacionXReserva
 		where Cod_Reserva=@cod_reserva;
-	
-		if(TEAM_CASTY.Disponibilidad_Reserva(@fecha_reserva,@fecha_reserva+@cant_noches,@hotel,@tabla)=0)
-		begin
-			set @error=1;
-			set @mensaje+=' No hay disponibilidad.';
-		end
+
 	
 	if(@error=0)		
 	begin
