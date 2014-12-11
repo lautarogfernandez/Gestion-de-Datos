@@ -9,6 +9,11 @@ using System.Configuration;
 
 namespace FrbaHotel.ABM_de_Habitacion
 {
+    public struct valoresDataGridView
+    {
+        public string _tipo_habitacion, _numero, _piso, _codigo, _frente, _descripcion;
+        public bool _baja;
+    } 
     class Home_Habitacion: Home
     {
         public static SqlCommand obtenerComandoTipo_Habitacion(SqlConnection conn)
