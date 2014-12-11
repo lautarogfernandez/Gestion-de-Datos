@@ -108,6 +108,7 @@
             this._txt_password.PasswordChar = '*';
             this._txt_password.Size = new System.Drawing.Size(220, 20);
             this._txt_password.TabIndex = 1;
+            this._txt_password.TextChanged += new System.EventHandler(this._txt_usuario_TextChanged);
             // 
             // _txt_usuario
             // 
@@ -115,6 +116,7 @@
             this._txt_usuario.Name = "_txt_usuario";
             this._txt_usuario.Size = new System.Drawing.Size(220, 20);
             this._txt_usuario.TabIndex = 0;
+            this._txt_usuario.TextChanged += new System.EventHandler(this._txt_usuario_TextChanged);
             // 
             // stat_BarraEstado
             // 

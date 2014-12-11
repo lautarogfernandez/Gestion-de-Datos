@@ -48,7 +48,7 @@ namespace FrbaHotel.ABM_de_Cliente
             //barra_progreso.ForeColor = Color.Green;
             //barra_progreso.Value = 100;
             if (txt_apellido.Text != string.Empty && txt_nombre.Text != string.Empty && txt_mail.Text != string.Empty && txt_numero_documento.Text != string.Empty
-                && txt_nacionalidad.Text != string.Empty && cmb_tipo_documento.SelectedText != string.Empty && dtp_fecha_nacimiento.Value < DateTime.Today)
+                && txt_nacionalidad.Text != string.Empty && cmb_tipo_documento.SelectedItem.ToString() != string.Empty && dtp_fecha_nacimiento.Value < DateTime.Today)
             {
                 string mensaje = "INSERT INTO [GD2C2014].[Team_Casty].[vistaClientes] " +
                                 "([Apellido],[Calle],[Departamento],[Localidad],[Mail],[Nacionalidad],[Nombre],[Numero Calle],[Numero Documento]" +

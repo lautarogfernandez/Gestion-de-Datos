@@ -121,11 +121,10 @@ namespace FrbaHotel.Reserva
         {
             if (_buscaDoc && _buscaEmail && _buscaTipoDoc)
             {
-                string busqueda = string.Format("SELECT [Codigo],[Mail],[Tipo Documento],[Numero de Documento] "
+                string busqueda = string.Format("SELECT [Codigo],[Mail],[Tipo Documento],[Numero Documento] "
                  + " FROM [GD2C2014].[Team_Casty].[vistaClientes] "
-                 + " WHERE [Mail] = '{0}' AND [Tipo Documento]='{1}' AND [Numero de Documento]={2}", txt_Email.Text,
+                 + " WHERE [Mail] = '{0}' AND [Tipo Documento]='{1}' AND [Numero Documento]={2}", txt_Email.Text,
                  cmb_tipoIdentificacion.SelectedItem, txt_numeroIdentificacion.Text);           //búsqueda básica
-                button_Buscar.Enabled = false;            //Deshabilito búsqueda hasta que haya resultado
                 label_progreso.Text = "Buscando...";       //Imprime en la barra de progreso
                 SqlConnection conn = Home_Reserva.obtenerConexion();                       //Abrir Conexión
                 SqlDataAdapter adaptador;                                                                                                          //Creo adaptador para la busqueda
@@ -191,7 +190,11 @@ namespace FrbaHotel.Reserva
                             //procedure  TEAM_CASTY.Reservar @usuario nvarchar(255),@fecha_realizacion datetime,
                             //@fecha_reserva datetime,@cant_noches numeric(18),@id_cliente numeric(18),
                             //@regimen nvarchar(255),@hotel numeric(18),@tabla TEAM_CASTY.t_reserva readonly
-                            cmd.CommandText = "[TEAM_CASTY].Disponibilidad_Reserva";
+                            cmd.CommandText = "[TEAM_CASTY].Reservar";
+                            SqlParameter codigo_reserva = new SqlParameter("@cod_reserva", SqlDbType.Int)
+                            {
+                                Direction = ParameterDirection.Output
+                            };
                             cmd.Parameters.Add(new SqlParameter("@usuario",Home_Reserva._nombreUsuario));
                             cmd.Parameters.Add(new SqlParameter("@fecha_realizacion",Home_Reserva._fechaHoySql()));
                             cmd.Parameters.Add(new SqlParameter("@fecha_reserva", Home_Reserva.transformarFechaASql(_reserva.fecha_desde)));
@@ -201,8 +204,16 @@ namespace FrbaHotel.Reserva
                             cmd.Parameters.Add(new SqlParameter("@regimen", _reserva.regimen));
                             cmd.Parameters.Add(new SqlParameter("@hotel", _reserva.codigo_hotel));                            
                             cmd.Parameters.Add(new SqlParameter("@tabla", table));
+                            cmd.Parameters.Add(codigo_reserva);
                             cmd.ExecuteNonQuery();
-                            string msj = "¡Reserva Exitosa!";
+                            string msj = string.Format("¡Reserva Exitosa! \n Su código de reserva es: {0} \n Usuario: {1} \n Fecha realización: {2} \n" +
+                            "Fecha inicio: {3} \n Cantidad de noches: {4} \n Id cliente: {5} \n Regimen: {6} \n Codigo del Hotel: {7} \n",
+                            codigo_reserva.Value.ToString(),Home_Reserva._nombreUsuario,Home_Reserva._fechaHoy.ToString(),
+                            _reserva.fecha_desde.ToString(),cant_noches,_reserva.cliente,_reserva.regimen,_reserva.codigo_hotel);
+                            for (int i = 0; i < table.Rows.Count; i++)
+                            {
+                                msj += string.Format("Tipo de habitacion: {0} - Cantidad: {1} \n", table.Rows[i].ItemArray[0], table.Rows[i].ItemArray[1]);
+                            }
                             MessageBox.Show(msj, "Exito", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                             MenuPrincipal formularioPrincipal = new MenuPrincipal();
                             this.Hide();
@@ -216,5 +227,12 @@ namespace FrbaHotel.Reserva
                     Home_Reserva.mostrarMensajeErrorSql(exc);
                 }
             }
+
+        private void button_volver_Click(object sender, EventArgs e)
+        {
+            MenuPrincipal menuPrincipal = new MenuPrincipal();
+            this.Hide();
+            menuPrincipal.Show();
+        }
     }
 }

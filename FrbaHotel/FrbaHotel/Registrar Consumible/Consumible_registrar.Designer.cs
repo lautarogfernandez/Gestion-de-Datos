@@ -172,6 +172,7 @@
             this.dgv_consumible_cantidad.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgv_consumible_cantidad.Size = new System.Drawing.Size(290, 229);
             this.dgv_consumible_cantidad.TabIndex = 23;
+            this.dgv_consumible_cantidad.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgv_consumible_cantidad_EditingControlShowing);
             this.dgv_consumible_cantidad.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_consumible_cantidad_CellEnter);
             this.dgv_consumible_cantidad.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dgv_consumible_cantidad_KeyPress);
             this.dgv_consumible_cantidad.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_consumible_cantidad_CellContentClick_1);

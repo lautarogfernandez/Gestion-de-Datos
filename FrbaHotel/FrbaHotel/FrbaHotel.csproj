@@ -85,12 +85,37 @@
       <DependentUpon>Cliente_modificar.cs</DependentUpon>
     </Compile>
     <Compile Include="ABM de Cliente\Home_Cliente.cs" />
-    <Compile Include="ABM de Habitacion\Form1.cs">
+    <Compile Include="ABM de Habitacion\Habitacion_alta.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ABM de Habitacion\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="ABM de Habitacion\Habitacion_alta.Designer.cs">
+      <DependentUpon>Habitacion_alta.cs</DependentUpon>
     </Compile>
+    <Compile Include="ABM de Habitacion\Habitacion_baja.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Habitacion\Habitacion_baja.Designer.cs">
+      <DependentUpon>Habitacion_baja.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM de Habitacion\Habitacion_listado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Habitacion\Habitacion_listado.Designer.cs">
+      <DependentUpon>Habitacion_listado.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM de Habitacion\Habitacion_modificacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Habitacion\Habitacion_modificacion.Designer.cs">
+      <DependentUpon>Habitacion_modificacion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM de Habitacion\Habitacion_modificar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Habitacion\Habitacion_modificar.Designer.cs">
+      <DependentUpon>Habitacion_modificar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM de Habitacion\Home_Habitacion.cs" />
     <Compile Include="ABM de Hotel\Home_Hotel.cs" />
     <Compile Include="ABM de Hotel\Hotel_alta.cs">
       <SubType>Form</SubType>
@@ -153,6 +178,12 @@
     </Compile>
     <Compile Include="Listado Estadistico\ListadoEstadistico.Designer.cs">
       <DependentUpon>ListadoEstadistico.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\Cambiar_contraseña.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\Cambiar_contraseña.Designer.cs">
+      <DependentUpon>Cambiar_contraseña.cs</DependentUpon>
     </Compile>
     <Compile Include="Login\Formulario_login.cs">
       <SubType>Form</SubType>
@@ -223,6 +254,9 @@
     <EmbeddedResource Include="Listado Estadistico\ListadoEstadistico.resx">
       <DependentUpon>ListadoEstadistico.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Login\Cambiar_contraseña.resx">
+      <DependentUpon>Cambiar_contraseña.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Login\Formulario_login.resx">
       <DependentUpon>Formulario_login.cs</DependentUpon>
     </EmbeddedResource>
@@ -242,6 +276,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reserva\Reserva_generar.resx">
       <DependentUpon>Reserva_generar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reserva\Reserva_modificar.resx">
+      <DependentUpon>Reserva_modificar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reserva\Reserva_terminar.resx">
       <DependentUpon>Reserva_terminar.cs</DependentUpon>
@@ -272,6 +309,12 @@
     </Compile>
     <Compile Include="Reserva\Reserva_generar.Designer.cs">
       <DependentUpon>Reserva_generar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reserva\Reserva_modificar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reserva\Reserva_modificar.Designer.cs">
+      <DependentUpon>Reserva_modificar.cs</DependentUpon>
     </Compile>
     <Compile Include="Reserva\Reserva_terminar.cs">
       <SubType>Form</SubType>

@@ -81,7 +81,26 @@ namespace FrbaHotel.Reserva
         {
 
         }
+        private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            e.Control.KeyPress -= new KeyPressEventHandler(ColumnaCantidad_KeyPress);
+            if (dgv_tipos_habitaciones.CurrentCell.ColumnIndex == 2) //Desired Column
+            {
+                TextBox tb = e.Control as TextBox;
+                if (tb != null)
+                {
+                    tb.KeyPress += new KeyPressEventHandler(ColumnaCantidad_KeyPress);
+                }
+            }
+        }
 
+        private void ColumnaCantidad_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
         private void dgv_tipos_habitaciones_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
             button_aceptar.Enabled = true;
@@ -126,11 +145,11 @@ namespace FrbaHotel.Reserva
                     for (int i = 0; i < dgv_tipos_habitaciones.Rows.Count; i++)
                     {
                         bool activado = Convert.ToBoolean(dgv_tipos_habitaciones.Rows[i].Cells[0].Value);
+                        if (activado == true )
+                        {
                         string nombre = dgv_tipos_habitaciones.Rows[i].Cells[1].Value.ToString();
                         int cantidad = Convert.ToInt32(dgv_tipos_habitaciones.Rows[i].Cells[2].Value);
-                        if (activado == true && cantidad > 0)
-                        {
-                            table.Rows.Add(nombre, cantidad);
+                        table.Rows.Add(nombre, cantidad);
                         }
                     }
                     using (SqlConnection conn = Home_Reserva.obtenerConexion())
@@ -157,41 +176,49 @@ namespace FrbaHotel.Reserva
                             cmd.Parameters.Add(outputIdParam);
                             cmd.Parameters.Add(precio);
                             cmd.ExecuteNonQuery();
-                             if (Convert.ToInt32(outputIdParam.Value)!=0)
-                             {
-                                 string msj =string.Format( "Reserva válida \n Precio total: USD {0} \n ¿Desea continuar y reservar?",precio.Value);
-                                 DialogResult resultado=MessageBox.Show(msj, "Éxito", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                                 if (resultado == DialogResult.Yes)
-                                 {
-                                    t_reserva _reserva = new t_reserva();
-                                    _reserva.tipos_habitaciones = new List<t_reserva.habitacion_reserva>();
-                                    for (int i = 0; i < dgv_tipos_habitaciones.Rows.Count; i++)
+                            if (Convert.ToInt32(outputIdParam.Value) != 0)
+                            {
+                                if (Convert.ToInt32(precio.Value) > 0)
+                                {
+                                    string msj = string.Format("Reserva válida \n Precio total: USD {0} \n ¿Desea continuar y reservar?", precio.Value);
+                                    DialogResult resultado = MessageBox.Show(msj, "Éxito", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                    if (resultado == DialogResult.Yes)
                                     {
-                                     bool activado = Convert.ToBoolean(dgv_tipos_habitaciones.Rows[i].Cells[0].Value);
-                                     string nombre = dgv_tipos_habitaciones.Rows[i].Cells[1].Value.ToString();
-                                     int cantidad = Convert.ToInt32(dgv_tipos_habitaciones.Rows[i].Cells[2].Value);
-                                        if( activado==true && cantidad>0)
+                                        t_reserva _reserva = new t_reserva();
+                                        _reserva.tipos_habitaciones = new List<t_reserva.habitacion_reserva>();
+                                        for (int i = 0; i < dgv_tipos_habitaciones.Rows.Count; i++)
                                         {
-                                            t_reserva.habitacion_reserva habitacion_reserva = new t_reserva.habitacion_reserva();
-                                            habitacion_reserva.cantidad=cantidad;
-                                            habitacion_reserva.tipo_habitacion=nombre;
-                                            _reserva.tipos_habitaciones.Add(habitacion_reserva);
+                                            bool activado = Convert.ToBoolean(dgv_tipos_habitaciones.Rows[i].Cells[0].Value);
+                                            string nombre = dgv_tipos_habitaciones.Rows[i].Cells[1].Value.ToString();
+                                            int cantidad = Convert.ToInt32(dgv_tipos_habitaciones.Rows[i].Cells[2].Value);
+                                            if (activado == true && cantidad > 0)
+                                            {
+                                                t_reserva.habitacion_reserva habitacion_reserva = new t_reserva.habitacion_reserva();
+                                                habitacion_reserva.cantidad = cantidad;
+                                                habitacion_reserva.tipo_habitacion = nombre;
+                                                _reserva.tipos_habitaciones.Add(habitacion_reserva);
+                                            }
                                         }
+                                        _reserva.regimen = regimen;
+                                        _reserva.codigo_hotel = Home_Reserva._codigo_hotel;
+                                        _reserva.fecha_desde = dtp_desde.Value;
+                                        _reserva.fecha_hasta = dtp_hasta.Value;
+                                        Reserva_terminar formulario_terminar_reserva = new Reserva_terminar(_reserva);
+                                        formulario_terminar_reserva.Show();
+                                        this.Hide();
                                     }
-                                    _reserva.regimen = regimen;
-                                    _reserva.codigo_hotel = Home_Reserva._codigo_hotel;
-                                    _reserva.fecha_desde = dtp_desde.Value;
-                                    _reserva.fecha_hasta = dtp_hasta.Value;
-                                    Reserva_terminar formulario_terminar_reserva = new Reserva_terminar(_reserva);
-                                    formulario_terminar_reserva.Show();
-                                    this.Hide();
-                                 }
-                             }
-                             else
-                             {
-                                 string msj = "Reserva no disponible \n";
-                                 MessageBox.Show(msj, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                             }
+                                }
+                                else
+                                {
+                                    string msj = "Seleccione al menos un tipo de habitación \n";
+                                    MessageBox.Show(msj, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                                }
+                            }
+                            else
+                            {
+                                string msj = "Reserva no disponible \n";
+                                MessageBox.Show(msj, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                            }
                         }
                     }
 

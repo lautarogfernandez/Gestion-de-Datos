@@ -31,6 +31,10 @@
             this.grp_alta = new System.Windows.Forms.GroupBox();
             this.button_agregar = new System.Windows.Forms.Button();
             this.grp_datos = new System.Windows.Forms.GroupBox();
+            this.obli_email = new System.Windows.Forms.Label();
+            this.obli_num_id = new System.Windows.Forms.Label();
+            this._obli_tipo_id = new System.Windows.Forms.Label();
+            this.lbl_informacion_obligatoria = new System.Windows.Forms.Label();
             this.button_Buscar = new System.Windows.Forms.Button();
             this.txt_numeroIdentificacion = new System.Windows.Forms.TextBox();
             this.cmb_tipoIdentificacion = new System.Windows.Forms.ComboBox();
@@ -38,10 +42,6 @@
             this.lbl_Numero_id = new System.Windows.Forms.Label();
             this.lbl_Email = new System.Windows.Forms.Label();
             this.lbl_Tipo_identificacion = new System.Windows.Forms.Label();
-            this.lbl_informacion_obligatoria = new System.Windows.Forms.Label();
-            this._obli_tipo_id = new System.Windows.Forms.Label();
-            this.obli_num_id = new System.Windows.Forms.Label();
-            this.obli_email = new System.Windows.Forms.Label();
             this.stat_BarraEstado = new System.Windows.Forms.StatusStrip();
             this.barra_progreso = new System.Windows.Forms.ToolStripProgressBar();
             this.label_progreso = new System.Windows.Forms.ToolStripStatusLabel();
@@ -93,6 +93,53 @@
             this.grp_datos.TabIndex = 1;
             this.grp_datos.TabStop = false;
             this.grp_datos.Text = "Ingrese sus datos personales";
+            // 
+            // obli_email
+            // 
+            this.obli_email.AutoSize = true;
+            this.obli_email.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.obli_email.ForeColor = System.Drawing.Color.Red;
+            this.obli_email.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.obli_email.Location = new System.Drawing.Point(329, 17);
+            this.obli_email.Name = "obli_email";
+            this.obli_email.Size = new System.Drawing.Size(15, 20);
+            this.obli_email.TabIndex = 150;
+            this.obli_email.Text = "*";
+            // 
+            // obli_num_id
+            // 
+            this.obli_num_id.AutoSize = true;
+            this.obli_num_id.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.obli_num_id.ForeColor = System.Drawing.Color.Red;
+            this.obli_num_id.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.obli_num_id.Location = new System.Drawing.Point(329, 65);
+            this.obli_num_id.Name = "obli_num_id";
+            this.obli_num_id.Size = new System.Drawing.Size(15, 20);
+            this.obli_num_id.TabIndex = 149;
+            this.obli_num_id.Text = "*";
+            // 
+            // _obli_tipo_id
+            // 
+            this._obli_tipo_id.AutoSize = true;
+            this._obli_tipo_id.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._obli_tipo_id.ForeColor = System.Drawing.Color.Red;
+            this._obli_tipo_id.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this._obli_tipo_id.Location = new System.Drawing.Point(144, 68);
+            this._obli_tipo_id.Name = "_obli_tipo_id";
+            this._obli_tipo_id.Size = new System.Drawing.Size(15, 20);
+            this._obli_tipo_id.TabIndex = 148;
+            this._obli_tipo_id.Text = "*";
+            // 
+            // lbl_informacion_obligatoria
+            // 
+            this.lbl_informacion_obligatoria.AutoSize = true;
+            this.lbl_informacion_obligatoria.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_informacion_obligatoria.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lbl_informacion_obligatoria.Location = new System.Drawing.Point(173, 119);
+            this.lbl_informacion_obligatoria.Name = "lbl_informacion_obligatoria";
+            this.lbl_informacion_obligatoria.Size = new System.Drawing.Size(168, 18);
+            this.lbl_informacion_obligatoria.TabIndex = 11;
+            this.lbl_informacion_obligatoria.Text = "* Información obligatoria";
             // 
             // button_Buscar
             // 
@@ -171,53 +218,6 @@
             this.lbl_Tipo_identificacion.TabIndex = 6;
             this.lbl_Tipo_identificacion.Text = "Tipo de identificación";
             // 
-            // lbl_informacion_obligatoria
-            // 
-            this.lbl_informacion_obligatoria.AutoSize = true;
-            this.lbl_informacion_obligatoria.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_informacion_obligatoria.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lbl_informacion_obligatoria.Location = new System.Drawing.Point(173, 119);
-            this.lbl_informacion_obligatoria.Name = "lbl_informacion_obligatoria";
-            this.lbl_informacion_obligatoria.Size = new System.Drawing.Size(168, 18);
-            this.lbl_informacion_obligatoria.TabIndex = 11;
-            this.lbl_informacion_obligatoria.Text = "* Información obligatoria";
-            // 
-            // _obli_tipo_id
-            // 
-            this._obli_tipo_id.AutoSize = true;
-            this._obli_tipo_id.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._obli_tipo_id.ForeColor = System.Drawing.Color.Red;
-            this._obli_tipo_id.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this._obli_tipo_id.Location = new System.Drawing.Point(144, 68);
-            this._obli_tipo_id.Name = "_obli_tipo_id";
-            this._obli_tipo_id.Size = new System.Drawing.Size(15, 20);
-            this._obli_tipo_id.TabIndex = 148;
-            this._obli_tipo_id.Text = "*";
-            // 
-            // obli_num_id
-            // 
-            this.obli_num_id.AutoSize = true;
-            this.obli_num_id.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.obli_num_id.ForeColor = System.Drawing.Color.Red;
-            this.obli_num_id.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.obli_num_id.Location = new System.Drawing.Point(329, 65);
-            this.obli_num_id.Name = "obli_num_id";
-            this.obli_num_id.Size = new System.Drawing.Size(15, 20);
-            this.obli_num_id.TabIndex = 149;
-            this.obli_num_id.Text = "*";
-            // 
-            // obli_email
-            // 
-            this.obli_email.AutoSize = true;
-            this.obli_email.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.obli_email.ForeColor = System.Drawing.Color.Red;
-            this.obli_email.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.obli_email.Location = new System.Drawing.Point(329, 17);
-            this.obli_email.Name = "obli_email";
-            this.obli_email.Size = new System.Drawing.Size(15, 20);
-            this.obli_email.TabIndex = 150;
-            this.obli_email.Text = "*";
-            // 
             // stat_BarraEstado
             // 
             this.stat_BarraEstado.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -263,6 +263,7 @@
             this.button_volver.TabIndex = 156;
             this.button_volver.Text = "Volver";
             this.button_volver.UseVisualStyleBackColor = true;
+            this.button_volver.Click += new System.EventHandler(this.button_volver_Click);
             // 
             // Reserva_terminar
             // 

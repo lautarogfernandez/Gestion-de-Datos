@@ -214,5 +214,25 @@ namespace FrbaHotel.Registrar_Consumible
         {
 
         }
+
+        private void dgv_consumible_cantidad_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            e.Control.KeyPress -= new KeyPressEventHandler(ColumnaCantidad_KeyPress);
+            if (dgv_consumible_cantidad.CurrentCell.ColumnIndex == 2) //Desired Column
+            {
+                TextBox tb = e.Control as TextBox;
+                if (tb != null)
+                {
+                    tb.KeyPress += new KeyPressEventHandler(ColumnaCantidad_KeyPress);
+                }
+            }
+        }
+        private void ColumnaCantidad_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
     }
 }

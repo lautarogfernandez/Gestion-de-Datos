@@ -45,6 +45,7 @@
             this.lbl_usuario = new System.Windows.Forms.Label();
             this.grp_formularios = new System.Windows.Forms.GroupBox();
             this.dgv_roles = new System.Windows.Forms.DataGridView();
+            this.button_cambiar_pass = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imagenHotel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_hoteles)).BeginInit();
@@ -120,6 +121,7 @@
             this.button_logout.Text = "Desloguearse";
             this.button_logout.UseVisualStyleBackColor = true;
             this.button_logout.Visible = false;
+            this.button_logout.Click += new System.EventHandler(this.button_logout_Click);
             // 
             // button_ir
             // 
@@ -210,11 +212,23 @@
             this.dgv_roles.Visible = false;
             this.dgv_roles.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_roles_CellContentClick);
             // 
+            // button_cambiar_pass
+            // 
+            this.button_cambiar_pass.Location = new System.Drawing.Point(349, 29);
+            this.button_cambiar_pass.Name = "button_cambiar_pass";
+            this.button_cambiar_pass.Size = new System.Drawing.Size(137, 25);
+            this.button_cambiar_pass.TabIndex = 15;
+            this.button_cambiar_pass.Text = "Cambiar Contraseña";
+            this.button_cambiar_pass.UseVisualStyleBackColor = true;
+            this.button_cambiar_pass.Visible = false;
+            this.button_cambiar_pass.Click += new System.EventHandler(this.button_cambiar_pass_Click);
+            // 
             // MenuPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 461);
+            this.Controls.Add(this.button_cambiar_pass);
             this.Controls.Add(this.dgv_roles);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.grp_formularios);
@@ -262,5 +276,6 @@
         private System.Windows.Forms.Label lbl_usuario;
         private System.Windows.Forms.GroupBox grp_formularios;
         private System.Windows.Forms.DataGridView dgv_roles;
+        private System.Windows.Forms.Button button_cambiar_pass;
     }
 }

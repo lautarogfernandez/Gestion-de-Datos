@@ -33,6 +33,7 @@ namespace FrbaHotel
             if ((Home._nombreUsuario).ToLower() != "guest")
             {
                 button_logout.Visible = true;
+
                 string msj = "Bienvenido: " + lbl_usuario.Text + ".\n Seleccione un hotel y seleccione un rol para continuar.";
                 MessageBox.Show(msj, "Excepcion SQL", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 label_progreso.Text = "Seleccione un hotel para continuar.";
@@ -202,6 +203,7 @@ namespace FrbaHotel
         private void dgv_hoteles_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             int codigoHotel=Convert.ToInt32(dgv_hoteles.SelectedCells[0].Value);
+            combo_objeto.Items.Clear();
             SqlConnection conn = Home.obtenerConexion();
             SqlDataAdapter adaptador;
             barra_progreso.Value = 0;
@@ -242,6 +244,29 @@ namespace FrbaHotel
             Home.cargarFuncionalidadesDeRol(Convert.ToInt32(dgv_roles.SelectedCells[0].Value));
             combo_objeto.Items.AddRange(Home.funcionalidadesHabilitadas.ToArray());
         }
+
+        private void button_logout_Click(object sender, EventArgs e)
+        {
+            string msj =string.Format( "¿Está seguro que quiere desloguearse?");
+            DialogResult resultado=MessageBox.Show(msj, "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (resultado == DialogResult.Yes)
+            {
+
+                Home._nombreUsuario = "guest";
+                MenuPrincipal menuprincipal = new MenuPrincipal();
+                this.Hide();
+                menuprincipal.Show();
+            }
+        }
+
+        private void button_cambiar_pass_Click(object sender, EventArgs e)
+        {
+            Login.Cambiar_contraseña cambiarContraseña = new FrbaHotel.Login.Cambiar_contraseña();
+            cambiarContraseña.Show();
+            this.Hide();
+        }
+
+
 
     }
 }

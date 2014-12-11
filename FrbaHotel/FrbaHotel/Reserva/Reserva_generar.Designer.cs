@@ -57,6 +57,7 @@
             this.dgv_regimenes.Location = new System.Drawing.Point(282, 223);
             this.dgv_regimenes.MultiSelect = false;
             this.dgv_regimenes.Name = "dgv_regimenes";
+            this.dgv_regimenes.ReadOnly = true;
             this.dgv_regimenes.RowHeadersWidth = 20;
             this.dgv_regimenes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgv_regimenes.Size = new System.Drawing.Size(290, 229);
@@ -126,6 +127,7 @@
             this.dgv_tipos_habitaciones.Size = new System.Drawing.Size(264, 229);
             this.dgv_tipos_habitaciones.TabIndex = 27;
             this.dgv_tipos_habitaciones.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_tipos_habitaciones_CellClick);
+            this.dgv_tipos_habitaciones.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dataGridView1_EditingControlShowing);
             this.dgv_tipos_habitaciones.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_tipos_habitaciones_CellEnter);
             this.dgv_tipos_habitaciones.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_habitaciones_CellContentClick);
             // 

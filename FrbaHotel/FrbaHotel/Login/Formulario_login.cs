@@ -76,5 +76,10 @@ namespace FrbaHotel.Login
         {
 
         }
+
+        private void _txt_usuario_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
