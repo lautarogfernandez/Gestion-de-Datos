@@ -848,7 +848,7 @@ end;
 GO
 
 create procedure TEAM_CASTY.ModificarHabitacion
-(@hotel numeric(18), @numero numeric(18),@piso numeric(18),@frente char(1),@tipo nvarchar(255),@descripcion nvarchar(255), @baja numeric(18))
+(@hotel numeric(18), @numeroAnterior numeric(18), @numeroActual numeric(18),@piso numeric(18),@frente char(1),@tipo nvarchar(255),@descripcion nvarchar(255), @baja numeric(18))
 as
 begin
 
@@ -863,7 +863,7 @@ set @error=1
 set @mensaje=@mensaje + ' No se puede dar de baja.';
 end
 
-if(exists (select * from TEAM_CASTY.Habitacion hab where hab.Cod_Hotel=@hotel and hab.Numero=@numero ))
+if(exists (select * from TEAM_CASTY.Habitacion hab where hab.Cod_Hotel=@hotel and hab.Numero=@numeroActual ) and @numeroActual <> @numeroAnterior)
 begin
 set @error=1
 set @mensaje=@mensaje + ' Habitación existente.';
@@ -872,8 +872,8 @@ end
 if(@error=0)
 begin
 update TEAM_CASTY.Habitacion
-set Descripcion=@descripcion,Numero=@numero,Piso=@piso,Frente=@frente,Baja=0
-where Cod_Hotel=@hotel and Numero=@numero and Piso=@piso;
+set Descripcion=@descripcion,Numero=@numeroActual,Piso=@piso,Frente=@frente,Baja=0
+where Cod_Hotel=@hotel and Numero=@numeroAnterior;
 end
 
 else
