@@ -819,7 +819,7 @@ declare @error int;
 set @error=0;
 set @mensaje='Error:';
 
-if(exists (select * from TEAM_CASTY.Habitacion hab where hab.Cod_Hotel=@hotel and hab.Numero=@numero and @piso=hab.Piso))
+if(exists (select * from TEAM_CASTY.Habitacion hab where hab.Cod_Hotel=@hotel and hab.Numero=@numero))
 begin
 set @error=1
 set @mensaje=@mensaje + ' Habitación existente.';
@@ -862,7 +862,7 @@ set @error=1
 set @mensaje=@mensaje + ' No se puede dar de baja.';
 end
 
-if(exists (select * from TEAM_CASTY.Habitacion hab where hab.Cod_Hotel=@hotel and hab.Numero=@numero and @piso=hab.Piso))
+if(exists (select * from TEAM_CASTY.Habitacion hab where hab.Cod_Hotel=@hotel and hab.Numero=@numero ))
 begin
 set @error=1
 set @mensaje=@mensaje + ' Habitación existente.';
@@ -895,10 +895,10 @@ declare @error int;
 set @error=0;
 set @mensaje='Error:';
 
-if(exists (select * from TEAM_CASTY.Habitacion hab where hab.Cod_Hotel=@hotel and hab.Numero=@numero and @piso=hab.Piso))
+if(not exists (select * from TEAM_CASTY.Habitacion hab where hab.Cod_Hotel=@hotel and hab.Numero=@numero and @piso=hab.Piso))
 begin
 set @error=1
-set @mensaje=@mensaje + ' Habitación existente.';
+set @mensaje=@mensaje + ' Habitación inexistente.';
 end
 
 if (exists(
