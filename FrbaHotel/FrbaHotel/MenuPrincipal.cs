@@ -180,6 +180,7 @@ namespace FrbaHotel
                 {
                     string oper = combo_operacion.SelectedItem.ToString();
                     rutaFormularioElegido += oper.ToLower();
+                    rutaFormularioElegido = rutaFormularioElegido.Replace(" ", "_");
                 }
                 Type t = Type.GetType("FrbaHotel." + rutaFormularioElegido);
                 formulario_elegido = Activator.CreateInstance(t) as Form;
