@@ -1819,7 +1819,7 @@ GO
 
 create procedure  TEAM_CASTY.Disponibilidad_Reserva--OK=1; NO=0;
 (@fecha_desde datetime,@fecha_hasta datetime,@hotel numeric(18),@regimen nvarchar(255),@tabla TEAM_CASTY.t_reserva readonly,
-@sePuede bit output,@precio money)
+@sePuede bit output,@precio money output)
 AS
 begin
 
