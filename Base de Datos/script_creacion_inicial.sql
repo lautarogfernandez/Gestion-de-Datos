@@ -798,13 +798,14 @@ end;
 GO
 
 create view TEAM_CASTY.vistaHabitaciones
-(Codigo,Descripcion,Piso,Numero,Frente, Hotel,Ciudad,Calle,"Numero Calle", "Descripcion de tipo",Porcentual,Baja)
+(Codigo,Descripcion,Piso,Numero,Frente, "Numero Hotel", "Nombre Hotel",Ciudad,Calle,"Numero Calle", "Descripcion de tipo",Porcentual,Baja)
 AS
-select hab.Cod_Habitacion,hab.Descripcion,hab.Piso,hab.Numero,hab.Frente,hab.Cod_Hotel, ciu.Nombre,hot.Calle,hot.Nro_Calle,thab.Descripcion ,thab.Porcentual,hab.Baja
+select hab.Cod_Habitacion,hab.Descripcion,hab.Piso,hab.Numero,hab.Frente,hab.Cod_Hotel,hot.Nombre, ciu.Nombre,hot.Calle,hot.Nro_Calle,thab.Descripcion ,thab.Porcentual,hab.Baja
 from TEAM_CASTY.Habitacion hab, TEAM_CASTY.Tipo_Habitacion thab, TEAM_CASTY.Hotel hot, TEAM_CASTY.Ciudad ciu
 where hot.Cod_Hotel=hab.Cod_Hotel and
 thab.Cod_Tipo=hab.Cod_Tipo and
 ciu.Cod_Ciudad=hot.Cod_Ciudad
+
 
 go	
 
