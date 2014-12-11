@@ -2530,4 +2530,3 @@ end;
 GO
 
 
-select * from 
