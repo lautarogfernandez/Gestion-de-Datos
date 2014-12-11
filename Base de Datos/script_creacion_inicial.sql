@@ -2088,11 +2088,7 @@ begin
 		set @error=1;
 		set @mensaje=@mensaje + ' No existe la Reserva.';
 	end;
-	if(exists (select * from TEAM_CASTY.Reserva r where @Cod_Reserva=r.Cod_Reserva and datediff(day,r.Fecha_Reserva,@fecha)>0))
-	begin
-		set @error=1;
-		set @mensaje=@mensaje + ' Fecha inválida.';
-	end;
+	
 	if(not exists(select distinct h.Cod_Hotel
 	from TEAM_CASTY.Hotel h, TEAM_CASTY.Reserva r,TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXReserva hxr
 	where h.Cod_Hotel=hab.Cod_Hotel and
