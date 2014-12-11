@@ -2065,6 +2065,12 @@ end;
 
 GO
 
+create view TEAM_CASTY.vistaReservasModificables
+as
+select * from TEAM_CASTY.Reserva 
+where  Cod_Estado in(1,2)
+go
+
 create procedure  TEAM_CASTY.Cancelar_Reserva
 @cod_Reserva numeric(18),@fecha datetime,@motivo varchar(255), @usuario nvarchar(255)
 AS
