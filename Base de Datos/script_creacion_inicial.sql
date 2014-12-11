@@ -797,6 +797,18 @@ end;
 
 GO
 
+create view TEAM_CASTY.vistaHabitaciones
+(Codigo,Descripcion,Piso,Numero,Frente, Hotel,Ciudad,Calle,"Numero Calle", "Descripcion de tipo",Porcentual,Baja)
+AS
+select hab.Cod_Habitacion,hab.Descripcion,hab.Piso,hab.Numero,hab.Frente,hab.Cod_Hotel, ciu.Nombre,hot.Calle,hot.Nro_Calle,thab.Descripcion ,thab.Porcentual,hab.Baja
+from TEAM_CASTY.Habitacion hab, TEAM_CASTY.Tipo_Habitacion thab, TEAM_CASTY.Hotel hot, TEAM_CASTY.Ciudad ciu
+where hot.Cod_Hotel=hab.Cod_Hotel and
+thab.Cod_Tipo=hab.Cod_Tipo and
+ciu.Cod_Ciudad=hot.Cod_Ciudad
+
+go	
+
+
 create procedure TEAM_CASTY.CargarHabitacion
 (@hotel numeric(18), @numero numeric(18),@piso numeric(18),@frente char(1),@tipo nvarchar(255),@descripcion nvarchar(255))
 as

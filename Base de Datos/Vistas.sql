@@ -28,12 +28,11 @@ where c.Baja=0 and c.Erroneo=1
   
 -- vista habitaciones
 create view TEAM_CASTY.vistaHabitaciones
-(Codigo,Descripcion,Piso,Numero,Frente, Hotel,Ciudad,Calle,"Numero Calle", Tipo, "Descripcion de tipo",Porcentual)
+(Codigo,Descripcion,Piso,Numero,Frente, Hotel,Ciudad,Calle,"Numero Calle", "Descripcion de tipo",Porcentual,Baja)
 AS
-select hab.Cod_Habitacion,hab.Descripcion,hab.Piso,hab.Numero,hab.Frente,hab.Cod_Hotel, ciu.Nombre,hot.Calle,hot.Nro_Calle,thab.Cod_Tipo,thab.Descripcion ,thab.Porcentual
+select hab.Cod_Habitacion,hab.Descripcion,hab.Piso,hab.Numero,hab.Frente,hab.Cod_Hotel, ciu.Nombre,hot.Calle,hot.Nro_Calle,thab.Descripcion ,thab.Porcentual,hab.Baja
 from TEAM_CASTY.Habitacion hab, TEAM_CASTY.Tipo_Habitacion thab, TEAM_CASTY.Hotel hot, TEAM_CASTY.Ciudad ciu
-where hab.Baja = 0 and
-hot.Cod_Hotel=hab.Cod_Hotel and
+where hot.Cod_Hotel=hab.Cod_Hotel and
 thab.Cod_Tipo=hab.Cod_Tipo and
 ciu.Cod_Ciudad=hot.Cod_Ciudad
 
