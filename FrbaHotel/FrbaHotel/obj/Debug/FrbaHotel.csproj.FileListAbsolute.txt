@@ -61,3 +61,4 @@ C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHote
 C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.Reserva.Reserva_terminar.resources
 C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.Reserva.Reserva_modificar.resources
 C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.Login.Cambiar_contraseña.resources
+C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.Reserva.Reserva_cancelar.resources

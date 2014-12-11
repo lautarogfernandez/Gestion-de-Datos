@@ -23,7 +23,7 @@ namespace FrbaHotel.Reserva
         public DateTime fecha_desde;
         public DateTime fecha_hasta;
         public List<habitacion_reserva> tipos_habitaciones;
-        public int cliente;
+        public int cliente,codigo_reserva;
     }
 
     class Home_Reserva:Home
