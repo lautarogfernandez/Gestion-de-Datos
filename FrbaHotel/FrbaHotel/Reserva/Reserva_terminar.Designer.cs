@@ -163,7 +163,7 @@
             this.txt_numeroIdentificacion.Text = "Ingrese número de identificación";
             this.txt_numeroIdentificacion.TextChanged += new System.EventHandler(this.txt_numeroIdentificacion_TextChanged);
             this.txt_numeroIdentificacion.Click += new System.EventHandler(this.txt_numeroIdentificacion_Click);
-            this.txt_numeroIdentificacion.Leave += new System.EventHandler(this.txt_Email_Leave);
+            this.txt_numeroIdentificacion.Leave += new System.EventHandler(this.txt_numeroIdentificacion_Leave);
             // 
             // cmb_tipoIdentificacion
             // 

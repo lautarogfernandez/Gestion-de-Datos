@@ -42,8 +42,10 @@
             this.lbl_hasta = new System.Windows.Forms.Label();
             this.dtp_desde = new System.Windows.Forms.DateTimePicker();
             this.dtp_hasta = new System.Windows.Forms.DateTimePicker();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.grp_datos = new System.Windows.Forms.GroupBox();
+            this.txt_codigo_reserva = new System.Windows.Forms.TextBox();
+            this.lbl_reserva = new System.Windows.Forms.Label();
+            this.button_modificar = new System.Windows.Forms.Button();
             this.obli_email = new System.Windows.Forms.Label();
             this.obli_num_id = new System.Windows.Forms.Label();
             this._obli_tipo_id = new System.Windows.Forms.Label();
@@ -55,7 +57,6 @@
             this.lbl_Numero_id = new System.Windows.Forms.Label();
             this.lbl_Email = new System.Windows.Forms.Label();
             this.lbl_Tipo_identificacion = new System.Windows.Forms.Label();
-            this.button_modificar = new System.Windows.Forms.Button();
             this.stat_BarraEstado.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_tipos_habitaciones)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_regimenes)).BeginInit();
@@ -110,11 +111,11 @@
             // lbl_codigo_reserva
             // 
             this.lbl_codigo_reserva.AutoSize = true;
-            this.lbl_codigo_reserva.Location = new System.Drawing.Point(14, 103);
+            this.lbl_codigo_reserva.Location = new System.Drawing.Point(17, 103);
             this.lbl_codigo_reserva.Name = "lbl_codigo_reserva";
-            this.lbl_codigo_reserva.Size = new System.Drawing.Size(214, 13);
+            this.lbl_codigo_reserva.Size = new System.Drawing.Size(93, 13);
             this.lbl_codigo_reserva.TabIndex = 51;
-            this.lbl_codigo_reserva.Text = "Ingrese un codigo de reserva para modificar";
+            this.lbl_codigo_reserva.Text = "Codigo de reserva";
             // 
             // lbl_estadía
             // 
@@ -149,7 +150,6 @@
             this.dgv_tipos_habitaciones.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgv_tipos_habitaciones.Size = new System.Drawing.Size(264, 229);
             this.dgv_tipos_habitaciones.TabIndex = 42;
-            this.dgv_tipos_habitaciones.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_tipos_habitaciones_CellContentClick);
             // 
             // dgv_regimenes
             // 
@@ -162,6 +162,7 @@
             this.dgv_regimenes.Location = new System.Drawing.Point(282, 245);
             this.dgv_regimenes.MultiSelect = false;
             this.dgv_regimenes.Name = "dgv_regimenes";
+            this.dgv_regimenes.ReadOnly = true;
             this.dgv_regimenes.RowHeadersWidth = 20;
             this.dgv_regimenes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgv_regimenes.Size = new System.Drawing.Size(290, 229);
@@ -199,19 +200,13 @@
             this.dtp_hasta.Size = new System.Drawing.Size(216, 20);
             this.dtp_hasta.TabIndex = 50;
             // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(14, 119);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(216, 20);
-            this.textBox1.TabIndex = 52;
-            // 
             // grp_datos
             // 
+            this.grp_datos.Controls.Add(this.txt_codigo_reserva);
+            this.grp_datos.Controls.Add(this.lbl_reserva);
             this.grp_datos.Controls.Add(this.button_modificar);
             this.grp_datos.Controls.Add(this.obli_email);
             this.grp_datos.Controls.Add(this.obli_num_id);
-            this.grp_datos.Controls.Add(this.textBox1);
             this.grp_datos.Controls.Add(this._obli_tipo_id);
             this.grp_datos.Controls.Add(this.lbl_codigo_reserva);
             this.grp_datos.Controls.Add(this.lbl_informacion_obligatoria);
@@ -229,7 +224,42 @@
             this.grp_datos.TabIndex = 54;
             this.grp_datos.TabStop = false;
             this.grp_datos.Text = "Ingrese sus datos personales";
-            this.grp_datos.Enter += new System.EventHandler(this.grp_datos_Enter);
+            // 
+            // txt_codigo_reserva
+            // 
+            this.txt_codigo_reserva.ForeColor = System.Drawing.SystemColors.ScrollBar;
+            this.txt_codigo_reserva.Location = new System.Drawing.Point(17, 117);
+            this.txt_codigo_reserva.Name = "txt_codigo_reserva";
+            this.txt_codigo_reserva.Size = new System.Drawing.Size(216, 20);
+            this.txt_codigo_reserva.TabIndex = 153;
+            this.txt_codigo_reserva.Text = "Ingrese código de reserva a modificar";
+            this.txt_codigo_reserva.TextChanged += new System.EventHandler(this.txt_codigo_reserva_TextChanged);
+            this.txt_codigo_reserva.Click += new System.EventHandler(this.txt_codigo_reserva_Click);
+            this.txt_codigo_reserva.Leave += new System.EventHandler(this.txt_codigo_reserva_Leave);
+            // 
+            // lbl_reserva
+            // 
+            this.lbl_reserva.AutoSize = true;
+            this.lbl_reserva.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_reserva.ForeColor = System.Drawing.Color.Red;
+            this.lbl_reserva.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lbl_reserva.Location = new System.Drawing.Point(239, 117);
+            this.lbl_reserva.Name = "lbl_reserva";
+            this.lbl_reserva.Size = new System.Drawing.Size(15, 20);
+            this.lbl_reserva.TabIndex = 152;
+            this.lbl_reserva.Text = "*";
+            // 
+            // button_modificar
+            // 
+            this.button_modificar.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_modificar.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.button_modificar.Location = new System.Drawing.Point(419, 78);
+            this.button_modificar.Name = "button_modificar";
+            this.button_modificar.Size = new System.Drawing.Size(135, 45);
+            this.button_modificar.TabIndex = 151;
+            this.button_modificar.Text = "Modificar";
+            this.button_modificar.UseVisualStyleBackColor = true;
+            this.button_modificar.Visible = false;
             // 
             // obli_email
             // 
@@ -272,7 +302,7 @@
             this.lbl_informacion_obligatoria.AutoSize = true;
             this.lbl_informacion_obligatoria.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_informacion_obligatoria.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lbl_informacion_obligatoria.Location = new System.Drawing.Point(245, 131);
+            this.lbl_informacion_obligatoria.Location = new System.Drawing.Point(303, 126);
             this.lbl_informacion_obligatoria.Name = "lbl_informacion_obligatoria";
             this.lbl_informacion_obligatoria.Size = new System.Drawing.Size(168, 18);
             this.lbl_informacion_obligatoria.TabIndex = 11;
@@ -288,6 +318,7 @@
             this.button_Buscar.TabIndex = 10;
             this.button_Buscar.Text = "Buscar";
             this.button_Buscar.UseVisualStyleBackColor = true;
+            this.button_Buscar.Click += new System.EventHandler(this.button_Buscar_Click);
             // 
             // txt_numeroIdentificacion
             // 
@@ -297,6 +328,9 @@
             this.txt_numeroIdentificacion.Size = new System.Drawing.Size(216, 20);
             this.txt_numeroIdentificacion.TabIndex = 9;
             this.txt_numeroIdentificacion.Text = "Ingrese número de identificación";
+            this.txt_numeroIdentificacion.TextChanged += new System.EventHandler(this.txt_numeroIdentificacion_TextChanged);
+            this.txt_numeroIdentificacion.Click += new System.EventHandler(this.txt_numeroIdentificacion_Click);
+            this.txt_numeroIdentificacion.Leave += new System.EventHandler(this.txt_numeroIdentificacion_Leave);
             // 
             // cmb_tipoIdentificacion
             // 
@@ -307,6 +341,7 @@
             this.cmb_tipoIdentificacion.Size = new System.Drawing.Size(121, 21);
             this.cmb_tipoIdentificacion.TabIndex = 7;
             this.cmb_tipoIdentificacion.Text = "Seleccione tipo";
+            this.cmb_tipoIdentificacion.SelectedIndexChanged += new System.EventHandler(this.cmb_tipoIdentificacion_SelectedIndexChanged);
             // 
             // txt_Email
             // 
@@ -316,6 +351,9 @@
             this.txt_Email.Size = new System.Drawing.Size(312, 20);
             this.txt_Email.TabIndex = 5;
             this.txt_Email.Text = "Ingrese e-mail";
+            this.txt_Email.TextChanged += new System.EventHandler(this.txt_Email_TextChanged);
+            this.txt_Email.Click += new System.EventHandler(this.txt_Email_Click);
+            this.txt_Email.Leave += new System.EventHandler(this.txt_Email_Leave);
             // 
             // lbl_Numero_id
             // 
@@ -347,18 +385,6 @@
             this.lbl_Tipo_identificacion.TabIndex = 6;
             this.lbl_Tipo_identificacion.Text = "Tipo de identificación";
             // 
-            // button_modificar
-            // 
-            this.button_modificar.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_modificar.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.button_modificar.Location = new System.Drawing.Point(419, 94);
-            this.button_modificar.Name = "button_modificar";
-            this.button_modificar.Size = new System.Drawing.Size(135, 45);
-            this.button_modificar.TabIndex = 151;
-            this.button_modificar.Text = "Modificar";
-            this.button_modificar.UseVisualStyleBackColor = true;
-            this.button_modificar.Visible = false;
-            // 
             // Reserva_modificar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -380,6 +406,7 @@
             this.MinimumSize = new System.Drawing.Size(600, 600);
             this.Name = "Reserva_modificar";
             this.Text = "Reserva_modificar";
+            this.Load += new System.EventHandler(this.Reserva_modificar_Load);
             this.stat_BarraEstado.ResumeLayout(false);
             this.stat_BarraEstado.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_tipos_habitaciones)).EndInit();
@@ -407,7 +434,6 @@
         private System.Windows.Forms.Label lbl_hasta;
         private System.Windows.Forms.DateTimePicker dtp_desde;
         private System.Windows.Forms.DateTimePicker dtp_hasta;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.GroupBox grp_datos;
         private System.Windows.Forms.Label obli_email;
         private System.Windows.Forms.Label obli_num_id;
@@ -421,5 +447,7 @@
         private System.Windows.Forms.Label lbl_Email;
         private System.Windows.Forms.Label lbl_Tipo_identificacion;
         private System.Windows.Forms.Button button_modificar;
+        private System.Windows.Forms.Label lbl_reserva;
+        private System.Windows.Forms.TextBox txt_codigo_reserva;
     }
 }

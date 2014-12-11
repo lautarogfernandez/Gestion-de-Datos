@@ -126,7 +126,7 @@ namespace FrbaHotel
             string msj = "Errores de sql: \n";
             for (int i = 0; i < exc.Errors.Count; i++)
                 msj += exc.Errors[i].Message + "\n";
-            MessageBox.Show(msj, "Excepcion SQL", MessageBoxButtons.YesNo, MessageBoxIcon.Question); 
+            MessageBox.Show(msj, "Excepcion SQL", MessageBoxButtons.OK, MessageBoxIcon.Hand); 
         }
         public static void habilitar_boton(Button _unBoton)
         {
