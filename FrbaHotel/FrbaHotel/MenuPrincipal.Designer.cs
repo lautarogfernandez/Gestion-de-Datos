@@ -74,7 +74,7 @@
             this.combo_operacion});
             this.menuStrip1.Location = new System.Drawing.Point(12, 24);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(273, 27);
+            this.menuStrip1.Size = new System.Drawing.Size(365, 27);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
@@ -90,7 +90,7 @@
             // 
             this.combo_operacion.Name = "combo_operacion";
             this.combo_operacion.Size = new System.Drawing.Size(140, 23);
-            this.combo_operacion.Text = "Seleccione Operación";
+            this.combo_operacion.Text = "Seleccione Operacion";
             this.combo_operacion.SelectedIndexChanged += new System.EventHandler(this.combo_operacion_SelectedIndexChanged);
             // 
             // lbl_bienvenido

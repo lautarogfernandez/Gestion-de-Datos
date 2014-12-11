@@ -249,7 +249,7 @@ namespace FrbaHotel.Reserva
                         int codigoCliente = Convert.ToInt32(tablaClientes.Rows[0].ItemArray[0]);
                         int codigoReserva = Convert.ToInt32(txt_codigo_reserva.Text);
                         string busqueda2 = string.Format("SELECT * "
-                 + " FROM [GD2C2014].[Team_Casty].[Reserva] "
+                 + " FROM [GD2C2014].[Team_Casty].[vistaReservasModificables] "
                  + " WHERE [ID_Cliente_Reservador] = {0} AND [Cod_Reserva]={1}", codigoCliente,
                  codigoReserva);
                         DataTable tablaReservas = new DataTable();                                                                                 //Creo Tabla para los resultados
