@@ -1882,7 +1882,7 @@ begin
 		from TEAM_CASTY.Tipo_Habitacion th
 		where th.Descripcion=@t_hab;
 		
-		set @precio+=((select TEAM_CASTY.PrecioPorDiaEspecifico(@hotel,@cod_reg,@cod_tipo_habitacion))*@cantidad);
+		set @precio+=((select TEAM_CASTY.PrecioPorDiaEspecifico(@hotel,@cod_reg,@cod_tipo_habitacion))*@cantidad*DATEDIFF(DAY,@fecha_desde,@fecha_hasta));
 		
 		FETCH NEXT FROM _cursor2 INTO @t_habitacion, @cantidad;				
 	END
