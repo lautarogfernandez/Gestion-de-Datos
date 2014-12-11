@@ -12,13 +12,34 @@ namespace FrbaHotel.ABM_de_Cliente
 {
     public partial class Cliente_alta : Form
     {
-        bool no_crear_form_principal;
+        bool no_crear_form_principal=false;
         public Cliente_alta(bool fuiLlamado)
         {
             InitializeComponent();
             no_crear_form_principal = fuiLlamado;
             SqlConnection conn = Home_Cliente.obtenerConexion();
             SqlCommand cmd=Home_Cliente.obtenerComandoTipo_Documento(conn);
+            try
+            {
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    this.cmb_tipo_documento.Items.Add(reader["Tipo_Documento"].ToString());
+                }
+                reader.Close();
+            }
+            catch (SqlException exc)
+            {
+                Home_Cliente.mostrarMensajeErrorSql(exc);
+            }
+
+            conn.Close();
+        }
+        public Cliente_alta()
+        {
+            InitializeComponent();
+            SqlConnection conn = Home_Cliente.obtenerConexion();
+            SqlCommand cmd = Home_Cliente.obtenerComandoTipo_Documento(conn);
             try
             {
                 SqlDataReader reader = cmd.ExecuteReader();
