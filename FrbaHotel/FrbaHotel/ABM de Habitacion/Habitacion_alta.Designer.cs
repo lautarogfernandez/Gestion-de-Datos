@@ -254,11 +254,12 @@
             this.button_volver.TabIndex = 157;
             this.button_volver.Text = "Volver";
             this.button_volver.UseVisualStyleBackColor = true;
+            this.button_volver.Click += new System.EventHandler(this.button_volver_Click);
             // 
             // rb_VistaExterior
             // 
             this.rb_VistaExterior.AutoSize = true;
-            this.rb_VistaExterior.Location = new System.Drawing.Point(280, 113);
+            this.rb_VistaExterior.Location = new System.Drawing.Point(238, 113);
             this.rb_VistaExterior.Name = "rb_VistaExterior";
             this.rb_VistaExterior.Size = new System.Drawing.Size(86, 17);
             this.rb_VistaExterior.TabIndex = 198;
@@ -269,7 +270,7 @@
             // rb_VistaInterior
             // 
             this.rb_VistaInterior.AutoSize = true;
-            this.rb_VistaInterior.Location = new System.Drawing.Point(416, 113);
+            this.rb_VistaInterior.Location = new System.Drawing.Point(374, 113);
             this.rb_VistaInterior.Name = "rb_VistaInterior";
             this.rb_VistaInterior.Size = new System.Drawing.Size(83, 17);
             this.rb_VistaInterior.TabIndex = 199;

@@ -64,7 +64,7 @@ namespace FrbaHotel.ABM_de_Habitacion
                         using (SqlCommand cmd = conn.CreateCommand())
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.CommandText = "[TEAM_CASTY].Actualizar_Reservas";
+                            cmd.CommandText = "[TEAM_CASTY].CargarHabitacion";
                             cmd.Parameters.Add(new SqlParameter("@hotel", Home_Habitacion._codigo_hotel));
                             cmd.Parameters.Add(new SqlParameter("@numero", Convert.ToInt32(txt_numero.Text)));
                             cmd.Parameters.Add(new SqlParameter("@piso", Convert.ToInt32(txt_numero.Text)));
@@ -82,7 +82,6 @@ namespace FrbaHotel.ABM_de_Habitacion
                 {
                     Home_Habitacion.mostrarMensajeErrorSql(exc);
                 }
-
             }
             else
             {
@@ -101,6 +100,13 @@ namespace FrbaHotel.ABM_de_Habitacion
                 e.Handled = true;
             else
                 e.Handled = true;
+        }
+
+        private void button_volver_Click(object sender, EventArgs e)
+        {
+            MenuPrincipal formx = new MenuPrincipal();
+            this.Hide();
+            formx.Show();
         }
     }
 }
