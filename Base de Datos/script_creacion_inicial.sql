@@ -730,23 +730,16 @@ RETURN
 
 GO
 
+
 create view TEAM_CASTY.vistaClientes
 (Codigo, Nombre, Apellido, Mail, "Tipo Documento", "Numero Documento",Telefono,Pais,Localidad,"Calle","Numero Calle",Piso, "Departamento", Nacionalidad,"Fecha Nacimiento",Inhabilitado)
 AS
 select c.ID_Cliente, c.Nombre, c.Apellido, c.Mail, d.Tipo_Documento, c.Nro_Documento, c.Telefono, c.Pais, c.Localidad, c.Nom_Calle, c.Nro_Calle, c.Piso ,c.Dto,c.Nacionalidad, c.Fecha_Nacimiento,c.Inhabilitado
 from TEAM_CASTY.Cliente c, TEAM_CASTY.Tipo_Documento d
-where c.Baja=0;
+where c.Baja=0
 
 GO
 
-Create view TEAM_CASTY.vistaHoteles
-(Codigo,Nombre,Ciudad,Calle,"Numero Calle",Telefono,Mail,"Cantidad de estrellas", "Recarga por estrella" )
-AS
-select  h.Cod_Hotel, h.Nombre, c.Nombre ,h.Calle,h.Nro_Calle,h.Telefono,h.Mail,h.CantEstrella,re.Recarga  
-from TEAM_CASTY.Hotel h, TEAM_CASTY.Ciudad c , TEAM_CASTY.Recarga_Estrella re
-where h.Cod_Ciudad= c.Cod_Ciudad;
-
-GO
 
 create trigger TEAM_CASTY.alta_clientes
 ON TEAM_CASTY.vistaClientes
@@ -791,62 +784,7 @@ end;
 
 GO
 
-create trigger TEAM_CASTY.baja_clientes
-ON TEAM_CASTY.vistaClientes
-instead of delete
-AS
-begin
-update clie
-set Baja=1
-from TEAM_CASTY.Cliente clie, deleted del
-where del.Codigo=clie.ID_Cliente;
-end;
 
-GO
-
-create trigger TEAM_CASTY.modif_clientes
-ON TEAM_CASTY.vistaClientes
-instead of update
-AS
-begin
-
-declare @mensaje varchar(1000);
-declare @error int;
-set @error=0;
-set @mensaje='Error:';
-
-if(exists (select * from TEAM_CASTY.Cliente c,inserted ins where c.Mail=ins.Mail and ins.Codigo<>c.ID_Cliente))
-begin
-set @error=1
-set @mensaje=@mensaje + ' Mail repetido.';
-end
-
-if(exists (select * from TEAM_CASTY.Cliente c,inserted ins,TEAM_CASTY.Tipo_Documento tdoc where c.Nro_Documento=ins.[Numero Documento] and tdoc.Tipo_Documento=ins.[Tipo Documento] and c.ID_Tipo_Documento=tdoc.ID_Tipo_Documento and c.ID_Cliente<>ins.Codigo))
-begin
-set @error=1
-set @mensaje=@mensaje + ' Documento repetido.';
-end
-
-if(@error=0)
-begin
-update c
-set c.Nombre=ins.Nombre,c.Apellido=ins.Apellido,c.Mail=ins.Mail,c.ID_Tipo_Documento=tdoc.ID_Tipo_Documento,
-c.Nro_Documento=ins.[Numero Documento],c.Telefono=ins.Telefono,c.Pais=ins.Pais,c.Localidad=ins.Localidad,
-c.Nom_Calle=ins.Calle,c.Nro_Calle=ins.[Numero Calle],c.Piso=ins.Piso,c.Dto=ins.Departamento,
-c.Nacionalidad=ins.Nacionalidad, c.Fecha_Nacimiento=ins.[Fecha Nacimiento]
-from TEAM_CASTY.Cliente c, inserted ins,TEAM_CASTY.Tipo_Documento tdoc
-where ins.Codigo=c.ID_Cliente and ins.[Tipo Documento] = tdoc.Tipo_Documento
-end
-
-else
-begin
-set @mensaje=@mensaje + ' No se realizó la modificación.';
-RAISERROR (@mensaje,10,1);
-end
-
-end;
-
-GO
 
 create procedure TEAM_CASTY.CambiarPassword
 (@usuario nvarchar(255),@contraseña nvarchar(255))
@@ -882,7 +820,7 @@ select @cod_tipo=th.Cod_Tipo
 from TEAM_CASTY.Tipo_Habitacion th
 where th.Descripcion=@tipo;
 insert into TEAM_CASTY.Habitacion
-(Cod_Hotel,Cod_Tipo,Descripcion,Cod_Tipo,Frente,Numero,Piso)
+(Cod_Hotel,Cod_Tipo,Descripcion,Frente,Numero,Piso)
 values (@hotel,@cod_tipo,@descripcion,@frente,@numero,@piso);
 end
 
@@ -1203,15 +1141,6 @@ where h.Cod_Ciudad= c.Cod_Ciudad
 
 GO
 
-create view TEAM_CASTY.vistaClientes
-(Codigo, Nombre, Apellido, Mail, "Tipo Documento", "Numero Documento",Telefono,Pais,Localidad,"Calle","Numero Calle",Piso, "Departamento", Nacionalidad,"Fecha Nacimiento",Inhabilitado)
-AS
-select c.ID_Cliente, c.Nombre, c.Apellido, c.Mail, d.Tipo_Documento, c.Nro_Documento, c.Telefono, c.Pais, c.Localidad, c.Nom_Calle, c.Nro_Calle, c.Piso ,c.Dto,c.Nacionalidad, c.Fecha_Nacimiento,c.Inhabilitado
-from TEAM_CASTY.Cliente c, TEAM_CASTY.Tipo_Documento d
-where c.Baja=0
-
-GO
-
 create view TEAM_CASTY.vistaClientesErroneos
 (Codigo, Nombre, Apellido, Mail, "Tipo Documento", "Numero Documento",Telefono,Pais,Localidad,"Calle","Numero Calle",Piso, "Departamento", Nacionalidad,"Fecha Nacimiento",Inhabilitado)
 AS
@@ -1221,48 +1150,6 @@ where c.Baja=0 and c.Erroneo=1
 
 GO
 
-create trigger TEAM_CASTY.alta_clientes
-ON TEAM_CASTY.vistaClientes
-instead of insert
-AS
-begin
-
-declare @mensaje varchar(1000);
-declare @error int;
-set @error=0;
-set @mensaje='Error:';
-
-if(exists (select * from TEAM_CASTY.Cliente c,inserted ins where c.Mail=ins.Mail))
-begin
-set @error=1
-set @mensaje=@mensaje + ' Mail repetido.';
-end
-
-if(exists (select * from TEAM_CASTY.Cliente c,inserted ins,TEAM_CASTY.Tipo_Documento tdoc where c.Nro_Documento=ins.[Numero Documento] and c.ID_Tipo_Documento=tdoc.ID_Tipo_Documento and ins.[Tipo Documento]=tdoc.Tipo_Documento))
-begin
-set @error=1
-set @mensaje=@mensaje + ' Documento repetido.';
-end
-
-if(@error=0)
-begin
-insert into TEAM_CASTY.Cliente
-(Apellido,Nom_Calle,Dto,Fecha_Nacimiento,Localidad,Mail,Nacionalidad,Nombre,Nro_Calle,Nro_Documento,Pais,Piso,Telefono,ID_Tipo_Documento)
-select ins.Apellido,ins.Calle,ins.Departamento,ins.[Fecha Nacimiento],UPPER (ins.Localidad),ins.Mail,UPPER (ins.Nacionalidad,UPPER (ins.Nombre)),
-ins.[Numero Calle],ins.[Numero Documento],UPPER (ins.Pais),ins.Piso,ins.Telefono,tdoc.ID_Tipo_Documento
-from inserted ins, TEAM_CASTY.Tipo_Documento tdoc
-where tdoc.Tipo_Documento=UPPER (ins.[Tipo Documento]);
-end
-
-else
-begin
-set @mensaje=@mensaje + ' No se realizó el alta.';
-RAISERROR (@mensaje,15,1);
-end
-
-end;
-
-GO
 
 create trigger TEAM_CASTY.modificacion_clientes
 ON TEAM_CASTY.vistaClientes
@@ -1414,16 +1301,6 @@ end;
 
 GO
 
-create function TEAM_CASTY.RegimenesDeUnHotel
-(@cod_hotel numeric (18))
-RETURNS TABLE
-AS 
-return (
-select reg.Descripcion
-from TEAM_CASTY.RegimenXHotel rxh, TEAM_CASTY.Regimen reg
-where rxh.Cod_Hotel=@cod_hotel and rxh.Activo=1 and reg.Cod_Regimen=rxh.Cod_Regimen);
-
-go
 
 create function TEAM_CASTY.Regimenes
 ()
@@ -1941,12 +1818,16 @@ end;
 GO
 
 create procedure  TEAM_CASTY.Disponibilidad_Reserva--OK=1; NO=0;
-(@fecha_desde datetime,@fecha_hasta datetime,@hotel numeric(18),@tabla TEAM_CASTY.t_reserva readonly,@sePuede bit output)
-
+(@fecha_desde datetime,@fecha_hasta datetime,@hotel numeric(18),@regimen nvarchar(255),@tabla TEAM_CASTY.t_reserva readonly,
+@sePuede bit output,@precio money)
 AS
 begin
 
 set @sePuede =1;
+set @precio =0;
+
+declare @cod_reg numeric(18);
+select @cod_reg=reg.Cod_Regimen from TEAM_CASTY.Regimen reg where reg.Descripcion=@regimen;
 
 if(datediff(day,@fecha_desde,@fecha_hasta)>0)
 begin
@@ -1987,9 +1868,32 @@ else
 begin
 	set @sePuede=0;
 end
+
+if(@sePuede=1)
+begin	
+	DECLARE _cursor2 CURSOR FOR
+	select * from @tabla;
+	OPEN _cursor2;
+	DECLARE @t_habitacion nvarchar(255), @cantidad numeric(18),@cod_tipo_habitacion numeric(18);
+	FETCH NEXT FROM _cursor2 INTO @t_habitacion, @cantidad;
+	WHILE (@@FETCH_STATUS = 0)
+	BEGIN
+		select @cod_tipo_habitacion=th.Cod_Tipo
+		from TEAM_CASTY.Tipo_Habitacion th
+		where th.Descripcion=@t_hab;
+		
+		set @precio+=((select TEAM_CASTY.PrecioPorDiaEspecifico(@hotel,@cod_reg,@cod_tipo_habitacion))*@cantidad);
+		
+		FETCH NEXT FROM _cursor2 INTO @t_habitacion, @cantidad;				
+	END
+	CLOSE _cursor2;
+	DEALLOCATE _cursor2;	
+end
+
 end;
 
 GO
+
 
 create function  TEAM_CASTY.Ultimo_Codigo_Reserva
 ()
@@ -2052,7 +1956,7 @@ GO
 
 create procedure  TEAM_CASTY.Reservar
 (@usuario nvarchar(255),@fecha_realizacion datetime,@fecha_reserva datetime,@cant_noches numeric(18),@id_cliente numeric(18),
-@regimen nvarchar(255),@hotel numeric(18),@tabla TEAM_CASTY.t_reserva readonly)
+@regimen nvarchar(255),@hotel numeric(18),@tabla TEAM_CASTY.t_reserva readonly,@cod_reserva numeric(18) output)
 as
 begin
 	declare @cod_t_reg numeric(18);
@@ -2065,7 +1969,7 @@ begin
 	from TEAM_CASTY.Usuario u
 	where @usuario=u.Username;
 	
-	declare @cod_reserva numeric(18)=TEAM_CASTY.Ultimo_Codigo_Reserva()+1;
+	set @cod_reserva=TEAM_CASTY.Ultimo_Codigo_Reserva()+1;
 	
 	insert into TEAM_CASTY.Reserva
 	(Cant_Noches,Cod_Estado,Cod_Regimen,Cod_Reserva,Fecha_Realizacion,Fecha_Reserva,ID_Cliente_Reservador)
@@ -2236,20 +2140,7 @@ end;
 
 GO
 
-create procedure  TEAM_CASTY.Agregar_Clientes_A_Estadia
-(@Cod_Reserva numeric(18),@tabla TEAM_CASTY.t_agregar_clientes readonly)
-AS
-begin
-	declare @cod_est numeric(18);
-	select @cod_est=est.Cod_Estadia from TEAM_CASTY.Estadia est where est.Cod_Reserva=@Cod_Reserva;
-	
-	insert into TEAM_CASTY.ClienteXEstadia
-	(Cod_Estadia,ID_Cliente)
-	select @cod_est,t.cod_cliente
-	from @tabla t;	
-end;
 
-GO
 
 create procedure  TEAM_CASTY.Check_IN
 @Cod_Reserva numeric(18),@fecha datetime, @usuario nvarchar(255),@hotel numeric(18)
