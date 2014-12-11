@@ -70,6 +70,7 @@
             this.stat_BarraEstado = new System.Windows.Forms.StatusStrip();
             this.barra_progreso = new System.Windows.Forms.ToolStripProgressBar();
             this.label_progreso = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lbl_informacion_obligatoria = new System.Windows.Forms.Label();
             this.stat_BarraEstado.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -452,12 +453,24 @@
             this.label_progreso.Size = new System.Drawing.Size(42, 17);
             this.label_progreso.Text = "Estado";
             // 
+            // lbl_informacion_obligatoria
+            // 
+            this.lbl_informacion_obligatoria.AutoSize = true;
+            this.lbl_informacion_obligatoria.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_informacion_obligatoria.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lbl_informacion_obligatoria.Location = new System.Drawing.Point(209, 487);
+            this.lbl_informacion_obligatoria.Name = "lbl_informacion_obligatoria";
+            this.lbl_informacion_obligatoria.Size = new System.Drawing.Size(168, 18);
+            this.lbl_informacion_obligatoria.TabIndex = 156;
+            this.lbl_informacion_obligatoria.Text = "* Información obligatoria";
+            // 
             // Cliente_alta
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 561);
+            this.Controls.Add(this.lbl_informacion_obligatoria);
             this.Controls.Add(this.stat_BarraEstado);
             this.Controls.Add(this.cmb_tipo_documento);
             this.Controls.Add(this._obli_fechaNacimiento);
@@ -554,5 +567,6 @@
         private System.Windows.Forms.StatusStrip stat_BarraEstado;
         private System.Windows.Forms.ToolStripProgressBar barra_progreso;
         private System.Windows.Forms.ToolStripStatusLabel label_progreso;
+        private System.Windows.Forms.Label lbl_informacion_obligatoria;
     }
 }

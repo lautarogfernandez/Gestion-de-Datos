@@ -34,7 +34,6 @@
             this.barra_progreso = new System.Windows.Forms.ToolStripProgressBar();
             this.label_progreso = new System.Windows.Forms.ToolStripStatusLabel();
             this.button_volver = new System.Windows.Forms.Button();
-            this.button_limpiar = new System.Windows.Forms.Button();
             this.dgv_tipos_habitaciones = new System.Windows.Forms.DataGridView();
             this.lbl_habitacion_consumible = new System.Windows.Forms.Label();
             this.lbl_estadía = new System.Windows.Forms.Label();
@@ -68,11 +67,11 @@
             this.button_aceptar.Enabled = false;
             this.button_aceptar.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_aceptar.ForeColor = System.Drawing.SystemColors.ScrollBar;
-            this.button_aceptar.Location = new System.Drawing.Point(222, 484);
+            this.button_aceptar.Location = new System.Drawing.Point(12, 483);
             this.button_aceptar.Name = "button_aceptar";
             this.button_aceptar.Size = new System.Drawing.Size(135, 45);
             this.button_aceptar.TabIndex = 29;
-            this.button_aceptar.Text = "Aceptar";
+            this.button_aceptar.Text = "Validar";
             this.button_aceptar.UseVisualStyleBackColor = true;
             this.button_aceptar.Click += new System.EventHandler(this.button_aceptar_Click);
             this.button_aceptar.EnabledChanged += new System.EventHandler(this.button_EnabledChanged);
@@ -110,19 +109,6 @@
             this.button_volver.Text = "Volver";
             this.button_volver.UseVisualStyleBackColor = true;
             this.button_volver.Click += new System.EventHandler(this.button_volver_Click);
-            // 
-            // button_limpiar
-            // 
-            this.button_limpiar.Enabled = false;
-            this.button_limpiar.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_limpiar.ForeColor = System.Drawing.SystemColors.ScrollBar;
-            this.button_limpiar.Location = new System.Drawing.Point(12, 483);
-            this.button_limpiar.Name = "button_limpiar";
-            this.button_limpiar.Size = new System.Drawing.Size(135, 45);
-            this.button_limpiar.TabIndex = 28;
-            this.button_limpiar.Text = "Limpiar";
-            this.button_limpiar.UseVisualStyleBackColor = true;
-            this.button_limpiar.EnabledChanged += new System.EventHandler(this.button_EnabledChanged);
             // 
             // dgv_tipos_habitaciones
             // 
@@ -206,7 +192,6 @@
             this.Controls.Add(this.button_aceptar);
             this.Controls.Add(this.stat_BarraEstado);
             this.Controls.Add(this.button_volver);
-            this.Controls.Add(this.button_limpiar);
             this.Controls.Add(this.dgv_tipos_habitaciones);
             this.Controls.Add(this.lbl_habitacion_consumible);
             this.Controls.Add(this.lbl_estadía);
@@ -232,7 +217,6 @@
         private System.Windows.Forms.ToolStripProgressBar barra_progreso;
         private System.Windows.Forms.ToolStripStatusLabel label_progreso;
         private System.Windows.Forms.Button button_volver;
-        private System.Windows.Forms.Button button_limpiar;
         private System.Windows.Forms.DataGridView dgv_tipos_habitaciones;
         private System.Windows.Forms.Label lbl_habitacion_consumible;
         private System.Windows.Forms.Label lbl_estadía;

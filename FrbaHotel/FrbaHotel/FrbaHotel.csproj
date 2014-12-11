@@ -243,6 +243,9 @@
     <EmbeddedResource Include="Reserva\Reserva_generar.resx">
       <DependentUpon>Reserva_generar.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reserva\Reserva_terminar.resx">
+      <DependentUpon>Reserva_terminar.cs</DependentUpon>
+    </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -269,6 +272,12 @@
     </Compile>
     <Compile Include="Reserva\Reserva_generar.Designer.cs">
       <DependentUpon>Reserva_generar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reserva\Reserva_terminar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reserva\Reserva_terminar.Designer.cs">
+      <DependentUpon>Reserva_terminar.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

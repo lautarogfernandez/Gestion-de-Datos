@@ -76,10 +76,6 @@ namespace FrbaHotel.Reserva
 
 
         }
-        private void dgv_habitaciones_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            button_limpiar.Enabled = true;
-        }
 
         private void dgv_tipos_habitaciones_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -123,12 +119,10 @@ namespace FrbaHotel.Reserva
             {
                 try
                 {
-
-                    
                     DataTable table = new DataTable("t_reserva");
                     table.Columns.Add(new DataColumn("Tipo_habitacion", typeof(string)));
                     table.Columns.Add(new DataColumn("Cantidad", typeof(int)));
-                    string codigoRegimen =dgv_regimenes.SelectedCells[0].Value.ToString();
+                    string regimen =dgv_regimenes.SelectedCells[0].Value.ToString();
                     for (int i = 0; i < dgv_tipos_habitaciones.Rows.Count; i++)
                     {
                         bool activado = Convert.ToBoolean(dgv_tipos_habitaciones.Rows[i].Cells[0].Value);
@@ -145,23 +139,58 @@ namespace FrbaHotel.Reserva
                         {
                             //function  TEAM_CASTY.Disponibilidad_Reserva
                             //(@fecha_desde datetime,@fecha_hasta datetime,@hotel numeric(18),@tabla TEAM_CASTY.t_reserva
-                            string busqueda = "SELECT TEAM_CASTY.Disponibilidad_Reserva ('" +
-                                Home_Reserva.transformarFechaASql(dtp_desde.Value)+"','"+
-                                Home_Reserva.transformarFechaASql(dtp_hasta.Value)+"',"+
-                                Home_Reserva._codigo_hotel+","+table+")";
-                             SqlDataAdapter adaptador;
-                             DataTable tabla = new DataTable();
-                             adaptador = new SqlDataAdapter(busqueda, conn);                                                              //Busco en la sesión abierta 
-                            adaptador.Fill(tabla);
-                             if (tabla.Rows[0][0].ToString() == "1")
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            SqlParameter outputIdParam = new SqlParameter("@sePuede", SqlDbType.Bit)
+                            {
+                                Direction = ParameterDirection.Output
+                            };
+                            SqlParameter precio = new SqlParameter("@precio", SqlDbType.Money)
+                            {
+                                Direction = ParameterDirection.Output
+                            };
+                            cmd.CommandText = "[TEAM_CASTY].Disponibilidad_Reserva";
+                            cmd.Parameters.Add(new SqlParameter("@fecha_desde", Home_Reserva.transformarFechaASql(dtp_desde.Value)));
+                            cmd.Parameters.Add(new SqlParameter("@fecha_hasta", Home_Reserva.transformarFechaASql(dtp_hasta.Value)));
+                            cmd.Parameters.Add(new SqlParameter("@hotel", Home_Reserva._codigo_hotel));
+                            cmd.Parameters.Add(new SqlParameter("@tabla", table));
+                            cmd.Parameters.Add(new SqlParameter("@regimen",regimen));
+                            cmd.Parameters.Add(outputIdParam);
+                            cmd.Parameters.Add(precio);
+                            cmd.ExecuteNonQuery();
+                             if (Convert.ToInt32(outputIdParam.Value)!=0)
                              {
-                                 string msj = "Reserva válida \n";
-                                 MessageBox.Show(msj, "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                                 string msj =string.Format( "Reserva válida \n Precio total: USD {0} \n ¿Desea continuar y reservar?",precio.Value);
+                                 DialogResult resultado=MessageBox.Show(msj, "Éxito", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                 if (resultado == DialogResult.Yes)
+                                 {
+                                    t_reserva _reserva = new t_reserva();
+                                    _reserva.tipos_habitaciones = new List<t_reserva.habitacion_reserva>();
+                                    for (int i = 0; i < dgv_tipos_habitaciones.Rows.Count; i++)
+                                    {
+                                     bool activado = Convert.ToBoolean(dgv_tipos_habitaciones.Rows[i].Cells[0].Value);
+                                     string nombre = dgv_tipos_habitaciones.Rows[i].Cells[1].Value.ToString();
+                                     int cantidad = Convert.ToInt32(dgv_tipos_habitaciones.Rows[i].Cells[2].Value);
+                                        if( activado==true && cantidad>0)
+                                        {
+                                            t_reserva.habitacion_reserva habitacion_reserva = new t_reserva.habitacion_reserva();
+                                            habitacion_reserva.cantidad=cantidad;
+                                            habitacion_reserva.tipo_habitacion=nombre;
+                                            _reserva.tipos_habitaciones.Add(habitacion_reserva);
+                                        }
+                                    }
+                                    _reserva.regimen = regimen;
+                                    _reserva.codigo_hotel = Home_Reserva._codigo_hotel;
+                                    _reserva.fecha_desde = dtp_desde.Value;
+                                    _reserva.fecha_hasta = dtp_hasta.Value;
+                                    Reserva_terminar formulario_terminar_reserva = new Reserva_terminar(_reserva);
+                                    formulario_terminar_reserva.Show();
+                                    this.Hide();
+                                 }
                              }
                              else
                              {
-                                 string msj = "Reserva inválida \n";
-                                 MessageBox.Show(msj, "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                                 string msj = "Reserva no disponible \n";
+                                 MessageBox.Show(msj, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                              }
                         }
                     }

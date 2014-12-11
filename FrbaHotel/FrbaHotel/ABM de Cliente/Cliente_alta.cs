@@ -12,9 +12,11 @@ namespace FrbaHotel.ABM_de_Cliente
 {
     public partial class Cliente_alta : Form
     {
-        public Cliente_alta()
+        bool no_crear_form_principal;
+        public Cliente_alta(bool fuiLlamado)
         {
             InitializeComponent();
+            no_crear_form_principal = fuiLlamado;
             SqlConnection conn = Home_Cliente.obtenerConexion();
             SqlCommand cmd=Home_Cliente.obtenerComandoTipo_Documento(conn);
             try
@@ -95,6 +97,10 @@ namespace FrbaHotel.ABM_de_Cliente
 
                             string msj = "Cliente agregado con éxito \n";
                             MessageBox.Show(msj, "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                            if (no_crear_form_principal)
+                            {
+                                this.Hide();
+                            }
                         }
                     }
                 }
@@ -114,8 +120,11 @@ namespace FrbaHotel.ABM_de_Cliente
 
         private void button_volver_Click(object sender, EventArgs e)
         {
-            MenuPrincipal form = new MenuPrincipal();
-            form.Show();
+            if (no_crear_form_principal == false)
+            {
+                MenuPrincipal form = new MenuPrincipal();
+                form.Show();
+            }
             this.Hide();
         }
         private void txt_numero_documento_KeyPress_1(object sender, KeyPressEventArgs e)
