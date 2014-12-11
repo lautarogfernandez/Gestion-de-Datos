@@ -1880,7 +1880,7 @@ begin
 	BEGIN
 		select @cod_tipo_habitacion=th.Cod_Tipo
 		from TEAM_CASTY.Tipo_Habitacion th
-		where th.Descripcion=@t_hab;
+		where th.Descripcion=@t_habitacion;
 		
 		set @precio+=((select TEAM_CASTY.PrecioPorDiaEspecifico(@hotel,@cod_reg,@cod_tipo_habitacion))*@cantidad*DATEDIFF(DAY,@fecha_desde,@fecha_hasta));
 		
