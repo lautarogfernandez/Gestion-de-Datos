@@ -1985,6 +1985,35 @@ end;
 
 GO
 
+
+create procedure  TEAM_CASTY.Datos_Reserva
+(@cod_reserva numeric(18),@fecha_reserva datetime output,@cant_noches numeric(18) output,
+@regimen nvarchar(255) output)
+as
+begin
+	declare @cod_reg numeric(18);
+	select @fecha_reserva=res.Fecha_Reserva,@cant_noches=res.Cant_Noches,@cod_reg=res.Cod_Regimen
+	from TEAM_CASTY.Reserva res where res.Cod_Reserva=@cod_reserva;
+	
+	select @regimen=reg.Descripcion	from TEAM_CASTY.Regimen reg where reg.Cod_Regimen=@cod_reg;	
+end;
+
+GO
+
+create function  TEAM_CASTY.Habitaciones_Reserva
+(@cod_reserva numeric(18))
+returns table
+as
+
+return(
+select th.Descripcion,COUNT(*) as Cantidad
+from TEAM_CASTY.Habitacion hab, TEAM_CASTY.Tipo_Habitacion th, TEAM_CASTY.HabitacionXReserva hxr
+where hxr.Cod_Reserva=@cod_reserva and hab.Cod_Habitacion=hxr.Cod_Habitacion and th.Cod_Tipo=hab.Cod_Tipo
+group by th.Descripcion);
+
+GO
+
+
 create procedure  TEAM_CASTY.Modificar_Reserva
 (@usuario nvarchar(255),@cod_reserva numeric(18),@fecha_realizacion datetime,@fecha_reserva datetime,@cant_noches numeric(18),
 @id_cliente numeric(18),@regimen nvarchar(255),@hotel numeric(18),@tabla TEAM_CASTY.t_reserva readonly)
@@ -2487,3 +2516,6 @@ end
 end;
 
 GO
+
+
+select * from 
