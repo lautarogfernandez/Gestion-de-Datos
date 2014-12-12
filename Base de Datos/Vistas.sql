@@ -423,3 +423,58 @@ from  TEAM_CASTY.vistaTOP5ClienteConPuntosAux (@pFecha_Inicio,@pFecha_Fin ) aux
 group by aux.Codigo
 order by Puntos desc
 
+
+CREATE FUNCTION TEAM_CASTY.vistaTOP5ClienteConPuntosPOSTA (@pFecha_Inicio date,@pFecha_Fin date)
+returns table
+return (
+select top 5  vc.* ,fac.Puntos
+from TEAM_CASTY.Factura fac,TEAM_CASTY.Reserva res,TEAM_CASTY.Estadia est,TEAM_CASTY.vistaClientes vc
+where (fac.Fecha between @pFecha_Inicio and @pFecha_Fin) and fac.Cod_Estadia=est.Cod_Estadia and
+res.Cod_Reserva=est.Cod_Reserva and vc.Codigo=res.ID_Cliente_Reservador 
+order by fac.Puntos desc
+);
+
+
+CREATE FUNCTION TEAM_CASTY.vistaTOP5ClienteConPuntosJO (@pFecha_Inicio date,@pFecha_Fin date)
+returns table
+return (
+declare @pFecha_Inicio date=convert(date,'2013-01-01',111);
+declare @pFecha_Fin date=convert(date,'2013-03-31',111);
+select   *,cast(round(TEAM_CASTY.MontoHabitaciones(fac.Cod_Estadia)/10,0,1)as int)+cast(round(TEAM_CASTY.MontoConsumibles2(fac.Cod_Estadia)/5,0,1)as int) as Puntos--aux.Codigo, sum ((TEAM_CASTY.MontoHabitaciones(aux.Cod_Estadia)/10)  + (TEAM_CASTY.MontoConsumibles(aux.Cod_Estadia)/5)) as Puntos
+from TEAM_CASTY.Factura fac
+where fac.Fecha between @pFecha_Inicio and @pFecha_Fin
+order by Puntos desc
+);
+
+go
+
+create function TEAM_CASTY.MontoConsumibles2
+(@cod_estadia numeric(18))
+RETURNS numeric(18,2)
+AS
+begin 
+declare @monto numeric(18,2)=0;
+declare @cod_reg numeric(18);
+select @cod_reg=res.Cod_Regimen from TEAM_CASTY.Estadia est, TEAM_CASTY.Reserva res where est.Cod_Estadia=@cod_estadia and res.Cod_Reserva=est.Cod_Reserva;
+if (@cod_estadia<>1)
+begin
+	select @monto=SUM(cxhxe.Precio*cxhxe.Cantidad)
+	from TEAM_CASTY.ConsumibleXHabitacionXEstadia cxhxe 
+	where cxhxe.Cod_Estadia=@cod_estadia;
+	if(@monto is null)
+	begin
+		set @monto=0;
+	end
+end
+return @monto;
+end;
+
+GO
+
+
+select TEAM_CASTY.MontoConsumibles(2);
+
+select * from TEAM_CASTY.Estadia
+
+declare @pFecha_Inicio date=convert(date,'2013-01-01',111);
+declare @pFecha_Fin date=convert(date,'2013-03-31',111);
