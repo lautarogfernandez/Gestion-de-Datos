@@ -154,12 +154,30 @@ namespace FrbaHotel.ABM_de_Habitacion
             }
         }
 
+        private void txt_piso_Click(object sender, EventArgs e)
+        {
+            if (txt_piso.Text == "Ingrese nombre")
+            {
+                txt_piso.Text = string.Empty;
+                txt_piso.ForeColor = SystemColors.MenuText;
+            }
+        }
+
         private void txt_numero_TextChanged(object sender, EventArgs e)
         {
             if (txt_numero.TextLength > 0)
             {
                 txt_numero.ForeColor = SystemColors.MenuText;
                 _buscaNumero = true;
+            }
+        }
+
+        private void txt_numero_Click(object sender, EventArgs e)
+        {
+            if (txt_numero.Text == "Ingrese nombre")
+            {
+                txt_numero.Text = string.Empty;
+                txt_numero.ForeColor = SystemColors.MenuText;
             }
         }
 
