@@ -887,7 +887,7 @@ end;
 GO
 
 create procedure TEAM_CASTY.BajarHabitacion
-(@hotel numeric(18), @numero numeric(18),@piso numeric(18),@fecha datetime)
+(@codHabitacion numeric(18),@fecha datetime)
 as
 begin
 
@@ -896,7 +896,7 @@ declare @error int;
 set @error=0;
 set @mensaje='Error:';
 
-if(not exists (select * from TEAM_CASTY.Habitacion hab where hab.Cod_Hotel=@hotel and hab.Numero=@numero and @piso=hab.Piso))
+if(not exists (select * from TEAM_CASTY.Habitacion hab where hab.Cod_Habitacion=@codHabitacion))
 begin
 set @error=1
 set @mensaje=@mensaje + ' Habitación inexistente.';
@@ -905,11 +905,11 @@ end
 if (exists(
 select *
 from TEAM_CASTY.Habitacion hab, TEAM_CASTY.Reserva res, TEAM_CASTY.HabitacionXReserva hxr
-where hab.Cod_Hotel=@hotel and hab.Piso=@piso and @numero=hab.Numero and
+where hab.Cod_Habitacion=@codHabitacion and
 hxr.Cod_Habitacion=hab.Cod_Habitacion and
 res.Cod_Reserva=hxr.Cod_Reserva and
 res.Cod_Estado=1 and
-datediff(day,res.Fecha_Reserva,@fecha)>0
+datediff(day,@fecha,res.Fecha_Reserva)>0
 ))
 begin
 set @error=1
@@ -919,10 +919,11 @@ end
 if (exists(
 SELECT *
 from TEAM_CASTY.Estadia est, TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXEstadia hxe
-where hab.Piso=@piso and hab.Numero=@numero and hab.Cod_Hotel=@hotel and
+where hab.Cod_Habitacion=@codHabitacion and
 hab.Cod_Habitacion=hxe.Cod_Habitacion and
 hxe.Cod_Estadia=est.Cod_Estadia and
-datediff(day,est.Fecha_Inicio,@fecha)>0 and datediff(day,@fecha,est.Fecha_Salida)<0
+@fecha > est.Fecha_Inicio and 
+est.Fecha_Salida is null
 ))
 begin
 set @error=1
@@ -933,7 +934,7 @@ if(@error=0)
 begin
 update TEAM_CASTY.Habitacion
 set Baja=1
-where Cod_Hotel=@hotel and Numero=@numero and Piso=@piso;
+where Cod_Habitacion=@codHabitacion;
 end
 
 else
@@ -2148,7 +2149,7 @@ create function  TEAM_CASTY.Reservas_Para_Check_IN
 returns table
 AS
 	return(
-	select distinct res.Cod_Reserva
+	select distinct res.Cod_Reserva,res.ID_Cliente_Reservador
 	from TEAM_CASTY.Reserva res,TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXReserva hxr
 	where res.Cod_Reserva=hxr.Cod_Reserva and hxr.Cod_Habitacion=hab.Cod_Habitacion and hab.Cod_Hotel=@hotel and
 	datediff(day,res.Fecha_Reserva,@fecha)=0);
