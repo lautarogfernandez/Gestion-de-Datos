@@ -2211,11 +2211,6 @@ AS
 
 GO
 
-
-select * from TEAM_CASTY.Reserva where Cod_Estado in (1,2) order by Cod_Reserva desc
-declare @f datetime = convert(datetime,'2020-10-11',111);
-select * from TEAM_CASTY.Reservas_Para_Check_IN(@f,2);
-
 create function  TEAM_CASTY.Estadias_Para_Check_OUT
 (@hotel numeric(18))
 returns table
