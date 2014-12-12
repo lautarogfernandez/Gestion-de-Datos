@@ -424,13 +424,14 @@ group by aux.Codigo
 order by Puntos desc
 
 
-CREATE FUNCTION TEAM_CASTY.vistaTOP5ClienteConPuntosPOSTA (@pFecha_Inicio date,@pFecha_Fin date)
+--EL POSTA
+CREATE FUNCTION TEAM_CASTY.vistaTOP5ClienteConPuntos (@pFecha_Inicio date,@pFecha_Fin date)
 returns table
 return (
-select top 5  vc.* ,fac.Puntos
-from TEAM_CASTY.Factura fac,TEAM_CASTY.Reserva res,TEAM_CASTY.Estadia est,TEAM_CASTY.vistaClientes vc
+select top 5  c.Nombre, c.Apellido,td.Tipo_Documento ,c.Nro_Documento,c.Nacionalidad,c.Mail,c.Fecha_Nacimiento ,fac.Puntos
+from TEAM_CASTY.Factura fac,TEAM_CASTY.Reserva res,TEAM_CASTY.Estadia est,TEAM_CASTY.Cliente c, TEAM_CASTY.Tipo_Documento td
 where (fac.Fecha between @pFecha_Inicio and @pFecha_Fin) and fac.Cod_Estadia=est.Cod_Estadia and
-res.Cod_Reserva=est.Cod_Reserva and vc.Codigo=res.ID_Cliente_Reservador 
+res.Cod_Reserva=est.Cod_Reserva and c.ID_Cliente=res.ID_Cliente_Reservador and c.ID_Tipo_Documento=td.ID_Tipo_Documento
 order by fac.Puntos desc
 );
 
