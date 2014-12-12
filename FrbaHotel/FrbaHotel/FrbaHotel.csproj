@@ -129,6 +129,12 @@
     <Compile Include="ABM de Hotel\Hotel_baja.Designer.cs">
       <DependentUpon>Hotel_baja.cs</DependentUpon>
     </Compile>
+    <Compile Include="ABM de Hotel\Hotel_listado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Hotel\Hotel_listado.Designer.cs">
+      <DependentUpon>Hotel_listado.cs</DependentUpon>
+    </Compile>
     <Compile Include="ABM de Hotel\Hotel_modificacion.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -177,11 +183,18 @@
     <Compile Include="ABM de Rol\Rol_modificar.Designer.cs">
       <DependentUpon>Rol_modificar.cs</DependentUpon>
     </Compile>
-    <Compile Include="ABM de Usuario\Form1.cs">
+    <Compile Include="ABM de Usuario\Home_Usuario.cs" />
+    <Compile Include="ABM de Usuario\Usuario_alta.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ABM de Usuario\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="ABM de Usuario\Usuario_alta.Designer.cs">
+      <DependentUpon>Usuario_alta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM de Usuario\Usuario_elegir_roles_por_hotel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Usuario\Usuario_elegir_roles_por_hotel.Designer.cs">
+      <DependentUpon>Usuario_elegir_roles_por_hotel.cs</DependentUpon>
     </Compile>
     <Compile Include="Encriptado\Encriptador.cs" />
     <Compile Include="Home.cs" />
@@ -248,6 +261,9 @@
     <EmbeddedResource Include="ABM de Hotel\Hotel_baja.resx">
       <DependentUpon>Hotel_baja.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Hotel\Hotel_listado.resx">
+      <DependentUpon>Hotel_listado.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ABM de Hotel\Hotel_modificacion.resx">
       <DependentUpon>Hotel_modificacion.cs</DependentUpon>
     </EmbeddedResource>
@@ -268,6 +284,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ABM de Rol\Rol_modificar.resx">
       <DependentUpon>Rol_modificar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Usuario\Usuario_alta.resx">
+      <DependentUpon>Usuario_alta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Usuario\Usuario_elegir_roles_por_hotel.resx">
+      <DependentUpon>Usuario_elegir_roles_por_hotel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Listado Estadistico\ListadoEstadistico.resx">
       <DependentUpon>ListadoEstadistico.cs</DependentUpon>

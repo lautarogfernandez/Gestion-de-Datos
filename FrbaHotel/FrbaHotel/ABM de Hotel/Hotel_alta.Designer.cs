@@ -235,7 +235,7 @@
             this.txt_numero_calle.Location = new System.Drawing.Point(230, 224);
             this.txt_numero_calle.Name = "txt_numero_calle";
             this.txt_numero_calle.Size = new System.Drawing.Size(306, 20);
-            this.txt_numero_calle.TabIndex = 6;
+            this.txt_numero_calle.TabIndex = 5;
             this.txt_numero_calle.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_numero_calle_KeyPress);
             // 
             // txt_calle
@@ -243,35 +243,35 @@
             this.txt_calle.Location = new System.Drawing.Point(230, 184);
             this.txt_calle.Name = "txt_calle";
             this.txt_calle.Size = new System.Drawing.Size(306, 20);
-            this.txt_calle.TabIndex = 5;
+            this.txt_calle.TabIndex = 4;
             // 
             // txt_pais
             // 
             this.txt_pais.Location = new System.Drawing.Point(230, 103);
             this.txt_pais.Name = "txt_pais";
             this.txt_pais.Size = new System.Drawing.Size(306, 20);
-            this.txt_pais.TabIndex = 7;
+            this.txt_pais.TabIndex = 2;
             // 
             // txt_telefono
             // 
             this.txt_telefono.Location = new System.Drawing.Point(230, 264);
             this.txt_telefono.Name = "txt_telefono";
             this.txt_telefono.Size = new System.Drawing.Size(306, 20);
-            this.txt_telefono.TabIndex = 2;
+            this.txt_telefono.TabIndex = 6;
             // 
             // txt_mail
             // 
             this.txt_mail.Location = new System.Drawing.Point(230, 304);
             this.txt_mail.Name = "txt_mail";
             this.txt_mail.Size = new System.Drawing.Size(306, 20);
-            this.txt_mail.TabIndex = 4;
+            this.txt_mail.TabIndex = 7;
             // 
             // txt_nombre
             // 
             this.txt_nombre.Location = new System.Drawing.Point(230, 63);
             this.txt_nombre.Name = "txt_nombre";
             this.txt_nombre.Size = new System.Drawing.Size(306, 20);
-            this.txt_nombre.TabIndex = 3;
+            this.txt_nombre.TabIndex = 1;
             // 
             // button_aceptar
             // 
@@ -611,7 +611,7 @@
             this.list_tipos_regimenes.Location = new System.Drawing.Point(230, 344);
             this.list_tipos_regimenes.Name = "list_tipos_regimenes";
             this.list_tipos_regimenes.Size = new System.Drawing.Size(306, 19);
-            this.list_tipos_regimenes.TabIndex = 1;
+            this.list_tipos_regimenes.TabIndex = 8;
             this.list_tipos_regimenes.MouseHover += new System.EventHandler(this.list_tipos_regimenes_MouseHover);
             this.list_tipos_regimenes.MouseLeave += new System.EventHandler(this.list_tipos_regimenes_MouseLeave);
             // 
@@ -622,7 +622,7 @@
             this.cmb_ciudad.Location = new System.Drawing.Point(230, 143);
             this.cmb_ciudad.Name = "cmb_ciudad";
             this.cmb_ciudad.Size = new System.Drawing.Size(306, 21);
-            this.cmb_ciudad.TabIndex = 8;
+            this.cmb_ciudad.TabIndex = 3;
             this.cmb_ciudad.Text = "Seleccione ciudad";
             this.cmb_ciudad.SelectedIndexChanged += new System.EventHandler(this.cmb_ciudad_SelectedIndexChanged);
             // 

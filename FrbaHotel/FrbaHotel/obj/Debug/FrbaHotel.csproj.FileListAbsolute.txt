@@ -66,3 +66,6 @@ C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHote
 C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.Registrar_Estadia.registrar_egreso.resources
 C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Hotel.Hotel_recarga_estrella.resources
 C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Hotel.Hotel_baja.resources
+C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Hotel.Hotel_listado.resources
+C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Usuario.Usuario_alta.resources
+C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Usuario.Usuario_elegir_roles_por_hotel.resources

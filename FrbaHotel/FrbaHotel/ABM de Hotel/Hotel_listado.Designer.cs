@@ -1,6 +1,6 @@
 ﻿namespace FrbaHotel.ABM_de_Hotel
 {
-    partial class Hotel_baja
+    partial class Hotel_listado
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Hotel_baja));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Hotel_listado));
             this.grp_cantidad_estrellas = new System.Windows.Forms.GroupBox();
             this.menor = new System.Windows.Forms.PictureBox();
             this.igual = new System.Windows.Forms.PictureBox();
@@ -53,7 +53,6 @@
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.button_eliminar = new System.Windows.Forms.Button();
             this.dgv_resultados = new System.Windows.Forms.DataGridView();
             this.stat_BarraEstado = new System.Windows.Forms.StatusStrip();
             this.barra_progreso = new System.Windows.Forms.ToolStripProgressBar();
@@ -68,13 +67,6 @@
             this.txt_Ciudad = new System.Windows.Forms.TextBox();
             this.lbl_Pais = new System.Windows.Forms.Label();
             this.lbl_Ciudad = new System.Windows.Forms.Label();
-            this.grp_motivo = new System.Windows.Forms.GroupBox();
-            this.txt_motivo = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.dtp_hasta = new System.Windows.Forms.DateTimePicker();
-            this.dtp_desde = new System.Windows.Forms.DateTimePicker();
-            this.lbl_hasta = new System.Windows.Forms.Label();
-            this.lbl_desde = new System.Windows.Forms.Label();
             this.grp_cantidad_estrellas.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.menor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.igual)).BeginInit();
@@ -97,7 +89,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_resultados)).BeginInit();
             this.stat_BarraEstado.SuspendLayout();
             this.Filtros_de_busqueda.SuspendLayout();
-            this.grp_motivo.SuspendLayout();
             this.SuspendLayout();
             // 
             // grp_cantidad_estrellas
@@ -377,19 +368,6 @@
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
-            // button_eliminar
-            // 
-            this.button_eliminar.Enabled = false;
-            this.button_eliminar.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_eliminar.ForeColor = System.Drawing.SystemColors.ScrollBar;
-            this.button_eliminar.Location = new System.Drawing.Point(222, 475);
-            this.button_eliminar.Name = "button_eliminar";
-            this.button_eliminar.Size = new System.Drawing.Size(135, 45);
-            this.button_eliminar.TabIndex = 15;
-            this.button_eliminar.Text = "Eliminar";
-            this.button_eliminar.UseVisualStyleBackColor = true;
-            this.button_eliminar.Click += new System.EventHandler(this.button_eliminar_Click);
-            // 
             // dgv_resultados
             // 
             this.dgv_resultados.AllowUserToAddRows = false;
@@ -402,7 +380,7 @@
             this.dgv_resultados.Name = "dgv_resultados";
             this.dgv_resultados.ReadOnly = true;
             this.dgv_resultados.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_resultados.Size = new System.Drawing.Size(560, 173);
+            this.dgv_resultados.Size = new System.Drawing.Size(560, 274);
             this.dgv_resultados.TabIndex = 10;
             // 
             // stat_BarraEstado
@@ -434,7 +412,7 @@
             this.button_volver.Location = new System.Drawing.Point(437, 474);
             this.button_volver.Name = "button_volver";
             this.button_volver.Size = new System.Drawing.Size(135, 45);
-            this.button_volver.TabIndex = 16;
+            this.button_volver.TabIndex = 12;
             this.button_volver.Text = "Volver";
             this.button_volver.UseVisualStyleBackColor = true;
             this.button_volver.Click += new System.EventHandler(this.button_volver_Click);
@@ -447,7 +425,7 @@
             this.button_limpiar.Location = new System.Drawing.Point(12, 474);
             this.button_limpiar.Name = "button_limpiar";
             this.button_limpiar.Size = new System.Drawing.Size(135, 45);
-            this.button_limpiar.TabIndex = 14;
+            this.button_limpiar.TabIndex = 11;
             this.button_limpiar.Text = "Limpiar";
             this.button_limpiar.UseVisualStyleBackColor = true;
             this.button_limpiar.Click += new System.EventHandler(this.button_limpiar_Click);
@@ -547,82 +525,12 @@
             this.lbl_Ciudad.TabIndex = 2;
             this.lbl_Ciudad.Text = "Ciudad";
             // 
-            // grp_motivo
-            // 
-            this.grp_motivo.Controls.Add(this.txt_motivo);
-            this.grp_motivo.Controls.Add(this.label1);
-            this.grp_motivo.Controls.Add(this.dtp_hasta);
-            this.grp_motivo.Controls.Add(this.dtp_desde);
-            this.grp_motivo.Controls.Add(this.lbl_hasta);
-            this.grp_motivo.Controls.Add(this.lbl_desde);
-            this.grp_motivo.Location = new System.Drawing.Point(12, 374);
-            this.grp_motivo.Name = "grp_motivo";
-            this.grp_motivo.Size = new System.Drawing.Size(560, 94);
-            this.grp_motivo.TabIndex = 205;
-            this.grp_motivo.TabStop = false;
-            this.grp_motivo.Text = "Ingrese fechas desde y hasta para dar de baja y un motivo";
-            // 
-            // txt_motivo
-            // 
-            this.txt_motivo.ForeColor = System.Drawing.SystemColors.ScrollBar;
-            this.txt_motivo.Location = new System.Drawing.Point(48, 68);
-            this.txt_motivo.Name = "txt_motivo";
-            this.txt_motivo.Size = new System.Drawing.Size(506, 20);
-            this.txt_motivo.TabIndex = 13;
-            this.txt_motivo.Text = "Ingrese motivo de la baja";
-            this.txt_motivo.TextChanged += new System.EventHandler(this.txt_motivo_TextChanged);
-            this.txt_motivo.Click += new System.EventHandler(this.txt_motivo_Click);
-            this.txt_motivo.Leave += new System.EventHandler(this.txt_motivo_Leave);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 74);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(39, 13);
-            this.label1.TabIndex = 156;
-            this.label1.Text = "Motivo";
-            // 
-            // dtp_hasta
-            // 
-            this.dtp_hasta.Location = new System.Drawing.Point(335, 19);
-            this.dtp_hasta.Name = "dtp_hasta";
-            this.dtp_hasta.Size = new System.Drawing.Size(216, 20);
-            this.dtp_hasta.TabIndex = 12;
-            // 
-            // dtp_desde
-            // 
-            this.dtp_desde.Location = new System.Drawing.Point(14, 19);
-            this.dtp_desde.Name = "dtp_desde";
-            this.dtp_desde.Size = new System.Drawing.Size(216, 20);
-            this.dtp_desde.TabIndex = 11;
-            // 
-            // lbl_hasta
-            // 
-            this.lbl_hasta.AutoSize = true;
-            this.lbl_hasta.Location = new System.Drawing.Point(294, 19);
-            this.lbl_hasta.Name = "lbl_hasta";
-            this.lbl_hasta.Size = new System.Drawing.Size(35, 13);
-            this.lbl_hasta.TabIndex = 60;
-            this.lbl_hasta.Text = "Hasta";
-            // 
-            // lbl_desde
-            // 
-            this.lbl_desde.AutoSize = true;
-            this.lbl_desde.Location = new System.Drawing.Point(236, 19);
-            this.lbl_desde.Name = "lbl_desde";
-            this.lbl_desde.Size = new System.Drawing.Size(38, 13);
-            this.lbl_desde.TabIndex = 59;
-            this.lbl_desde.Text = "Desde";
-            // 
-            // Hotel_baja
+            // Hotel_listado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 561);
-            this.Controls.Add(this.grp_motivo);
             this.Controls.Add(this.grp_cantidad_estrellas);
-            this.Controls.Add(this.button_eliminar);
             this.Controls.Add(this.dgv_resultados);
             this.Controls.Add(this.stat_BarraEstado);
             this.Controls.Add(this.button_volver);
@@ -630,9 +538,8 @@
             this.Controls.Add(this.Filtros_de_busqueda);
             this.MaximumSize = new System.Drawing.Size(600, 600);
             this.MinimumSize = new System.Drawing.Size(600, 600);
-            this.Name = "Hotel_baja";
-            this.Text = "Hotel_baja";
-            this.Load += new System.EventHandler(this.Hotel_baja_Load);
+            this.Name = "Hotel_listado";
+            this.Text = "Hotel_listado";
             this.grp_cantidad_estrellas.ResumeLayout(false);
             this.grp_cantidad_estrellas.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.menor)).EndInit();
@@ -658,8 +565,6 @@
             this.stat_BarraEstado.PerformLayout();
             this.Filtros_de_busqueda.ResumeLayout(false);
             this.Filtros_de_busqueda.PerformLayout();
-            this.grp_motivo.ResumeLayout(false);
-            this.grp_motivo.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -691,7 +596,6 @@
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Button button_eliminar;
         private System.Windows.Forms.DataGridView dgv_resultados;
         private System.Windows.Forms.StatusStrip stat_BarraEstado;
         private System.Windows.Forms.ToolStripProgressBar barra_progreso;
@@ -706,12 +610,5 @@
         private System.Windows.Forms.TextBox txt_Ciudad;
         private System.Windows.Forms.Label lbl_Pais;
         private System.Windows.Forms.Label lbl_Ciudad;
-        private System.Windows.Forms.GroupBox grp_motivo;
-        private System.Windows.Forms.DateTimePicker dtp_hasta;
-        private System.Windows.Forms.DateTimePicker dtp_desde;
-        private System.Windows.Forms.Label lbl_hasta;
-        private System.Windows.Forms.Label lbl_desde;
-        private System.Windows.Forms.TextBox txt_motivo;
-        private System.Windows.Forms.Label label1;
     }
 }

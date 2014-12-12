@@ -10,7 +10,7 @@ using System.Data.SqlClient;
 
 namespace FrbaHotel.ABM_de_Hotel
 {
-    public partial class Hotel_modificacion : Form
+    public partial class Hotel_listado : Form
     {
         #region Variables
         public bool _buscaCiudad = false; //busca ciudad
@@ -20,7 +20,6 @@ namespace FrbaHotel.ABM_de_Hotel
         public bool _buscaIgual = false;
         public bool _buscaNombre = false;
         public int cantidad_estrellas = 0;
-        valoresDataGridView _valores;
         private enum tipoComponente
         {
             codigo,
@@ -50,7 +49,7 @@ namespace FrbaHotel.ABM_de_Hotel
             _unBoton.Enabled = false;
             _unBoton.ForeColor = SystemColors.ScrollBar;
         }
-        public Hotel_modificacion()
+        public Hotel_listado()
         {
             InitializeComponent();
             button_Buscar.Enabled = true;
@@ -152,8 +151,6 @@ namespace FrbaHotel.ABM_de_Hotel
         #endregion
         private void button_Buscar_Click(object sender, EventArgs e)
         {
-            button_modificar.Enabled = false;
-            button_modificar.ForeColor = SystemColors.ScrollBar;
             string busqueda = "SELECT [Codigo],[Pais],[Nombre], [Ciudad], [Calle], [Numero Calle], [Telefono], [Mail], [Fecha Creacion], " +
                                            "[Cantidad de estrellas] FROM [GD2C2014].[Team_Casty].[vistaHoteles]";          //búsqueda básica
             button_Buscar.Enabled = false;            //Deshabilito búsqueda hasta que haya resultado
@@ -165,7 +162,7 @@ namespace FrbaHotel.ABM_de_Hotel
             barra_progreso.Value = 5;                                                                                                            //0% de la barra de progreso
             DataTable tablaHoteles = new DataTable();                                                                                 //Creo Tabla para los resultados
             #region Condiciones_de_busqueda
-            if (_buscaNombre || _buscaCiudad || _buscaPais || (cantidad_estrellas>0 && (_buscaIgual||_buscaMayor||_buscaMenor)))
+            if (_buscaNombre || _buscaCiudad || _buscaPais || (cantidad_estrellas > 0 && (_buscaIgual || _buscaMayor || _buscaMenor)))
             {
                 busqueda += " WHERE ";
                 bool _masDeUno = false;
@@ -187,11 +184,11 @@ namespace FrbaHotel.ABM_de_Hotel
                     _masDeUno = true;
                     busqueda += " [Pais] LIKE '%" + txt_Pais.Text.ToString().ToLower() + "%'";
                 }
-                if (cantidad_estrellas>0)
+                if (cantidad_estrellas > 0)
                 {
                     if (_masDeUno) busqueda += " AND ";
                     _masDeUno = true;
-                    bool mayorOMenor=false;
+                    bool mayorOMenor = false;
                     if (_buscaMayor)
                     {
                         busqueda += " [Cantidad de estrellas] >";
@@ -211,8 +208,8 @@ namespace FrbaHotel.ABM_de_Hotel
                         else
                             busqueda += " [Cantidad de estrellas] = ";
                     }
-                    busqueda += " " + cantidad_estrellas.ToString() ;
-                    
+                    busqueda += " " + cantidad_estrellas.ToString();
+
 
                 }
             }
@@ -229,13 +226,14 @@ namespace FrbaHotel.ABM_de_Hotel
             {
                 barra_progreso.Value = 0;
                 label_progreso.Text = "Error - Búsqueda de Hoteles Inválida";
-                Home_Hotel.mostrarMensajeErrorSql(exc);
+                string msj = "Errores de sql: \n";
+                for (int i = 0; i < exc.Errors.Count; i++)
+                    msj += exc.Errors[i].Message + "\n";
+                MessageBox.Show(msj, "Excepcion SQL", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             }
             conn.Close();                                                                                                                                 //Cierro conexión
             button_Buscar.Enabled = true;                                                                                                     //Habilito Otra búsqueda
             habilitar_boton(button_limpiar);                                                                                                  //habilita el boton limpiar
-            button_modificar.Enabled = true;
-            button_modificar.ForeColor = SystemColors.MenuText;
         }
 
         private void Cliente_listado_Load(object sender, EventArgs e)
@@ -256,8 +254,6 @@ namespace FrbaHotel.ABM_de_Hotel
             dgv_resultados.DataSource = null;
             button_limpiar.Enabled = false;
             label_progreso.Text = "Tabla de resultados vacía";
-            button_modificar.Enabled = false;
-            button_modificar.ForeColor = SystemColors.ScrollBar;
         }
 
         private void Filtros_de_busqueda_Enter(object sender, EventArgs e)
@@ -288,99 +284,9 @@ namespace FrbaHotel.ABM_de_Hotel
 
         private void dgv_resultados_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            button_modificar.Enabled = true;
-            button_modificar.ForeColor = SystemColors.MenuText;
-
-
-
-
         }
 
-        private void button_modificar_Click(object sender, EventArgs e)
-        {
-            _valores = new valoresDataGridView();
-            for (int i = 0; i < dgv_resultados.SelectedCells.Count; i++)
-            {
-                switch (dgv_resultados.Columns[i].HeaderText)
-                {
-                    case "Cantidad de Estrellas":
-                        {
-                            _valores._cantidad_estrellas = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                    case "Mail":
-                        {
-                            _valores._mail = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                    case "Codigo":
-                        {
-                            _valores._codigo = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                    case "Nombre":
-                        {
-                            _valores._nombre = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                    case "Telefono":
-                        {
-                            _valores._telefono = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                    case "Pais":
-                        {
-                            _valores._pais = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                    case "Calle":
-                        {
-                            _valores._calle = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                    case "Numero Calle":
-                        {
-                            _valores._numero_calle = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                    case "Ciudad":
-                        {
-                            _valores._ciudad = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                     
-                }
-                _valores._regimenes= new List<string>();
-                using (SqlConnection conn = Home_Hotel.obtenerConexion())
-                {
-                    //function TEAM_CASTY.RegimenesDeUnHotel
-                    //(@cod_hotel numeric (18))
-                    string busqueda1 = string.Format("SELECT * FROM TEAM_CASTY.RegimenesDeUnHotel ({0})", _valores._codigo);
-                    SqlCommand cmd2 = new SqlCommand(busqueda1, conn);
-                    SqlDataReader reader = cmd2.ExecuteReader();    //Creo adaptador para la busqueda
-                    while (reader.Read())
-                    {
-                        _valores._regimenes.Add(reader["Descripcion"].ToString());
-                    }
-                    reader.Close();
-                }    
-            }
-            Hotel_modificar formularioModificar = new Hotel_modificar(_valores);
-            //for (int i = 0; i < dgv_resultados.SelectedCells.Count; i++)
-            //{
-            //    ObjetoModificable obj = new ObjetoModificable();
-            //    obj._header
-            //}
-            //List<int> seleccionesAcotadas = new List<int>();
-            //List<int> seleccionesMultiples = new List<int>();
-            //for(int i=0;i<dgv_resultados.Columns.Count;i++){
-            //    if (dgv_resultados.Columns[i].HeaderText == "Tipo Documento")
-            //        seleccionesAcotadas.Add(i);
-            //}
-            //Modificar formularioModificar = new Modificar(dgv_resultados.SelectedCells,dgv_resultados.Columns,"vistaClientes",seleccionesAcotadas,seleccionesMultiples);
-            formularioModificar.Show();
-        }
-
+    
         private void Filtros_de_busqueda_Enter_1(object sender, EventArgs e)
         {
 
@@ -471,7 +377,7 @@ namespace FrbaHotel.ABM_de_Hotel
 
         private void menor_MouseHover(object sender, EventArgs e)
         {
-            if(!_buscaMenor)
+            if (!_buscaMenor)
                 menor.Image = FrbaHotel.Properties.Resources.menor_hover;
         }
 
@@ -489,8 +395,7 @@ namespace FrbaHotel.ABM_de_Hotel
 
         private void igual_MouseHover(object sender, EventArgs e)
         {
-            if (!_buscaIgual)
-                igual.Image = FrbaHotel.Properties.Resources.igual_hover;
+
         }
 
         private void mayor_MouseHover(object sender, EventArgs e)
@@ -530,6 +435,7 @@ namespace FrbaHotel.ABM_de_Hotel
             cantidad_estrellas = 5;
         }
         #endregion
+
         #endregion
 
 

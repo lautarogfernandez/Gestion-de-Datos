@@ -33,7 +33,8 @@ namespace FrbaHotel
             if ((Home._nombreUsuario).ToLower() != "guest")
             {
                 button_logout.Visible = true;
-
+                button_cambiar_pass.Visible = true;
+                button_login.Visible = false;
                 string msj = "Bienvenido: " + lbl_usuario.Text + ".\n Seleccione un hotel y seleccione un rol para continuar.";
                 MessageBox.Show(msj, "Bienvenido", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 label_progreso.Text = "Seleccione un hotel para continuar.";

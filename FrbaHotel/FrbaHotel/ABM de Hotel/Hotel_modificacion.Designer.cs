@@ -37,20 +37,22 @@
             this.button_volver = new System.Windows.Forms.Button();
             this.button_limpiar = new System.Windows.Forms.Button();
             this.Filtros_de_busqueda = new System.Windows.Forms.GroupBox();
+            this.txt_nombre = new System.Windows.Forms.TextBox();
+            this.lbl_nombre = new System.Windows.Forms.Label();
             this.button_Buscar = new System.Windows.Forms.Button();
             this.txt_Pais = new System.Windows.Forms.TextBox();
             this.txt_Ciudad = new System.Windows.Forms.TextBox();
             this.lbl_Pais = new System.Windows.Forms.Label();
             this.lbl_Ciudad = new System.Windows.Forms.Label();
             this.grp_cantidad_estrellas = new System.Windows.Forms.GroupBox();
-            this.menor = new System.Windows.Forms.PictureBox();
-            this.igual = new System.Windows.Forms.PictureBox();
-            this.mayor = new System.Windows.Forms.PictureBox();
             this.rb_1estrella = new System.Windows.Forms.RadioButton();
             this.rb_2estrellas = new System.Windows.Forms.RadioButton();
             this.rb_3estrellas = new System.Windows.Forms.RadioButton();
             this.rb_4estrellas = new System.Windows.Forms.RadioButton();
             this.rb_5estrellas = new System.Windows.Forms.RadioButton();
+            this.menor = new System.Windows.Forms.PictureBox();
+            this.igual = new System.Windows.Forms.PictureBox();
+            this.mayor = new System.Windows.Forms.PictureBox();
             this.pictureBox15 = new System.Windows.Forms.PictureBox();
             this.pictureBox11 = new System.Windows.Forms.PictureBox();
             this.pictureBox12 = new System.Windows.Forms.PictureBox();
@@ -66,8 +68,6 @@
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.txt_nombre = new System.Windows.Forms.TextBox();
-            this.lbl_nombre = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_resultados)).BeginInit();
             this.stat_BarraEstado.SuspendLayout();
             this.Filtros_de_busqueda.SuspendLayout();
@@ -100,7 +100,7 @@
             this.button_modificar.Location = new System.Drawing.Point(222, 477);
             this.button_modificar.Name = "button_modificar";
             this.button_modificar.Size = new System.Drawing.Size(135, 45);
-            this.button_modificar.TabIndex = 21;
+            this.button_modificar.TabIndex = 12;
             this.button_modificar.Text = "Modificar";
             this.button_modificar.UseVisualStyleBackColor = true;
             this.button_modificar.Click += new System.EventHandler(this.button_modificar_Click);
@@ -118,7 +118,7 @@
             this.dgv_resultados.ReadOnly = true;
             this.dgv_resultados.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_resultados.Size = new System.Drawing.Size(560, 274);
-            this.dgv_resultados.TabIndex = 19;
+            this.dgv_resultados.TabIndex = 10;
             // 
             // stat_BarraEstado
             // 
@@ -149,7 +149,7 @@
             this.button_volver.Location = new System.Drawing.Point(437, 476);
             this.button_volver.Name = "button_volver";
             this.button_volver.Size = new System.Drawing.Size(135, 45);
-            this.button_volver.TabIndex = 22;
+            this.button_volver.TabIndex = 13;
             this.button_volver.Text = "Volver";
             this.button_volver.UseVisualStyleBackColor = true;
             this.button_volver.Click += new System.EventHandler(this.button_volver_Click);
@@ -162,7 +162,7 @@
             this.button_limpiar.Location = new System.Drawing.Point(12, 476);
             this.button_limpiar.Name = "button_limpiar";
             this.button_limpiar.Size = new System.Drawing.Size(135, 45);
-            this.button_limpiar.TabIndex = 20;
+            this.button_limpiar.TabIndex = 11;
             this.button_limpiar.Text = "Limpiar";
             this.button_limpiar.UseVisualStyleBackColor = true;
             this.button_limpiar.Click += new System.EventHandler(this.button_limpiar_Click);
@@ -184,6 +184,25 @@
             this.Filtros_de_busqueda.TabStop = false;
             this.Filtros_de_busqueda.Text = "Filtros de búsqueda";
             // 
+            // txt_nombre
+            // 
+            this.txt_nombre.ForeColor = System.Drawing.SystemColors.ScrollBar;
+            this.txt_nombre.Location = new System.Drawing.Point(78, 22);
+            this.txt_nombre.Name = "txt_nombre";
+            this.txt_nombre.Size = new System.Drawing.Size(473, 20);
+            this.txt_nombre.TabIndex = 6;
+            this.txt_nombre.Text = "Ingrese nombre";
+            // 
+            // lbl_nombre
+            // 
+            this.lbl_nombre.AutoSize = true;
+            this.lbl_nombre.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.lbl_nombre.Location = new System.Drawing.Point(14, 25);
+            this.lbl_nombre.Name = "lbl_nombre";
+            this.lbl_nombre.Size = new System.Drawing.Size(44, 13);
+            this.lbl_nombre.TabIndex = 7;
+            this.lbl_nombre.Text = "Nombre";
+            // 
             // button_Buscar
             // 
             this.button_Buscar.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -191,7 +210,7 @@
             this.button_Buscar.Location = new System.Drawing.Point(419, 48);
             this.button_Buscar.Name = "button_Buscar";
             this.button_Buscar.Size = new System.Drawing.Size(135, 45);
-            this.button_Buscar.TabIndex = 6;
+            this.button_Buscar.TabIndex = 9;
             this.button_Buscar.Text = "Buscar";
             this.button_Buscar.UseVisualStyleBackColor = true;
             this.button_Buscar.Click += new System.EventHandler(this.button_Buscar_Click);
@@ -202,7 +221,7 @@
             this.txt_Pais.Location = new System.Drawing.Point(78, 76);
             this.txt_Pais.Name = "txt_Pais";
             this.txt_Pais.Size = new System.Drawing.Size(328, 20);
-            this.txt_Pais.TabIndex = 3;
+            this.txt_Pais.TabIndex = 8;
             this.txt_Pais.Text = "Ingrese Pais";
             this.txt_Pais.TextChanged += new System.EventHandler(this.txt_Pais_TextChanged);
             this.txt_Pais.MouseLeave += new System.EventHandler(this.txt_Pais_Leave);
@@ -214,7 +233,7 @@
             this.txt_Ciudad.Location = new System.Drawing.Point(78, 48);
             this.txt_Ciudad.Name = "txt_Ciudad";
             this.txt_Ciudad.Size = new System.Drawing.Size(328, 20);
-            this.txt_Ciudad.TabIndex = 2;
+            this.txt_Ciudad.TabIndex = 7;
             this.txt_Ciudad.Text = "Ingrese ciudad";
             this.txt_Ciudad.TextChanged += new System.EventHandler(this.txt_Ciudad_TextChanged);
             this.txt_Ciudad.Click += new System.EventHandler(this.txt_Ciudad_Click);
@@ -273,6 +292,61 @@
             this.grp_cantidad_estrellas.TabStop = false;
             this.grp_cantidad_estrellas.Text = "Cantidad de estrellas";
             // 
+            // rb_1estrella
+            // 
+            this.rb_1estrella.AutoSize = true;
+            this.rb_1estrella.Location = new System.Drawing.Point(90, 51);
+            this.rb_1estrella.Name = "rb_1estrella";
+            this.rb_1estrella.Size = new System.Drawing.Size(14, 13);
+            this.rb_1estrella.TabIndex = 1;
+            this.rb_1estrella.TabStop = true;
+            this.rb_1estrella.UseVisualStyleBackColor = true;
+            this.rb_1estrella.Click += new System.EventHandler(this.rb_1estrella_Click);
+            // 
+            // rb_2estrellas
+            // 
+            this.rb_2estrellas.AutoSize = true;
+            this.rb_2estrellas.Location = new System.Drawing.Point(169, 51);
+            this.rb_2estrellas.Name = "rb_2estrellas";
+            this.rb_2estrellas.Size = new System.Drawing.Size(14, 13);
+            this.rb_2estrellas.TabIndex = 2;
+            this.rb_2estrellas.TabStop = true;
+            this.rb_2estrellas.UseVisualStyleBackColor = true;
+            this.rb_2estrellas.Click += new System.EventHandler(this.rb_2estrellas_Click);
+            // 
+            // rb_3estrellas
+            // 
+            this.rb_3estrellas.AutoSize = true;
+            this.rb_3estrellas.Location = new System.Drawing.Point(266, 51);
+            this.rb_3estrellas.Name = "rb_3estrellas";
+            this.rb_3estrellas.Size = new System.Drawing.Size(14, 13);
+            this.rb_3estrellas.TabIndex = 3;
+            this.rb_3estrellas.TabStop = true;
+            this.rb_3estrellas.UseVisualStyleBackColor = true;
+            this.rb_3estrellas.Click += new System.EventHandler(this.rb_3estrellas_Click);
+            // 
+            // rb_4estrellas
+            // 
+            this.rb_4estrellas.AutoSize = true;
+            this.rb_4estrellas.Location = new System.Drawing.Point(380, 51);
+            this.rb_4estrellas.Name = "rb_4estrellas";
+            this.rb_4estrellas.Size = new System.Drawing.Size(14, 13);
+            this.rb_4estrellas.TabIndex = 4;
+            this.rb_4estrellas.TabStop = true;
+            this.rb_4estrellas.UseVisualStyleBackColor = true;
+            this.rb_4estrellas.Click += new System.EventHandler(this.rb_4estrellas_Click);
+            // 
+            // rb_5estrellas
+            // 
+            this.rb_5estrellas.AutoSize = true;
+            this.rb_5estrellas.Location = new System.Drawing.Point(498, 51);
+            this.rb_5estrellas.Name = "rb_5estrellas";
+            this.rb_5estrellas.Size = new System.Drawing.Size(14, 13);
+            this.rb_5estrellas.TabIndex = 5;
+            this.rb_5estrellas.TabStop = true;
+            this.rb_5estrellas.UseVisualStyleBackColor = true;
+            this.rb_5estrellas.Click += new System.EventHandler(this.rb_5estrellas_Click);
+            // 
             // menor
             // 
             this.menor.Image = global::FrbaHotel.Properties.Resources.menor_no_hover;
@@ -311,61 +385,6 @@
             this.mayor.MouseLeave += new System.EventHandler(this.mayor_MouseLeave);
             this.mayor.Click += new System.EventHandler(this.mayor_Click);
             this.mayor.MouseHover += new System.EventHandler(this.mayor_MouseHover);
-            // 
-            // rb_1estrella
-            // 
-            this.rb_1estrella.AutoSize = true;
-            this.rb_1estrella.Location = new System.Drawing.Point(90, 51);
-            this.rb_1estrella.Name = "rb_1estrella";
-            this.rb_1estrella.Size = new System.Drawing.Size(14, 13);
-            this.rb_1estrella.TabIndex = 9;
-            this.rb_1estrella.TabStop = true;
-            this.rb_1estrella.UseVisualStyleBackColor = true;
-            this.rb_1estrella.Click += new System.EventHandler(this.rb_1estrella_Click);
-            // 
-            // rb_2estrellas
-            // 
-            this.rb_2estrellas.AutoSize = true;
-            this.rb_2estrellas.Location = new System.Drawing.Point(169, 51);
-            this.rb_2estrellas.Name = "rb_2estrellas";
-            this.rb_2estrellas.Size = new System.Drawing.Size(14, 13);
-            this.rb_2estrellas.TabIndex = 10;
-            this.rb_2estrellas.TabStop = true;
-            this.rb_2estrellas.UseVisualStyleBackColor = true;
-            this.rb_2estrellas.Click += new System.EventHandler(this.rb_2estrellas_Click);
-            // 
-            // rb_3estrellas
-            // 
-            this.rb_3estrellas.AutoSize = true;
-            this.rb_3estrellas.Location = new System.Drawing.Point(266, 51);
-            this.rb_3estrellas.Name = "rb_3estrellas";
-            this.rb_3estrellas.Size = new System.Drawing.Size(14, 13);
-            this.rb_3estrellas.TabIndex = 11;
-            this.rb_3estrellas.TabStop = true;
-            this.rb_3estrellas.UseVisualStyleBackColor = true;
-            this.rb_3estrellas.Click += new System.EventHandler(this.rb_3estrellas_Click);
-            // 
-            // rb_4estrellas
-            // 
-            this.rb_4estrellas.AutoSize = true;
-            this.rb_4estrellas.Location = new System.Drawing.Point(380, 51);
-            this.rb_4estrellas.Name = "rb_4estrellas";
-            this.rb_4estrellas.Size = new System.Drawing.Size(14, 13);
-            this.rb_4estrellas.TabIndex = 12;
-            this.rb_4estrellas.TabStop = true;
-            this.rb_4estrellas.UseVisualStyleBackColor = true;
-            this.rb_4estrellas.Click += new System.EventHandler(this.rb_4estrellas_Click);
-            // 
-            // rb_5estrellas
-            // 
-            this.rb_5estrellas.AutoSize = true;
-            this.rb_5estrellas.Location = new System.Drawing.Point(498, 51);
-            this.rb_5estrellas.Name = "rb_5estrellas";
-            this.rb_5estrellas.Size = new System.Drawing.Size(14, 13);
-            this.rb_5estrellas.TabIndex = 13;
-            this.rb_5estrellas.TabStop = true;
-            this.rb_5estrellas.UseVisualStyleBackColor = true;
-            this.rb_5estrellas.Click += new System.EventHandler(this.rb_5estrellas_Click);
             // 
             // pictureBox15
             // 
@@ -516,25 +535,6 @@
             this.pictureBox1.Size = new System.Drawing.Size(17, 18);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
-            // 
-            // txt_nombre
-            // 
-            this.txt_nombre.ForeColor = System.Drawing.SystemColors.ScrollBar;
-            this.txt_nombre.Location = new System.Drawing.Point(78, 22);
-            this.txt_nombre.Name = "txt_nombre";
-            this.txt_nombre.Size = new System.Drawing.Size(473, 20);
-            this.txt_nombre.TabIndex = 8;
-            this.txt_nombre.Text = "Ingrese nombre";
-            // 
-            // lbl_nombre
-            // 
-            this.lbl_nombre.AutoSize = true;
-            this.lbl_nombre.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lbl_nombre.Location = new System.Drawing.Point(14, 25);
-            this.lbl_nombre.Name = "lbl_nombre";
-            this.lbl_nombre.Size = new System.Drawing.Size(44, 13);
-            this.lbl_nombre.TabIndex = 7;
-            this.lbl_nombre.Text = "Nombre";
             // 
             // Hotel_modificacion
             // 
