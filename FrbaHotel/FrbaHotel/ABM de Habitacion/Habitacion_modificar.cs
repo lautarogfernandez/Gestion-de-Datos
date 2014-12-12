@@ -16,16 +16,16 @@ namespace FrbaHotel.ABM_de_Habitacion
         {
             InitializeComponent();
             establecerAtributosOriginales(_valoresDGV);
-
-
+            cambiarTodosLosControles(false);
         }
 
         private void button_modificar_Click(object sender, EventArgs e)
         {
             bool error = false;
-            string frente, desc,tipo_hab;
-            int num, piso;
-            bool baja;
+            char frente='A';
+            string desc = string.Empty;
+            int num=0, piso=0;
+            bool baja=true;
             string msj_error=string.Empty;
 
             if(!txt_piso.Enabled)
@@ -63,10 +63,17 @@ namespace FrbaHotel.ABM_de_Habitacion
             }
 
             if (!cmb_frente.Enabled)
-            { frente = _lbl_frente.Text; }
-            else if (cmb_frente.Enabled && cmb_frente.SelectedItem.ToString() != string.Empty)
+            { frente = _lbl_frente.Text[0]; }
+            else if (cmb_frente.Enabled && cmb_frente.SelectedIndex.ToString() != string.Empty)
             {
-                desc = cmb_frente.SelectedItem.ToString();
+                if (cmb_frente.SelectedItem.ToString()=="Vista Exterior")
+                {
+                    frente = 'S';
+                }
+                else
+                {
+                    frente = 'N';
+                }
             }
             else
             {
@@ -100,14 +107,13 @@ namespace FrbaHotel.ABM_de_Habitacion
             }
             else
             {
-
                 try
                 {
                     using (SqlConnection conn =
                     Home_Habitacion.obtenerConexion())
                     {
                         //create procedure TEAM_CASTY.ModificarHabitacion
-                        //(@hotel numeric(18),@numeroAnterior numeric(18), @numeroActual numeric(18),@piso numeric(18),@frente char(1),@tipo nvarchar(255),@descripcion nvarchar(255), @baja numeric(18))
+                        //(@hotel numeric(18), @numeroAnterior numeric(18), @numeroActual numeric(18),@piso numeric(18),@frente char(1),@tipo nvarchar(255),@descripcion nvarchar(255), @baja numeric(18))
 
                         using (SqlCommand cmd = conn.CreateCommand())
                         {
@@ -115,11 +121,22 @@ namespace FrbaHotel.ABM_de_Habitacion
                             cmd.CommandText = "[TEAM_CASTY].ModificarHabitacion";
                             cmd.Parameters.Add(new SqlParameter("@hotel", Home_Habitacion._codigo_hotel));
 
-                            cmd.Parameters.Add(new SqlParameter("@numero", Convert.ToInt32(txt_numero.Text)));
-                            cmd.Parameters.Add(new SqlParameter("@piso", Convert.ToInt32(txt_numero.Text)));
+                            cmd.Parameters.Add(new SqlParameter("@numeroAnterior", Convert.ToInt32(_lbl_numero)));
+                            cmd.Parameters.Add(new SqlParameter("@numeroActual", num));
+                                                        
+                            cmd.Parameters.Add(new SqlParameter("@piso", piso));
                             cmd.Parameters.Add(new SqlParameter("@frente", frente));
-                            cmd.Parameters.Add(new SqlParameter("@tipo", cmb_tipo_habitacion.SelectedItem));
-                            cmd.Parameters.Add(new SqlParameter("@descripcion", txt_descripcion.Text));
+                            cmd.Parameters.Add(new SqlParameter("@tipo", _lbl_tipo_habitacion.Text.ToString()));
+                            cmd.Parameters.Add(new SqlParameter("@descripcion", desc));
+                            if (baja)
+                            {
+                                cmd.Parameters.Add(new SqlParameter("@baja", 1));
+                            }
+                            else
+                            {
+                                cmd.Parameters.Add(new SqlParameter("@baja", 0));
+                            }
+
                             cmd.ExecuteNonQuery();
 
                             string msj = string.Format("La habitación se ha cargado correctamente.");
@@ -226,11 +243,6 @@ namespace FrbaHotel.ABM_de_Habitacion
             cambiarTodosLosControles((sender as CheckBox).Checked);
         }
         
-        private void button_volver_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-        }
-
         private void establecerAtributosOriginales(valoresDataGridView _valoresDGV)
         {
             _lbl_piso.Text = _valoresDGV._piso;
@@ -239,10 +251,27 @@ namespace FrbaHotel.ABM_de_Habitacion
             _lbl_tipo_habitacion.Text = _valoresDGV._tipo_habitacion;
             if (_valoresDGV._descripcion.ToString() != string.Empty) 
             {_lbl_descripcion.Text = _valoresDGV._descripcion;}
-            else { _lbl_descripcion.Text = " "; }            
+            else { _lbl_descripcion.Text = ""; }            
             if (_valoresDGV._baja) 
             { _lbl_baja.Text = "SI";}
             else { _lbl_baja.Text = "NO"; }
+        }
+
+        private void button_volver_Click_1(object sender, EventArgs e)
+        {
+            this.Hide();
+        }
+
+        private void txt_piso_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (Char.IsDigit(e.KeyChar))
+                e.Handled = false;
+            else if (Char.IsControl(e.KeyChar))
+                e.Handled = false;
+            else if (Char.IsSeparator(e.KeyChar))
+                e.Handled = true;
+            else
+                e.Handled = true;
         }
     }
 }
