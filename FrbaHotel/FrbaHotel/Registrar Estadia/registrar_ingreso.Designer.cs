@@ -267,6 +267,7 @@
             this.button_agregar.TabIndex = 0;
             this.button_agregar.Text = "Agregar";
             this.button_agregar.UseVisualStyleBackColor = true;
+            this.button_agregar.Click += new System.EventHandler(this.button_agregar_Click);
             // 
             // grp_datos
             // 
@@ -496,6 +497,7 @@
             this.button_volver.TabIndex = 157;
             this.button_volver.Text = "Volver";
             this.button_volver.UseVisualStyleBackColor = true;
+            this.button_volver.Click += new System.EventHandler(this.button_volver_Click);
             // 
             // registrar_ingreso
             // 

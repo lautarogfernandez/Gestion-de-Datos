@@ -32,6 +32,7 @@ namespace FrbaHotel.Registrar_Estadia
                 while (reader.Read())
                 {
                     this.cmb_tipoIdentificacion.Items.Add(reader["Tipo_Documento"].ToString());
+                    this.cmb_tipoIdentificacion2.Items.Add(reader["Tipo_Documento"].ToString());
                 }
                 reader.Close();
             }
@@ -218,6 +219,7 @@ namespace FrbaHotel.Registrar_Estadia
 
         private void button_Buscar_Click(object sender, EventArgs e)
         {
+            tablaClientes.Clear();
                 grp_personas.Enabled = false;
             if (_buscaDoc && _buscaEmail && _buscaTipoDoc && _buscaCod)
             {
@@ -276,6 +278,8 @@ namespace FrbaHotel.Registrar_Estadia
                             grp_personas.Enabled = true;
                             grp_datos2.Enabled = true;
                             grp_alta.Enabled = true;
+                            button_confirmar.Enabled = true;
+                            button_confirmar.ForeColor = SystemColors.MenuText;
                             _buscaDoc = false;
                             _buscaEmail = false;
                             _buscaTipoDoc = false;
@@ -371,16 +375,22 @@ namespace FrbaHotel.Registrar_Estadia
 
                     using (SqlConnection conn = Home_Estadia.obtenerConexion())
                     {
+                      SqlParameter codigo_estadia = new SqlParameter("@cod_estadia", SqlDbType.Int)
+                            {
+                                Direction = ParameterDirection.Output
+                            };
                         using (SqlCommand cmd = conn.CreateCommand())
                         {
-                            //procedure  TEAM_CASTY.Check_IN
-                            //@Cod_Reserva numeric(18),@fecha datetime, @usuario nvarchar(255),@hotel numeric(18)
+                            //create procedure  TEAM_CASTY.Check_IN @Cod_Reserva numeric(18),@fecha datetime,
+                            // @usuario nvarchar(255),@hotel numeric(18),@cod_estadia numeric(18) output
+
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.CommandText = "[TEAM_CASTY].Check_IN";
                             cmd.Parameters.Add(new SqlParameter("@Cod_Reserva", _reserva.codigo_reserva));
                             cmd.Parameters.Add(new SqlParameter("@fecha", Home_Estadia._fechaHoySql()));
                             cmd.Parameters.Add(new SqlParameter("@usuario", Home_Estadia._nombreUsuario));
                             cmd.Parameters.Add(new SqlParameter("@hotel", Home_Estadia._codigo_hotel));
+                            cmd.Parameters.Add(codigo_estadia);
                             cmd.ExecuteNonQuery();
                         }
                         using (SqlCommand cmd = conn.CreateCommand())
@@ -388,11 +398,17 @@ namespace FrbaHotel.Registrar_Estadia
                             //procedure  Agregar_Clientes_A_Estadia
                             //(@Cod_Reserva numeric(18),@tabla TEAM_CASTY.t_agregar_clientes readonly)
                             cmd.CommandType = CommandType.StoredProcedure;
+                            DataTable tablaAuxiliar = new DataTable();
+                            tablaAuxiliar.Columns.Add("Codigo");
+                            for (int i = 1; i < tablaClientes.Rows.Count; i++)
+                            {
+                                tablaAuxiliar.Rows.Add(tablaClientes.Rows[i].ItemArray[0]);
+                            }
                             cmd.CommandText = "[TEAM_CASTY].Agregar_Clientes_A_Estadia";
                             cmd.Parameters.Add(new SqlParameter("@Cod_Reserva", _reserva.codigo_reserva));
-                            cmd.Parameters.Add(new SqlParameter("@tabla", tablaClientes.Columns[0]));
+                            cmd.Parameters.Add(new SqlParameter("@tabla",tablaAuxiliar));
                             cmd.ExecuteNonQuery();
-                            msj = "Check in exitoso.";
+                            msj = string.Format("Check in exitoso. \n Su código de estadía es: {0}",codigo_estadia.Value.ToString());
                             MessageBox.Show(msj, "Exito", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                             MenuPrincipal menu_principal = new MenuPrincipal();
                             menu_principal.Show();
@@ -406,54 +422,78 @@ namespace FrbaHotel.Registrar_Estadia
                 }
             }
         }
-
+        private bool existeEnTablaClientes(int codigo)
+        {
+            bool existe = false;
+            for (int i = 0; i < tablaClientes.Rows.Count; i++)
+            {
+                if (Convert.ToInt32(tablaClientes.Rows[i].ItemArray[0]) == codigo)
+                    existe = true;
+            }
+            return existe;
+        }
         private void button_Buscar2_Click(object sender, EventArgs e)
         {
             if (_buscaDoc && _buscaEmail && _buscaTipoDoc)
             {
-                try
-                {
-                    string busqueda = string.Format("SELECT * "
-                     + " FROM [GD2C2014].[Team_Casty].[vistaClientes] "
-                     + " WHERE [Mail] = '{0}' AND [Tipo Documento]='{1}' AND [Numero Documento]={2}", txt_Email.Text,
-                     cmb_tipoIdentificacion.SelectedItem, txt_numeroIdentificacion.Text);           //búsqueda básica
-                    label_progreso.Text = "Buscando...";       //Imprime en la barra de progreso
-                    SqlConnection conn = Home_Estadia.obtenerConexion();                       //Abrir Conexión
-                    SqlDataAdapter adaptador;                                                                                                          //Creo adaptador para la busqueda
-                    barra_progreso.Value = 5;                                                                                                            //0% de la barra de progreso
-                    adaptador = new SqlDataAdapter(busqueda, conn);                                                              //Busco en la sesión abierta
-                    DataTable tablaAuxiliar = new DataTable();
-                    adaptador.Fill(tablaAuxiliar);                                                                                                    //LLeno tabla de resultados
-                    
-                    if (tablaClientes.Rows.Count == 0)
+                    try
                     {
-                        string msj = "No se encontró el cliente \n";
-                        MessageBox.Show(msj, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                    }
-                    else if (tablaClientes.Rows.Count != 1)
-                    {
-                        string msj = "Existe más de un cliente con esos datos. \n";
-                        MessageBox.Show(msj, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                    }
-                    else
-                    {
-                      
+                        string busqueda = string.Format("SELECT * "
+                         + " FROM [GD2C2014].[Team_Casty].[vistaClientes] "
+                         + " WHERE [Mail] = '{0}' AND [Tipo Documento]='{1}' AND [Numero Documento]={2}", txt_Email2.Text,
+                         cmb_tipoIdentificacion2.SelectedItem, txt_numeroIdentificacion2.Text);           //búsqueda básica
+                        label_progreso.Text = "Buscando...";       //Imprime en la barra de progreso
+                        SqlConnection conn = Home_Estadia.obtenerConexion();                       //Abrir Conexión
+                        SqlDataAdapter adaptador;                                                                                                          //Creo adaptador para la busqueda
+                        barra_progreso.Value = 5;                                                                                                            //0% de la barra de progreso
+                        adaptador = new SqlDataAdapter(busqueda, conn);                                                              //Busco en la sesión abierta
+                        DataTable tablaAuxiliar = new DataTable();
+                        adaptador.Fill(tablaAuxiliar);                                                                                                    //LLeno tabla de resultados
+
+                        if (tablaAuxiliar.Rows.Count == 0)
+                        {
+                            string msj = "No se encontró el cliente \n";
+                            MessageBox.Show(msj, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                        }
+                        else if (tablaAuxiliar.Rows.Count != 1)
+                        {
+                            string msj = "Existe más de un cliente con esos datos. \n";
+                            MessageBox.Show(msj, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                        }
+                        else
+                        {
+                            if (!existeEnTablaClientes(Convert.ToInt32(tablaAuxiliar.Rows[0].ItemArray[0])))
+                            {
+
                             string msj = "Se encontró al cliente. \n Puede continuar añadiendo acompañantes.";
                             MessageBox.Show(msj, "Exito", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                            tablaClientes.Rows.Add(tablaAuxiliar.Rows[0]);
+                            tablaClientes.Rows.Add(tablaAuxiliar.Rows[0].ItemArray);
+                            }
+                            else
+                            {
+                                string msj = "Ingrese un cliente no repetido.";
+                                MessageBox.Show(msj, "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
                     }
-                }
-                catch (SqlException exc)                                                                                                                             //En un error le aviso
-                {
-                    barra_progreso.Value = 0;
-                    Home_Estadia.mostrarMensajeErrorSql(exc);
-                }
-            }
+                    }
+                    catch (SqlException exc)                                                                                                                             //En un error le aviso
+                    {
+                        barra_progreso.Value = 0;
+                        Home_Estadia.mostrarMensajeErrorSql(exc);
+                    }
+             
+            }    
             else
             {
                 string msj = "Por favor, complete los campos obligatorios.";
                 MessageBox.Show(msj, "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+        private void button_agregar_Click(object sender, EventArgs e)
+        {
+            ABM_de_Cliente.Cliente_alta formulario_alta = new FrbaHotel.ABM_de_Cliente.Cliente_alta(true);
+            formulario_alta.Show();
         }
     }
 }
