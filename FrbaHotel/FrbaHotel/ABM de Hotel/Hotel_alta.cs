@@ -67,7 +67,7 @@ namespace FrbaHotel.ABM_de_Hotel
                             tabla.Columns.Add(new DataColumn("Regimen", typeof(string)));
                             for (int i = 0; i < list_tipos_regimenes.CheckedItems.Count; i++)
                             {
-                                tabla.Rows.Add(list_tipos_regimenes.CheckedItems[i]);
+                                tabla.Rows.Add(list_tipos_regimenes.CheckedItems[i].ToString());
                             }
                                 //procedure TEAM_CASTY.alta_Hotel (@nombre nvarchar(255),@mail nvarchar(255),
                                 //@telefono nvarchar(50),@pais nvarchar(255),@cidudad nvarchar(255),@cant_Estrellas numeric (18),
@@ -79,9 +79,9 @@ namespace FrbaHotel.ABM_de_Hotel
                             cmd.Parameters.Add(new SqlParameter("@telefono", txt_telefono.Text));
                             //    cmd.Parameters.AddWithValue("@Nombre", txt_nombre.Text);
                             cmd.Parameters.Add(new SqlParameter("@pais", txt_pais.Text));
-                            cmd.Parameters.Add(new SqlParameter("@ciudad", cmb_ciudad.Text));
+                            cmd.Parameters.Add(new SqlParameter("@cidudad", cmb_ciudad.Text));
                             cmd.Parameters.Add(new SqlParameter("@cant_Estrellas", cantidad_estrellas));
-                            cmd.Parameters.Add(new SqlParameter("@calle", txt_calle));
+                            cmd.Parameters.Add(new SqlParameter("@calle", txt_calle.Text));
                             cmd.Parameters.Add(new SqlParameter("@num_calle",txt_numero_calle.Text));
                             cmd.Parameters.Add(new SqlParameter("@fecha_creacion",Home_Hotel._fechaHoySql()));
                             cmd.Parameters.Add(new SqlParameter("@tabla",tabla));

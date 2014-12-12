@@ -717,9 +717,8 @@
             // 
             // button_modificar
             // 
-            this.button_modificar.Enabled = false;
             this.button_modificar.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_modificar.ForeColor = System.Drawing.SystemColors.ScrollBar;
+            this.button_modificar.ForeColor = System.Drawing.SystemColors.MenuText;
             this.button_modificar.Location = new System.Drawing.Point(12, 486);
             this.button_modificar.Name = "button_modificar";
             this.button_modificar.Size = new System.Drawing.Size(135, 45);

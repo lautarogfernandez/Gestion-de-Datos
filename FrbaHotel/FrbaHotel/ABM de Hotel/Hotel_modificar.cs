@@ -113,7 +113,7 @@ namespace FrbaHotel.ABM_de_Hotel
         {
             Control[] controles = {txt_calle,txt_mail,txt_nombre,txt_numero_calle,txt_pais,txt_telefono,cmb_ciudad,list_tipos_regimenes,grp_cantidad_estrellas};
             CheckBox[] checks = {chk_telefono,chk_calle,chk_estrellas,chk_ciudad,chk_tipos_regimenes,chk_numero_calle,chk_calle,
-                                    chk_pais,chk_mail,chk_todos};
+                                    chk_pais,chk_mail,chk_todos,chk_nombre};
             for (int i = 0; i < controles.Length; i++)
             {
                 habilitar_o_deshabilitar_control(controles[i], _enable);
