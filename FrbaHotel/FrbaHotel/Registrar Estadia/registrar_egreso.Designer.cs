@@ -84,6 +84,10 @@
             this.txt_codigo_estadia.Size = new System.Drawing.Size(250, 20);
             this.txt_codigo_estadia.TabIndex = 153;
             this.txt_codigo_estadia.Text = "Ingrese codigo de estadía ";
+            this.txt_codigo_estadia.TextChanged += new System.EventHandler(this.txt_codigo_estadia_TextChanged);
+            this.txt_codigo_estadia.Click += new System.EventHandler(this.txt_codigo_estadia_Click);
+            this.txt_codigo_estadia.Leave += new System.EventHandler(this.txt_codigo_estadia_Leave);
+            this.txt_codigo_estadia.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_numeroIdentificacion_KeyPress);
             // 
             // lbl_reserva
             // 
@@ -163,6 +167,7 @@
             this.button_Buscar.TabIndex = 10;
             this.button_Buscar.Text = "Buscar";
             this.button_Buscar.UseVisualStyleBackColor = true;
+            this.button_Buscar.Click += new System.EventHandler(this.button_Buscar_Click);
             // 
             // txt_numeroIdentificacion
             // 
@@ -172,6 +177,10 @@
             this.txt_numeroIdentificacion.Size = new System.Drawing.Size(216, 20);
             this.txt_numeroIdentificacion.TabIndex = 9;
             this.txt_numeroIdentificacion.Text = "Ingrese número de identificación";
+            this.txt_numeroIdentificacion.TextChanged += new System.EventHandler(this.txt_numeroIdentificacion_TextChanged);
+            this.txt_numeroIdentificacion.Click += new System.EventHandler(this.txt_numeroIdentificacion_Click);
+            this.txt_numeroIdentificacion.Leave += new System.EventHandler(this.txt_Email_Leave);
+            this.txt_numeroIdentificacion.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_numeroIdentificacion_KeyPress);
             // 
             // cmb_tipoIdentificacion
             // 
@@ -182,6 +191,7 @@
             this.cmb_tipoIdentificacion.Size = new System.Drawing.Size(121, 21);
             this.cmb_tipoIdentificacion.TabIndex = 7;
             this.cmb_tipoIdentificacion.Text = "Seleccione tipo";
+            this.cmb_tipoIdentificacion.SelectedIndexChanged += new System.EventHandler(this.cmb_tipoIdentificacion_SelectedIndexChanged);
             // 
             // txt_Email
             // 
@@ -191,6 +201,9 @@
             this.txt_Email.Size = new System.Drawing.Size(312, 20);
             this.txt_Email.TabIndex = 5;
             this.txt_Email.Text = "Ingrese e-mail";
+            this.txt_Email.TextChanged += new System.EventHandler(this.txt_Email_TextChanged);
+            this.txt_Email.Click += new System.EventHandler(this.txt_Email_Click);
+            this.txt_Email.Leave += new System.EventHandler(this.txt_Email_Leave);
             // 
             // lbl_Numero_id
             // 
@@ -233,6 +246,7 @@
             this.button_registrar.TabIndex = 161;
             this.button_registrar.Text = "Registrar";
             this.button_registrar.UseVisualStyleBackColor = true;
+            this.button_registrar.Click += new System.EventHandler(this.button_registrar_Click);
             // 
             // stat_BarraEstado
             // 
@@ -266,6 +280,7 @@
             this.button_volver.TabIndex = 162;
             this.button_volver.Text = "Volver";
             this.button_volver.UseVisualStyleBackColor = true;
+            this.button_volver.Click += new System.EventHandler(this.button_volver_Click);
             // 
             // registrar_egreso
             // 

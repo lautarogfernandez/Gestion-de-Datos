@@ -22,6 +22,7 @@ namespace FrbaHotel.ABM_de_Hotel
         public bool _buscaMayor = false;
         public bool _buscaMenor = false;
         public bool _buscaIgual = false;
+        public bool _buscaNombre = false;
         public int cantidad_estrellas = 0;
         valoresDataGridView _valores;
         private enum tipoComponente
@@ -59,7 +60,40 @@ namespace FrbaHotel.ABM_de_Hotel
             button_Buscar.Enabled = true;
         }
 
-        #region Txt_Apellido
+        #region txt_nombre
+        // EVENTOS TextBox Nombre
+        private void txt_nombre_TextChanged(object sender, EventArgs e)
+        {
+            if (txt_nombre.TextLength > 0 && txt_nombre.Text != "Ingrese nombre")
+            {
+                //Si escribe algo cambio el color del texto
+                // esto para identificar por qué campos quiere buscar
+                txt_nombre.ForeColor = SystemColors.MenuText;
+                _buscaNombre = true;
+            }
+        }
+
+        private void txt_nombre_Click(object sender, EventArgs e)
+        {
+            if (txt_nombre.Text == "Ingrese nombre")
+            {
+                txt_nombre.Text = string.Empty;
+                txt_nombre.ForeColor = SystemColors.MenuText;
+            }
+        }
+
+        private void txt_nombre_Leave(object sender, EventArgs e)
+        {
+            if (txt_nombre.Text == "Ingrese nombre" ||
+                txt_nombre.Text == string.Empty)
+            {
+                txt_nombre.Text = "Ingrese nombre";
+                txt_nombre.ForeColor = SystemColors.ScrollBar;
+                _buscaNombre = false;
+            }
+        }
+        #endregion
+        #region Txt_Ciudad
         private void txt_Ciudad_TextChanged(object sender, EventArgs e)
         {
             if (txt_Ciudad.TextLength > 0 && txt_Ciudad.Text != "Ingrese ciudad")
@@ -89,7 +123,7 @@ namespace FrbaHotel.ABM_de_Hotel
             }
         }
         #endregion
-        #region txt_Email
+        #region txt_Pais
         private void txt_Pais_TextChanged(object sender, EventArgs e)
         {
             if (txt_Pais.TextLength > 0 && txt_Pais.Text != "Ingrese Pais")
@@ -135,7 +169,7 @@ namespace FrbaHotel.ABM_de_Hotel
             barra_progreso.Value = 5;                                                                                                            //0% de la barra de progreso
             DataTable tablaHoteles = new DataTable();                                                                                 //Creo Tabla para los resultados
             #region Condiciones_de_busqueda
-            if (_buscaCiudad || _buscaPais || (cantidad_estrellas>0 && (_buscaIgual||_buscaMayor||_buscaMenor)))
+            if (_buscaNombre || _buscaCiudad || _buscaPais || (cantidad_estrellas>0 && (_buscaIgual||_buscaMayor||_buscaMenor)))
             {
                 busqueda += " WHERE ";
                 bool _masDeUno = false;
@@ -144,6 +178,12 @@ namespace FrbaHotel.ABM_de_Hotel
                     if (_masDeUno) busqueda += " AND ";
                     _masDeUno = true;
                     busqueda += " [Ciudad] LIKE '%" + txt_Ciudad.Text.ToString().ToUpper() + "%'";
+                }
+                if (_buscaNombre)
+                {
+                    if (_masDeUno) busqueda += " AND ";
+                    _masDeUno = true;
+                    busqueda += " [Nombre] LIKE '%" + txt_nombre.Text.ToString().ToLower() + "%'";
                 }
                 if (_buscaPais)
                 {

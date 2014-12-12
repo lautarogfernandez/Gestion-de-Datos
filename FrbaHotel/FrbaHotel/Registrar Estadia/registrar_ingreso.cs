@@ -311,24 +311,6 @@ namespace FrbaHotel.Registrar_Estadia
 
         private void Reserva_modificar_Load(object sender, EventArgs e)
         {
-            try
-            {
-                using (SqlConnection conn = Home_Estadia.obtenerConexion())
-                {
-                    using (SqlCommand cmd = conn.CreateCommand())
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.CommandText = "[TEAM_CASTY].Actualizar_Reservas";
-                        cmd.Parameters.Add(new SqlParameter("@fecha_actual", Home_Estadia._fechaHoySql()));
-                        cmd.ExecuteNonQuery();
-                    }
-
-                }
-            }
-            catch (SqlException exc)
-            {
-                Home_Estadia.mostrarMensajeErrorSql(exc);
-            }
         }
         private void button_aceptar_Click_1(object sender, EventArgs e)
         {

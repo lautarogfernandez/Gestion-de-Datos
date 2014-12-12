@@ -55,27 +55,36 @@ namespace FrbaHotel.ABM_de_Hotel
             if (txt_nombre.Text != string.Empty && txt_mail.Text != string.Empty && txt_calle.Text != string.Empty && cmb_ciudad.Text!=string.Empty
                 && list_tipos_regimenes.SelectedItems.Count != 0 && txt_numero_calle.Text!=string.Empty && txt_pais.Text!=string.Empty )
             {
-                string mensaje = "INSERT INTO [GD2C2014].[Team_Casty].[vistaHoteles] " +
-                                "[Ciudad],[Calle],[Numero Calle],[Telefono],[Mail],[Cantidad de estrellas]"+
-                                " VALUES ()";
                 try
                 {
                     using (SqlConnection conn =
                         Home_Hotel.obtenerConexion())
                     {
                         using (SqlCommand cmd =
-                            new SqlCommand(mensaje, conn))
+                            conn.CreateCommand())
                         {
-                                cmd.Parameters.AddWithValue("@Calle", txt_calle.Text);
-                                cmd.Parameters.AddWithValue("@Mail", txt_mail.Text);
+                            DataTable tabla = new DataTable();
+                            tabla.Columns.Add(new DataColumn("Regimen", typeof(string)));
+                            for (int i = 0; i < list_tipos_regimenes.CheckedItems.Count; i++)
+                            {
+                                tabla.Rows.Add(list_tipos_regimenes.CheckedItems[i]);
+                            }
+                                //procedure TEAM_CASTY.alta_Hotel (@nombre nvarchar(255),@mail nvarchar(255),
+                                //@telefono nvarchar(50),@pais nvarchar(255),@cidudad nvarchar(255),@cant_Estrellas numeric (18),
+                                //@calle nvarchar(255),@num_calle numeric (18),@fecha_creacion datetime, @tabla t_tablaRegimenes readonly)
+                                cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.CommandText = "[TEAM_CASTY].alta_Hotel";
+                            cmd.Parameters.Add(new SqlParameter("@nombre", txt_nombre.Text));
+                            cmd.Parameters.Add(new SqlParameter("@mail", txt_mail.Text));
+                            cmd.Parameters.Add(new SqlParameter("@telefono", txt_telefono.Text));
                             //    cmd.Parameters.AddWithValue("@Nombre", txt_nombre.Text);
-                                cmd.Parameters.AddWithValue("@NumCalle", txt_numero_calle.Text);
-                                cmd.Parameters.AddWithValue("@Pais", txt_pais.Text);
-                                cmd.Parameters.AddWithValue("@Telefono", txt_telefono.Text);
-                                cmd.Parameters.AddWithValue("@Cant_estrellas", cantidad_estrellas);
-                                cmd.Parameters.AddWithValue("@Ciudad",cmb_ciudad.Text);
-
-
+                            cmd.Parameters.Add(new SqlParameter("@pais", txt_pais.Text));
+                            cmd.Parameters.Add(new SqlParameter("@ciudad", cmb_ciudad.Text));
+                            cmd.Parameters.Add(new SqlParameter("@cant_Estrellas", cantidad_estrellas));
+                            cmd.Parameters.Add(new SqlParameter("@calle", txt_calle));
+                            cmd.Parameters.Add(new SqlParameter("@num_calle",txt_numero_calle.Text));
+                            cmd.Parameters.Add(new SqlParameter("@fecha_creacion",Home_Hotel._fechaHoySql()));
+                            cmd.Parameters.Add(new SqlParameter("@tabla",tabla));
                             int rows = cmd.ExecuteNonQuery();
                             //rows number of record got updated
 

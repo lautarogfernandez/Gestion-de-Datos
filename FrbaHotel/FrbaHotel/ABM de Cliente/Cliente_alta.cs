@@ -68,72 +68,80 @@ namespace FrbaHotel.ABM_de_Cliente
         {
             //barra_progreso.ForeColor = Color.Green;
             //barra_progreso.Value = 100;
-            if (txt_apellido.Text != string.Empty && txt_nombre.Text != string.Empty && txt_mail.Text != string.Empty && txt_numero_documento.Text != string.Empty
-                && txt_nacionalidad.Text != string.Empty && cmb_tipo_documento.SelectedItem.ToString() != string.Empty && dtp_fecha_nacimiento.Value < DateTime.Today)
+            if (cmb_tipo_documento.SelectedIndex >= 0)
             {
-                string mensaje = "INSERT INTO [GD2C2014].[Team_Casty].[vistaClientes] " +
-                                "([Apellido],[Calle],[Departamento],[Localidad],[Mail],[Nacionalidad],[Nombre],[Numero Calle],[Numero Documento]" +
-                                ",[Pais],[Piso],[Telefono],[Tipo Documento],[Fecha Nacimiento]) VALUES" +
-                                "(@Apellido,@Calle,@Departamento,@Localidad,@Mail,@Nacionalidad,@Nombre,@NumCalle,@NumDoc,@Pais" +
-                                ",@Piso,@Telefono,@TipoDoc,@FechaNacimiento)";
-                try
+                if (txt_apellido.Text != string.Empty && txt_nombre.Text != string.Empty && txt_mail.Text != string.Empty && txt_numero_documento.Text != string.Empty
+                    && txt_nacionalidad.Text != string.Empty && dtp_fecha_nacimiento.Value < DateTime.Today)
                 {
-                    using (SqlConnection conn =
-                    Home_Cliente.obtenerConexion())
+                    string mensaje = "INSERT INTO [GD2C2014].[Team_Casty].[vistaClientes] " +
+                                    "([Apellido],[Calle],[Departamento],[Localidad],[Mail],[Nacionalidad],[Nombre],[Numero Calle],[Numero Documento]" +
+                                    ",[Pais],[Piso],[Telefono],[Tipo Documento],[Fecha Nacimiento]) VALUES" +
+                                    "(@Apellido,@Calle,@Departamento,@Localidad,@Mail,@Nacionalidad,@Nombre,@NumCalle,@NumDoc,@Pais" +
+                                    ",@Piso,@Telefono,@TipoDoc,@FechaNacimiento)";
+                    try
                     {
-                        using (SqlCommand cmd =
-                            new SqlCommand(mensaje, conn))
+                        using (SqlConnection conn =
+                        Home_Cliente.obtenerConexion())
                         {
-                            if (dtp_fecha_nacimiento.Enabled && dtp_fecha_nacimiento.Value.Date < DateTime.Today)
-                                cmd.Parameters.AddWithValue("@FechaNacimiento", dtp_fecha_nacimiento.Value);
-                            if (txt_apellido.Enabled && txt_apellido.Text != string.Empty)
-                                cmd.Parameters.AddWithValue("@Apellido", txt_apellido.Text);
-                            if (txt_calle.Enabled && txt_calle.Text != string.Empty)
-                                cmd.Parameters.AddWithValue("@Calle", txt_calle.Text);
-                            if (txt_departamento.Enabled && txt_departamento.Text != string.Empty)
-                                cmd.Parameters.AddWithValue("@Departamento", txt_departamento.Text);
-                            if (txt_localidad.Enabled && txt_localidad.Text != string.Empty)
-                                cmd.Parameters.AddWithValue("@Localidad", txt_localidad.Text);
-                            if (txt_mail.Enabled && txt_mail.Text != string.Empty)
-                                cmd.Parameters.AddWithValue("@Mail", txt_mail.Text);
-                            if (txt_nacionalidad.Enabled && txt_nacionalidad.Text != string.Empty)
-                                cmd.Parameters.AddWithValue("@Nacionalidad", txt_nacionalidad.Text);
-                            if (txt_nombre.Enabled && txt_nombre.Text != string.Empty)
-                                cmd.Parameters.AddWithValue("@Nombre", txt_nombre.Text);
-                            if (txt_numero_calle.Enabled && txt_numero_calle.Text != string.Empty)
-                                cmd.Parameters.AddWithValue("@NumCalle", txt_numero_calle.Text);
-                            if (txt_numero_documento.Enabled && txt_numero_documento.Text != string.Empty)
-                                cmd.Parameters.AddWithValue("@NumDoc", txt_numero_documento.Text);
-                            if (txt_pais.Enabled && txt_pais.Text != string.Empty)
-                                cmd.Parameters.AddWithValue("@Pais", txt_pais.Text);
-                            if (txt_piso.Enabled && txt_piso.Text != string.Empty)
-                                cmd.Parameters.AddWithValue("@Piso", txt_piso.Text);
-                            if (txt_telefono.Enabled && txt_telefono.Text != string.Empty)
-                                cmd.Parameters.AddWithValue("@Telefono", txt_telefono.Text);
-                            if (cmb_tipo_documento.Enabled && cmb_tipo_documento.Text != string.Empty)
-                                cmd.Parameters.AddWithValue("@TipoDoc", cmb_tipo_documento.Text);
-
-                            int rows = cmd.ExecuteNonQuery();
-                            //rows number of record got updated
-
-                            string msj = "Cliente agregado con éxito \n";
-                            MessageBox.Show(msj, "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                            if (no_crear_form_principal)
+                            using (SqlCommand cmd =
+                                new SqlCommand(mensaje, conn))
                             {
-                                this.Hide();
+                                if (dtp_fecha_nacimiento.Enabled && dtp_fecha_nacimiento.Value.Date < DateTime.Today)
+                                    cmd.Parameters.AddWithValue("@FechaNacimiento", dtp_fecha_nacimiento.Value);
+                                if (txt_apellido.Enabled && txt_apellido.Text != string.Empty)
+                                    cmd.Parameters.AddWithValue("@Apellido", txt_apellido.Text);
+                                if (txt_calle.Enabled && txt_calle.Text != string.Empty)
+                                    cmd.Parameters.AddWithValue("@Calle", txt_calle.Text);
+                                if (txt_departamento.Enabled && txt_departamento.Text != string.Empty)
+                                    cmd.Parameters.AddWithValue("@Departamento", txt_departamento.Text);
+                                if (txt_localidad.Enabled && txt_localidad.Text != string.Empty)
+                                    cmd.Parameters.AddWithValue("@Localidad", txt_localidad.Text);
+                                if (txt_mail.Enabled && txt_mail.Text != string.Empty)
+                                    cmd.Parameters.AddWithValue("@Mail", txt_mail.Text);
+                                if (txt_nacionalidad.Enabled && txt_nacionalidad.Text != string.Empty)
+                                    cmd.Parameters.AddWithValue("@Nacionalidad", txt_nacionalidad.Text);
+                                if (txt_nombre.Enabled && txt_nombre.Text != string.Empty)
+                                    cmd.Parameters.AddWithValue("@Nombre", txt_nombre.Text);
+                                if (txt_numero_calle.Enabled && txt_numero_calle.Text != string.Empty)
+                                    cmd.Parameters.AddWithValue("@NumCalle", txt_numero_calle.Text);
+                                if (txt_numero_documento.Enabled && txt_numero_documento.Text != string.Empty)
+                                    cmd.Parameters.AddWithValue("@NumDoc", txt_numero_documento.Text);
+                                if (txt_pais.Enabled && txt_pais.Text != string.Empty)
+                                    cmd.Parameters.AddWithValue("@Pais", txt_pais.Text);
+                                if (txt_piso.Enabled && txt_piso.Text != string.Empty)
+                                    cmd.Parameters.AddWithValue("@Piso", txt_piso.Text);
+                                if (txt_telefono.Enabled && txt_telefono.Text != string.Empty)
+                                    cmd.Parameters.AddWithValue("@Telefono", txt_telefono.Text);
+                                if (cmb_tipo_documento.Enabled && cmb_tipo_documento.Text != string.Empty)
+                                    cmd.Parameters.AddWithValue("@TipoDoc", cmb_tipo_documento.Text);
+
+                                int rows = cmd.ExecuteNonQuery();
+                                //rows number of record got updated
+
+                                string msj = "Cliente agregado con éxito \n";
+                                MessageBox.Show(msj, "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                                if (no_crear_form_principal)
+                                {
+                                    this.Hide();
+                                }
                             }
                         }
                     }
-                }
-                catch (SqlException exc)
-                {
-                    Home_Cliente.mostrarMensajeErrorSql(exc);
-                }
+                    catch (SqlException exc)
+                    {
+                        Home_Cliente.mostrarMensajeErrorSql(exc);
+                    }
 
+                }
+                else
+                {
+                    string msj = "Por favor complete los controles obligatorios faltantes \n";
+                    MessageBox.Show(msj, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
             }
             else
             {
-                string msj = "Por favor complete los controles obligatorios faltantes \n";
+                string msj = "Por favor elija uno de documentos existentes\n";
                 MessageBox.Show(msj, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
 

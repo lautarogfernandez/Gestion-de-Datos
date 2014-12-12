@@ -37,11 +37,11 @@
             this.button_volver = new System.Windows.Forms.Button();
             this.button_limpiar = new System.Windows.Forms.Button();
             this.Filtros_de_busqueda = new System.Windows.Forms.GroupBox();
+            this.button_Buscar = new System.Windows.Forms.Button();
             this.txt_Pais = new System.Windows.Forms.TextBox();
             this.txt_Ciudad = new System.Windows.Forms.TextBox();
             this.lbl_Pais = new System.Windows.Forms.Label();
             this.lbl_Ciudad = new System.Windows.Forms.Label();
-            this.button_Buscar = new System.Windows.Forms.Button();
             this.grp_cantidad_estrellas = new System.Windows.Forms.GroupBox();
             this.menor = new System.Windows.Forms.PictureBox();
             this.igual = new System.Windows.Forms.PictureBox();
@@ -66,6 +66,8 @@
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.txt_nombre = new System.Windows.Forms.TextBox();
+            this.lbl_nombre = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_resultados)).BeginInit();
             this.stat_BarraEstado.SuspendLayout();
             this.Filtros_de_busqueda.SuspendLayout();
@@ -110,12 +112,12 @@
             this.dgv_resultados.AllowUserToOrderColumns = true;
             this.dgv_resultados.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_resultados.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.dgv_resultados.Location = new System.Drawing.Point(12, 170);
+            this.dgv_resultados.Location = new System.Drawing.Point(12, 196);
             this.dgv_resultados.MultiSelect = false;
             this.dgv_resultados.Name = "dgv_resultados";
             this.dgv_resultados.ReadOnly = true;
             this.dgv_resultados.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_resultados.Size = new System.Drawing.Size(560, 300);
+            this.dgv_resultados.Size = new System.Drawing.Size(560, 274);
             this.dgv_resultados.TabIndex = 19;
             // 
             // stat_BarraEstado
@@ -167,6 +169,8 @@
             // 
             // Filtros_de_busqueda
             // 
+            this.Filtros_de_busqueda.Controls.Add(this.txt_nombre);
+            this.Filtros_de_busqueda.Controls.Add(this.lbl_nombre);
             this.Filtros_de_busqueda.Controls.Add(this.button_Buscar);
             this.Filtros_de_busqueda.Controls.Add(this.txt_Pais);
             this.Filtros_de_busqueda.Controls.Add(this.txt_Ciudad);
@@ -175,15 +179,27 @@
             this.Filtros_de_busqueda.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.Filtros_de_busqueda.Location = new System.Drawing.Point(12, 88);
             this.Filtros_de_busqueda.Name = "Filtros_de_busqueda";
-            this.Filtros_de_busqueda.Size = new System.Drawing.Size(560, 76);
+            this.Filtros_de_busqueda.Size = new System.Drawing.Size(560, 102);
             this.Filtros_de_busqueda.TabIndex = 23;
             this.Filtros_de_busqueda.TabStop = false;
             this.Filtros_de_busqueda.Text = "Filtros de búsqueda";
             // 
+            // button_Buscar
+            // 
+            this.button_Buscar.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_Buscar.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.button_Buscar.Location = new System.Drawing.Point(419, 48);
+            this.button_Buscar.Name = "button_Buscar";
+            this.button_Buscar.Size = new System.Drawing.Size(135, 45);
+            this.button_Buscar.TabIndex = 6;
+            this.button_Buscar.Text = "Buscar";
+            this.button_Buscar.UseVisualStyleBackColor = true;
+            this.button_Buscar.Click += new System.EventHandler(this.button_Buscar_Click);
+            // 
             // txt_Pais
             // 
             this.txt_Pais.ForeColor = System.Drawing.SystemColors.ScrollBar;
-            this.txt_Pais.Location = new System.Drawing.Point(78, 22);
+            this.txt_Pais.Location = new System.Drawing.Point(78, 76);
             this.txt_Pais.Name = "txt_Pais";
             this.txt_Pais.Size = new System.Drawing.Size(328, 20);
             this.txt_Pais.TabIndex = 3;
@@ -208,7 +224,7 @@
             // 
             this.lbl_Pais.AutoSize = true;
             this.lbl_Pais.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lbl_Pais.Location = new System.Drawing.Point(14, 25);
+            this.lbl_Pais.Location = new System.Drawing.Point(14, 79);
             this.lbl_Pais.Name = "lbl_Pais";
             this.lbl_Pais.Size = new System.Drawing.Size(27, 13);
             this.lbl_Pais.TabIndex = 4;
@@ -223,18 +239,6 @@
             this.lbl_Ciudad.Size = new System.Drawing.Size(40, 13);
             this.lbl_Ciudad.TabIndex = 2;
             this.lbl_Ciudad.Text = "Ciudad";
-            // 
-            // button_Buscar
-            // 
-            this.button_Buscar.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_Buscar.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.button_Buscar.Location = new System.Drawing.Point(419, 19);
-            this.button_Buscar.Name = "button_Buscar";
-            this.button_Buscar.Size = new System.Drawing.Size(135, 45);
-            this.button_Buscar.TabIndex = 6;
-            this.button_Buscar.Text = "Buscar";
-            this.button_Buscar.UseVisualStyleBackColor = true;
-            this.button_Buscar.Click += new System.EventHandler(this.button_Buscar_Click);
             // 
             // grp_cantidad_estrellas
             // 
@@ -513,6 +517,25 @@
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
+            // txt_nombre
+            // 
+            this.txt_nombre.ForeColor = System.Drawing.SystemColors.ScrollBar;
+            this.txt_nombre.Location = new System.Drawing.Point(78, 22);
+            this.txt_nombre.Name = "txt_nombre";
+            this.txt_nombre.Size = new System.Drawing.Size(473, 20);
+            this.txt_nombre.TabIndex = 8;
+            this.txt_nombre.Text = "Ingrese nombre";
+            // 
+            // lbl_nombre
+            // 
+            this.lbl_nombre.AutoSize = true;
+            this.lbl_nombre.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.lbl_nombre.Location = new System.Drawing.Point(14, 25);
+            this.lbl_nombre.Name = "lbl_nombre";
+            this.lbl_nombre.Size = new System.Drawing.Size(44, 13);
+            this.lbl_nombre.TabIndex = 7;
+            this.lbl_nombre.Text = "Nombre";
+            // 
             // Hotel_modificacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -599,6 +622,8 @@
         private System.Windows.Forms.PictureBox mayor;
         private System.Windows.Forms.PictureBox menor;
         private System.Windows.Forms.PictureBox igual;
+        private System.Windows.Forms.TextBox txt_nombre;
+        private System.Windows.Forms.Label lbl_nombre;
 
 
     }
