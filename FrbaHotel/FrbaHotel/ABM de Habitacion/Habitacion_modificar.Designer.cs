@@ -96,7 +96,7 @@
             this.chk_todos.Size = new System.Drawing.Size(15, 14);
             this.chk_todos.TabIndex = 111;
             this.chk_todos.UseVisualStyleBackColor = true;
-            this.chk_todos.CheckedChanged += new System.EventHandler(this.check_todos_change);
+            this.chk_todos.CheckedChanged += new System.EventHandler(this.chk_baja_CheckedChanged);
             // 
             // chk_descripcion
             // 
@@ -145,7 +145,6 @@
             this.txt_descripcion.Name = "txt_descripcion";
             this.txt_descripcion.Size = new System.Drawing.Size(210, 120);
             this.txt_descripcion.TabIndex = 104;
-            this.txt_descripcion.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_numero
             // 
@@ -153,8 +152,6 @@
             this.txt_numero.Name = "txt_numero";
             this.txt_numero.Size = new System.Drawing.Size(210, 20);
             this.txt_numero.TabIndex = 102;
-            this.txt_numero.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_piso_KeyPress);
-            this.txt_numero.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_piso
             // 
@@ -162,8 +159,6 @@
             this.txt_piso.Name = "txt_piso";
             this.txt_piso.Size = new System.Drawing.Size(210, 20);
             this.txt_piso.TabIndex = 101;
-            this.txt_piso.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_piso_KeyPress);
-            this.txt_piso.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // _lbl_descripcion
             // 
@@ -274,7 +269,6 @@
             this.cmb_baja.Name = "cmb_baja";
             this.cmb_baja.Size = new System.Drawing.Size(210, 21);
             this.cmb_baja.TabIndex = 119;
-            this.cmb_baja.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // _lbl_baja
             // 
@@ -306,7 +300,6 @@
             this.button_modificar.Text = "Modificar";
             this.button_modificar.UseVisualStyleBackColor = true;
             this.button_modificar.Click += new System.EventHandler(this.button_modificar_Click);
-            this.button_modificar.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // button_volver
             // 
@@ -318,19 +311,14 @@
             this.button_volver.TabIndex = 115;
             this.button_volver.Text = "Volver";
             this.button_volver.UseVisualStyleBackColor = true;
-            this.button_volver.Click += new System.EventHandler(this.button_volver_Click_1);
             // 
             // cmb_frente
             // 
             this.cmb_frente.FormattingEnabled = true;
-            this.cmb_frente.Items.AddRange(new object[] {
-            "Vista Exterior",
-            "Vista Interior"});
             this.cmb_frente.Location = new System.Drawing.Point(321, 128);
             this.cmb_frente.Name = "cmb_frente";
             this.cmb_frente.Size = new System.Drawing.Size(210, 21);
             this.cmb_frente.TabIndex = 121;
-            this.cmb_frente.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // Habitacion_modificar
             // 

@@ -149,7 +149,6 @@
             this.txt_numero.TabIndex = 2;
             this.txt_numero.Text = "Ingrese número";
             this.txt_numero.TextChanged += new System.EventHandler(this.txt_numero_TextChanged);
-            this.txt_numero.Click += new System.EventHandler(this.txt_numero_Click);
             this.txt_numero.Leave += new System.EventHandler(this.txt_numero_Leave);
             this.txt_numero.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_piso_KeyPress);
             // 
@@ -162,7 +161,6 @@
             this.txt_piso.TabIndex = 1;
             this.txt_piso.Text = "Ingrese piso";
             this.txt_piso.TextChanged += new System.EventHandler(this.txt_piso_TextChanged);
-            this.txt_piso.Click += new System.EventHandler(this.txt_piso_Click);
             this.txt_piso.Leave += new System.EventHandler(this.txt_piso_Leave);
             this.txt_piso.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_piso_KeyPress);
             // 
