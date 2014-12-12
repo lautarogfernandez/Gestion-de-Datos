@@ -1530,7 +1530,7 @@ end;
  
  GO
 
-create procedure TEAM_CASTY.Inserta_Recarga
+create procedure TEAM_CASTY.Insertar_Recarga
 (@fecha datetime, @recarga numeric(18))
 as
 begin
