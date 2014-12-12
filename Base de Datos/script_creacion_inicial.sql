@@ -734,7 +734,7 @@ GO
 
 create view TEAM_CASTY.vistaUsuarios
 as
-select u.Cod_Usuario as Codigo,u.Username,e.Apellido,e.Nombre,e.Mail,td.Tipo_Documento as "Tipo de Documento", e.Telefono, e.Direccion,e.Fecha_Nacimiento "Fecha de Nacimiento"
+select u.Cod_Usuario as Codigo,u.Username,e.Apellido,e.Nombre,e.Mail,td.Tipo_Documento as "Tipo de Documento",e.Nro_Documento as "Numero de Documento", e.Telefono, e.Direccion,e.Fecha_Nacimiento "Fecha de Nacimiento",u.Habilitado
  from TEAM_CASTY.Usuario u , TEAM_CASTY.Empleado e ,TEAM_CASTY.Tipo_Documento td
 where e.Cod_Usuario = u.Cod_Usuario and td.ID_Tipo_Documento = e.ID_Tipo_Documento and u.Username not in ('admin','guest') and u.Baja = 0 
 go
@@ -1988,7 +1988,6 @@ end;
 
 GO
 
-
 create procedure  TEAM_CASTY.Reservar_Habitaciones
 (@cod_reserva numeric(18),@fecha_reserva datetime,@cant_noches numeric(18),
 @hotel numeric(18),@tabla TEAM_CASTY.t_reserva readonly)
@@ -2208,9 +2207,14 @@ AS
 	select distinct res.Cod_Reserva,res.ID_Cliente_Reservador
 	from TEAM_CASTY.Reserva res,TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXReserva hxr
 	where res.Cod_Reserva=hxr.Cod_Reserva and hxr.Cod_Habitacion=hab.Cod_Habitacion and hab.Cod_Hotel=@hotel and
-	datediff(day,res.Fecha_Reserva,@fecha)=0);
+	datediff(day,res.Fecha_Reserva,@fecha)=0 and res.Cod_Estado in (1,2));
 
 GO
+
+
+select * from TEAM_CASTY.Reserva where Cod_Estado in (1,2) order by Cod_Reserva desc
+declare @f datetime = convert(datetime,'2020-10-11',111);
+select * from TEAM_CASTY.Reservas_Para_Check_IN(@f,2);
 
 create function  TEAM_CASTY.Estadias_Para_Check_OUT
 (@hotel numeric(18))
