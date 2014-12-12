@@ -37,8 +37,8 @@ namespace FrbaHotel.ABM_de_Usuario
                 barra_progreso.Value = 100;                                                                                                    //Aviso que terminó la búsqueda
                 label_progreso.Text = tablaHoteles.Rows.Count.ToString() + " Hoteles encontrados";      //Le digo la cantidad de filas encontradas
                 tabla_auxiliar = new DataTable();
-                tabla_auxiliar.Columns.Add(new DataColumn("Nombre", typeof(bool)));
-                tabla_auxiliar.Columns.Add(new DataColumn("Hotel", typeof(string)));
+                tabla_auxiliar.Columns.Add(new DataColumn("Nombre", typeof(string)));
+                tabla_auxiliar.Columns.Add(new DataColumn("Hotel", typeof(int)));
             }
             catch (SqlException exc)                                                                                                                             //En un error le aviso
             {
