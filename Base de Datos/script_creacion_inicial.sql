@@ -1508,7 +1508,7 @@ end
 if(exists(
 select *
 from TEAM_CASTY.Periodo_Inhabilitado pein
-where TEAM_CASTY.periodoOK(@fecha_inicio,@fecha_fin,pein.Fecha_Inicio,pein.Fecha_Fin)=0
+where TEAM_CASTY.periodoOK(@fecha_inicio,@fecha_fin,pein.Fecha_Inicio,pein.Fecha_Fin)=0 and Cod_Hotel=@cod_hotel
 ))
 begin
 	set @error=1;
