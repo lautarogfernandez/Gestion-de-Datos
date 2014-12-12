@@ -31,7 +31,7 @@ namespace FrbaHotel.ABM_de_Hotel
 
         private void button_aceptar_Click(object sender, EventArgs e)
         {
-            if(txt_recarga.Text!=string.Empty)
+            if (txt_recarga.Text != string.Empty && Convert.ToInt32(txt_recarga.Text) >= 0)
             {
                 try
                 {
@@ -45,12 +45,15 @@ namespace FrbaHotel.ABM_de_Hotel
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.CommandText = "[TEAM_CASTY].Insertar_Recarga";
-                            cmd.Parameters.Add(new SqlParameter("@fecha", Home_Hotel._codigo_hotel));
+                            cmd.Parameters.Add(new SqlParameter("@fecha", Home_Hotel._fechaHoySql()));
                             cmd.Parameters.Add(new SqlParameter("@recarga", Convert.ToInt32(txt_recarga.Text)));
                             cmd.ExecuteNonQuery();
 
                             string msj = string.Format("La recarga ha sido correcta.");
                             DialogResult resultado = MessageBox.Show(msj, "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                            MenuPrincipal menu1 = new MenuPrincipal();
+                            this.Hide();
+                            menu1.Show();
                         }
                     }
                 }
@@ -58,11 +61,11 @@ namespace FrbaHotel.ABM_de_Hotel
                 {
                     Home_Hotel.mostrarMensajeErrorSql(exc);
                 }
-
-
-
-
-
+            }
+            else
+            {
+                string msj2 = string.Format("Ingrese una cantidad mayor o igual a 0.");
+                MessageBox.Show(msj2, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
