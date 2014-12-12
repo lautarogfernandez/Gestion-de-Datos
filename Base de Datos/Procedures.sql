@@ -722,35 +722,40 @@ GO
 
 select * from TEAM_CASTY.Usuario u where u.Username='guest';
 
-declare @f1 datetime=convert(datetime,'2046-12-09',111);
+
 declare @f2 datetime=@f1-1;
+declare @cod_reserva int;
 declare @tab TEAM_CASTY.t_reserva;
 insert into @tab (Tipo_habitacion,Cantidad) values ('Base Simple',1);
 insert into @tab (Tipo_habitacion,Cantidad) values ('King',2);
-exec  TEAM_CASTY.Reservar 'guest',@f2,@f1,5,111,'Pension Completa',1,@tab;
+exec  TEAM_CASTY.Reservar 'guest',@f2,@f1,5,111,'Pension Completa',1,@tab,@cod_reserva;
+select @cod_reserva;
 
 select * from TEAM_CASTY.Reserva r order by r.Cod_Reserva desc;
 
-declare @f1 datetime=convert(datetime,'2046-12-09',111);
-exec TEAM_CASTY.Check_IN 110751,@f1,'admin',1;
+declare @cod_estadia numeric(18);
+declare @f1 datetime=convert(datetime,'2020-12-09',111);
+exec TEAM_CASTY.Check_IN 110741,@f1,'admin',1,@cod_estadia;
+
 
 select * from TEAM_CASTY.Estadia e order by e.Cod_Estadia desc;
-select * from TEAM_CASTY.HabitacionXEstadia hxe order by hxe.Cod_Estadia desc;
-select * from TEAM_CASTY.HabitacionXEstadia hxe where hxe.Cod_Estadia=89607;
-select * from TEAM_CASTY.ClienteXEstadia cxe where cxe.Cod_Estadia=89607;
+select * from TEAM_CASTY.HabitacionXEstadia hxe where hxe.Cod_Estadia=89606 order by hxe.Cod_Estadia desc;
+select * from TEAM_CASTY.HabitacionXEstadia hxe where hxe.Cod_Estadia=89606;
+select * from TEAM_CASTY.ClienteXEstadia cxe where cxe.Cod_Estadia=89606;
 
-select * from TEAM_CASTY.ClienteXEstadia cxe where cxe.Cod_Estadia=89609;
+select * from TEAM_CASTY.ClienteXEstadia cxe where cxe.Cod_Estadia=89606;
 declare @tab TEAM_CASTY.t_agregar_clientes;
 insert into @tab (cod_cliente) values(9);
 insert into @tab (cod_cliente) values(4);
-exec TEAM_CASTY.Agregar_Clientes_A_Estadia 110751,@tab;
-select * from TEAM_CASTY.ClienteXEstadia cxe where cxe.Cod_Estadia=89611;
+exec TEAM_CASTY.Agregar_Clientes_A_Estadia 110741,@tab;
+select * from TEAM_CASTY.ClienteXEstadia cxe where cxe.Cod_Estadia=89606;
 
-declare @f1 datetime=convert(datetime,'2046-12-12',111);
-exec TEAM_CASTY.Check_OUT 89613,@f1,'guest',1;
+select * from TEAM_CASTY.Estadia e where e.Cod_Estadia=89606;
+declare @f1 datetime=convert(datetime,'2020-12-12',111);
+exec TEAM_CASTY.Check_OUT 89606,@f1,'guest',1;
+select * from TEAM_CASTY.Estadia e where e.Cod_Estadia=89606;
 
-select * from TEAM_CASTY.Estadia e where e.Cod_Estadia=89609;
-
+select * from TEAM_CASTY.Factura f where f.Cod_Estadia=89606;
 
 
 --PUNTO 11
