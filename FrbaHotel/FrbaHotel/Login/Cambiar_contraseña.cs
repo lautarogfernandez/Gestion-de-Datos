@@ -36,8 +36,6 @@ namespace FrbaHotel.Login
 
                         using (SqlCommand cmd = conn.CreateCommand())
                         {
-                            //TEAM_CASTY.CambiarPassword
-                            //(@usuario nvarchar(255),@contraseña nvarchar(255))
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.CommandText = "[TEAM_CASTY].CambiarPassword";
                             cmd.Parameters.Add(new SqlParameter("@usuario", Home._nombreUsuario));
@@ -76,11 +74,6 @@ namespace FrbaHotel.Login
             {
                 button_aceptar.Enabled = true;
                 button_aceptar.ForeColor = SystemColors.MenuText;
-            }
-            else
-            {
-                button_aceptar.Enabled = false;
-                button_aceptar.ForeColor = SystemColors.ScrollBar;
             }
         }
     }

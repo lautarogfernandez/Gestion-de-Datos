@@ -706,7 +706,7 @@ end
 
 GO
 
-select * from TEAM_CASTY.Rol
+
 CREATE FUNCTION TEAM_CASTY.RolesDeUsuarioEnHotel
 (@usuario nvarchar(255),@hotel numeric(18))
 RETURNS TABLE
@@ -787,7 +787,6 @@ end;
 GO
 
 
-select * from TEAM_CASTY.Usuario
 
 create procedure TEAM_CASTY.CambiarPassword
 (@usuario nvarchar(255),@contraseña nvarchar(255))
@@ -795,7 +794,7 @@ as
 begin
 update TEAM_CASTY.Usuario
 set Contraseña=@contraseña
-where @usuario=Username;
+where @usuario=Cod_Usuario;
 end;
 
 GO
