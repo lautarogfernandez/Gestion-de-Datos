@@ -1294,3 +1294,36 @@ end
 end;
  
  GO
+ 
+ 
+ 
+ 
+create procedure TEAM_CASTY.Inserta_Recarga
+ (@fecha datetime, @recarga numeric(18))
+ as
+ begin
+	declare @mensaje varchar(1000);
+	declare @error int;
+	set @error=0;
+	set @mensaje='Error:';
+	
+	if(exists (select * from TEAM_CASTY.Recarga_Estrella re where datediff(day,re.Fecha_Modificacion,@fecha)=0))
+	begin
+		set @error=1;
+		set @mensaje=' Ya se cambió la recarga ese día.';
+	end
+	
+	if (@error=0)
+	begin
+		insert into TEAM_CASTY.Recarga_Estrella
+		(Fecha_Modificacion,Recarga)
+		values (@fecha,@recarga);
+	end	
+	else
+	begin
+		set @mensaje=@mensaje + ' No se realizó la modificación.';
+		RAISERROR (@mensaje,15,1);
+	end
+end;
+
+GO
