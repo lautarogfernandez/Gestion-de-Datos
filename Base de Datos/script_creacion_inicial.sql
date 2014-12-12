@@ -2666,7 +2666,7 @@ order by [Cantidad Consumibles] desc
    
 go   
    
-CREATE FUNCTION dbo.cantidadDeDias (@pFecha_Inicio_Trimestre date,@pFecha_Fin_Trimestre date, @pFecha_Inicio_Inhabilitado date,@pFecha_Fin_Inhabilitad date )
+CREATE FUNCTION TEAM_CASTY.cantidadDeDias (@pFecha_Inicio_Trimestre date,@pFecha_Fin_Trimestre date, @pFecha_Inicio_Inhabilitado date,@pFecha_Fin_Inhabilitad date )
 RETURNS INTEGER 
 AS
 BEGIN
@@ -2685,9 +2685,9 @@ CREATE FUNCTION TEAM_CASTY.vistaTOP5CantidadDeDiasFueraDeServicio (@pFecha_Inici
 RETURNS TABLE
 AS
 RETURN
-select  top 5 vh.Codigo, vh.Ciudad, vh.Calle,vh.[Numero Calle], vh.Telefono, vh.Mail, vh.[Cantidad de estrellas], vh.[Recarga por estrella],SUM(dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,ph.Fecha_Inicio,ph.Fecha_Fin )) as "Total Dias Fuera De Servicio"
+select  top 5 vh.Codigo, vh.Ciudad, vh.Calle,vh.[Numero Calle], vh.Telefono, vh.Mail, vh.[Cantidad de estrellas], vh.[Recarga por estrella],SUM(TEAM_CASTY.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,ph.Fecha_Inicio,ph.Fecha_Fin )) as "Total Dias Fuera De Servicio"
 from TEAM_CASTY.vistaHoteles vh, TEAM_CASTY.Periodo_Inhabilitado ph 
-where vh.Codigo = ph.Cod_Hotel and dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,ph.Fecha_Inicio,ph.Fecha_Fin ) >0
+where vh.Codigo = ph.Cod_Hotel and TEAM_CASTY.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,ph.Fecha_Inicio,ph.Fecha_Fin ) >0
 group by vh.Codigo, vh.Ciudad, vh.Calle,vh.[Numero Calle], vh.Telefono, vh.Mail, vh.[Cantidad de estrellas], vh.[Recarga por estrella]
 order by [Total Dias Fuera De Servicio] desc
    
@@ -2697,9 +2697,9 @@ CREATE FUNCTION TEAM_CASTY.vistaTOP5HabitacionesHabitadas (@pFecha_Inicio date,@
 RETURNS TABLE
 AS
 RETURN
-select  top 5 vhab.Codigo, vhab.[Numero Hotel], vhab.Numero, vhab.Piso,vhab.Frente,vhab.[Descripcion de tipo], vhab.Porcentual ,SUM(dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,est.Fecha_Inicio,est.Fecha_Salida )) as "Dias Ocupada", COUNT (est.Cod_Estadia) as "Cantidad De Veces Ocupada"
+select  top 5 vhab.Codigo, vhab.[Numero Hotel], vhab.Numero, vhab.Piso,vhab.Frente,vhab.[Descripcion de tipo], vhab.Porcentual ,SUM(TEAM_CASTY.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,est.Fecha_Inicio,est.Fecha_Salida )) as "Dias Ocupada", COUNT (est.Cod_Estadia) as "Cantidad De Veces Ocupada"
 from TEAM_CASTY.vistaHabitaciones vhab,TEAM_CASTY.HabitacionXEstadia habxest, TEAM_CASTY.Estadia est
-where vhab.Codigo = habxest.Cod_Habitacion   and est.Cod_Estadia=habxest.Cod_Estadia and  dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,est.Fecha_Inicio,est.Fecha_Salida) >0
+where vhab.Codigo = habxest.Cod_Habitacion   and est.Cod_Estadia=habxest.Cod_Estadia and  TEAM_CASTY.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,est.Fecha_Inicio,est.Fecha_Salida) >0
 group by  vhab.Codigo, vhab.[Numero Hotel], vhab.Numero, vhab.Piso,vhab.Frente ,vhab.[Descripcion de tipo], vhab.Porcentual
 order by  [Dias Ocupada] desc, [Cantidad De Veces Ocupada] desc
 
