@@ -39,9 +39,6 @@ namespace FrbaHotel.ABM_de_Habitacion
                 Home_Habitacion.mostrarMensajeErrorSql(exc);
             }
             conn.Close();
-
-
-
         }
 
         private void txt_piso_KeyPress(object sender, KeyPressEventArgs e)
@@ -84,11 +81,14 @@ namespace FrbaHotel.ABM_de_Habitacion
                 }
                 if (_buscaFrente)
                 {
-                    if (_masDeUno) busqueda += " AND ";
-                    _masDeUno = true;
-                    busqueda += " Frente = ";
-                    if (cmb_Frente.SelectedItem.ToString()=="Vista Exterior") busqueda += "'S'";
-                    else if (cmb_Frente.SelectedItem.ToString() == "Vista Interior") busqueda += "'N'";
+                    if (cmb_Frente.SelectedIndex >= 0)
+                    {
+                        if (_masDeUno) busqueda += " AND ";
+                        _masDeUno = true;
+                        busqueda += " Frente = ";
+                        if (cmb_Frente.SelectedItem.ToString() == "Vista Exterior") busqueda += "'S'";
+                        else if (cmb_Frente.SelectedItem.ToString() == "Vista Interior") busqueda += "'N'";
+                    }
                 }
                 if (_buscaPiso)
                 {
@@ -98,8 +98,11 @@ namespace FrbaHotel.ABM_de_Habitacion
                 }
                 if (_buscaTipoHab)
                 {
-                    if (_masDeUno) busqueda += " AND ";
-                    busqueda += " [Descripcion de tipo] = '" + cmb_tipo_habitacion.Text.ToString() + "'";
+                    if (cmb_tipo_habitacion.SelectedIndex >= 0)
+                    {
+                        if (_masDeUno) busqueda += " AND ";
+                        busqueda += " [Descripcion de tipo] = '" + cmb_tipo_habitacion.Text.ToString() + "'";
+                    }
                 }
             }
             #endregion
@@ -224,9 +227,6 @@ namespace FrbaHotel.ABM_de_Habitacion
             }
         }
 
-
-         //string busqueda = "SELECT , , , , , [], Baja " 
-
         private void button_modificar_Click(object sender, EventArgs e)
         {
             _valores = new valoresDataGridView();
@@ -276,11 +276,5 @@ namespace FrbaHotel.ABM_de_Habitacion
             Habitacion_modificar formularioModificar = new Habitacion_modificar(_valores);
             formularioModificar.Show();
         }
-
-        private void Habitacion_modificacion_Load(object sender, EventArgs e)
-        {
-
-        }
-
     }
 }

@@ -122,9 +122,9 @@
             // 
             this.button_Buscar.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_Buscar.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.button_Buscar.Location = new System.Drawing.Point(395, 100);
+            this.button_Buscar.Location = new System.Drawing.Point(226, 101);
             this.button_Buscar.Name = "button_Buscar";
-            this.button_Buscar.Size = new System.Drawing.Size(135, 45);
+            this.button_Buscar.Size = new System.Drawing.Size(119, 45);
             this.button_Buscar.TabIndex = 6;
             this.button_Buscar.Text = "Buscar";
             this.button_Buscar.UseVisualStyleBackColor = true;
@@ -134,7 +134,7 @@
             // 
             this.cmb_tipo_habitacion.ForeColor = System.Drawing.SystemColors.MenuText;
             this.cmb_tipo_habitacion.FormattingEnabled = true;
-            this.cmb_tipo_habitacion.Location = new System.Drawing.Point(132, 97);
+            this.cmb_tipo_habitacion.Location = new System.Drawing.Point(382, 62);
             this.cmb_tipo_habitacion.Name = "cmb_tipo_habitacion";
             this.cmb_tipo_habitacion.Size = new System.Drawing.Size(121, 21);
             this.cmb_tipo_habitacion.TabIndex = 4;
@@ -143,9 +143,9 @@
             // txt_numero
             // 
             this.txt_numero.ForeColor = System.Drawing.SystemColors.ScrollBar;
-            this.txt_numero.Location = new System.Drawing.Point(320, 25);
+            this.txt_numero.Location = new System.Drawing.Point(382, 25);
             this.txt_numero.Name = "txt_numero";
-            this.txt_numero.Size = new System.Drawing.Size(111, 20);
+            this.txt_numero.Size = new System.Drawing.Size(121, 20);
             this.txt_numero.TabIndex = 2;
             this.txt_numero.Text = "Ingrese número";
             this.txt_numero.TextChanged += new System.EventHandler(this.txt_numero_TextChanged);
@@ -156,9 +156,9 @@
             // txt_piso
             // 
             this.txt_piso.ForeColor = System.Drawing.SystemColors.ScrollBar;
-            this.txt_piso.Location = new System.Drawing.Point(70, 25);
+            this.txt_piso.Location = new System.Drawing.Point(90, 25);
             this.txt_piso.Name = "txt_piso";
-            this.txt_piso.Size = new System.Drawing.Size(104, 20);
+            this.txt_piso.Size = new System.Drawing.Size(121, 20);
             this.txt_piso.TabIndex = 1;
             this.txt_piso.Text = "Ingrese piso";
             this.txt_piso.TextChanged += new System.EventHandler(this.txt_piso_TextChanged);
@@ -180,7 +180,7 @@
             // 
             this.lbl_Tipo_habitacion.AutoSize = true;
             this.lbl_Tipo_habitacion.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lbl_Tipo_habitacion.Location = new System.Drawing.Point(20, 100);
+            this.lbl_Tipo_habitacion.Location = new System.Drawing.Point(270, 65);
             this.lbl_Tipo_habitacion.Name = "lbl_Tipo_habitacion";
             this.lbl_Tipo_habitacion.Size = new System.Drawing.Size(95, 13);
             this.lbl_Tipo_habitacion.TabIndex = 6;
@@ -259,7 +259,6 @@
             this.MinimumSize = new System.Drawing.Size(600, 600);
             this.Name = "Habitacion_modificacion";
             this.Text = "Habitacion_modificacion";
-            this.Load += new System.EventHandler(this.Habitacion_modificacion_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_resultados)).EndInit();
             this.stat_BarraEstado.ResumeLayout(false);
             this.stat_BarraEstado.PerformLayout();

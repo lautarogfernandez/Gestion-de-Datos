@@ -138,6 +138,7 @@ namespace FrbaHotel.ABM_de_Habitacion
 
                             string msj = string.Format("La habitación se ha cargado correctamente.");
                             DialogResult resultado = MessageBox.Show(msj, "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                            this.Hide();
                         }
                     }
                 }
