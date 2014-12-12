@@ -113,6 +113,7 @@
             this.grp_datos2.Controls.Add(this.label6);
             this.grp_datos2.Controls.Add(this.lbl_Email2);
             this.grp_datos2.Controls.Add(this.lbl);
+            this.grp_datos2.Enabled = false;
             this.grp_datos2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.grp_datos2.Location = new System.Drawing.Point(0, 19);
             this.grp_datos2.Name = "grp_datos2";
@@ -178,6 +179,7 @@
             this.button_Buscar2.TabIndex = 10;
             this.button_Buscar2.Text = "Buscar";
             this.button_Buscar2.UseVisualStyleBackColor = true;
+            this.button_Buscar2.Click += new System.EventHandler(this.button_Buscar2_Click);
             // 
             // txt_numeroIdentificacion2
             // 
@@ -187,6 +189,10 @@
             this.txt_numeroIdentificacion2.Size = new System.Drawing.Size(162, 20);
             this.txt_numeroIdentificacion2.TabIndex = 9;
             this.txt_numeroIdentificacion2.Text = "Ingrese número de identificación";
+            this.txt_numeroIdentificacion2.TextChanged += new System.EventHandler(this.txt_numeroIdentificacion2_TextChanged);
+            this.txt_numeroIdentificacion2.Click += new System.EventHandler(this.txt_numeroIdentificacion2_Click);
+            this.txt_numeroIdentificacion2.Leave += new System.EventHandler(this.txt_numeroIdentificacion2_Leave);
+            this.txt_numeroIdentificacion2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_numeroIdentificacion_KeyPress);
             // 
             // cmb_tipoIdentificacion2
             // 
@@ -197,6 +203,7 @@
             this.cmb_tipoIdentificacion2.Size = new System.Drawing.Size(121, 21);
             this.cmb_tipoIdentificacion2.TabIndex = 7;
             this.cmb_tipoIdentificacion2.Text = "Seleccione tipo";
+            this.cmb_tipoIdentificacion2.SelectedIndexChanged += new System.EventHandler(this.cmb_tipoIdentificacion2_SelectedIndexChanged);
             // 
             // txt_Email2
             // 
@@ -206,6 +213,9 @@
             this.txt_Email2.Size = new System.Drawing.Size(258, 20);
             this.txt_Email2.TabIndex = 5;
             this.txt_Email2.Text = "Ingrese e-mail";
+            this.txt_Email2.TextChanged += new System.EventHandler(this.txt_Email2_TextChanged);
+            this.txt_Email2.Click += new System.EventHandler(this.txt_Email2_Click);
+            this.txt_Email2.Leave += new System.EventHandler(this.txt_Email2_Leave);
             // 
             // label6
             // 
@@ -240,6 +250,7 @@
             // grp_alta
             // 
             this.grp_alta.Controls.Add(this.button_agregar);
+            this.grp_alta.Enabled = false;
             this.grp_alta.Location = new System.Drawing.Point(353, 19);
             this.grp_alta.Name = "grp_alta";
             this.grp_alta.Size = new System.Drawing.Size(200, 88);
@@ -289,6 +300,10 @@
             this.txt_codigo_reserva.Size = new System.Drawing.Size(216, 20);
             this.txt_codigo_reserva.TabIndex = 153;
             this.txt_codigo_reserva.Text = "Ingrese codigo de reserva a modificar";
+            this.txt_codigo_reserva.TextChanged += new System.EventHandler(this.txt_codigo_reserva_TextChanged);
+            this.txt_codigo_reserva.Click += new System.EventHandler(this.txt_codigo_reserva_Click);
+            this.txt_codigo_reserva.Leave += new System.EventHandler(this.txt_Email_Leave);
+            this.txt_codigo_reserva.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_numeroIdentificacion_KeyPress);
             // 
             // lbl_reserva
             // 
@@ -368,6 +383,7 @@
             this.button_Buscar.TabIndex = 10;
             this.button_Buscar.Text = "Buscar";
             this.button_Buscar.UseVisualStyleBackColor = true;
+            this.button_Buscar.Click += new System.EventHandler(this.button_Buscar_Click);
             // 
             // txt_numeroIdentificacion
             // 
@@ -377,6 +393,10 @@
             this.txt_numeroIdentificacion.Size = new System.Drawing.Size(216, 20);
             this.txt_numeroIdentificacion.TabIndex = 9;
             this.txt_numeroIdentificacion.Text = "Ingrese número de identificación";
+            this.txt_numeroIdentificacion.TextChanged += new System.EventHandler(this.txt_numeroIdentificacion_TextChanged);
+            this.txt_numeroIdentificacion.Click += new System.EventHandler(this.txt_numeroIdentificacion_Click);
+            this.txt_numeroIdentificacion.Leave += new System.EventHandler(this.txt_numeroIdentificacion_Leave);
+            this.txt_numeroIdentificacion.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_numeroIdentificacion_KeyPress);
             // 
             // cmb_tipoIdentificacion
             // 
@@ -387,6 +407,7 @@
             this.cmb_tipoIdentificacion.Size = new System.Drawing.Size(121, 21);
             this.cmb_tipoIdentificacion.TabIndex = 7;
             this.cmb_tipoIdentificacion.Text = "Seleccione tipo";
+            this.cmb_tipoIdentificacion.SelectedIndexChanged += new System.EventHandler(this.cmb_tipoIdentificacion_SelectedIndexChanged);
             // 
             // txt_Email
             // 
@@ -396,6 +417,9 @@
             this.txt_Email.Size = new System.Drawing.Size(312, 20);
             this.txt_Email.TabIndex = 5;
             this.txt_Email.Text = "Ingrese e-mail";
+            this.txt_Email.TextChanged += new System.EventHandler(this.txt_Email_TextChanged);
+            this.txt_Email.Click += new System.EventHandler(this.txt_Email_Click);
+            this.txt_Email.Leave += new System.EventHandler(this.txt_Email_Leave);
             // 
             // lbl_Numero_id
             // 

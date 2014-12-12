@@ -43,6 +43,74 @@ namespace FrbaHotel.Registrar_Estadia
             conn.Close();
 
         }
+        #region txt_Email2
+        private void txt_Email2_TextChanged(object sender, EventArgs e)
+        {
+            if (txt_Email2.TextLength > 0 && txt_Email2.Text != "Ingrese e-mail")
+            {
+                txt_Email2.ForeColor = SystemColors.MenuText;
+                _buscaEmail = true;
+            }
+
+        }
+
+        private void txt_Email2_Click(object sender, EventArgs e)
+        {
+            if (txt_Email2.Text == "Ingrese e-mail")
+            {
+                txt_Email2.Text = string.Empty;
+                txt_Email2.ForeColor = SystemColors.MenuText;
+            }
+        }
+
+        private void txt_Email2_Leave(object sender, EventArgs e)
+        {
+            if (txt_Email2.Text == "Ingrese e-mail" ||
+                txt_Email2.Text == string.Empty)
+            {
+                txt_Email2.Text = "Ingrese e-mail";
+                txt_Email2.ForeColor = SystemColors.ScrollBar;
+                _buscaEmail = false;
+            }
+        }
+        #endregion
+        #region Numero de Identificacion 2
+        private void txt_numeroIdentificacion2_TextChanged(object sender, EventArgs e)
+        {
+            if (txt_numeroIdentificacion2.TextLength > 0 && txt_numeroIdentificacion2.Text != "Ingrese nombre")
+            {
+                //Si escribe algo cambio el color del texto
+                // esto para identificar por qué campos quiere buscar
+                txt_numeroIdentificacion2.ForeColor = SystemColors.MenuText;
+                _buscaDoc = true;
+            }
+        }
+
+        private void txt_numeroIdentificacion2_Click(object sender, EventArgs e)
+        {
+            if (txt_numeroIdentificacion2.Text == "Ingrese número de identificación")
+            {
+                txt_numeroIdentificacion2.Text = string.Empty;
+                txt_numeroIdentificacion2.ForeColor = SystemColors.MenuText;
+            }
+        }
+
+        private void txt_numeroIdentificacion2_Leave(object sender, EventArgs e)
+        {
+            if (txt_numeroIdentificacion2.Text == "Ingrese número de identificación" ||
+                txt_numeroIdentificacion2.Text == string.Empty)
+            {
+                txt_numeroIdentificacion2.Text = "Ingrese número de identificación";
+                txt_numeroIdentificacion2.ForeColor = SystemColors.ScrollBar;
+                _buscaDoc = false;
+            }
+        }
+        #endregion
+        private void cmb_tipoIdentificacion2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _buscaTipoDoc = true;
+        }
+
         #region txt_Email
         private void txt_Email_TextChanged(object sender, EventArgs e)
         {
@@ -204,10 +272,16 @@ namespace FrbaHotel.Registrar_Estadia
                         {
                             string msj = "Se encontró al cliente y a la reserva. \n Puede continuar añadiendo acompañantes.";
                             MessageBox.Show(msj, "Exito", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-
+                            grp_datos.Enabled = false;
+                            grp_personas.Enabled = true;
+                            grp_datos2.Enabled = true;
+                            grp_alta.Enabled = true;
+                            _buscaDoc = false;
+                            _buscaEmail = false;
+                            _buscaTipoDoc = false;
                             _reserva.cliente = codigoCliente;
                             _reserva.codigo_reserva = codigoReserva;
-
+                            dgv_resultados.DataSource = tablaClientes;
                         }
                     }
                 }
@@ -330,6 +404,55 @@ namespace FrbaHotel.Registrar_Estadia
                 {
                     Home_Estadia.mostrarMensajeErrorSql(exc);
                 }
+            }
+        }
+
+        private void button_Buscar2_Click(object sender, EventArgs e)
+        {
+            if (_buscaDoc && _buscaEmail && _buscaTipoDoc)
+            {
+                try
+                {
+                    string busqueda = string.Format("SELECT * "
+                     + " FROM [GD2C2014].[Team_Casty].[vistaClientes] "
+                     + " WHERE [Mail] = '{0}' AND [Tipo Documento]='{1}' AND [Numero Documento]={2}", txt_Email.Text,
+                     cmb_tipoIdentificacion.SelectedItem, txt_numeroIdentificacion.Text);           //búsqueda básica
+                    label_progreso.Text = "Buscando...";       //Imprime en la barra de progreso
+                    SqlConnection conn = Home_Estadia.obtenerConexion();                       //Abrir Conexión
+                    SqlDataAdapter adaptador;                                                                                                          //Creo adaptador para la busqueda
+                    barra_progreso.Value = 5;                                                                                                            //0% de la barra de progreso
+                    adaptador = new SqlDataAdapter(busqueda, conn);                                                              //Busco en la sesión abierta
+                    DataTable tablaAuxiliar = new DataTable();
+                    adaptador.Fill(tablaAuxiliar);                                                                                                    //LLeno tabla de resultados
+                    
+                    if (tablaClientes.Rows.Count == 0)
+                    {
+                        string msj = "No se encontró el cliente \n";
+                        MessageBox.Show(msj, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    }
+                    else if (tablaClientes.Rows.Count != 1)
+                    {
+                        string msj = "Existe más de un cliente con esos datos. \n";
+                        MessageBox.Show(msj, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    }
+                    else
+                    {
+                      
+                            string msj = "Se encontró al cliente. \n Puede continuar añadiendo acompañantes.";
+                            MessageBox.Show(msj, "Exito", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                            tablaClientes.Rows.Add(tablaAuxiliar.Rows[0]);
+                    }
+                }
+                catch (SqlException exc)                                                                                                                             //En un error le aviso
+                {
+                    barra_progreso.Value = 0;
+                    Home_Estadia.mostrarMensajeErrorSql(exc);
+                }
+            }
+            else
+            {
+                string msj = "Por favor, complete los campos obligatorios.";
+                MessageBox.Show(msj, "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }
