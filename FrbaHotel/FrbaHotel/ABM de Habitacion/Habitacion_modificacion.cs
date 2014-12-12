@@ -156,7 +156,7 @@ namespace FrbaHotel.ABM_de_Habitacion
 
         private void txt_piso_Click(object sender, EventArgs e)
         {
-            if (txt_piso.Text == "Ingrese nombre")
+            if (txt_piso.Text == "Ingrese piso")
             {
                 txt_piso.Text = string.Empty;
                 txt_piso.ForeColor = SystemColors.MenuText;
@@ -174,7 +174,7 @@ namespace FrbaHotel.ABM_de_Habitacion
 
         private void txt_numero_Click(object sender, EventArgs e)
         {
-            if (txt_numero.Text == "Ingrese nombre")
+            if (txt_numero.Text == "Ingrese número")
             {
                 txt_numero.Text = string.Empty;
                 txt_numero.ForeColor = SystemColors.MenuText;

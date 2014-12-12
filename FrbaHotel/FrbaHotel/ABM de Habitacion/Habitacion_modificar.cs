@@ -64,7 +64,7 @@ namespace FrbaHotel.ABM_de_Habitacion
 
             if (!cmb_frente.Enabled)
             { frente = _lbl_frente.Text[0]; }
-            else if (cmb_frente.Enabled && cmb_frente.SelectedIndex.ToString() != string.Empty)
+            else if (cmb_frente.Enabled && cmb_frente.SelectedIndex >=0)
             {
                 if (cmb_frente.SelectedItem.ToString()=="Vista Exterior")
                 {
@@ -83,7 +83,7 @@ namespace FrbaHotel.ABM_de_Habitacion
 
             if (!cmb_baja.Enabled)
             { if (_lbl_frente.Text.ToString() == "SI") { baja = true; } else { baja = false; } }
-            else if (cmb_baja.Enabled && cmb_baja.SelectedItem.ToString() != string.Empty)
+            else if (cmb_baja.Enabled && cmb_baja.SelectedIndex >=0)
             {
                 if (cmb_baja.SelectedItem.ToString() == "SI")
                 {
@@ -121,22 +121,19 @@ namespace FrbaHotel.ABM_de_Habitacion
                             cmd.CommandText = "[TEAM_CASTY].ModificarHabitacion";
                             cmd.Parameters.Add(new SqlParameter("@hotel", Home_Habitacion._codigo_hotel));
 
-                            cmd.Parameters.Add(new SqlParameter("@numeroAnterior", Convert.ToInt32(_lbl_numero)));
+                            cmd.Parameters.Add(new SqlParameter("@numeroAnterior", Convert.ToInt32(_lbl_numero.Text)));
                             cmd.Parameters.Add(new SqlParameter("@numeroActual", num));
                                                         
                             cmd.Parameters.Add(new SqlParameter("@piso", piso));
                             cmd.Parameters.Add(new SqlParameter("@frente", frente));
                             cmd.Parameters.Add(new SqlParameter("@tipo", _lbl_tipo_habitacion.Text.ToString()));
                             cmd.Parameters.Add(new SqlParameter("@descripcion", desc));
+                            int baj = 0;
                             if (baja)
                             {
-                                cmd.Parameters.Add(new SqlParameter("@baja", 1));
+                                baj = 1;
                             }
-                            else
-                            {
-                                cmd.Parameters.Add(new SqlParameter("@baja", 0));
-                            }
-
+                            cmd.Parameters.Add(new SqlParameter("@baja", baj));
                             cmd.ExecuteNonQuery();
 
                             string msj = string.Format("La habitación se ha cargado correctamente.");
