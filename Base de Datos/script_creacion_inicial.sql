@@ -1672,7 +1672,7 @@ end;
 GO
 
 create procedure TEAM_CASTY.modificarUsuario
-(@cod_usuario numeric(18),@username nvarchar(255),@password nvarchar(255),@nombre nvarchar(255),@apellido nvarchar(255),
+(@cod_usuario numeric(18),@username nvarchar(255),@nombre nvarchar(255),@apellido nvarchar(255),
  @tipoDocumento nvarchar(255), @numeroDocumento numeric(18), @mail nvarchar(255), @telefono nvarchar(50),
  @direccion nvarchar(255), @fechaNacimiento datetime, @habilitado numeric (18),@tabla TEAM_CASTY.t_tablaHotelYRol readonly)
 as
@@ -1683,10 +1683,10 @@ declare @error int;
 set @error=0;
 set @mensaje='Error: ';
 
-if (not exists(select * from TEAM_CASTY.Usuario u where u.Cod_Usuario= @cod_usuario))
+if (not exists(select * from TEAM_CASTY.Usuario u where u.Cod_Usuario= @cod_usuario and u.Cod_Usuario<>@cod_usuario))
 begin
 	set @error=1;
-	set @mensaje=' Usuario existente.';
+	set @mensaje=' Nombre de usuario repetido.';
 end
 
 if (exists( 
@@ -1735,15 +1735,22 @@ begin
 end
 
 if (@error=0)
-begin
-	update TEAM_CASTY.Usuario
-	set Username=@username, Contraseña=@password
-	where Cod_Usuario=@cod_usuario;
-	
+begin	
 	declare @id_tipo_documento numeric (18);
 	select @id_tipo_documento=td.ID_Tipo_Documento
 	from TEAM_CASTY.Tipo_Documento td
 	where td.Tipo_Documento=@tipoDocumento;
+	
+	update TEAM_CASTY.Usuario
+	set Username=@username
+	where @cod_usuario=Cod_Usuario;
+	
+	if(@habilitado=1)
+	begin
+		update TEAM_CASTY.Usuario
+		set Habilitado=1
+		where @cod_usuario=Cod_Usuario;
+	end
 
 	update TEAM_CASTY.Empleado
 	set Nombre=@nombre,Apellido=@apellido,ID_Tipo_Documento=@id_tipo_documento,
@@ -2215,8 +2222,6 @@ end;
 
 GO
 
-
-
 create procedure  TEAM_CASTY.Check_IN
 @Cod_Reserva numeric(18),@fecha datetime, @usuario nvarchar(255),@hotel numeric(18),@cod_estadia numeric(18) output
 AS
@@ -2455,7 +2460,7 @@ end;
 GO
 
 create procedure  TEAM_CASTY.Facturar
-@cod_Estadia numeric(18), @fecha datetime, @cod_forma_pago numeric(18)
+@cod_Estadia numeric(18), @fecha datetime, @cod_forma_pago numeric(18),@hotel numeric(18),@money money output
 AS
 begin
 declare @mensaje nvarchar(1000);
@@ -2477,6 +2482,16 @@ begin
 			set @error=1;
 			set @mensaje+=' Fecha incorrecta.';
 		end
+		else
+		begin
+			if(not exists(
+			select * from TEAM_CASTY.HabitacionXEstadia hxe, TEAM_CASTY.Habitacion hab
+			 where hxe.Cod_Estadia=@cod_Estadia and hxe.Cod_Habitacion=hab.Cod_Habitacion and @hotel=hab.Cod_Hotel))
+			begin
+				set @error=1;
+				set @mensaje+=' El hotel no corresponde a esa estadía.';
+			end
+		end
 	end
 end
 else
@@ -2485,22 +2500,11 @@ begin
 	set @mensaje+=' Estadía inexistente.';
 end
 
-if (not exists(select * from TEAM_CASTY.Forma_Pago fp where @cod_forma_pago=fp.Cod_Forma_Pago))
-begin
-	set @error=1; 
-	set @mensaje+=' Forma de pago inexistente.';
-end
-
 if (@error=0)
 begin
 	begin try
 		declare @nro_factura numeric (18);
 		select @nro_factura=max(f.Nro_Factura)+1 from TEAM_CASTY.Factura f;
-		
-		declare @hotel numeric (18);
-		select distinct @hotel=hab.Cod_Hotel
-		from TEAM_CASTY.Estadia est,TEAM_CASTY.Habitacion hab, TEAM_CASTY.HabitacionXEstadia hxe
-		where est.Cod_Estadia=@cod_Estadia and est.Cod_Estadia=hxe.Cod_Estadia and hxe.Cod_Habitacion=hab.Cod_Habitacion;
 		
 		insert into TEAM_CASTY.Factura
 		(Cod_Estadia,Cod_Forma_Pago,Fecha,Nro_Factura,Total)
@@ -2546,12 +2550,10 @@ begin
 			set @monto_total+=@monto_consumibles;
 		end
 		
-		declare @puntos numeric(18)=0;
-		set @puntos=CAST(round(@monto_habitaciones/10,0,1) as int)+CAST(round(@monto_consumibles/5,0,1) as int);
-		
 		update TEAM_CASTY.Factura
-		set Total=@monto_total,Puntos=@puntos
-		where Cod_Estadia=@cod_Estadia;		
+		set Total=@monto_total
+		where Cod_Estadia=@cod_Estadia;	
+		set @money=@monto_total;
 	end try
 	begin catch	
 		set @mensaje=@mensaje + 'No se realizó la factura.';
@@ -2567,6 +2569,60 @@ end;
 
 GO
 
+create procedure  TEAM_CASTY.RegistrarPagoTarjeta
+@cod_Estadia numeric(18), @numero_tajeta numeric(18), @banco nvarchar(255)
+AS
+begin
+declare @mensaje nvarchar(1000);
+declare @error int;
+set @error=0;
+set @mensaje='Error:';
+
+declare @id_cliente numeric(18);
+select @id_cliente=res.ID_Cliente_Reservador
+from TEAM_CASTY.Estadia est, TEAM_CASTY.Reserva res
+where est.Cod_Estadia=@cod_Estadia and est.Cod_Reserva=res.Cod_Reserva;
+
+if (not exists(select * from TEAM_CASTY.Tarjeta tar where @numero_tajeta=tar.Numero and @banco=tar.Banco and @id_cliente=tar.ID_Cliente))
+begin
+	if (exists(select * from TEAM_CASTY.Tarjeta tar where @numero_tajeta=tar.Numero and @banco=tar.Banco))
+	begin
+		set @error=1;
+		set @mensaje+=' La tarjeta no corresonde al cliente que realizó el pago.';
+	end
+	else
+	begin
+		insert into TEAM_CASTY.Tarjeta
+		(ID_Cliente,Banco,Numero)
+		values (@id_cliente,@banco,@numero_tajeta);
+		
+	end
+end
+
+
+if (@error=0)
+begin
+	declare @nro_factura numeric(18);
+	select @nro_factura=f.Nro_Factura
+	from TEAM_CASTY.Factura f
+	where f.Cod_Estadia=@cod_Estadia;
+	
+	insert into TEAM_CASTY.TarjetaXFactura
+	(Nro_Factura,Banco,Numero_Tarjeta)
+	values (@nro_factura,@banco,@numero_tajeta);
+	
+	update TEAM_CASTY.Factura
+	set Cod_Forma_Pago=2
+	where Cod_Estadia=@cod_Estadia;
+end
+else
+begin
+	set @mensaje=@mensaje + 'No se realizó el pago correctamente.';
+	RAISERROR (@mensaje,15,1);
+end
+end;
+
+GO
 
 CREATE FUNCTION TEAM_CASTY.vistaTOP5ReservasCanceladas (@pFecha_Inicio date,@pFecha_Fin date)
 RETURNS TABLE
