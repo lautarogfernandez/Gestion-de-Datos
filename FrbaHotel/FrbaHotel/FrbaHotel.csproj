@@ -196,6 +196,12 @@
     <Compile Include="ABM de Usuario\Usuario_elegir_roles_por_hotel.Designer.cs">
       <DependentUpon>Usuario_elegir_roles_por_hotel.cs</DependentUpon>
     </Compile>
+    <Compile Include="ABM de Usuario\Usuario_modificacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Usuario\Usuario_modificacion.Designer.cs">
+      <DependentUpon>Usuario_modificacion.cs</DependentUpon>
+    </Compile>
     <Compile Include="Encriptado\Encriptador.cs" />
     <Compile Include="Home.cs" />
     <Compile Include="Listado Estadistico\ListadoEstadistico.cs">
@@ -290,6 +296,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ABM de Usuario\Usuario_elegir_roles_por_hotel.resx">
       <DependentUpon>Usuario_elegir_roles_por_hotel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Usuario\Usuario_modificacion.resx">
+      <DependentUpon>Usuario_modificacion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Listado Estadistico\ListadoEstadistico.resx">
       <DependentUpon>ListadoEstadistico.cs</DependentUpon>
