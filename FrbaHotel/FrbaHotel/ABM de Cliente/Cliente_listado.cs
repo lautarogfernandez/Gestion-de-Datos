@@ -33,12 +33,8 @@ namespace FrbaHotel.ABM_de_Cliente
         public Cliente_listado()
         {
             InitializeComponent();
-            string busqueda = "SELECT Codigo, Nombre, Apellido, Mail, [Tipo Documento], [Numero Documento], Telefono, " +
-                                           "Pais, Localidad, Calle, [Numero Calle], Piso, Departamento, Nacionalidad, [Fecha Nacimiento]Inhabilitado "
-                                                                     + "FROM [GD2C2014].[Team_Casty].[vistaClientesErroneos]";           //búsqueda básica
-            button_Buscar.Enabled = false;            //Deshabilito búsqueda hasta que haya resultado
-            SqlConnection conn = Home_Cliente.obtenerConexion();                                 //Abrir Conexión
-            SqlCommand cmd = new SqlCommand(busqueda, conn);
+            SqlConnection conn = Home_Cliente.obtenerConexion();
+            SqlCommand cmd = Home_Cliente.obtenerComandoTipo_Documento(conn);
             SqlDataReader reader = cmd.ExecuteReader();                                                       //Busco en la sesión abierta
             try
             {

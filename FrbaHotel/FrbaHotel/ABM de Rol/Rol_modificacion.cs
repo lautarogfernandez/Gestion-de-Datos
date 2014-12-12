@@ -240,5 +240,12 @@ namespace FrbaHotel.ABM_de_Rol
         {
 
         }
+
+        private void button_volver_Click(object sender, EventArgs e)
+        {
+            MenuPrincipal menuPrincipal = new MenuPrincipal();
+            menuPrincipal.Show();
+            this.Hide()
+        }
     }
 }

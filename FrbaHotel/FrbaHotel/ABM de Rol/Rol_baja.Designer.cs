@@ -140,6 +140,7 @@
             this.button_volver.TabIndex = 211;
             this.button_volver.Text = "Volver";
             this.button_volver.UseVisualStyleBackColor = true;
+            this.button_volver.Click += new System.EventHandler(this.button_volver_Click);
             // 
             // button_limpiar
             // 
@@ -152,6 +153,7 @@
             this.button_limpiar.TabIndex = 209;
             this.button_limpiar.Text = "Limpiar";
             this.button_limpiar.UseVisualStyleBackColor = true;
+            this.button_limpiar.Click += new System.EventHandler(this.button_limpiar_Click);
             // 
             // Filtros_de_busqueda
             // 
@@ -210,6 +212,7 @@
             this.button_Buscar.TabIndex = 6;
             this.button_Buscar.Text = "Buscar";
             this.button_Buscar.UseVisualStyleBackColor = true;
+            this.button_Buscar.Click += new System.EventHandler(this.button_Buscar_Click);
             // 
             // txt_nombre
             // 
@@ -219,6 +222,9 @@
             this.txt_nombre.Size = new System.Drawing.Size(179, 20);
             this.txt_nombre.TabIndex = 3;
             this.txt_nombre.Text = "Ingrese Nombre";
+            this.txt_nombre.TextChanged += new System.EventHandler(this.txt_nombre_TextChanged);
+            this.txt_nombre.Click += new System.EventHandler(this.txt_nombre_Click);
+            this.txt_nombre.Leave += new System.EventHandler(this.txt_nombre_Leave);
             // 
             // lbl_nombre
             // 

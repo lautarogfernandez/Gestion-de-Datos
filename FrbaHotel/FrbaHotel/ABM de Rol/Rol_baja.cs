@@ -68,13 +68,7 @@ namespace FrbaHotel.ABM_de_Rol
 
         private void txt_nombre_Leave(object sender, EventArgs e)
         {
-            if (txt_nombre.Text == "Ingrese nombre" ||
-                txt_nombre.Text == string.Empty)
-            {
-                txt_nombre.Text = "Ingrese nombre";
-                txt_nombre.ForeColor = SystemColors.ScrollBar;
-                _buscanombre = false;
-            }
+
         }
         #endregion
         private void lbl_Pais_Click(object sender, EventArgs e)
@@ -225,6 +219,13 @@ namespace FrbaHotel.ABM_de_Rol
                         }
                 }
             }
+        }
+
+        private void button_volver_Click(object sender, EventArgs e)
+        {
+            MenuPrincipal menuPrincipal = new MenuPrincipal();
+            menuPrincipal.Show();
+            this.Hide();
         }
     }
 }
