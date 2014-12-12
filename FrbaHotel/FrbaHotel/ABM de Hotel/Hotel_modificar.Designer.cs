@@ -50,6 +50,21 @@
             this.rb_3estrellas = new System.Windows.Forms.RadioButton();
             this.rb_4estrellas = new System.Windows.Forms.RadioButton();
             this.rb_5estrellas = new System.Windows.Forms.RadioButton();
+            this.pictureBox15 = new System.Windows.Forms.PictureBox();
+            this.pictureBox11 = new System.Windows.Forms.PictureBox();
+            this.pictureBox12 = new System.Windows.Forms.PictureBox();
+            this.pictureBox13 = new System.Windows.Forms.PictureBox();
+            this.pictureBox14 = new System.Windows.Forms.PictureBox();
+            this.pictureBox10 = new System.Windows.Forms.PictureBox();
+            this.pictureBox7 = new System.Windows.Forms.PictureBox();
+            this.pictureBox8 = new System.Windows.Forms.PictureBox();
+            this.pictureBox9 = new System.Windows.Forms.PictureBox();
+            this.pictureBox6 = new System.Windows.Forms.PictureBox();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.pictureBox5 = new System.Windows.Forms.PictureBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lbl_atributo = new System.Windows.Forms.Label();
             this.lbl_num_calle = new System.Windows.Forms.Label();
             this.lbl_calle = new System.Windows.Forms.Label();
@@ -77,21 +92,6 @@
             this._original_nombre = new System.Windows.Forms.Label();
             this._original_tipos_regimenes = new System.Windows.Forms.CheckedListBox();
             this.button_modificar = new System.Windows.Forms.Button();
-            this.pictureBox15 = new System.Windows.Forms.PictureBox();
-            this.pictureBox11 = new System.Windows.Forms.PictureBox();
-            this.pictureBox12 = new System.Windows.Forms.PictureBox();
-            this.pictureBox13 = new System.Windows.Forms.PictureBox();
-            this.pictureBox14 = new System.Windows.Forms.PictureBox();
-            this.pictureBox10 = new System.Windows.Forms.PictureBox();
-            this.pictureBox7 = new System.Windows.Forms.PictureBox();
-            this.pictureBox8 = new System.Windows.Forms.PictureBox();
-            this.pictureBox9 = new System.Windows.Forms.PictureBox();
-            this.pictureBox6 = new System.Windows.Forms.PictureBox();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.pictureBox5 = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.stat_BarraEstado.SuspendLayout();
             this.grp_cantidad_estrellas.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox15)).BeginInit();
@@ -114,92 +114,102 @@
             // chk_todos
             // 
             this.chk_todos.AutoSize = true;
-            this.chk_todos.Location = new System.Drawing.Point(557, 57);
+            this.chk_todos.Location = new System.Drawing.Point(549, 22);
             this.chk_todos.Name = "chk_todos";
             this.chk_todos.Size = new System.Drawing.Size(15, 14);
             this.chk_todos.TabIndex = 150;
             this.chk_todos.UseVisualStyleBackColor = true;
+            this.chk_todos.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
             // chk_estrellas
             // 
             this.chk_estrellas.AutoSize = true;
-            this.chk_estrellas.Location = new System.Drawing.Point(120, 0);
+            this.chk_estrellas.Location = new System.Drawing.Point(549, 404);
             this.chk_estrellas.Name = "chk_estrellas";
             this.chk_estrellas.Size = new System.Drawing.Size(15, 14);
             this.chk_estrellas.TabIndex = 147;
             this.chk_estrellas.UseVisualStyleBackColor = true;
+            this.chk_estrellas.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
             // chk_ciudad
             // 
             this.chk_ciudad.AutoSize = true;
-            this.chk_ciudad.Location = new System.Drawing.Point(557, 316);
+            this.chk_ciudad.Location = new System.Drawing.Point(549, 130);
             this.chk_ciudad.Name = "chk_ciudad";
             this.chk_ciudad.Size = new System.Drawing.Size(15, 14);
             this.chk_ciudad.TabIndex = 143;
             this.chk_ciudad.UseVisualStyleBackColor = true;
+            this.chk_ciudad.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
             // chk_pais
             // 
             this.chk_pais.AutoSize = true;
-            this.chk_pais.Location = new System.Drawing.Point(557, 284);
+            this.chk_pais.Location = new System.Drawing.Point(549, 92);
             this.chk_pais.Name = "chk_pais";
             this.chk_pais.Size = new System.Drawing.Size(15, 14);
             this.chk_pais.TabIndex = 142;
             this.chk_pais.UseVisualStyleBackColor = true;
+            this.chk_pais.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
             // chk_numero_calle
             // 
             this.chk_numero_calle.AutoSize = true;
-            this.chk_numero_calle.Location = new System.Drawing.Point(557, 251);
+            this.chk_numero_calle.Location = new System.Drawing.Point(549, 203);
             this.chk_numero_calle.Name = "chk_numero_calle";
             this.chk_numero_calle.Size = new System.Drawing.Size(15, 14);
             this.chk_numero_calle.TabIndex = 141;
             this.chk_numero_calle.UseVisualStyleBackColor = true;
+            this.chk_numero_calle.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
             // chk_calle
             // 
             this.chk_calle.AutoSize = true;
-            this.chk_calle.Location = new System.Drawing.Point(557, 220);
+            this.chk_calle.Location = new System.Drawing.Point(549, 166);
             this.chk_calle.Name = "chk_calle";
             this.chk_calle.Size = new System.Drawing.Size(15, 14);
             this.chk_calle.TabIndex = 140;
             this.chk_calle.UseVisualStyleBackColor = true;
+            this.chk_calle.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
             // chk_mail
             // 
             this.chk_mail.AutoSize = true;
-            this.chk_mail.Location = new System.Drawing.Point(557, 188);
+            this.chk_mail.Location = new System.Drawing.Point(549, 277);
             this.chk_mail.Name = "chk_mail";
             this.chk_mail.Size = new System.Drawing.Size(15, 14);
             this.chk_mail.TabIndex = 139;
             this.chk_mail.UseVisualStyleBackColor = true;
+            this.chk_mail.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
             // chk_nombre
             // 
             this.chk_nombre.AutoSize = true;
-            this.chk_nombre.Location = new System.Drawing.Point(557, 157);
+            this.chk_nombre.Location = new System.Drawing.Point(549, 55);
             this.chk_nombre.Name = "chk_nombre";
             this.chk_nombre.Size = new System.Drawing.Size(15, 14);
             this.chk_nombre.TabIndex = 138;
             this.chk_nombre.UseVisualStyleBackColor = true;
+            this.chk_nombre.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
             // chk_telefono
             // 
             this.chk_telefono.AutoSize = true;
-            this.chk_telefono.Location = new System.Drawing.Point(557, 124);
+            this.chk_telefono.Location = new System.Drawing.Point(549, 240);
             this.chk_telefono.Name = "chk_telefono";
             this.chk_telefono.Size = new System.Drawing.Size(15, 14);
             this.chk_telefono.TabIndex = 137;
             this.chk_telefono.UseVisualStyleBackColor = true;
+            this.chk_telefono.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
             // chk_tipos_regimenes
             // 
             this.chk_tipos_regimenes.AutoSize = true;
-            this.chk_tipos_regimenes.Location = new System.Drawing.Point(557, 92);
+            this.chk_tipos_regimenes.Location = new System.Drawing.Point(549, 314);
             this.chk_tipos_regimenes.Name = "chk_tipos_regimenes";
             this.chk_tipos_regimenes.Size = new System.Drawing.Size(15, 14);
             this.chk_tipos_regimenes.TabIndex = 136;
             this.chk_tipos_regimenes.UseVisualStyleBackColor = true;
+            this.chk_tipos_regimenes.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
             // stat_BarraEstado
             // 
@@ -227,7 +237,7 @@
             // 
             this.cmb_ciudad.ForeColor = System.Drawing.SystemColors.MenuText;
             this.cmb_ciudad.FormattingEnabled = true;
-            this.cmb_ciudad.Location = new System.Drawing.Point(359, 313);
+            this.cmb_ciudad.Location = new System.Drawing.Point(359, 127);
             this.cmb_ciudad.Name = "cmb_ciudad";
             this.cmb_ciudad.Size = new System.Drawing.Size(184, 21);
             this.cmb_ciudad.TabIndex = 209;
@@ -237,9 +247,9 @@
             // 
             this.list_tipos_regimenes.CheckOnClick = true;
             this.list_tipos_regimenes.FormattingEnabled = true;
-            this.list_tipos_regimenes.Location = new System.Drawing.Point(359, 90);
+            this.list_tipos_regimenes.Location = new System.Drawing.Point(359, 312);
             this.list_tipos_regimenes.Name = "list_tipos_regimenes";
-            this.list_tipos_regimenes.Size = new System.Drawing.Size(184, 19);
+            this.list_tipos_regimenes.Size = new System.Drawing.Size(184, 64);
             this.list_tipos_regimenes.TabIndex = 202;
             // 
             // grp_cantidad_estrellas
@@ -264,13 +274,13 @@
             this.grp_cantidad_estrellas.Controls.Add(this.pictureBox3);
             this.grp_cantidad_estrellas.Controls.Add(this.pictureBox2);
             this.grp_cantidad_estrellas.Controls.Add(this.pictureBox1);
-            this.grp_cantidad_estrellas.Controls.Add(this.chk_estrellas);
             this.grp_cantidad_estrellas.Location = new System.Drawing.Point(12, 393);
             this.grp_cantidad_estrellas.Name = "grp_cantidad_estrellas";
-            this.grp_cantidad_estrellas.Size = new System.Drawing.Size(560, 87);
+            this.grp_cantidad_estrellas.Size = new System.Drawing.Size(531, 87);
             this.grp_cantidad_estrellas.TabIndex = 225;
             this.grp_cantidad_estrellas.TabStop = false;
             this.grp_cantidad_estrellas.Text = "Cantidad de estrellas";
+            this.grp_cantidad_estrellas.Enter += new System.EventHandler(this.grp_cantidad_estrellas_Enter);
             // 
             // rb_1estrella
             // 
@@ -321,251 +331,6 @@
             this.rb_5estrellas.TabIndex = 13;
             this.rb_5estrellas.TabStop = true;
             this.rb_5estrellas.UseVisualStyleBackColor = true;
-            // 
-            // lbl_atributo
-            // 
-            this.lbl_atributo.AutoSize = true;
-            this.lbl_atributo.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_atributo.Location = new System.Drawing.Point(12, 30);
-            this.lbl_atributo.Name = "lbl_atributo";
-            this.lbl_atributo.Size = new System.Drawing.Size(108, 31);
-            this.lbl_atributo.TabIndex = 221;
-            this.lbl_atributo.Text = "Atributo";
-            // 
-            // lbl_num_calle
-            // 
-            this.lbl_num_calle.AutoSize = true;
-            this.lbl_num_calle.Location = new System.Drawing.Point(15, 252);
-            this.lbl_num_calle.Name = "lbl_num_calle";
-            this.lbl_num_calle.Size = new System.Drawing.Size(85, 13);
-            this.lbl_num_calle.TabIndex = 220;
-            this.lbl_num_calle.Text = "Numero de Calle";
-            // 
-            // lbl_calle
-            // 
-            this.lbl_calle.AutoSize = true;
-            this.lbl_calle.Location = new System.Drawing.Point(15, 220);
-            this.lbl_calle.Name = "lbl_calle";
-            this.lbl_calle.Size = new System.Drawing.Size(30, 13);
-            this.lbl_calle.TabIndex = 219;
-            this.lbl_calle.Text = "Calle";
-            // 
-            // lbl_ciudad
-            // 
-            this.lbl_ciudad.AutoSize = true;
-            this.lbl_ciudad.Location = new System.Drawing.Point(15, 316);
-            this.lbl_ciudad.Name = "lbl_ciudad";
-            this.lbl_ciudad.Size = new System.Drawing.Size(40, 13);
-            this.lbl_ciudad.TabIndex = 218;
-            this.lbl_ciudad.Text = "Ciudad";
-            // 
-            // lbl_pais
-            // 
-            this.lbl_pais.AutoSize = true;
-            this.lbl_pais.Location = new System.Drawing.Point(15, 284);
-            this.lbl_pais.Name = "lbl_pais";
-            this.lbl_pais.Size = new System.Drawing.Size(27, 13);
-            this.lbl_pais.TabIndex = 217;
-            this.lbl_pais.Text = "Pais";
-            // 
-            // lbl_telefono
-            // 
-            this.lbl_telefono.AutoSize = true;
-            this.lbl_telefono.Location = new System.Drawing.Point(15, 124);
-            this.lbl_telefono.Name = "lbl_telefono";
-            this.lbl_telefono.Size = new System.Drawing.Size(49, 13);
-            this.lbl_telefono.TabIndex = 216;
-            this.lbl_telefono.Text = "Teléfono";
-            // 
-            // lbl_tipos_regimenes
-            // 
-            this.lbl_tipos_regimenes.AutoSize = true;
-            this.lbl_tipos_regimenes.Location = new System.Drawing.Point(15, 92);
-            this.lbl_tipos_regimenes.Name = "lbl_tipos_regimenes";
-            this.lbl_tipos_regimenes.Size = new System.Drawing.Size(101, 13);
-            this.lbl_tipos_regimenes.TabIndex = 215;
-            this.lbl_tipos_regimenes.Text = "Tipos de regímenes";
-            // 
-            // lbl_mail
-            // 
-            this.lbl_mail.AutoSize = true;
-            this.lbl_mail.Location = new System.Drawing.Point(15, 188);
-            this.lbl_mail.Name = "lbl_mail";
-            this.lbl_mail.Size = new System.Drawing.Size(26, 13);
-            this.lbl_mail.TabIndex = 214;
-            this.lbl_mail.Text = "Mail";
-            // 
-            // lbl_nombre
-            // 
-            this.lbl_nombre.AutoSize = true;
-            this.lbl_nombre.Location = new System.Drawing.Point(15, 156);
-            this.lbl_nombre.Name = "lbl_nombre";
-            this.lbl_nombre.Size = new System.Drawing.Size(44, 13);
-            this.lbl_nombre.TabIndex = 213;
-            this.lbl_nombre.Text = "Nombre";
-            // 
-            // lbl_modificado
-            // 
-            this.lbl_modificado.AutoSize = true;
-            this.lbl_modificado.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_modificado.Location = new System.Drawing.Point(335, 30);
-            this.lbl_modificado.Name = "lbl_modificado";
-            this.lbl_modificado.Size = new System.Drawing.Size(77, 31);
-            this.lbl_modificado.TabIndex = 212;
-            this.lbl_modificado.Text = "Valor";
-            this.lbl_modificado.Click += new System.EventHandler(this.lbl_modificado_Click);
-            // 
-            // button_volver
-            // 
-            this.button_volver.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_volver.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.button_volver.Location = new System.Drawing.Point(437, 486);
-            this.button_volver.Name = "button_volver";
-            this.button_volver.Size = new System.Drawing.Size(135, 45);
-            this.button_volver.TabIndex = 211;
-            this.button_volver.Text = "Volver";
-            this.button_volver.UseVisualStyleBackColor = true;
-            this.button_volver.Click += new System.EventHandler(this.button_volver_Click);
-            // 
-            // txt_numero_calle
-            // 
-            this.txt_numero_calle.Location = new System.Drawing.Point(359, 249);
-            this.txt_numero_calle.Name = "txt_numero_calle";
-            this.txt_numero_calle.Size = new System.Drawing.Size(184, 20);
-            this.txt_numero_calle.TabIndex = 207;
-            this.txt_numero_calle.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_numero_calle_KeyPress);
-            // 
-            // txt_calle
-            // 
-            this.txt_calle.Location = new System.Drawing.Point(359, 217);
-            this.txt_calle.Name = "txt_calle";
-            this.txt_calle.Size = new System.Drawing.Size(184, 20);
-            this.txt_calle.TabIndex = 206;
-            // 
-            // txt_pais
-            // 
-            this.txt_pais.Location = new System.Drawing.Point(359, 281);
-            this.txt_pais.Name = "txt_pais";
-            this.txt_pais.Size = new System.Drawing.Size(184, 20);
-            this.txt_pais.TabIndex = 208;
-            // 
-            // txt_mail
-            // 
-            this.txt_mail.Location = new System.Drawing.Point(359, 185);
-            this.txt_mail.Name = "txt_mail";
-            this.txt_mail.Size = new System.Drawing.Size(184, 20);
-            this.txt_mail.TabIndex = 205;
-            // 
-            // txt_nombre
-            // 
-            this.txt_nombre.Location = new System.Drawing.Point(359, 153);
-            this.txt_nombre.Name = "txt_nombre";
-            this.txt_nombre.Size = new System.Drawing.Size(184, 20);
-            this.txt_nombre.TabIndex = 204;
-            // 
-            // txt_telefono
-            // 
-            this.txt_telefono.Location = new System.Drawing.Point(359, 121);
-            this.txt_telefono.Name = "txt_telefono";
-            this.txt_telefono.Size = new System.Drawing.Size(184, 20);
-            this.txt_telefono.TabIndex = 203;
-            this.txt_telefono.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_telefono_KeyPress);
-            // 
-            // lbl_original
-            // 
-            this.lbl_original.AutoSize = true;
-            this.lbl_original.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_original.Location = new System.Drawing.Point(159, 30);
-            this.lbl_original.Name = "lbl_original";
-            this.lbl_original.Size = new System.Drawing.Size(107, 31);
-            this.lbl_original.TabIndex = 234;
-            this.lbl_original.Text = "Original";
-            // 
-            // _original_numero_calle
-            // 
-            this._original_numero_calle.AutoSize = true;
-            this._original_numero_calle.Location = new System.Drawing.Point(162, 252);
-            this._original_numero_calle.Name = "_original_numero_calle";
-            this._original_numero_calle.Size = new System.Drawing.Size(85, 13);
-            this._original_numero_calle.TabIndex = 233;
-            this._original_numero_calle.Text = "Numero de Calle";
-            // 
-            // _original_calle
-            // 
-            this._original_calle.AutoSize = true;
-            this._original_calle.Location = new System.Drawing.Point(162, 220);
-            this._original_calle.Name = "_original_calle";
-            this._original_calle.Size = new System.Drawing.Size(30, 13);
-            this._original_calle.TabIndex = 232;
-            this._original_calle.Text = "Calle";
-            // 
-            // _original_ciudad
-            // 
-            this._original_ciudad.AutoSize = true;
-            this._original_ciudad.Location = new System.Drawing.Point(162, 316);
-            this._original_ciudad.Name = "_original_ciudad";
-            this._original_ciudad.Size = new System.Drawing.Size(40, 13);
-            this._original_ciudad.TabIndex = 231;
-            this._original_ciudad.Text = "Ciudad";
-            // 
-            // _original_pais
-            // 
-            this._original_pais.AutoSize = true;
-            this._original_pais.Location = new System.Drawing.Point(162, 284);
-            this._original_pais.Name = "_original_pais";
-            this._original_pais.Size = new System.Drawing.Size(27, 13);
-            this._original_pais.TabIndex = 230;
-            this._original_pais.Text = "Pais";
-            // 
-            // _original_telefono
-            // 
-            this._original_telefono.AutoSize = true;
-            this._original_telefono.Location = new System.Drawing.Point(162, 124);
-            this._original_telefono.Name = "_original_telefono";
-            this._original_telefono.Size = new System.Drawing.Size(49, 13);
-            this._original_telefono.TabIndex = 229;
-            this._original_telefono.Text = "Teléfono";
-            // 
-            // _original_mail
-            // 
-            this._original_mail.AutoSize = true;
-            this._original_mail.Location = new System.Drawing.Point(162, 188);
-            this._original_mail.Name = "_original_mail";
-            this._original_mail.Size = new System.Drawing.Size(26, 13);
-            this._original_mail.TabIndex = 227;
-            this._original_mail.Text = "Mail";
-            // 
-            // _original_nombre
-            // 
-            this._original_nombre.AutoSize = true;
-            this._original_nombre.Location = new System.Drawing.Point(162, 156);
-            this._original_nombre.Name = "_original_nombre";
-            this._original_nombre.Size = new System.Drawing.Size(44, 13);
-            this._original_nombre.TabIndex = 226;
-            this._original_nombre.Text = "Nombre";
-            // 
-            // _original_tipos_regimenes
-            // 
-            this._original_tipos_regimenes.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this._original_tipos_regimenes.Enabled = false;
-            this._original_tipos_regimenes.FormattingEnabled = true;
-            this._original_tipos_regimenes.Location = new System.Drawing.Point(163, 90);
-            this._original_tipos_regimenes.Name = "_original_tipos_regimenes";
-            this._original_tipos_regimenes.Size = new System.Drawing.Size(184, 19);
-            this._original_tipos_regimenes.TabIndex = 235;
-            // 
-            // button_modificar
-            // 
-            this.button_modificar.Enabled = false;
-            this.button_modificar.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_modificar.ForeColor = System.Drawing.SystemColors.ScrollBar;
-            this.button_modificar.Location = new System.Drawing.Point(12, 486);
-            this.button_modificar.Name = "button_modificar";
-            this.button_modificar.Size = new System.Drawing.Size(135, 45);
-            this.button_modificar.TabIndex = 236;
-            this.button_modificar.Text = "Modificar";
-            this.button_modificar.UseVisualStyleBackColor = true;
-            this.button_modificar.Click += new System.EventHandler(this.button_modificar_Click);
             // 
             // pictureBox15
             // 
@@ -717,11 +482,259 @@
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
+            // lbl_atributo
+            // 
+            this.lbl_atributo.AutoSize = true;
+            this.lbl_atributo.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_atributo.Location = new System.Drawing.Point(12, 7);
+            this.lbl_atributo.Name = "lbl_atributo";
+            this.lbl_atributo.Size = new System.Drawing.Size(108, 31);
+            this.lbl_atributo.TabIndex = 221;
+            this.lbl_atributo.Text = "Atributo";
+            // 
+            // lbl_num_calle
+            // 
+            this.lbl_num_calle.AutoSize = true;
+            this.lbl_num_calle.Location = new System.Drawing.Point(15, 204);
+            this.lbl_num_calle.Name = "lbl_num_calle";
+            this.lbl_num_calle.Size = new System.Drawing.Size(85, 13);
+            this.lbl_num_calle.TabIndex = 220;
+            this.lbl_num_calle.Text = "Numero de Calle";
+            // 
+            // lbl_calle
+            // 
+            this.lbl_calle.AutoSize = true;
+            this.lbl_calle.Location = new System.Drawing.Point(15, 167);
+            this.lbl_calle.Name = "lbl_calle";
+            this.lbl_calle.Size = new System.Drawing.Size(30, 13);
+            this.lbl_calle.TabIndex = 219;
+            this.lbl_calle.Text = "Calle";
+            // 
+            // lbl_ciudad
+            // 
+            this.lbl_ciudad.AutoSize = true;
+            this.lbl_ciudad.Location = new System.Drawing.Point(15, 130);
+            this.lbl_ciudad.Name = "lbl_ciudad";
+            this.lbl_ciudad.Size = new System.Drawing.Size(40, 13);
+            this.lbl_ciudad.TabIndex = 218;
+            this.lbl_ciudad.Text = "Ciudad";
+            // 
+            // lbl_pais
+            // 
+            this.lbl_pais.AutoSize = true;
+            this.lbl_pais.Location = new System.Drawing.Point(15, 93);
+            this.lbl_pais.Name = "lbl_pais";
+            this.lbl_pais.Size = new System.Drawing.Size(27, 13);
+            this.lbl_pais.TabIndex = 217;
+            this.lbl_pais.Text = "Pais";
+            // 
+            // lbl_telefono
+            // 
+            this.lbl_telefono.AutoSize = true;
+            this.lbl_telefono.Location = new System.Drawing.Point(15, 241);
+            this.lbl_telefono.Name = "lbl_telefono";
+            this.lbl_telefono.Size = new System.Drawing.Size(49, 13);
+            this.lbl_telefono.TabIndex = 216;
+            this.lbl_telefono.Text = "Teléfono";
+            // 
+            // lbl_tipos_regimenes
+            // 
+            this.lbl_tipos_regimenes.AutoSize = true;
+            this.lbl_tipos_regimenes.Location = new System.Drawing.Point(15, 315);
+            this.lbl_tipos_regimenes.Name = "lbl_tipos_regimenes";
+            this.lbl_tipos_regimenes.Size = new System.Drawing.Size(101, 13);
+            this.lbl_tipos_regimenes.TabIndex = 215;
+            this.lbl_tipos_regimenes.Text = "Tipos de regímenes";
+            // 
+            // lbl_mail
+            // 
+            this.lbl_mail.AutoSize = true;
+            this.lbl_mail.Location = new System.Drawing.Point(15, 278);
+            this.lbl_mail.Name = "lbl_mail";
+            this.lbl_mail.Size = new System.Drawing.Size(26, 13);
+            this.lbl_mail.TabIndex = 214;
+            this.lbl_mail.Text = "Mail";
+            // 
+            // lbl_nombre
+            // 
+            this.lbl_nombre.AutoSize = true;
+            this.lbl_nombre.Location = new System.Drawing.Point(15, 56);
+            this.lbl_nombre.Name = "lbl_nombre";
+            this.lbl_nombre.Size = new System.Drawing.Size(44, 13);
+            this.lbl_nombre.TabIndex = 213;
+            this.lbl_nombre.Text = "Nombre";
+            // 
+            // lbl_modificado
+            // 
+            this.lbl_modificado.AutoSize = true;
+            this.lbl_modificado.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_modificado.Location = new System.Drawing.Point(335, 7);
+            this.lbl_modificado.Name = "lbl_modificado";
+            this.lbl_modificado.Size = new System.Drawing.Size(77, 31);
+            this.lbl_modificado.TabIndex = 212;
+            this.lbl_modificado.Text = "Valor";
+            this.lbl_modificado.Click += new System.EventHandler(this.lbl_modificado_Click);
+            // 
+            // button_volver
+            // 
+            this.button_volver.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_volver.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.button_volver.Location = new System.Drawing.Point(437, 486);
+            this.button_volver.Name = "button_volver";
+            this.button_volver.Size = new System.Drawing.Size(135, 45);
+            this.button_volver.TabIndex = 211;
+            this.button_volver.Text = "Volver";
+            this.button_volver.UseVisualStyleBackColor = true;
+            this.button_volver.Click += new System.EventHandler(this.button_volver_Click);
+            // 
+            // txt_numero_calle
+            // 
+            this.txt_numero_calle.Location = new System.Drawing.Point(359, 201);
+            this.txt_numero_calle.Name = "txt_numero_calle";
+            this.txt_numero_calle.Size = new System.Drawing.Size(184, 20);
+            this.txt_numero_calle.TabIndex = 207;
+            this.txt_numero_calle.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_numero_calle_KeyPress);
+            // 
+            // txt_calle
+            // 
+            this.txt_calle.Location = new System.Drawing.Point(359, 164);
+            this.txt_calle.Name = "txt_calle";
+            this.txt_calle.Size = new System.Drawing.Size(184, 20);
+            this.txt_calle.TabIndex = 206;
+            // 
+            // txt_pais
+            // 
+            this.txt_pais.Location = new System.Drawing.Point(359, 89);
+            this.txt_pais.Name = "txt_pais";
+            this.txt_pais.Size = new System.Drawing.Size(184, 20);
+            this.txt_pais.TabIndex = 208;
+            // 
+            // txt_mail
+            // 
+            this.txt_mail.Location = new System.Drawing.Point(359, 275);
+            this.txt_mail.Name = "txt_mail";
+            this.txt_mail.Size = new System.Drawing.Size(184, 20);
+            this.txt_mail.TabIndex = 205;
+            // 
+            // txt_nombre
+            // 
+            this.txt_nombre.Location = new System.Drawing.Point(359, 52);
+            this.txt_nombre.Name = "txt_nombre";
+            this.txt_nombre.Size = new System.Drawing.Size(184, 20);
+            this.txt_nombre.TabIndex = 204;
+            // 
+            // txt_telefono
+            // 
+            this.txt_telefono.Location = new System.Drawing.Point(359, 238);
+            this.txt_telefono.Name = "txt_telefono";
+            this.txt_telefono.Size = new System.Drawing.Size(184, 20);
+            this.txt_telefono.TabIndex = 203;
+            this.txt_telefono.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_telefono_KeyPress);
+            // 
+            // lbl_original
+            // 
+            this.lbl_original.AutoSize = true;
+            this.lbl_original.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_original.Location = new System.Drawing.Point(159, 7);
+            this.lbl_original.Name = "lbl_original";
+            this.lbl_original.Size = new System.Drawing.Size(107, 31);
+            this.lbl_original.TabIndex = 234;
+            this.lbl_original.Text = "Original";
+            // 
+            // _original_numero_calle
+            // 
+            this._original_numero_calle.AutoSize = true;
+            this._original_numero_calle.Location = new System.Drawing.Point(162, 201);
+            this._original_numero_calle.Name = "_original_numero_calle";
+            this._original_numero_calle.Size = new System.Drawing.Size(85, 13);
+            this._original_numero_calle.TabIndex = 233;
+            this._original_numero_calle.Text = "Numero de Calle";
+            // 
+            // _original_calle
+            // 
+            this._original_calle.AutoSize = true;
+            this._original_calle.Location = new System.Drawing.Point(162, 164);
+            this._original_calle.Name = "_original_calle";
+            this._original_calle.Size = new System.Drawing.Size(30, 13);
+            this._original_calle.TabIndex = 232;
+            this._original_calle.Text = "Calle";
+            // 
+            // _original_ciudad
+            // 
+            this._original_ciudad.AutoSize = true;
+            this._original_ciudad.Location = new System.Drawing.Point(162, 127);
+            this._original_ciudad.MaximumSize = new System.Drawing.Size(200, 20);
+            this._original_ciudad.Name = "_original_ciudad";
+            this._original_ciudad.Size = new System.Drawing.Size(40, 13);
+            this._original_ciudad.TabIndex = 231;
+            this._original_ciudad.Text = "Ciudad";
+            // 
+            // _original_pais
+            // 
+            this._original_pais.AutoSize = true;
+            this._original_pais.Location = new System.Drawing.Point(162, 90);
+            this._original_pais.Name = "_original_pais";
+            this._original_pais.Size = new System.Drawing.Size(27, 13);
+            this._original_pais.TabIndex = 230;
+            this._original_pais.Text = "Pais";
+            // 
+            // _original_telefono
+            // 
+            this._original_telefono.AutoSize = true;
+            this._original_telefono.Location = new System.Drawing.Point(162, 238);
+            this._original_telefono.Name = "_original_telefono";
+            this._original_telefono.Size = new System.Drawing.Size(49, 13);
+            this._original_telefono.TabIndex = 229;
+            this._original_telefono.Text = "Teléfono";
+            // 
+            // _original_mail
+            // 
+            this._original_mail.AutoSize = true;
+            this._original_mail.Location = new System.Drawing.Point(162, 275);
+            this._original_mail.Name = "_original_mail";
+            this._original_mail.Size = new System.Drawing.Size(26, 13);
+            this._original_mail.TabIndex = 227;
+            this._original_mail.Text = "Mail";
+            // 
+            // _original_nombre
+            // 
+            this._original_nombre.AutoSize = true;
+            this._original_nombre.Location = new System.Drawing.Point(162, 53);
+            this._original_nombre.Name = "_original_nombre";
+            this._original_nombre.Size = new System.Drawing.Size(44, 13);
+            this._original_nombre.TabIndex = 226;
+            this._original_nombre.Text = "Nombre";
+            // 
+            // _original_tipos_regimenes
+            // 
+            this._original_tipos_regimenes.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this._original_tipos_regimenes.Enabled = false;
+            this._original_tipos_regimenes.FormattingEnabled = true;
+            this._original_tipos_regimenes.Location = new System.Drawing.Point(163, 312);
+            this._original_tipos_regimenes.Name = "_original_tipos_regimenes";
+            this._original_tipos_regimenes.Size = new System.Drawing.Size(184, 64);
+            this._original_tipos_regimenes.TabIndex = 235;
+            // 
+            // button_modificar
+            // 
+            this.button_modificar.Enabled = false;
+            this.button_modificar.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_modificar.ForeColor = System.Drawing.SystemColors.ScrollBar;
+            this.button_modificar.Location = new System.Drawing.Point(12, 486);
+            this.button_modificar.Name = "button_modificar";
+            this.button_modificar.Size = new System.Drawing.Size(135, 45);
+            this.button_modificar.TabIndex = 236;
+            this.button_modificar.Text = "Modificar";
+            this.button_modificar.UseVisualStyleBackColor = true;
+            this.button_modificar.Click += new System.EventHandler(this.button_modificar_Click);
+            // 
             // Hotel_modificar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 561);
+            this.Controls.Add(this.chk_ciudad);
+            this.Controls.Add(this.cmb_ciudad);
             this.Controls.Add(this.button_modificar);
             this.Controls.Add(this._original_tipos_regimenes);
             this.Controls.Add(this.lbl_original);
@@ -732,7 +745,6 @@
             this.Controls.Add(this._original_telefono);
             this.Controls.Add(this._original_mail);
             this.Controls.Add(this._original_nombre);
-            this.Controls.Add(this.cmb_ciudad);
             this.Controls.Add(this.list_tipos_regimenes);
             this.Controls.Add(this.grp_cantidad_estrellas);
             this.Controls.Add(this.lbl_atributo);
@@ -742,6 +754,7 @@
             this.Controls.Add(this.lbl_pais);
             this.Controls.Add(this.lbl_telefono);
             this.Controls.Add(this.lbl_tipos_regimenes);
+            this.Controls.Add(this.chk_estrellas);
             this.Controls.Add(this.lbl_mail);
             this.Controls.Add(this.lbl_nombre);
             this.Controls.Add(this.lbl_modificado);
@@ -753,7 +766,6 @@
             this.Controls.Add(this.txt_nombre);
             this.Controls.Add(this.txt_telefono);
             this.Controls.Add(this.chk_todos);
-            this.Controls.Add(this.chk_ciudad);
             this.Controls.Add(this.chk_pais);
             this.Controls.Add(this.chk_numero_calle);
             this.Controls.Add(this.chk_calle);

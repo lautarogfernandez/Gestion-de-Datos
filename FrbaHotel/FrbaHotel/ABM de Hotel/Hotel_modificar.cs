@@ -15,10 +15,13 @@ namespace FrbaHotel.ABM_de_Hotel
     public partial class Hotel_modificar : Form
     {
         private string codigo;
+        private int cantidad_original_estrellas;
+        private int cantidad_nueva_estrellas;
         public Hotel_modificar(valoresDataGridView _valoresDGV)
         {
             InitializeComponent();
             establecerAtributosOriginales(_valoresDGV);
+            cantidad_original_estrellas =Convert.ToInt32(_valoresDGV._cantidad_estrellas);
             cambiarTodosLosControles(false);
             string busqueda = "SELECT DISTINCT [Descripcion] "
                                                          + "FROM [GD2C2014].[TEAM_CASTY].[Regimen]";          //búsqueda básica de regímenes
@@ -39,6 +42,8 @@ namespace FrbaHotel.ABM_de_Hotel
                 while (reader.Read())
                 {
                     list_tipos_regimenes.Items.Add(reader["Descripcion"].ToString());
+                    _original_tipos_regimenes.Items.Add(reader["Descripcion"].ToString());
+                    _original_tipos_regimenes.SetItemCheckState(_original_tipos_regimenes.Items.Count-1, CheckState.Indeterminate);
                 }
                 reader.Close();
 
@@ -61,6 +66,20 @@ namespace FrbaHotel.ABM_de_Hotel
             _original_numero_calle.Text = _valoresDGV._numero_calle;
             _original_pais.Text = _valoresDGV._pais;
             _original_telefono.Text = _valoresDGV._telefono;
+            _original_nombre.Text = _valoresDGV._nombre;
+            _original_ciudad.Text = _valoresDGV._ciudad;
+
+            for (int i = 0; i < _valoresDGV._regimenes.Count; i++)
+            {
+                for(int j=0;j<_original_tipos_regimenes.Items.Count;i++)
+                {
+                    if(_original_tipos_regimenes.Items[j].ToString() == _valoresDGV._regimenes[i].ToString())
+                    {
+                        _original_tipos_regimenes.SetItemChecked(j, true);
+                    }
+                }
+            }
+
             switch(_valoresDGV._cantidad_estrellas)
             {
                 case "1":
@@ -113,11 +132,124 @@ namespace FrbaHotel.ABM_de_Hotel
         {
             this.Hide();
         }
-
+        private DataTable obtenerTablaRegimenes()
+        {
+            DataTable tabla = new DataTable();
+            tabla.Columns.Add(new DataColumn("Regimen", typeof(string)));
+            if(chk_tipos_regimenes.Checked)
+            {
+                for (int i = 0; i < list_tipos_regimenes.CheckedItems.Count; i++)
+                {
+                    tabla.Rows.Add(list_tipos_regimenes.CheckedItems[i].ToString());
+                }
+            }
+            else
+                for (int i = 0; i < _original_tipos_regimenes.CheckedItems.Count; i++)
+                {
+                    tabla.Rows.Add(_original_tipos_regimenes.CheckedItems[i].ToString());
+                }
+            return tabla;
+        }
         private void button_modificar_Click(object sender, EventArgs e)
         {
 
+            string mensaje = "¿Está seguro que quiere modificar el hotel? \n ";
+            DialogResult resultado = MessageBox.Show(mensaje, "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (resultado == DialogResult.Yes)
+            {
+                try
+                {
+                    DataTable table = new DataTable("Regimenes");
+                    table.Columns.Add(new DataColumn("Regimen", typeof(string)));
+                    for (int i = 0; i < list_tipos_regimenes.CheckedItems.Count; i++)
+                    {
+                        string nombre = list_tipos_regimenes.CheckedItems[i].ToString();
+                        table.Rows.Add(nombre);
+                    }
+                    using (SqlConnection conn = Home_Hotel.obtenerConexion())
+                    {
+                        using (SqlCommand cmd = conn.CreateCommand())
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            //procedure TEAM_CASTY.modificacion_Hotel(@cod_hotel numeric (18),@nombre nvarchar(255),
+                            //@mail nvarchar(255),@telefono nvarchar(50),@pais nvarchar(255),@cidudad nvarchar(255)
+                            //,@cant_Estrellas numeric (18),@calle nvarchar(255),@num_calle numeric (18),
+                            // @tabla t_tablaRegimenes readonly)
+                            cmd.CommandText = "[TEAM_CASTY].modificacion_Hotel";
+                            cmd.Parameters.Add(new SqlParameter("@cod_hotel", codigo));
+                            string nombre = _original_nombre.Text;
+                            if (txt_nombre.Text != string.Empty && chk_nombre.Checked)
+                                nombre = txt_nombre.Text;
+                            cmd.Parameters.Add(new SqlParameter("@nombre", nombre));
+                            string mail = _original_mail.Text;
+                            if (txt_mail.Text != string.Empty && chk_mail.Checked)
+                                mail = txt_mail.Text;
+                            cmd.Parameters.Add(new SqlParameter("@mail", mail));
+                            string telefono = _original_telefono.Text;
+                            if (txt_telefono.Text != string.Empty && chk_telefono.Checked)
+                                telefono = txt_telefono.Text;
+                            cmd.Parameters.Add(new SqlParameter("@telefono", telefono));
+                            //    cmd.Parameters.AddWithValue("@Nombre", txt_nombre.Text);
+                            string pais = _original_pais.Text;
+                            if (txt_pais.Text != string.Empty && chk_pais.Checked)
+                                pais = txt_pais.Text;
+                            cmd.Parameters.Add(new SqlParameter("@pais", pais));
+                            string ciudad = _original_ciudad.Text;
+                            if (cmb_ciudad.Text != string.Empty && chk_ciudad.Checked)
+                                ciudad = cmb_ciudad.Text;
+                            cmd.Parameters.Add(new SqlParameter("@ciudad", cmb_ciudad.Text));
+                            int cant_estrellas = cantidad_original_estrellas;
+                            if (chk_estrellas.Checked)
+                                cant_estrellas = cantidad_nueva_estrellas;
+                            cmd.Parameters.Add(new SqlParameter("@cant_Estrellas", cant_estrellas));
+                            string calle = _original_calle.Text;
+                            if (txt_calle.Text != string.Empty && chk_calle.Checked)
+                                calle = txt_calle.Text;
+                            cmd.Parameters.Add(new SqlParameter("@calle", txt_calle));
+                            string numCalle = _original_numero_calle.Text;
+                            if (txt_numero_calle.Text != string.Empty && chk_numero_calle.Checked)
+                                numCalle = txt_numero_calle.Text;
+                            cmd.Parameters.Add(new SqlParameter("@num_calle", txt_numero_calle.Text));
+                            DataTable tabla = obtenerTablaRegimenes();
+                            cmd.Parameters.Add(new SqlParameter("@tabla", tabla));
+                            int rows = cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+                catch (SqlException exc)
+                {
+                    Home_Hotel.mostrarMensajeErrorSql(exc);
+                }
+            }
         }
+
+        #region cantidadEstrellas
+        private void rb_1estrella_Click(object sender, EventArgs e)
+        {
+            cantidad_nueva_estrellas = 1;
+        }
+
+        private void rb_2estrellas_Click(object sender, EventArgs e)
+        {
+            cantidad_nueva_estrellas = 2;
+        }
+
+        private void rb_3estrellas_Click(object sender, EventArgs e)
+        {
+            cantidad_nueva_estrellas = 3;
+        }
+
+        private void rb_4estrellas_Click(object sender, EventArgs e)
+        {
+            cantidad_nueva_estrellas = 4;
+        }
+
+        private void rb_5estrellas_Click(object sender, EventArgs e)
+        {
+            cantidad_nueva_estrellas = 5;
+        }
+
+        #endregion
 
         private void Cliente_modificar_Load(object sender, EventArgs e)
         {
@@ -162,11 +294,6 @@ namespace FrbaHotel.ABM_de_Hotel
                     if (espacio(_unControl.Name[i])) _unControl.Text += " ";
                     else _unControl.Text += _unControl.Name[i];
             }
-        }
-        private void habilitar_o_deshabilitar_fecha(DateTimePicker _unSelectorDeFecha, bool _unBooleano)
-        {
-            _unSelectorDeFecha.Enabled = _unBooleano;
-            _unSelectorDeFecha.Value = DateTime.Today;
         }
         private void common_checkBox_check(object sender, EventArgs e)
         {
@@ -217,6 +344,11 @@ namespace FrbaHotel.ABM_de_Hotel
                 case "chk_tipos_regimenes":
                     {
                         habilitar_o_deshabilitar_control(list_tipos_regimenes, _checker.Checked);
+                        break;
+                    }
+                case "chk_todos":
+                    {
+                        cambiarTodosLosControles(_checker.Checked);
                         break;
                     }
             }
@@ -279,5 +411,12 @@ namespace FrbaHotel.ABM_de_Hotel
             else
                 e.Handled = true;
         }
+
+        private void grp_cantidad_estrellas_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+
     }
 }

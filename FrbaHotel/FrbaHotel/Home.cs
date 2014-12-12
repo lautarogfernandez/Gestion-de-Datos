@@ -107,12 +107,12 @@ namespace FrbaHotel
                     }
                     i++;
                 }
-                MessageBox.Show("Funciones cargadas con éxito", "Excepcion SQL", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                MessageBox.Show("Funciones cargadas con éxito", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
 
             }
             catch (Exception)
             {
-                MessageBox.Show("No se pudo cargar las funciones", "Excepcion SQL", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                MessageBox.Show("No se pudo cargar las funciones", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             reader.Close();
             conn.Close();

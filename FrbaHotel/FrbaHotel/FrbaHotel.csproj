@@ -135,6 +135,12 @@
     <Compile Include="ABM de Hotel\Hotel_modificar.Designer.cs">
       <DependentUpon>Hotel_modificar.cs</DependentUpon>
     </Compile>
+    <Compile Include="ABM de Hotel\Hotel_recarga_estrella.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Hotel\Hotel_recarga_estrella.Designer.cs">
+      <DependentUpon>Hotel_recarga_estrella.cs</DependentUpon>
+    </Compile>
     <Compile Include="ABM de Regimen\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -238,6 +244,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ABM de Hotel\Hotel_modificar.resx">
       <DependentUpon>Hotel_modificar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Hotel\Hotel_recarga_estrella.resx">
+      <DependentUpon>Hotel_recarga_estrella.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ABM de Rol\Rol_alta.resx">
       <DependentUpon>Rol_alta.cs</DependentUpon>

@@ -10,9 +10,9 @@ using System.Data.SqlClient;
 
 namespace FrbaHotel.ABM_de_Hotel
 {
-    public partial class Recarga_Estrella : Form
+    public partial class Hotel_recarga_estrella : Form
     {
-        public Recarga_Estrella()
+        public Hotel_recarga_estrella()
         {
             InitializeComponent();
         }

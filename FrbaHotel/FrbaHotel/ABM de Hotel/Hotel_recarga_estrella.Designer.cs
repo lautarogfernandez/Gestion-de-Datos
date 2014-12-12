@@ -1,6 +1,6 @@
 ﻿namespace FrbaHotel.ABM_de_Hotel
 {
-    partial class Recarga_Estrella
+    partial class Hotel_recarga_estrella
     {
         /// <summary>
         /// Required designer variable.

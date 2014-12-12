@@ -10,8 +10,14 @@ using System.Data.SqlClient;
 
 namespace FrbaHotel.ABM_de_Hotel
 {
+    public struct valoresDataGridView
+    {
+        public string _cantidad_estrellas, _ciudad, _pais, _calle, _mail, _telefono, _codigo, _numero_calle,_nombre;
+        public List<string> _regimenes;
+    }
     class Home_Hotel: Home
     {
+       
         public static SqlCommand obtenerComandoRegimenes(SqlConnection conn)
         {
             string busqueda = "SELECT DISTINCT [Descripcion] "

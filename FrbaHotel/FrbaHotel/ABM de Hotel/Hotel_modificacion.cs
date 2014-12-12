@@ -10,10 +10,6 @@ using System.Data.SqlClient;
 
 namespace FrbaHotel.ABM_de_Hotel
 {
-    public struct valoresDataGridView
-    {
-        public string _cantidad_estrellas, _ciudad, _pais,_calle, _mail, _telefono, _codigo, _numero_calle;
-    }
     public partial class Hotel_modificacion : Form
     {
         #region Variables
@@ -325,6 +321,11 @@ namespace FrbaHotel.ABM_de_Hotel
                             _valores._codigo = dgv_resultados.SelectedCells[i].Value.ToString();
                             break;
                         }
+                    case "Nombre":
+                        {
+                            _valores._nombre = dgv_resultados.SelectedCells[i].Value.ToString();
+                            break;
+                        }
                     case "Telefono":
                         {
                             _valores._telefono = dgv_resultados.SelectedCells[i].Value.ToString();
@@ -350,7 +351,22 @@ namespace FrbaHotel.ABM_de_Hotel
                             _valores._ciudad = dgv_resultados.SelectedCells[i].Value.ToString();
                             break;
                         }
+                     
                 }
+                _valores._regimenes= new List<string>();
+                using (SqlConnection conn = Home_Hotel.obtenerConexion())
+                {
+                    //function TEAM_CASTY.RegimenesDeUnHotel
+                    //(@cod_hotel numeric (18))
+                    string busqueda1 = string.Format("SELECT * FROM TEAM_CASTY.RegimenesDeUnHotel ({0})", _valores._codigo);
+                    SqlCommand cmd2 = new SqlCommand(busqueda1, conn);
+                    SqlDataReader reader = cmd2.ExecuteReader();    //Creo adaptador para la busqueda
+                    while (reader.Read())
+                    {
+                        _valores._regimenes.Add(reader["Descripcion"].ToString());
+                    }
+                    reader.Close();
+                }    
             }
             Hotel_modificar formularioModificar = new Hotel_modificar(_valores);
             //for (int i = 0; i < dgv_resultados.SelectedCells.Count; i++)

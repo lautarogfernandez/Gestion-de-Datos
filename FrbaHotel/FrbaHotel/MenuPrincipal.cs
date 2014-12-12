@@ -35,7 +35,7 @@ namespace FrbaHotel
                 button_logout.Visible = true;
 
                 string msj = "Bienvenido: " + lbl_usuario.Text + ".\n Seleccione un hotel y seleccione un rol para continuar.";
-                MessageBox.Show(msj, "Excepcion SQL", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                MessageBox.Show(msj, "Bienvenido", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 label_progreso.Text = "Seleccione un hotel para continuar.";
             }
             else
@@ -123,6 +123,7 @@ namespace FrbaHotel
                     {
                         rutaFormularioElegido = "ABM_de_Hotel.Hotel_";
                         combo_operacion.Items.AddRange(operaciones);
+                        combo_operacion.Items.Add("Recarga Estrella");
                         break;
                     }
                 case "Habitacion":
@@ -190,7 +191,7 @@ namespace FrbaHotel
             catch (Exception)
             {
                  string msj = "No puede acceder a ese formulario \n";
-                MessageBox.Show(msj,"Excepcion SQL",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                MessageBox.Show(msj,"Error",MessageBoxButtons.OK,MessageBoxIcon.Hand);
             }
 
         }
