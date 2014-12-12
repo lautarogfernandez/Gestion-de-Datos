@@ -1601,7 +1601,6 @@ end
 
 if (@error=0)
 begin
-
 	insert into TEAM_CASTY.Usuario (Username,Contraseña) values (@username,@password);
 	
 	declare @cod_usuario numeric (18);
@@ -1623,7 +1622,6 @@ begin
     select @cod_usuario,r.Cod_Rol,t.Cod_Hotel
     from TEAM_CASTY.Rol r , @tabla t
     where r.Nombre=t.Nombre_Rol;
-
 end
 
 else
@@ -1700,7 +1698,6 @@ end
 
 if (@error=0)
 begin
-
 	update TEAM_CASTY.Usuario
 	set Username=@username, Contraseña=@password
 	where Cod_Usuario=@cod_usuario;
@@ -1724,7 +1721,6 @@ begin
     select @cod_usuario,r.Cod_Rol,t.Cod_Hotel
     from TEAM_CASTY.Rol r , @tabla t
     where r.Nombre=t.Nombre_Rol;
-
 end
 
 else
@@ -2072,6 +2068,7 @@ create view TEAM_CASTY.vistaReservasModificables
 as
 select * from TEAM_CASTY.Reserva 
 where  Cod_Estado in(1,2)
+
 go
 
 create procedure  TEAM_CASTY.Cancelar_Reserva
@@ -2163,12 +2160,10 @@ create function  TEAM_CASTY.Estadias_Para_Check_OUT
 returns table
 AS
 	return(
-	select distinct est.Cod_Estadia,c.Nombre,c.Apellido,td.Tipo_Documento,c.Nro_Documento,c.Telefono,c.Mail
-	from TEAM_CASTY.Estadia est,TEAM_CASTY.HabitacionXEstadia hxe, TEAM_CASTY.Habitacion hab,TEAM_CASTY.Cliente c,
-	TEAM_CASTY.Reserva res,TEAM_CASTY.Tipo_Documento td
+	select distinct est.Cod_Estadia,res.ID_Cliente_Reservador
+	from TEAM_CASTY.Estadia est,TEAM_CASTY.HabitacionXEstadia hxe, TEAM_CASTY.Habitacion hab,TEAM_CASTY.Reserva res
 	where est.Fecha_Salida is null and est.Fecha_Inicio is not null and hab.Cod_Habitacion=hxe.Cod_Habitacion and
-	est.Cod_Estadia=hxe.Cod_Estadia and hab.Cod_Hotel=@hotel and res.Cod_Reserva=est.Cod_Reserva and
-	res.ID_Cliente_Reservador=c.ID_Cliente and td.ID_Tipo_Documento=c.ID_Tipo_Documento);
+	est.Cod_Estadia=hxe.Cod_Estadia and hab.Cod_Hotel=@hotel and res.Cod_Reserva=est.Cod_Reserva);
 
 GO
 
@@ -2513,8 +2508,11 @@ begin
 			set @monto_total+=@monto_consumibles;
 		end
 		
+		declare @puntos numeric(18)=0;
+		set @puntos=CAST(round(@monto_habitaciones/10,0,1) as int)+CAST(round(@monto_consumibles/5,0,1) as int);
+		
 		update TEAM_CASTY.Factura
-		set Total=@monto_total
+		set Total=@monto_total,Puntos=@puntos
 		where Cod_Estadia=@cod_Estadia;		
 	end try
 	begin catch	
