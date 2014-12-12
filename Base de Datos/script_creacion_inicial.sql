@@ -557,6 +557,7 @@ CREATE TABLE TEAM_CASTY.Factura (
 	Total numeric(18,2) NOT NULL,
 	Cod_Estadia numeric(18) NOT NULL,
 	Cod_Forma_Pago numeric(18) NOT NULL,
+	Puntos numeric(18),
 	FOREIGN KEY (Cod_Forma_Pago) REFERENCES TEAM_CASTY.Forma_Pago (Cod_Forma_Pago),
 	FOREIGN KEY (Cod_Estadia) REFERENCES TEAM_CASTY.Estadia (Cod_Estadia));
 
@@ -564,20 +565,21 @@ CREATE TABLE TEAM_CASTY.Auxiliar_Item_Total (
     Factura_Fecha datetime NOT NULL,
 	Reserva_Codigo numeric(18) NOT NULL,
 	Nro_Factura numeric(18) NOT NULL,
-	Total numeric(18,2) NOT NULL);
+	Total numeric(18,2) NOT NULL,
+	Puntos numeric(18));
 
-INSERT INTO TEAM_CASTY.Auxiliar_Item_Total (Reserva_Codigo,Factura_Fecha,Nro_Factura,Total)
-select Reserva_Codigo ,Factura_Fecha, Factura_Nro, Consumible_Precio as  "Total"
+INSERT INTO TEAM_CASTY.Auxiliar_Item_Total (Reserva_Codigo,Factura_Fecha,Nro_Factura,Total,Puntos)
+select m1.Reserva_Codigo ,m1.Factura_Fecha, m1.Factura_Nro, m1.Consumible_Precio as  "Total",cast (round(m1.Consumible_Precio/5,0,1) as int)
 from gd_esquema.Maestra m1
-where m1.Consumible_Codigo is not null and m1.Factura_Nro is not null and m1.Regimen_Descripcion not in ('All inclusive' , 'All Inclusive moderado')
+where m1.Consumible_Codigo is not null and m1.Factura_Nro is not null and m1.Regimen_Descripcion not in ('All inclusive');
 
-INSERT INTO TEAM_CASTY.Auxiliar_Item_Total (Reserva_Codigo,Factura_Fecha,Nro_Factura,Total)
-select Reserva_Codigo,Factura_Fecha, Factura_Nro , (Reserva_Cant_Noches * Item_Factura_Monto) as "Total"
+INSERT INTO TEAM_CASTY.Auxiliar_Item_Total (Reserva_Codigo,Factura_Fecha,Nro_Factura,Total,Puntos)
+select m1.Reserva_Codigo,m1.Factura_Fecha, m1.Factura_Nro , (m1.Reserva_Cant_Noches * m1.Item_Factura_Monto) as "Total",cast(round((m1.Reserva_Cant_Noches * m1.Item_Factura_Monto)/10,0,1)as int)
 from gd_esquema.Maestra m1
 where m1.Consumible_Codigo is null and m1.Factura_Nro is not null
 
-INSERT INTO TEAM_CASTY.Factura (Nro_Factura,Fecha,Cod_Estadia,Cod_Forma_Pago,Total)
-SELECT DISTINCT  auxiliar.Nro_Factura AS "Nro_Factura", auxiliar.Factura_Fecha AS "Fecha", e.Cod_Estadia, 1 AS "Cod_Forma_Pago" , SUM (auxiliar.Total) AS "Total"
+INSERT INTO TEAM_CASTY.Factura (Nro_Factura,Fecha,Cod_Estadia,Cod_Forma_Pago,Total,Puntos)
+SELECT DISTINCT  auxiliar.Nro_Factura AS "Nro_Factura", auxiliar.Factura_Fecha AS "Fecha", e.Cod_Estadia, 1 AS "Cod_Forma_Pago" , SUM (auxiliar.Total) AS "Total",SUM(auxiliar.Puntos)
 FROM TEAM_CASTY.Auxiliar_Item_Total auxiliar JOIN TEAM_CASTY.Estadia e ON(e.Cod_Reserva=auxiliar.Reserva_Codigo)
 group by auxiliar.Nro_Factura, auxiliar.Factura_Fecha,  e.Cod_Estadia
 order by 1
@@ -2183,7 +2185,7 @@ GO
 
 
 create procedure  TEAM_CASTY.Check_IN
-@Cod_Reserva numeric(18),@fecha datetime, @usuario nvarchar(255),@hotel numeric(18)
+@Cod_Reserva numeric(18),@fecha datetime, @usuario nvarchar(255),@hotel numeric(18),@cod_estadia numeric(18) output
 AS
 begin
 declare @mensaje varchar(1000);
@@ -2240,10 +2242,11 @@ begin
 	update TEAM_CASTY.Reserva
 	set Cod_Estado=6
 	where @Cod_Reserva=Cod_Reserva;	
+	set @cod_estadia =TEAM_CASTY.Utimo_Codigo_Estadia();
 	insert into TEAM_CASTY.HabitacionXEstadia(Cod_Estadia,Cod_Habitacion)
-	select TEAM_CASTY.Utimo_Codigo_Estadia(),hxr.Cod_Habitacion
+	select @cod_estadia,hxr.Cod_Habitacion
 	from TEAM_CASTY.HabitacionXReserva hxr
-	where hxr.Cod_Reserva=@Cod_Reserva;
+	where hxr.Cod_Reserva=@Cod_Reserva;	
 end
 else
 begin
