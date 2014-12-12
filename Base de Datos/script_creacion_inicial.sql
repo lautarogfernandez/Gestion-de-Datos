@@ -1383,6 +1383,8 @@ begin
 	from  TEAM_CASTY.Regimen r, @tabla t
 	where r.Descripcion=t.Descripcion;
 	
+	insert into TEAM_CASTY.RolXUsuarioXHotel(Cod_Hotel,Cod_Rol,Cod_Usuario) values (@cod_hotel,1,1);
+	insert into TEAM_CASTY.RolXUsuarioXHotel(Cod_Hotel,Cod_Rol,Cod_Usuario) values (@cod_hotel,3,2);	
 end	
 else
 begin
