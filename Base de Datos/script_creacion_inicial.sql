@@ -732,6 +732,11 @@ RETURN
 
 GO
 
+create view TEAM_CASTY.vistaUsuarios
+as
+select u.* from TEAM_CASTY.Usuario u join TEAM_CASTY.Empleado e on (u.Cod_Usuario=e.Cod_Usuario)
+where u.Username not in ('admin','guest') and u.Baja = 0 
+go
 
 create view TEAM_CASTY.vistaClientes
 (Codigo, Nombre, Apellido, Mail, "Tipo Documento", "Numero Documento",Telefono,Pais,Localidad,"Calle","Numero Calle",Piso, "Departamento", Nacionalidad,"Fecha Nacimiento",Inhabilitado)
@@ -794,7 +799,7 @@ as
 begin
 update TEAM_CASTY.Usuario
 set Contraseña=@contraseña
-where @usuario=Cod_Usuario;
+where @usuario=username;
 end;
 
 GO
