@@ -29,6 +29,21 @@
         private void InitializeComponent()
         {
             this.grp_personas = new System.Windows.Forms.GroupBox();
+            this.dgv_resultados = new System.Windows.Forms.DataGridView();
+            this.grp_datos2 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.button_Buscar2 = new System.Windows.Forms.Button();
+            this.txt_numeroIdentificacion2 = new System.Windows.Forms.TextBox();
+            this.cmb_tipoIdentificacion2 = new System.Windows.Forms.ComboBox();
+            this.txt_Email2 = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.lbl_Email2 = new System.Windows.Forms.Label();
+            this.lbl = new System.Windows.Forms.Label();
+            this.grp_alta = new System.Windows.Forms.GroupBox();
+            this.button_agregar = new System.Windows.Forms.Button();
             this.grp_datos = new System.Windows.Forms.GroupBox();
             this.txt_codigo_reserva = new System.Windows.Forms.TextBox();
             this.lbl_reserva = new System.Windows.Forms.Label();
@@ -44,32 +59,17 @@
             this.lbl_Numero_id = new System.Windows.Forms.Label();
             this.lbl_Email = new System.Windows.Forms.Label();
             this.lbl_Tipo_identificacion = new System.Windows.Forms.Label();
-            this.button_limpiar = new System.Windows.Forms.Button();
+            this.button_confirmar = new System.Windows.Forms.Button();
             this.stat_BarraEstado = new System.Windows.Forms.StatusStrip();
             this.barra_progreso = new System.Windows.Forms.ToolStripProgressBar();
             this.label_progreso = new System.Windows.Forms.ToolStripStatusLabel();
             this.button_volver = new System.Windows.Forms.Button();
-            this.grp_datos2 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.button_Buscar2 = new System.Windows.Forms.Button();
-            this.txt_numeroIdentificacion2 = new System.Windows.Forms.TextBox();
-            this.cmb_tipoIdentificacion2 = new System.Windows.Forms.ComboBox();
-            this.txt_Email2 = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.lbl_Email2 = new System.Windows.Forms.Label();
-            this.lbl = new System.Windows.Forms.Label();
-            this.grp_alta = new System.Windows.Forms.GroupBox();
-            this.button_agregar = new System.Windows.Forms.Button();
-            this.dgv_resultados = new System.Windows.Forms.DataGridView();
             this.grp_personas.SuspendLayout();
-            this.grp_datos.SuspendLayout();
-            this.stat_BarraEstado.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_resultados)).BeginInit();
             this.grp_datos2.SuspendLayout();
             this.grp_alta.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_resultados)).BeginInit();
+            this.grp_datos.SuspendLayout();
+            this.stat_BarraEstado.SuspendLayout();
             this.SuspendLayout();
             // 
             // grp_personas
@@ -84,6 +84,178 @@
             this.grp_personas.TabIndex = 160;
             this.grp_personas.TabStop = false;
             this.grp_personas.Text = "Personas";
+            // 
+            // dgv_resultados
+            // 
+            this.dgv_resultados.AllowUserToAddRows = false;
+            this.dgv_resultados.AllowUserToDeleteRows = false;
+            this.dgv_resultados.AllowUserToOrderColumns = true;
+            this.dgv_resultados.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_resultados.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.dgv_resultados.Location = new System.Drawing.Point(6, 187);
+            this.dgv_resultados.MultiSelect = false;
+            this.dgv_resultados.Name = "dgv_resultados";
+            this.dgv_resultados.ReadOnly = true;
+            this.dgv_resultados.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgv_resultados.Size = new System.Drawing.Size(547, 114);
+            this.dgv_resultados.TabIndex = 8;
+            // 
+            // grp_datos2
+            // 
+            this.grp_datos2.Controls.Add(this.label2);
+            this.grp_datos2.Controls.Add(this.label3);
+            this.grp_datos2.Controls.Add(this.label4);
+            this.grp_datos2.Controls.Add(this.label5);
+            this.grp_datos2.Controls.Add(this.button_Buscar2);
+            this.grp_datos2.Controls.Add(this.txt_numeroIdentificacion2);
+            this.grp_datos2.Controls.Add(this.cmb_tipoIdentificacion2);
+            this.grp_datos2.Controls.Add(this.txt_Email2);
+            this.grp_datos2.Controls.Add(this.label6);
+            this.grp_datos2.Controls.Add(this.lbl_Email2);
+            this.grp_datos2.Controls.Add(this.lbl);
+            this.grp_datos2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.grp_datos2.Location = new System.Drawing.Point(0, 19);
+            this.grp_datos2.Name = "grp_datos2";
+            this.grp_datos2.Size = new System.Drawing.Size(350, 162);
+            this.grp_datos2.TabIndex = 3;
+            this.grp_datos2.TabStop = false;
+            this.grp_datos2.Text = "Ingrese sus datos personales";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.Red;
+            this.label2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label2.Location = new System.Drawing.Point(329, 17);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(15, 20);
+            this.label2.TabIndex = 150;
+            this.label2.Text = "*";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.Red;
+            this.label3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label3.Location = new System.Drawing.Point(329, 65);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(15, 20);
+            this.label3.TabIndex = 149;
+            this.label3.Text = "*";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.Red;
+            this.label4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label4.Location = new System.Drawing.Point(144, 68);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(15, 20);
+            this.label4.TabIndex = 148;
+            this.label4.Text = "*";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.label5.Location = new System.Drawing.Point(173, 119);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(168, 18);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "* Información obligatoria";
+            // 
+            // button_Buscar2
+            // 
+            this.button_Buscar2.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_Buscar2.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.button_Buscar2.Location = new System.Drawing.Point(17, 103);
+            this.button_Buscar2.Name = "button_Buscar2";
+            this.button_Buscar2.Size = new System.Drawing.Size(135, 45);
+            this.button_Buscar2.TabIndex = 10;
+            this.button_Buscar2.Text = "Buscar";
+            this.button_Buscar2.UseVisualStyleBackColor = true;
+            // 
+            // txt_numeroIdentificacion2
+            // 
+            this.txt_numeroIdentificacion2.ForeColor = System.Drawing.SystemColors.ScrollBar;
+            this.txt_numeroIdentificacion2.Location = new System.Drawing.Point(167, 67);
+            this.txt_numeroIdentificacion2.Name = "txt_numeroIdentificacion2";
+            this.txt_numeroIdentificacion2.Size = new System.Drawing.Size(162, 20);
+            this.txt_numeroIdentificacion2.TabIndex = 9;
+            this.txt_numeroIdentificacion2.Text = "Ingrese número de identificación";
+            // 
+            // cmb_tipoIdentificacion2
+            // 
+            this.cmb_tipoIdentificacion2.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.cmb_tipoIdentificacion2.FormattingEnabled = true;
+            this.cmb_tipoIdentificacion2.Location = new System.Drawing.Point(17, 67);
+            this.cmb_tipoIdentificacion2.Name = "cmb_tipoIdentificacion2";
+            this.cmb_tipoIdentificacion2.Size = new System.Drawing.Size(121, 21);
+            this.cmb_tipoIdentificacion2.TabIndex = 7;
+            this.cmb_tipoIdentificacion2.Text = "Seleccione tipo";
+            // 
+            // txt_Email2
+            // 
+            this.txt_Email2.ForeColor = System.Drawing.SystemColors.ScrollBar;
+            this.txt_Email2.Location = new System.Drawing.Point(71, 19);
+            this.txt_Email2.Name = "txt_Email2";
+            this.txt_Email2.Size = new System.Drawing.Size(258, 20);
+            this.txt_Email2.TabIndex = 5;
+            this.txt_Email2.Text = "Ingrese e-mail";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label6.Location = new System.Drawing.Point(164, 51);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(124, 13);
+            this.label6.TabIndex = 8;
+            this.label6.Text = "Número de identificacion";
+            // 
+            // lbl_Email2
+            // 
+            this.lbl_Email2.AutoSize = true;
+            this.lbl_Email2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.lbl_Email2.Location = new System.Drawing.Point(21, 24);
+            this.lbl_Email2.Name = "lbl_Email2";
+            this.lbl_Email2.Size = new System.Drawing.Size(32, 13);
+            this.lbl_Email2.TabIndex = 4;
+            this.lbl_Email2.Text = "Email";
+            // 
+            // lbl
+            // 
+            this.lbl.AutoSize = true;
+            this.lbl.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.lbl.Location = new System.Drawing.Point(14, 51);
+            this.lbl.Name = "lbl";
+            this.lbl.Size = new System.Drawing.Size(108, 13);
+            this.lbl.TabIndex = 6;
+            this.lbl.Text = "Tipo de identificación";
+            // 
+            // grp_alta
+            // 
+            this.grp_alta.Controls.Add(this.button_agregar);
+            this.grp_alta.Location = new System.Drawing.Point(353, 19);
+            this.grp_alta.Name = "grp_alta";
+            this.grp_alta.Size = new System.Drawing.Size(200, 88);
+            this.grp_alta.TabIndex = 2;
+            this.grp_alta.TabStop = false;
+            this.grp_alta.Text = "¿Cliente no registrado?";
+            // 
+            // button_agregar
+            // 
+            this.button_agregar.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_agregar.Location = new System.Drawing.Point(7, 20);
+            this.button_agregar.Name = "button_agregar";
+            this.button_agregar.Size = new System.Drawing.Size(187, 62);
+            this.button_agregar.TabIndex = 0;
+            this.button_agregar.Text = "Agregar";
+            this.button_agregar.UseVisualStyleBackColor = true;
             // 
             // grp_datos
             // 
@@ -255,17 +427,18 @@
             this.lbl_Tipo_identificacion.TabIndex = 6;
             this.lbl_Tipo_identificacion.Text = "Tipo de identificación";
             // 
-            // button_limpiar
+            // button_confirmar
             // 
-            this.button_limpiar.Enabled = false;
-            this.button_limpiar.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_limpiar.ForeColor = System.Drawing.SystemColors.ScrollBar;
-            this.button_limpiar.Location = new System.Drawing.Point(12, 474);
-            this.button_limpiar.Name = "button_limpiar";
-            this.button_limpiar.Size = new System.Drawing.Size(135, 45);
-            this.button_limpiar.TabIndex = 156;
-            this.button_limpiar.Text = "Limpiar";
-            this.button_limpiar.UseVisualStyleBackColor = true;
+            this.button_confirmar.Enabled = false;
+            this.button_confirmar.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_confirmar.ForeColor = System.Drawing.SystemColors.ScrollBar;
+            this.button_confirmar.Location = new System.Drawing.Point(12, 474);
+            this.button_confirmar.Name = "button_confirmar";
+            this.button_confirmar.Size = new System.Drawing.Size(135, 45);
+            this.button_confirmar.TabIndex = 156;
+            this.button_confirmar.Text = "Confirmar";
+            this.button_confirmar.UseVisualStyleBackColor = true;
+            this.button_confirmar.Click += new System.EventHandler(this.button_confirmar_Click);
             // 
             // stat_BarraEstado
             // 
@@ -300,178 +473,6 @@
             this.button_volver.Text = "Volver";
             this.button_volver.UseVisualStyleBackColor = true;
             // 
-            // grp_datos2
-            // 
-            this.grp_datos2.Controls.Add(this.label2);
-            this.grp_datos2.Controls.Add(this.label3);
-            this.grp_datos2.Controls.Add(this.label4);
-            this.grp_datos2.Controls.Add(this.label5);
-            this.grp_datos2.Controls.Add(this.button_Buscar2);
-            this.grp_datos2.Controls.Add(this.txt_numeroIdentificacion2);
-            this.grp_datos2.Controls.Add(this.cmb_tipoIdentificacion2);
-            this.grp_datos2.Controls.Add(this.txt_Email2);
-            this.grp_datos2.Controls.Add(this.label6);
-            this.grp_datos2.Controls.Add(this.lbl_Email2);
-            this.grp_datos2.Controls.Add(this.lbl);
-            this.grp_datos2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.grp_datos2.Location = new System.Drawing.Point(0, 19);
-            this.grp_datos2.Name = "grp_datos2";
-            this.grp_datos2.Size = new System.Drawing.Size(350, 162);
-            this.grp_datos2.TabIndex = 3;
-            this.grp_datos2.TabStop = false;
-            this.grp_datos2.Text = "Ingrese sus datos personales";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label2.Location = new System.Drawing.Point(329, 17);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(15, 20);
-            this.label2.TabIndex = 150;
-            this.label2.Text = "*";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.Red;
-            this.label3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label3.Location = new System.Drawing.Point(329, 65);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(15, 20);
-            this.label3.TabIndex = 149;
-            this.label3.Text = "*";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.Red;
-            this.label4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label4.Location = new System.Drawing.Point(144, 68);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(15, 20);
-            this.label4.TabIndex = 148;
-            this.label4.Text = "*";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.label5.Location = new System.Drawing.Point(173, 119);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(168, 18);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "* Información obligatoria";
-            // 
-            // button_Buscar2
-            // 
-            this.button_Buscar2.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_Buscar2.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.button_Buscar2.Location = new System.Drawing.Point(17, 103);
-            this.button_Buscar2.Name = "button_Buscar2";
-            this.button_Buscar2.Size = new System.Drawing.Size(135, 45);
-            this.button_Buscar2.TabIndex = 10;
-            this.button_Buscar2.Text = "Buscar";
-            this.button_Buscar2.UseVisualStyleBackColor = true;
-            // 
-            // txt_numeroIdentificacion2
-            // 
-            this.txt_numeroIdentificacion2.ForeColor = System.Drawing.SystemColors.ScrollBar;
-            this.txt_numeroIdentificacion2.Location = new System.Drawing.Point(167, 67);
-            this.txt_numeroIdentificacion2.Name = "txt_numeroIdentificacion2";
-            this.txt_numeroIdentificacion2.Size = new System.Drawing.Size(162, 20);
-            this.txt_numeroIdentificacion2.TabIndex = 9;
-            this.txt_numeroIdentificacion2.Text = "Ingrese número de identificación";
-            // 
-            // cmb_tipoIdentificacion2
-            // 
-            this.cmb_tipoIdentificacion2.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.cmb_tipoIdentificacion2.FormattingEnabled = true;
-            this.cmb_tipoIdentificacion2.Location = new System.Drawing.Point(17, 67);
-            this.cmb_tipoIdentificacion2.Name = "cmb_tipoIdentificacion2";
-            this.cmb_tipoIdentificacion2.Size = new System.Drawing.Size(121, 21);
-            this.cmb_tipoIdentificacion2.TabIndex = 7;
-            this.cmb_tipoIdentificacion2.Text = "Seleccione tipo";
-            // 
-            // txt_Email2
-            // 
-            this.txt_Email2.ForeColor = System.Drawing.SystemColors.ScrollBar;
-            this.txt_Email2.Location = new System.Drawing.Point(71, 19);
-            this.txt_Email2.Name = "txt_Email2";
-            this.txt_Email2.Size = new System.Drawing.Size(258, 20);
-            this.txt_Email2.TabIndex = 5;
-            this.txt_Email2.Text = "Ingrese e-mail";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label6.Location = new System.Drawing.Point(164, 51);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(124, 13);
-            this.label6.TabIndex = 8;
-            this.label6.Text = "Número de identificacion";
-            // 
-            // lbl_Email2
-            // 
-            this.lbl_Email2.AutoSize = true;
-            this.lbl_Email2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lbl_Email2.Location = new System.Drawing.Point(21, 24);
-            this.lbl_Email2.Name = "lbl_Email2";
-            this.lbl_Email2.Size = new System.Drawing.Size(32, 13);
-            this.lbl_Email2.TabIndex = 4;
-            this.lbl_Email2.Text = "Email";
-            // 
-            // lbl
-            // 
-            this.lbl.AutoSize = true;
-            this.lbl.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lbl.Location = new System.Drawing.Point(14, 51);
-            this.lbl.Name = "lbl";
-            this.lbl.Size = new System.Drawing.Size(108, 13);
-            this.lbl.TabIndex = 6;
-            this.lbl.Text = "Tipo de identificación";
-            // 
-            // grp_alta
-            // 
-            this.grp_alta.Controls.Add(this.button_agregar);
-            this.grp_alta.Location = new System.Drawing.Point(353, 19);
-            this.grp_alta.Name = "grp_alta";
-            this.grp_alta.Size = new System.Drawing.Size(200, 88);
-            this.grp_alta.TabIndex = 2;
-            this.grp_alta.TabStop = false;
-            this.grp_alta.Text = "¿Cliente no registrado?";
-            // 
-            // button_agregar
-            // 
-            this.button_agregar.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_agregar.Location = new System.Drawing.Point(7, 20);
-            this.button_agregar.Name = "button_agregar";
-            this.button_agregar.Size = new System.Drawing.Size(187, 62);
-            this.button_agregar.TabIndex = 0;
-            this.button_agregar.Text = "Agregar";
-            this.button_agregar.UseVisualStyleBackColor = true;
-            // 
-            // dgv_resultados
-            // 
-            this.dgv_resultados.AllowUserToAddRows = false;
-            this.dgv_resultados.AllowUserToDeleteRows = false;
-            this.dgv_resultados.AllowUserToOrderColumns = true;
-            this.dgv_resultados.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_resultados.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.dgv_resultados.Location = new System.Drawing.Point(6, 187);
-            this.dgv_resultados.MultiSelect = false;
-            this.dgv_resultados.Name = "dgv_resultados";
-            this.dgv_resultados.ReadOnly = true;
-            this.dgv_resultados.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_resultados.Size = new System.Drawing.Size(547, 114);
-            this.dgv_resultados.TabIndex = 8;
-            // 
             // registrar_ingreso
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -479,7 +480,7 @@
             this.ClientSize = new System.Drawing.Size(584, 561);
             this.Controls.Add(this.grp_personas);
             this.Controls.Add(this.grp_datos);
-            this.Controls.Add(this.button_limpiar);
+            this.Controls.Add(this.button_confirmar);
             this.Controls.Add(this.stat_BarraEstado);
             this.Controls.Add(this.button_volver);
             this.MaximumSize = new System.Drawing.Size(600, 600);
@@ -488,14 +489,14 @@
             this.Text = "registrar_ingreso";
             this.Load += new System.EventHandler(this.registrar_ingreso_Load);
             this.grp_personas.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_resultados)).EndInit();
+            this.grp_datos2.ResumeLayout(false);
+            this.grp_datos2.PerformLayout();
+            this.grp_alta.ResumeLayout(false);
             this.grp_datos.ResumeLayout(false);
             this.grp_datos.PerformLayout();
             this.stat_BarraEstado.ResumeLayout(false);
             this.stat_BarraEstado.PerformLayout();
-            this.grp_datos2.ResumeLayout(false);
-            this.grp_datos2.PerformLayout();
-            this.grp_alta.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_resultados)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -519,7 +520,7 @@
         private System.Windows.Forms.Label lbl_Numero_id;
         private System.Windows.Forms.Label lbl_Email;
         private System.Windows.Forms.Label lbl_Tipo_identificacion;
-        private System.Windows.Forms.Button button_limpiar;
+        private System.Windows.Forms.Button button_confirmar;
         private System.Windows.Forms.StatusStrip stat_BarraEstado;
         private System.Windows.Forms.ToolStripProgressBar barra_progreso;
         private System.Windows.Forms.ToolStripStatusLabel label_progreso;

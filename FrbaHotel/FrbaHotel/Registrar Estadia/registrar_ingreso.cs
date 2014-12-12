@@ -20,11 +20,12 @@ namespace FrbaHotel.Registrar_Estadia
         bool _buscaDoc = false;
         bool _buscaCod = false;
         t_reserva _reserva = new t_reserva();
+        DataTable tablaClientes = new DataTable();    //Creo Tabla para los resultados
         public registrar_ingreso()
         {
             InitializeComponent();
-            SqlConnection conn = Home_Reserva.obtenerConexion();
-            SqlCommand cmd = Home_Reserva.obtenerComandoTipo_Documento(conn);
+            SqlConnection conn = Home_Estadia.obtenerConexion();
+            SqlCommand cmd = Home_Estadia.obtenerComandoTipo_Documento(conn);
             try
             {
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -36,7 +37,7 @@ namespace FrbaHotel.Registrar_Estadia
             }
             catch (SqlException exc)
             {
-                Home_Reserva.mostrarMensajeErrorSql(exc);
+                Home_Estadia.mostrarMensajeErrorSql(exc);
             }
 
             conn.Close();
@@ -138,36 +139,6 @@ namespace FrbaHotel.Registrar_Estadia
             }
         }
         #endregion
-        #region motivo
-        private void txt_motivo_TextChanged(object sender, EventArgs e)
-        {
-            if (txt_motivo.TextLength > 0 && txt_motivo.Text != "Ingrese motivo de la cancelación")
-            {
-                //Si escribe algo cambio el color del texto
-                // esto para identificar por qué campos quiere buscar
-                txt_motivo.ForeColor = SystemColors.MenuText;
-            }
-        }
-
-        private void txt_motivo_Click(object sender, EventArgs e)
-        {
-            if (txt_motivo.Text == "Ingrese motivo de la cancelación")
-            {
-                txt_motivo.Text = string.Empty;
-                txt_motivo.ForeColor = SystemColors.MenuText;
-            }
-        }
-
-        private void txt_motivo_Leave(object sender, EventArgs e)
-        {
-            if (txt_motivo.Text == "Ingrese motivo de la cancelación" ||
-                txt_motivo.Text == string.Empty)
-            {
-                txt_motivo.Text = "Ingrese motivo de la cancelación";
-                txt_motivo.ForeColor = SystemColors.ScrollBar;
-            }
-        }
-        #endregion
         private void cmb_tipoIdentificacion_SelectedIndexChanged(object sender, EventArgs e)
         {
             _buscaTipoDoc = true;
@@ -179,60 +150,19 @@ namespace FrbaHotel.Registrar_Estadia
 
         private void button_Buscar_Click(object sender, EventArgs e)
         {
-            try
-            {
-                grp_cambios.Enabled = false;
-                using (SqlConnection conn = Home_Reserva.obtenerConexion())
-                {
-                    string busqueda1 = "SELECT * FROM TEAM_CASTY.Tipos_Habitaciones_Hotel ("
-                                + Home_Reserva._codigo_hotel + ")";
-                    SqlCommand cmd2 = new SqlCommand(busqueda1, conn);
-                    SqlDataReader reader = cmd2.ExecuteReader();                                                                              //Creo adaptador para la busqueda
-                    barra_progreso.Value = 5;                                                                                                            //0% de la barra de progreso
-                    DataTable table = new DataTable();
-                    table.Columns.Add(new DataColumn("Activado", typeof(bool)));
-                    table.Columns.Add(new DataColumn("Descripcion", typeof(string)));
-                    table.Columns.Add(new DataColumn("Cantidad", typeof(Int32)));
-                    while (reader.Read())
-                    {
-                        table.Rows.Add(false, reader["Descripcion"].ToString(), 0);
-                    }
-                    dgv_tipos_habitaciones.DataSource = table;
-                    reader.Close();
-                    using (SqlCommand cmd = conn.CreateCommand())
-                    {
-                        string busqueda = "SELECT * FROM TEAM_CASTY.RegimenesDeUnHotel ("
-                            + Home_Reserva._codigo_hotel + ")";
-                        SqlDataAdapter adaptador;                                                                                                          //Creo adaptador para la busqueda
-                        barra_progreso.Value = 5;                                                                                                            //0% de la barra de progreso
-                        DataTable tabla = new DataTable();
-                        adaptador = new SqlDataAdapter(busqueda, conn);                                                              //Busco en la sesión abierta
-                        adaptador.Fill(tabla);                                                                                                    //LLeno tabla de resultados
-                        dgv_regimenes.DataSource = tabla;                                                                           //LLeno datagrid con tabla
-                    }
-                    dgv_regimenes.Columns[0].Width = 270;
-                }
-            }
-            catch (SqlException exc)
-            {
-                Home_Reserva.mostrarMensajeErrorSql(exc);
-            }
-
-
-
+                grp_personas.Enabled = false;
             if (_buscaDoc && _buscaEmail && _buscaTipoDoc && _buscaCod)
             {
-                string busqueda = string.Format("SELECT [Codigo],[Mail],[Tipo Documento],[Numero Documento] "
-                 + " FROM [GD2C2014].[Team_Casty].[vistaClientes] "
-                 + " WHERE [Mail] = '{0}' AND [Tipo Documento]='{1}' AND [Numero Documento]={2}", txt_Email.Text,
-                 cmb_tipoIdentificacion.SelectedItem, txt_numeroIdentificacion.Text);           //búsqueda básica
-                label_progreso.Text = "Buscando...";       //Imprime en la barra de progreso
-                SqlConnection conn = Home_Reserva.obtenerConexion();                       //Abrir Conexión
-                SqlDataAdapter adaptador;                                                                                                          //Creo adaptador para la busqueda
-                barra_progreso.Value = 5;                                                                                                            //0% de la barra de progreso
-                DataTable tablaClientes = new DataTable();                                                                                 //Creo Tabla para los resultados
                 try
                 {
+                    string busqueda = string.Format("SELECT * "
+                     + " FROM [GD2C2014].[Team_Casty].[vistaClientes] "
+                     + " WHERE [Mail] = '{0}' AND [Tipo Documento]='{1}' AND [Numero Documento]={2}", txt_Email.Text,
+                     cmb_tipoIdentificacion.SelectedItem, txt_numeroIdentificacion.Text);           //búsqueda básica
+                    label_progreso.Text = "Buscando...";       //Imprime en la barra de progreso
+                    SqlConnection conn = Home_Estadia.obtenerConexion();                       //Abrir Conexión
+                    SqlDataAdapter adaptador;                                                                                                          //Creo adaptador para la busqueda
+                    barra_progreso.Value = 5;                                                                                                            //0% de la barra de progreso
                     adaptador = new SqlDataAdapter(busqueda, conn);                                                              //Busco en la sesión abierta
                     adaptador.Fill(tablaClientes);                                                                                                    //LLeno tabla de resultados
                     if (tablaClientes.Rows.Count == 0)
@@ -249,10 +179,14 @@ namespace FrbaHotel.Registrar_Estadia
                     {
                         int codigoCliente = Convert.ToInt32(tablaClientes.Rows[0].ItemArray[0]);
                         int codigoReserva = Convert.ToInt32(txt_codigo_reserva.Text);
+                        string fecha = Home_Estadia._fechaHoySql();
+
+                        //function  TEAM_CASTY.Reservas_Para_Check_IN
+                        //(@fecha datetime, @hotel numeric(18))
                         string busqueda2 = string.Format("SELECT * "
-                 + " FROM [GD2C2014].[Team_Casty].[vistaReservasModificables] "
-                 + " WHERE [ID_Cliente_Reservador] = {0} AND [Cod_Reserva]={1}", codigoCliente,
-                 codigoReserva);
+                 + " FROM [GD2C2014].[Team_Casty].[Reservas_Para_Check_IN] ('{0}',{1}) "
+                 + " WHERE [ID_Cliente_Reservador] = {2} AND [Cod_Reserva]={3}", fecha, Home_Estadia._codigo_hotel
+                 , codigoCliente, codigoReserva);
                         DataTable tablaReservas = new DataTable();                                                                                 //Creo Tabla para los resultados
                         adaptador = new SqlDataAdapter(busqueda2, conn);                                                              //Busco en la sesión abierta
                         adaptador.Fill(tablaReservas);                                                                                                    //LLeno tabla de resultados
@@ -268,83 +202,20 @@ namespace FrbaHotel.Registrar_Estadia
                         }
                         else
                         {
-                            string msj = "Se encontró al cliente y a la reserva. \n Presione modificar para modificar la reserva.";
+                            string msj = "Se encontró al cliente y a la reserva. \n Puede continuar añadiendo acompañantes.";
                             MessageBox.Show(msj, "Exito", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
 
                             _reserva.cliente = codigoCliente;
                             _reserva.codigo_reserva = codigoReserva;
-                            using (SqlCommand cmd = conn.CreateCommand())
-                            {
-                                //procedure  TEAM_CASTY.Datos_Reserva
-                                //(@cod_reserva numeric(18),@fecha_reserva datetime output,@cant_noches numeric(18) output,
-                                //@regimen nvarchar(255) output)
-                                cmd.CommandType = CommandType.StoredProcedure;
-                                SqlParameter fecha_desde = new SqlParameter("@fecha_reserva", SqlDbType.DateTime)
-                                {
-                                    Direction = ParameterDirection.Output
-                                };
-                                SqlParameter cant_noches = new SqlParameter("@cant_noches", SqlDbType.Int)
-                                {
-                                    Direction = ParameterDirection.Output
-                                };
-                                SqlParameter regimen = new SqlParameter("@regimen", SqlDbType.VarChar, 255)
-                                {
-                                    Direction = ParameterDirection.Output
-                                };
-                                cmd.CommandText = "[TEAM_CASTY].Datos_Reserva";
-                                cmd.Parameters.Add(new SqlParameter("@cod_reserva", codigoReserva));
-                                cmd.Parameters.Add(fecha_desde);
-                                cmd.Parameters.Add(cant_noches);
-                                cmd.Parameters.Add(regimen);
-                                cmd.ExecuteNonQuery();
-                                DateTime fecha_hasta = Convert.ToDateTime(fecha_desde.Value).AddDays(Convert.ToInt32(cant_noches.Value));
 
-                                dtp_desde.Value = Convert.ToDateTime(fecha_desde.Value);
-                                dtp_hasta.Value = fecha_hasta;
-                                string _regimen = regimen.Value.ToString();
-                                for (int i = 0; i < dgv_regimenes.Rows.Count; i++)
-                                    if (dgv_regimenes.Rows[i].Cells[0].Value.ToString() == _regimen)
-                                    {
-                                        dgv_regimenes.Rows[i].Selected = true;
-                                    }
-
-                            }
-                            //function  TEAM_CASTY.Habitaciones_Reserva (@cod_reserva numeric(18))
-                            string busqueda1 = string.Format("SELECT * FROM [TEAM_CASTY].Habitaciones_Reserva ({0})", codigoReserva);
-                            SqlCommand cmd2 = new SqlCommand(busqueda1, conn);
-                            SqlDataReader reader = cmd2.ExecuteReader();                                                                              //Creo adaptador para la busqueda
-                            barra_progreso.Value = 5;                                                                                                            //0% de la barra de progreso
-                            DataTable table = new DataTable();
-                            table.Columns.Add(new DataColumn("Activado", typeof(bool)));
-                            table.Columns.Add(new DataColumn("Descripcion", typeof(string)));
-                            table.Columns.Add(new DataColumn("Cantidad", typeof(Int32)));
-                            while (reader.Read())
-                            {
-                                table.Rows.Add(true, reader["Descripcion"].ToString(), reader["Cantidad"]);
-                            }
-                            for (int i = 0; i < table.Rows.Count; i++)
-                            {
-                                for (int j = 0; j < dgv_tipos_habitaciones.Rows.Count; j++)
-                                {
-                                    if (dgv_tipos_habitaciones.Rows[j].Cells[1].Value.ToString() == table.Rows[i].ItemArray[1].ToString())
-                                    {
-                                        dgv_tipos_habitaciones.Rows[j].Cells[0].Value = true;
-                                        dgv_tipos_habitaciones.Rows[j].Cells[2].Value = table.Rows[i].ItemArray[2];
-                                    }
-                                }
-                            }
-                            button_aceptar.Enabled = true;
-                            button_aceptar.ForeColor = SystemColors.MenuText;
                         }
-                        //Aviso que terminó la búsqueda
                     }
                 }
                 catch (SqlException exc)                                                                                                                             //En un error le aviso
                 {
                     barra_progreso.Value = 0;
-                    Home_Reserva.mostrarMensajeErrorSql(exc);
+                    Home_Estadia.mostrarMensajeErrorSql(exc);
                 }
-                conn.Close();                                                                                                                                 //Cierro conexión
             }
             else
             {
@@ -364,13 +235,13 @@ namespace FrbaHotel.Registrar_Estadia
         {
             try
             {
-                using (SqlConnection conn = Home_Reserva.obtenerConexion())
+                using (SqlConnection conn = Home_Estadia.obtenerConexion())
                 {
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = "[TEAM_CASTY].Actualizar_Reservas";
-                        cmd.Parameters.Add(new SqlParameter("@fecha_actual", Home_Reserva._fechaHoySql()));
+                        cmd.Parameters.Add(new SqlParameter("@fecha_actual", Home_Estadia._fechaHoySql()));
                         cmd.ExecuteNonQuery();
                     }
 
@@ -378,55 +249,12 @@ namespace FrbaHotel.Registrar_Estadia
             }
             catch (SqlException exc)
             {
-                Home_Reserva.mostrarMensajeErrorSql(exc);
+                Home_Estadia.mostrarMensajeErrorSql(exc);
             }
-        }
-        private string motivo()
-        {
-            if (txt_motivo.Text == "Ingrese motivo de la cancelación" || txt_motivo.Text == string.Empty)
-            {
-                return string.Empty;
-            }
-            else
-                return txt_motivo.Text;
         }
         private void button_aceptar_Click_1(object sender, EventArgs e)
         {
 
-            string msj = "¿Está seguro que quiere cancelar la reserva? \n";
-            DialogResult resultado = MessageBox.Show(msj, "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (resultado == DialogResult.Yes)
-            {
-                try
-                {
-
-                    using (SqlConnection conn = Home_Reserva.obtenerConexion())
-                    {
-                        using (SqlCommand cmd = conn.CreateCommand())
-                        {
-                            //procedure  TEAM_CASTY.Cancelar_Reserva
-                            //@cod_Reserva numeric(18),@fecha datetime,@motivo varchar(255), @usuario nvarchar(255)
-                            cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.CommandText = "[TEAM_CASTY].Cancelar_Reserva";
-                            cmd.Parameters.Add(new SqlParameter("@cod_Reserva", _reserva.codigo_reserva));
-                            cmd.Parameters.Add(new SqlParameter("@fecha", Home_Reserva.transformarFechaASql(dtp_hasta.Value)));
-                            cmd.Parameters.Add(new SqlParameter("@motivo", motivo()));
-                            cmd.Parameters.Add(new SqlParameter("@usuario", Home_Reserva._nombreUsuario));
-                            cmd.ExecuteNonQuery();
-                            msj = "Reserva cancelada exitosamente.";
-                            MessageBox.Show(msj, "Exito", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                            MenuPrincipal menu_principal = new MenuPrincipal();
-                            menu_principal.Show();
-                            this.Hide();
-                        }
-                    }
-
-                }
-                catch (SqlException exc)
-                {
-                    Home_Reserva.mostrarMensajeErrorSql(exc);
-                }
-            }
         }
 
 
@@ -450,6 +278,59 @@ namespace FrbaHotel.Registrar_Estadia
         private void grp_datos_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void registrar_ingreso_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button_confirmar_Click(object sender, EventArgs e)
+        {
+
+            string msj = "¿Está seguro que quiere confirmar el checkin? \n Una vez confirmado, no puede volver a modificarse";
+            DialogResult resultado = MessageBox.Show(msj, "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (resultado == DialogResult.Yes)
+            {
+                try
+                {
+
+                    using (SqlConnection conn = Home_Estadia.obtenerConexion())
+                    {
+                        using (SqlCommand cmd = conn.CreateCommand())
+                        {
+                            //procedure  TEAM_CASTY.Check_IN
+                            //@Cod_Reserva numeric(18),@fecha datetime, @usuario nvarchar(255),@hotel numeric(18)
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.CommandText = "[TEAM_CASTY].Check_IN";
+                            cmd.Parameters.Add(new SqlParameter("@Cod_Reserva", _reserva.codigo_reserva));
+                            cmd.Parameters.Add(new SqlParameter("@fecha", Home_Estadia._fechaHoySql()));
+                            cmd.Parameters.Add(new SqlParameter("@usuario", Home_Estadia._nombreUsuario));
+                            cmd.Parameters.Add(new SqlParameter("@hotel", Home_Estadia._codigo_hotel));
+                            cmd.ExecuteNonQuery();
+                        }
+                        using (SqlCommand cmd = conn.CreateCommand())
+                        {
+                            //procedure  Agregar_Clientes_A_Estadia
+                            //(@Cod_Reserva numeric(18),@tabla TEAM_CASTY.t_agregar_clientes readonly)
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.CommandText = "[TEAM_CASTY].Agregar_Clientes_A_Estadia";
+                            cmd.Parameters.Add(new SqlParameter("@Cod_Reserva", _reserva.codigo_reserva));
+                            cmd.Parameters.Add(new SqlParameter("@tabla", tablaClientes.Columns[0]));
+                            cmd.ExecuteNonQuery();
+                            msj = "Check in exitoso.";
+                            MessageBox.Show(msj, "Exito", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                            MenuPrincipal menu_principal = new MenuPrincipal();
+                            menu_principal.Show();
+                            this.Hide();
+                        }
+                    }
+                }
+                catch (SqlException exc)
+                {
+                    Home_Estadia.mostrarMensajeErrorSql(exc);
+                }
+            }
         }
     }
 }
