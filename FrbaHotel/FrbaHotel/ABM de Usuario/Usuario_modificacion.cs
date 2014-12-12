@@ -95,13 +95,7 @@ namespace FrbaHotel.ABM_de_Usuario
 
         private void txt_Nombre_Leave(object sender, EventArgs e)
         {
-            if (txt_Nombre.Text == "Ingrese nombre" ||
-                txt_Nombre.Text == string.Empty)
-            {
-                txt_Nombre.Text = "Ingrese nombre";
-                txt_Nombre.ForeColor = SystemColors.ScrollBar;
-                _buscaNombre = false;
-            }
+
         }
         #endregion
         #region Txt_Apellido
@@ -205,11 +199,11 @@ namespace FrbaHotel.ABM_de_Usuario
         {
             button_modificar.Enabled = false;
             button_modificar.ForeColor = SystemColors.ScrollBar;
-            string busqueda = "SELECT Codigo, Nombre, Apellido, Mail, [Tipo Documento], [Numero Documento], Telefono, " +
-                                           ", [Fecha Nacimiento]"
+            string busqueda = "SELECT Codigo,Username,  Apellido, Nombre,Mail, [Tipo de Documento], [Numero de Documento],"
+            +"Telefono, Direccion, [Fecha de Nacimiento]"
                                                                      + "FROM [GD2C2014].[Team_Casty].[vistaUsuarios]";           //búsqueda básica
             button_Buscar.Enabled = false;            //Deshabilito búsqueda hasta que haya resultado
-            label_progreso.Text = "Cargando Clientes";       //Imprime en la barra de progreso
+            label_progreso.Text = "Cargando Usuarios";       //Imprime en la barra de progreso
             SqlConnection conn = Home_Usuario.obtenerConexion();                       //Abrir Conexión
             SqlDataAdapter adaptador;                                                                                                          //Creo adaptador para la busqueda
             barra_progreso.Value = 5;                                                                                                            //0% de la barra de progreso
@@ -222,7 +216,7 @@ namespace FrbaHotel.ABM_de_Usuario
                 if (_buscaDoc)
                 {
                     _masDeUno = true;
-                    busqueda += "CONVERT( VARCHAR(50),[Numero Documento]) LIKE '%" + txt_numeroIdentificacion.Text.ToString() + "%'";
+                    busqueda += "CONVERT( VARCHAR(50),[Numero de Documento]) LIKE '%" + txt_numeroIdentificacion.Text.ToString() + "%'";
                 }
                 if (_buscaNombre)
                 {
@@ -245,7 +239,7 @@ namespace FrbaHotel.ABM_de_Usuario
                 if (_buscaTipoDoc)
                 {
                     if (_masDeUno) busqueda += " AND ";
-                    busqueda += " [Tipo Documento] = '" + cmb_tipoIdentificacion.Text + "'";
+                    busqueda += " [Tipo de Documento] = '" + cmb_tipoIdentificacion.Text + "'";
                 }
             }
             #endregion
@@ -260,7 +254,7 @@ namespace FrbaHotel.ABM_de_Usuario
             catch (SqlException exc)                                                                                                                             //En un error le aviso
             {
                 barra_progreso.Value = 0;
-                Home_Cliente.mostrarMensajeErrorSql(exc);
+                Home_Usuario.mostrarMensajeErrorSql(exc);
             }
             conn.Close();                                                                                                                                 //Cierro conexión
             button_Buscar.Enabled = true;                                                                                                     //Habilito Otra búsqueda
@@ -332,8 +326,15 @@ namespace FrbaHotel.ABM_de_Usuario
             _valores = new valoresDataGridView();
             for (int i = 0; i < dgv_resultados.SelectedCells.Count; i++)
             {
+                //Codigo,Username,  Apellido, Nombre,Mail, [Tipo de Documento], [Numero de Documento],
+                //Telefono, Direccion, [Fecha de Nacimiento]
                 switch (dgv_resultados.Columns[i].HeaderText)
                 {
+                    case "Codigo":
+                        {
+                            _valores._codigo = dgv_resultados.SelectedCells[i].Value.ToString();
+                            break;
+                        }
                     case "Nombre":
                         {
                             _valores._nombre = dgv_resultados.SelectedCells[i].Value.ToString();
@@ -349,19 +350,14 @@ namespace FrbaHotel.ABM_de_Usuario
                             _valores._mail = dgv_resultados.SelectedCells[i].Value.ToString();
                             break;
                         }
-                    case "Codigo":
+                    case "Tipo de Documento":
                         {
-                            _valores._codigo = dgv_resultados.SelectedCells[i].Value.ToString();
+                            _valores._tipo_de_documento = dgv_resultados.SelectedCells[i].Value.ToString();
                             break;
                         }
-                    case "Tipo Documento":
+                    case "Numero de Documento":
                         {
-                            _valores._tipo_documento = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                    case "Numero Documento":
-                        {
-                            _valores._numero_documento = dgv_resultados.SelectedCells[i].Value.ToString();
+                            _valores._numero_de_documento = dgv_resultados.SelectedCells[i].Value.ToString();
                             break;
                         }
                     case "Telefono":
@@ -369,39 +365,9 @@ namespace FrbaHotel.ABM_de_Usuario
                             _valores._telefono = dgv_resultados.SelectedCells[i].Value.ToString();
                             break;
                         }
-                    case "Pais":
+                    case "Direccion":
                         {
-                            _valores._pais = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                    case "Localidad":
-                        {
-                            _valores._localidad = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                    case "Calle":
-                        {
-                            _valores._calle = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                    case "Numero Calle":
-                        {
-                            _valores._numero_calle = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                    case "Piso":
-                        {
-                            _valores._piso = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                    case "Departamento":
-                        {
-                            _valores._departamento = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                    case "Nacionalidad":
-                        {
-                            _valores._nacionalidad = dgv_resultados.SelectedCells[i].Value.ToString();
+                            _valores._direccion = dgv_resultados.SelectedCells[i].Value.ToString();
                             break;
                         }
                     case "Fecha Nacimiento":
@@ -409,16 +375,16 @@ namespace FrbaHotel.ABM_de_Usuario
                             _valores._fecha_nacimiento = dgv_resultados.SelectedCells[i].Value.ToString();
                             break;
                         }
-                    case "Inhabilitado":
+                    case "Habilitado":
                         {
                             if (Convert.ToInt32(dgv_resultados.SelectedCells[i].Value) != 0)
-                                _valores._inhabilitado = true;
-                            else _valores._inhabilitado = false;
+                                _valores._habilitado = true;
+                            else _valores._habilitado = false;
                             break;
                         }
                 }
             }
-            Cliente_modificar formularioModificar = new Cliente_modificar(_valores);
+            Usuario_modificar formularioModificar = new Usuario_modificar(_valores);
             //for (int i = 0; i < dgv_resultados.SelectedCells.Count; i++)
             //{
             //    ObjetoModificable obj = new ObjetoModificable();

@@ -63,6 +63,7 @@
             this.button_modificar.TabIndex = 200;
             this.button_modificar.Text = "Modificar";
             this.button_modificar.UseVisualStyleBackColor = true;
+            this.button_modificar.Click += new System.EventHandler(this.button_modificar_Click);
             // 
             // dgv_resultados
             // 
@@ -111,6 +112,7 @@
             this.button_volver.TabIndex = 201;
             this.button_volver.Text = "Volver";
             this.button_volver.UseVisualStyleBackColor = true;
+            this.button_volver.Click += new System.EventHandler(this.button_volver_Click);
             // 
             // button_limpiar
             // 
@@ -123,6 +125,7 @@
             this.button_limpiar.TabIndex = 199;
             this.button_limpiar.Text = "Limpiar";
             this.button_limpiar.UseVisualStyleBackColor = true;
+            this.button_limpiar.Click += new System.EventHandler(this.button_limpiar_Click);
             // 
             // Filtros_de_busqueda
             // 
@@ -155,6 +158,7 @@
             this.button_Buscar.TabIndex = 6;
             this.button_Buscar.Text = "Buscar";
             this.button_Buscar.UseVisualStyleBackColor = true;
+            this.button_Buscar.Click += new System.EventHandler(this.button_Buscar_Click);
             // 
             // txt_numeroIdentificacion
             // 
@@ -164,6 +168,9 @@
             this.txt_numeroIdentificacion.Size = new System.Drawing.Size(200, 20);
             this.txt_numeroIdentificacion.TabIndex = 5;
             this.txt_numeroIdentificacion.Text = "Ingrese número de identificación";
+            this.txt_numeroIdentificacion.TextChanged += new System.EventHandler(this.txt_numeroIdentificacion_TextChanged);
+            this.txt_numeroIdentificacion.Click += new System.EventHandler(this.txt_numeroIdentificacion_Click);
+            this.txt_numeroIdentificacion.Leave += new System.EventHandler(this.txt_numeroIdentificacion_Leave);
             // 
             // cmb_tipoIdentificacion
             // 
@@ -174,6 +181,7 @@
             this.cmb_tipoIdentificacion.Size = new System.Drawing.Size(121, 21);
             this.cmb_tipoIdentificacion.TabIndex = 4;
             this.cmb_tipoIdentificacion.Text = "Seleccione tipo";
+            this.cmb_tipoIdentificacion.SelectedIndexChanged += new System.EventHandler(this.cmb_tipoIdentificacion_SelectedIndexChanged);
             // 
             // txt_Email
             // 
@@ -183,6 +191,9 @@
             this.txt_Email.Size = new System.Drawing.Size(460, 20);
             this.txt_Email.TabIndex = 3;
             this.txt_Email.Text = "Ingrese e-mail";
+            this.txt_Email.TextChanged += new System.EventHandler(this.txt_Email_TextChanged);
+            this.txt_Email.Click += new System.EventHandler(this.txt_Email_Click);
+            this.txt_Email.Leave += new System.EventHandler(this.txt_Email_Leave);
             // 
             // txt_Apellido
             // 
@@ -192,6 +203,9 @@
             this.txt_Apellido.Size = new System.Drawing.Size(210, 20);
             this.txt_Apellido.TabIndex = 2;
             this.txt_Apellido.Text = "Ingrese apellido";
+            this.txt_Apellido.TextChanged += new System.EventHandler(this.txt_Apellido_TextChanged);
+            this.txt_Apellido.Click += new System.EventHandler(this.txt_Apellido_Click);
+            this.txt_Apellido.Leave += new System.EventHandler(this.txt_Apellido_Leave);
             // 
             // txt_Nombre
             // 
@@ -201,6 +215,9 @@
             this.txt_Nombre.Size = new System.Drawing.Size(180, 20);
             this.txt_Nombre.TabIndex = 1;
             this.txt_Nombre.Text = "Ingrese nombre";
+            this.txt_Nombre.TextChanged += new System.EventHandler(this.txt_Nombre_TextChanged);
+            this.txt_Nombre.Click += new System.EventHandler(this.txt_Nombre_Click);
+            this.txt_Nombre.Leave += new System.EventHandler(this.txt_Nombre_Leave);
             // 
             // lbl_Numero_id
             // 
@@ -267,7 +284,6 @@
             this.MinimumSize = new System.Drawing.Size(600, 600);
             this.Name = "Usuario_modificacion";
             this.Text = "Usuario_modificacion";
-            this.Load += new System.EventHandler(this.Usuario_modificacion_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_resultados)).EndInit();
             this.stat_BarraEstado.ResumeLayout(false);
             this.stat_BarraEstado.PerformLayout();

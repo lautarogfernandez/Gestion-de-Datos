@@ -12,8 +12,11 @@ namespace FrbaHotel.ABM_de_Usuario
 {
     public struct valoresDataGridView
     {
-        public string _cantidad_estrellas, _ciudad, _pais, _calle, _mail, _telefono, _codigo, _numero_calle, _nombre;
-        public List<string> _regimenes;
+        //Codigo,Username,  Apellido, Nombre,Mail, [Tipo de Documento], [Numero de Documento],
+        //Telefono, Direccion, [Fecha de Nacimiento]
+        public string _codigo, _username, _apellido, _nombre, _mail, _tipo_de_documento, _numero_de_documento
+            , _telefono, _direccion, _fecha_nacimiento;
+        public bool _habilitado;
     }
     class Home_Usuario : Home
     {
