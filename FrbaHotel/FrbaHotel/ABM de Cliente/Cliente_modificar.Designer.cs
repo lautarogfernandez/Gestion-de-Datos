@@ -525,7 +525,7 @@
             this.chk_nombre.Location = new System.Drawing.Point(556, 61);
             this.chk_nombre.Name = "chk_nombre";
             this.chk_nombre.Size = new System.Drawing.Size(15, 14);
-            this.chk_nombre.TabIndex = 73;
+            this.chk_nombre.TabIndex = 2;
             this.chk_nombre.UseVisualStyleBackColor = true;
             this.chk_nombre.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
@@ -535,7 +535,7 @@
             this.chk_apellido.Location = new System.Drawing.Point(556, 90);
             this.chk_apellido.Name = "chk_apellido";
             this.chk_apellido.Size = new System.Drawing.Size(15, 14);
-            this.chk_apellido.TabIndex = 74;
+            this.chk_apellido.TabIndex = 3;
             this.chk_apellido.UseVisualStyleBackColor = true;
             this.chk_apellido.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
@@ -545,7 +545,7 @@
             this.chk_mail.Location = new System.Drawing.Point(556, 119);
             this.chk_mail.Name = "chk_mail";
             this.chk_mail.Size = new System.Drawing.Size(15, 14);
-            this.chk_mail.TabIndex = 75;
+            this.chk_mail.TabIndex = 4;
             this.chk_mail.UseVisualStyleBackColor = true;
             this.chk_mail.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
@@ -555,7 +555,7 @@
             this.chk_tipo_documento.Location = new System.Drawing.Point(556, 146);
             this.chk_tipo_documento.Name = "chk_tipo_documento";
             this.chk_tipo_documento.Size = new System.Drawing.Size(15, 14);
-            this.chk_tipo_documento.TabIndex = 76;
+            this.chk_tipo_documento.TabIndex = 5;
             this.chk_tipo_documento.UseVisualStyleBackColor = true;
             this.chk_tipo_documento.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
@@ -565,7 +565,7 @@
             this.chk_numero_documento.Location = new System.Drawing.Point(556, 174);
             this.chk_numero_documento.Name = "chk_numero_documento";
             this.chk_numero_documento.Size = new System.Drawing.Size(15, 14);
-            this.chk_numero_documento.TabIndex = 77;
+            this.chk_numero_documento.TabIndex = 6;
             this.chk_numero_documento.UseVisualStyleBackColor = true;
             this.chk_numero_documento.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
@@ -575,7 +575,7 @@
             this.chk_telefono.Location = new System.Drawing.Point(556, 203);
             this.chk_telefono.Name = "chk_telefono";
             this.chk_telefono.Size = new System.Drawing.Size(15, 14);
-            this.chk_telefono.TabIndex = 78;
+            this.chk_telefono.TabIndex = 7;
             this.chk_telefono.UseVisualStyleBackColor = true;
             this.chk_telefono.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
@@ -665,7 +665,7 @@
             this.chk_todos.Location = new System.Drawing.Point(556, 26);
             this.chk_todos.Name = "chk_todos";
             this.chk_todos.Size = new System.Drawing.Size(15, 14);
-            this.chk_todos.TabIndex = 87;
+            this.chk_todos.TabIndex = 1;
             this.chk_todos.UseVisualStyleBackColor = true;
             this.chk_todos.CheckedChanged += new System.EventHandler(this.check_todos_change);
             // 
