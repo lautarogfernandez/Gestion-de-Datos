@@ -1383,6 +1383,8 @@ begin
 	from  TEAM_CASTY.Regimen r, @tabla t
 	where r.Descripcion=t.Descripcion;
 	
+	insert into TEAM_CASTY.RolXUsuarioXHotel(Cod_Hotel,Cod_Rol,Cod_Usuario) values (@cod_hotel,1,1);
+	insert into TEAM_CASTY.RolXUsuarioXHotel(Cod_Hotel,Cod_Rol,Cod_Usuario) values (@cod_hotel,3,2);	
 end	
 else
 begin
@@ -1395,7 +1397,7 @@ end;
  
  create procedure TEAM_CASTY.modificacion_Hotel
 (@cod_hotel numeric (18),@nombre nvarchar(255),@mail nvarchar(255),@telefono nvarchar(50),@pais nvarchar(255),@cidudad nvarchar(255),@cant_Estrellas numeric (18),
-@calle nvarchar(255),@num_calle numeric (18),@fecha_creacion datetime, @tabla t_tablaRegimenes readonly)
+@calle nvarchar(255),@num_calle numeric (18), @tabla t_tablaRegimenes readonly)
  as
  begin
  declare @mensaje varchar(1000);
@@ -1432,7 +1434,7 @@ begin
 	
 	update Team_Casty.Hotel
 	set Nombre=@nombre,Pais=@pais,Calle=@calle,Nro_Calle=@num_calle,Telefono=@telefono,
-	Mail=@mail,CantEstrella=@cant_Estrellas,Fecha_Creacion=@fecha_creacion,Cod_Ciudad=@cod_ciudad
+	Mail=@mail,CantEstrella=@cant_Estrellas,Cod_Ciudad=@cod_ciudad
 	where @cod_hotel=Cod_Hotel;
 	
 	delete TEAM_CASTY.RegimenXHotel	
@@ -1508,7 +1510,7 @@ end
 if(exists(
 select *
 from TEAM_CASTY.Periodo_Inhabilitado pein
-where TEAM_CASTY.periodoOK(@fecha_inicio,@fecha_fin,pein.Fecha_Inicio,pein.Fecha_Fin)=0
+where TEAM_CASTY.periodoOK(@fecha_inicio,@fecha_fin,pein.Fecha_Inicio,pein.Fecha_Fin)=0 and Cod_Hotel=@cod_hotel
 ))
 begin
 	set @error=1;
@@ -1529,6 +1531,36 @@ end
 end;
  
  GO
+
+create procedure TEAM_CASTY.Insertar_Recarga
+(@fecha datetime, @recarga numeric(18))
+as
+begin
+declare @mensaje varchar(1000);
+declare @error int;
+set @error=0;
+set @mensaje='Error:';
+
+if(exists (select * from TEAM_CASTY.Recarga_Estrella re where datediff(day,re.Fecha_Modificacion,@fecha)=0))
+begin
+	set @error=1;
+	set @mensaje=' Ya se cambió la recarga ese día.';
+end
+
+if (@error=0)
+begin
+	insert into TEAM_CASTY.Recarga_Estrella
+	(Fecha_Modificacion,Recarga)
+	values (@fecha,@recarga);
+end	
+else
+begin
+	set @mensaje=@mensaje + ' No se realizó la modificación.';
+	RAISERROR (@mensaje,15,1);
+end
+end;
+
+GO
  
  CREATE TYPE TEAM_CASTY.t_tablaHotelYRol AS TABLE(
 	Cod_Hotel numeric (18),
@@ -1601,7 +1633,6 @@ end
 
 if (@error=0)
 begin
-
 	insert into TEAM_CASTY.Usuario (Username,Contraseña) values (@username,@password);
 	
 	declare @cod_usuario numeric (18);
@@ -1623,7 +1654,6 @@ begin
     select @cod_usuario,r.Cod_Rol,t.Cod_Hotel
     from TEAM_CASTY.Rol r , @tabla t
     where r.Nombre=t.Nombre_Rol;
-
 end
 
 else
@@ -1700,7 +1730,6 @@ end
 
 if (@error=0)
 begin
-
 	update TEAM_CASTY.Usuario
 	set Username=@username, Contraseña=@password
 	where Cod_Usuario=@cod_usuario;
@@ -1724,7 +1753,6 @@ begin
     select @cod_usuario,r.Cod_Rol,t.Cod_Hotel
     from TEAM_CASTY.Rol r , @tabla t
     where r.Nombre=t.Nombre_Rol;
-
 end
 
 else
@@ -2072,6 +2100,7 @@ create view TEAM_CASTY.vistaReservasModificables
 as
 select * from TEAM_CASTY.Reserva 
 where  Cod_Estado in(1,2)
+
 go
 
 create procedure  TEAM_CASTY.Cancelar_Reserva
@@ -2163,12 +2192,10 @@ create function  TEAM_CASTY.Estadias_Para_Check_OUT
 returns table
 AS
 	return(
-	select distinct est.Cod_Estadia,c.Nombre,c.Apellido,td.Tipo_Documento,c.Nro_Documento,c.Telefono,c.Mail
-	from TEAM_CASTY.Estadia est,TEAM_CASTY.HabitacionXEstadia hxe, TEAM_CASTY.Habitacion hab,TEAM_CASTY.Cliente c,
-	TEAM_CASTY.Reserva res,TEAM_CASTY.Tipo_Documento td
+	select distinct est.Cod_Estadia,res.ID_Cliente_Reservador
+	from TEAM_CASTY.Estadia est,TEAM_CASTY.HabitacionXEstadia hxe, TEAM_CASTY.Habitacion hab,TEAM_CASTY.Reserva res
 	where est.Fecha_Salida is null and est.Fecha_Inicio is not null and hab.Cod_Habitacion=hxe.Cod_Habitacion and
-	est.Cod_Estadia=hxe.Cod_Estadia and hab.Cod_Hotel=@hotel and res.Cod_Reserva=est.Cod_Reserva and
-	res.ID_Cliente_Reservador=c.ID_Cliente and td.ID_Tipo_Documento=c.ID_Tipo_Documento);
+	est.Cod_Estadia=hxe.Cod_Estadia and hab.Cod_Hotel=@hotel and res.Cod_Reserva=est.Cod_Reserva);
 
 GO
 
@@ -2422,6 +2449,14 @@ end;
 GO
 
 create procedure  TEAM_CASTY.Facturar
+(@cod_Estadia numeric(18), @hotel datetime,)
+AS
+begin
+
+end;
+
+
+create procedure  TEAM_CASTY.Facturar
 @cod_Estadia numeric(18), @fecha datetime, @cod_forma_pago numeric(18)
 AS
 begin
@@ -2513,8 +2548,11 @@ begin
 			set @monto_total+=@monto_consumibles;
 		end
 		
+		declare @puntos numeric(18)=0;
+		set @puntos=CAST(round(@monto_habitaciones/10,0,1) as int)+CAST(round(@monto_consumibles/5,0,1) as int);
+		
 		update TEAM_CASTY.Factura
-		set Total=@monto_total
+		set Total=@monto_total,Puntos=@puntos
 		where Cod_Estadia=@cod_Estadia;		
 	end try
 	begin catch	
@@ -2532,3 +2570,82 @@ end;
 GO
 
 
+CREATE FUNCTION TEAM_CASTY.vistaTOP5ReservasCanceladas (@pFecha_Inicio date,@pFecha_Fin date)
+RETURNS TABLE
+AS
+RETURN 
+   select  top 5 vh.Codigo, vh.Ciudad, vh.Calle,vh.[Numero Calle], vh.Telefono, vh.Mail, vh.[Cantidad de estrellas], vh.[Recarga por estrella], count (distinct r.Cod_Reserva)  as "Cantidad Reservas Canceladas"
+   from TEAM_CASTY.vistaHoteles vh, TEAM_CASTY.HabitacionXReserva hxr,TEAM_CASTY.Reserva r ,TEAM_CASTY.Habitacion hab
+   where vh.Codigo = hab.Cod_Hotel and hab.Cod_Habitacion= hxr.Cod_Habitacion and r.Cod_Reserva= hxr.Cod_Reserva
+       and  r.Cod_Estado in (3,4,5) and r.Fecha_Reserva between @pFecha_Inicio and @pFecha_Fin
+   group by vh.Codigo, vh.Ciudad, vh.Calle,vh.[Numero Calle], vh.Telefono, vh.Mail, vh.[Cantidad de estrellas], vh.[Recarga por estrella]
+   order by [Cantidad Reservas Canceladas] desc
+   
+go
+   
+CREATE FUNCTION TEAM_CASTY.vistaTOP5ConsumiblesFacturados (@pFecha_Inicio date,@pFecha_Fin date)
+RETURNS TABLE
+AS
+RETURN
+   select  top 5  vh.Codigo, vh.Ciudad, vh.Calle,vh.[Numero Calle], vh.Telefono, vh.Mail, vh.[Cantidad de estrellas], vh.[Recarga por estrella], Sum (CxHxE.Cantidad) as "Cantidad Consumibles" 
+from TEAM_CASTY.vistaHoteles vh,TEAM_CASTY.Habitacion hab, TEAM_CASTY.ConsumibleXHabitacionXEstadia CxHxE, TEAM_CASTY.Factura f
+where vh.Codigo = hab.Cod_Hotel and hab.Cod_Habitacion=CxHxE.Cod_Habitacion  and  f.Cod_Estadia = CxHxE.Cod_Estadia 
+       and f.Fecha between @pFecha_Inicio and @pFecha_Fin
+group by  vh.Codigo, vh.Ciudad, vh.Calle,vh.[Numero Calle], vh.Telefono, vh.Mail, vh.[Cantidad de estrellas], vh.[Recarga por estrella]
+order by [Cantidad Consumibles] desc   
+   
+go   
+   
+CREATE FUNCTION dbo.cantidadDeDias (@pFecha_Inicio_Trimestre date,@pFecha_Fin_Trimestre date, @pFecha_Inicio_Inhabilitado date,@pFecha_Fin_Inhabilitad date )
+RETURNS INTEGER 
+AS
+BEGIN
+    RETURN ( CASE
+                WHEN @pFecha_Inicio_Inhabilitado BETWEEN @pFecha_Inicio_Trimestre AND @pFecha_Fin_Trimestre AND @pFecha_Fin_Inhabilitad BETWEEN @pFecha_Inicio_Trimestre AND @pFecha_Fin_Trimestre THEN DATEDIFF(DAY,@pFecha_Inicio_Inhabilitado,@pFecha_Fin_Inhabilitad)
+                WHEN @pFecha_Fin_Inhabilitad BETWEEN @pFecha_Inicio_Trimestre AND @pFecha_Fin_Trimestre THEN DATEDIFF(DAY,@pFecha_Inicio_Trimestre,@pFecha_Fin_Inhabilitad)
+                WHEN @pFecha_Inicio_Inhabilitado BETWEEN @pFecha_Inicio_Trimestre AND @pFecha_Fin_Trimestre THEN DATEDIFF(DAY,@pFecha_Inicio_Inhabilitado,@pFecha_Fin_Trimestre) 
+                ELSE  0
+           END)
+END
+
+go
+
+
+CREATE FUNCTION TEAM_CASTY.vistaTOP5CantidadDeDiasFueraDeServicio (@pFecha_Inicio date,@pFecha_Fin date)
+RETURNS TABLE
+AS
+RETURN
+select  top 5 vh.Codigo, vh.Ciudad, vh.Calle,vh.[Numero Calle], vh.Telefono, vh.Mail, vh.[Cantidad de estrellas], vh.[Recarga por estrella],SUM(dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,ph.Fecha_Inicio,ph.Fecha_Fin )) as "Total Dias Fuera De Servicio"
+from TEAM_CASTY.vistaHoteles vh, TEAM_CASTY.Periodo_Inhabilitado ph 
+where vh.Codigo = ph.Cod_Hotel and dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,ph.Fecha_Inicio,ph.Fecha_Fin ) >0
+group by vh.Codigo, vh.Ciudad, vh.Calle,vh.[Numero Calle], vh.Telefono, vh.Mail, vh.[Cantidad de estrellas], vh.[Recarga por estrella]
+order by [Total Dias Fuera De Servicio] desc
+   
+go   
+
+CREATE FUNCTION TEAM_CASTY.vistaTOP5HabitacionesHabitadas (@pFecha_Inicio date,@pFecha_Fin date)
+RETURNS TABLE
+AS
+RETURN
+select  top 5 vhab.Codigo, vhab.[Numero Hotel], vhab.Numero, vhab.Piso,vhab.Frente,vhab.[Descripcion de tipo], vhab.Porcentual ,SUM(dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,est.Fecha_Inicio,est.Fecha_Salida )) as "Dias Ocupada", COUNT (est.Cod_Estadia) as "Cantidad De Veces Ocupada"
+from TEAM_CASTY.vistaHabitaciones vhab,TEAM_CASTY.HabitacionXEstadia habxest, TEAM_CASTY.Estadia est
+where vhab.Codigo = habxest.Cod_Habitacion   and est.Cod_Estadia=habxest.Cod_Estadia and  dbo.cantidadDeDias(@pFecha_Inicio, @pFecha_Fin,est.Fecha_Inicio,est.Fecha_Salida) >0
+group by  vhab.Codigo, vhab.[Numero Hotel], vhab.Numero, vhab.Piso,vhab.Frente ,vhab.[Descripcion de tipo], vhab.Porcentual
+order by  [Dias Ocupada] desc, [Cantidad De Veces Ocupada] desc
+
+go
+
+
+
+CREATE FUNCTION TEAM_CASTY.vistaTOP5ClienteConPuntos (@pFecha_Inicio date,@pFecha_Fin date)
+returns table
+return (
+select top 5  c.Nombre, c.Apellido,td.Tipo_Documento ,c.Nro_Documento,c.Nacionalidad,c.Mail,c.Fecha_Nacimiento ,sum(fac.Puntos) as Puntos
+from TEAM_CASTY.Factura fac,TEAM_CASTY.Reserva res,TEAM_CASTY.Estadia est,TEAM_CASTY.Cliente c, TEAM_CASTY.Tipo_Documento td
+where (fac.Fecha between @pFecha_Inicio and @pFecha_Fin) and fac.Cod_Estadia=est.Cod_Estadia and
+res.Cod_Reserva=est.Cod_Reserva and c.ID_Cliente=res.ID_Cliente_Reservador and c.ID_Tipo_Documento=td.ID_Tipo_Documento
+group by c.Nombre, c.Apellido,td.Tipo_Documento ,c.Nro_Documento,c.Nacionalidad,c.Mail,c.Fecha_Nacimiento 
+order by Puntos desc
+);
+
+go
