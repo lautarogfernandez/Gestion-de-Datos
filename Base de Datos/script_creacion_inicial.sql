@@ -734,8 +734,9 @@ GO
 
 create view TEAM_CASTY.vistaUsuarios
 as
-select u.* from TEAM_CASTY.Usuario u join TEAM_CASTY.Empleado e on (u.Cod_Usuario=e.Cod_Usuario)
-where u.Username not in ('admin','guest') and u.Baja = 0 
+select u.Cod_Usuario as Codigo,u.Username,e.Apellido,e.Nombre,e.Mail,td.Tipo_Documento as "Tipo de Documento", e.Telefono, e.Direccion,e.Fecha_Nacimiento "Fecha de Nacimiento"
+ from TEAM_CASTY.Usuario u , TEAM_CASTY.Empleado e ,TEAM_CASTY.Tipo_Documento td
+where e.Cod_Usuario = u.Cod_Usuario and td.ID_Tipo_Documento = e.ID_Tipo_Documento and u.Username not in ('admin','guest') and u.Baja = 0 
 go
 
 create view TEAM_CASTY.vistaClientes
