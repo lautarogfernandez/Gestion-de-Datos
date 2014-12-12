@@ -25,9 +25,7 @@ namespace FrbaHotel.ABM_de_Usuario
             string busqueda = "SELECT [Codigo],[Pais],[Nombre], [Ciudad], [Calle], [Numero Calle], [Telefono], [Mail], [Fecha Creacion], " +
                                "[Cantidad de estrellas] FROM [GD2C2014].[Team_Casty].[vistaHoteles]";          //búsqueda básica
             label_progreso.Text = "Cargando Hoteles";       //Imprime en la barra de progreso
-            string ConnStr = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;"; //ruta de la conexión
-            SqlConnection conn = new SqlConnection(ConnStr);                                                             //conexión
-            conn.Open();                                                                                                                                 //Abrir Conexión
+            SqlConnection conn = Home_Usuario.obtenerConexion();                           //Abrir Conexión
             SqlDataAdapter adaptador;                                                                                                          //Creo adaptador para la busqueda
             barra_progreso.Value = 5;                                                                                                            //0% de la barra de progreso
             DataTable tablaHoteles = new DataTable();                                                                                 //Creo Tabla para los resultados
@@ -170,6 +168,7 @@ namespace FrbaHotel.ABM_de_Usuario
         {
             button_guardar.Enabled = false;
             button_guardar.ForeColor = SystemColors.ScrollBar;
+
             for (int i = 0; i < dgv_roles.Rows.Count; i++)
             {
                 if (Convert.ToBoolean(dgv_roles.Rows[i].Cells[0].Value) == true)

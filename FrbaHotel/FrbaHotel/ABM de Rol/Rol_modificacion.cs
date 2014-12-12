@@ -245,7 +245,7 @@ namespace FrbaHotel.ABM_de_Rol
         {
             MenuPrincipal menuPrincipal = new MenuPrincipal();
             menuPrincipal.Show();
-            this.Hide()
+            this.Hide();
         }
     }
 }
