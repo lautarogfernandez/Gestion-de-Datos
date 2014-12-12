@@ -1567,11 +1567,23 @@ end
 end;
 
 GO
- 
+
  CREATE TYPE TEAM_CASTY.t_tablaHotelYRol AS TABLE(
 	Cod_Hotel numeric (18),
 	Nombre_Rol nvarchar (50));
 	
+GO
+
+create function TEAM_CASTY.HotelYRolDeUnUsuario
+(@usuario nvarchar(255))
+returns table
+as
+return(
+select rxuxh.Cod_Hotel,r.Nombre
+from TEAM_CASTY.Usuario u, TEAM_CASTY.RolXUsuarioXHotel rxuxh,TEAM_CASTY.Rol r 
+where u.Username=@usuario and rxuxh.Cod_Usuario=u.Cod_Usuario and r.Cod_Rol=rxuxh.Cod_Rol
+);
+
 GO
 
 create procedure TEAM_CASTY.crearUsuario
