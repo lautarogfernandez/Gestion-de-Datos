@@ -11,7 +11,7 @@ using System.Data.SqlClient;
 namespace FrbaHotel.ABM_de_Usuario
 {
 
-    public partial class Usuario_modificacion : Form
+    public partial class Usuario_baja : Form
     {
         #region Variables
         public bool _buscaNombre = false;   //busca nombre
@@ -50,7 +50,7 @@ namespace FrbaHotel.ABM_de_Usuario
             _unBoton.Enabled = false;
             _unBoton.ForeColor = SystemColors.ScrollBar;
         }
-        public Usuario_modificacion()
+        public Usuario_baja()
         {
             InitializeComponent();
             SqlConnection conn = Home_Usuario.obtenerConexion();
@@ -197,10 +197,10 @@ namespace FrbaHotel.ABM_de_Usuario
         }
         private void button_Buscar_Click(object sender, EventArgs e)
         {
-            button_modificar.Enabled = false;
-            button_modificar.ForeColor = SystemColors.ScrollBar;
+            button_eliminar.Enabled = false;
+            button_eliminar.ForeColor = SystemColors.ScrollBar;
             string busqueda = "SELECT Codigo,Username,  Apellido, Nombre,Mail, [Tipo de Documento], [Numero de Documento],"
-            +"Telefono, Direccion, [Fecha de Nacimiento]"
+            + "Telefono, Direccion, [Fecha de Nacimiento], Habilitado "
                                                                      + "FROM [GD2C2014].[Team_Casty].[vistaUsuarios]";           //búsqueda básica
             button_Buscar.Enabled = false;            //Deshabilito búsqueda hasta que haya resultado
             label_progreso.Text = "Cargando Usuarios";       //Imprime en la barra de progreso
@@ -259,8 +259,8 @@ namespace FrbaHotel.ABM_de_Usuario
             conn.Close();                                                                                                                                 //Cierro conexión
             button_Buscar.Enabled = true;                                                                                                     //Habilito Otra búsqueda
             habilitar_boton(button_limpiar);                                                                                                  //habilita el boton limpiar
-            button_modificar.Enabled = true;
-            button_modificar.ForeColor = SystemColors.MenuText;
+            button_eliminar.Enabled = true;
+            button_eliminar.ForeColor = SystemColors.MenuText;
         }
 
         private void Cliente_listado_Load(object sender, EventArgs e)
@@ -281,8 +281,8 @@ namespace FrbaHotel.ABM_de_Usuario
             dgv_resultados.DataSource = null;
             button_limpiar.Enabled = false;
             label_progreso.Text = "Tabla de resultados vacía";
-            button_modificar.Enabled = false;
-            button_modificar.ForeColor = SystemColors.ScrollBar;
+            button_eliminar.Enabled = false;
+            button_eliminar.ForeColor = SystemColors.ScrollBar;
         }
 
         private void Filtros_de_busqueda_Enter(object sender, EventArgs e)
@@ -313,93 +313,15 @@ namespace FrbaHotel.ABM_de_Usuario
 
         private void dgv_resultados_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            button_modificar.Enabled = true;
-            button_modificar.ForeColor = SystemColors.MenuText;
+            button_eliminar.Enabled = true;
+            button_eliminar.ForeColor = SystemColors.MenuText;
 
 
 
 
         }
 
-        private void button_modificar_Click(object sender, EventArgs e)
-        {
-            _valores = new valoresDataGridView();
-            for (int i = 0; i < dgv_resultados.SelectedCells.Count; i++)
-            {
-                //Codigo,Username,  Apellido, Nombre,Mail, [Tipo de Documento], [Numero de Documento],
-                //Telefono, Direccion, [Fecha de Nacimiento]
-                switch (dgv_resultados.Columns[i].HeaderText)
-                {
-                    case "Codigo":
-                        {
-                            _valores._codigo = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                    case "Nombre":
-                        {
-                            _valores._nombre = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                    case "Apellido":
-                        {
-                            _valores._apellido = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                    case "Mail":
-                        {
-                            _valores._mail = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                    case "Tipo de Documento":
-                        {
-                            _valores._tipo_de_documento = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                    case "Numero de Documento":
-                        {
-                            _valores._numero_de_documento = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                    case "Telefono":
-                        {
-                            _valores._telefono = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                    case "Direccion":
-                        {
-                            _valores._direccion = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                    case "Fecha Nacimiento":
-                        {
-                            _valores._fecha_nacimiento = dgv_resultados.SelectedCells[i].Value.ToString();
-                            break;
-                        }
-                    case "Habilitado":
-                        {
-                            if (Convert.ToInt32(dgv_resultados.SelectedCells[i].Value) != 0)
-                                _valores._habilitado = true;
-                            else _valores._habilitado = false;
-                            break;
-                        }
-                }
-            }
-            Usuario_modificar formularioModificar = new Usuario_modificar(_valores);
-            //for (int i = 0; i < dgv_resultados.SelectedCells.Count; i++)
-            //{
-            //    ObjetoModificable obj = new ObjetoModificable();
-            //    obj._header
-            //}
-            //List<int> seleccionesAcotadas = new List<int>();
-            //List<int> seleccionesMultiples = new List<int>();
-            //for(int i=0;i<dgv_resultados.Columns.Count;i++){
-            //    if (dgv_resultados.Columns[i].HeaderText == "Tipo Documento")
-            //        seleccionesAcotadas.Add(i);
-            //}
-            //Modificar formularioModificar = new Modificar(dgv_resultados.SelectedCells,dgv_resultados.Columns,"vistaClientes",seleccionesAcotadas,seleccionesMultiples);
-            formularioModificar.Show();
-        }
-
+       
         private void Filtros_de_busqueda_Enter_1(object sender, EventArgs e)
         {
 
@@ -427,7 +349,41 @@ namespace FrbaHotel.ABM_de_Usuario
 
         }
 
+        private void button_eliminar_Click(object sender, EventArgs e)
+        {
+            string msj = "¿Está seguro que quiere eliminar el usuario? \n";
+                    DialogResult resultado = MessageBox.Show(msj, "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (resultado == DialogResult.Yes)
+                    {
+                        try
+                        {
+                            using (SqlConnection conn =
+                                Home_Usuario.obtenerConexion())
+                            {
+                                using (SqlCommand cmd = conn.CreateCommand())
+                                {
+                                    //procedure TEAM_CASTY.bajaUsuario
+                                    //(@username nvarchar(255))
+                                    cmd.CommandText = "TEAM_CASTY.bajaUsuario";
+                                    cmd.CommandType = CommandType.StoredProcedure;
+                                    cmd.Parameters.Add(new SqlParameter("@cod_hotel", dgv_resultados.SelectedCells[0].Value));
+                                    int rows = cmd.ExecuteNonQuery();
+                                    string mensaje = "Se dio de baja al hotel satisfactoriamente \n";
+                                    MessageBox.Show(mensaje, "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    //rows number of record got deleted
+                                }
+                            }
+                        }
+                        catch (SqlException exc)
+                        {
+                            Home_Usuario.mostrarMensajeErrorSql(exc);
+                        }
+                    }
+        }
 
+        private void Usuario_baja_Load(object sender, EventArgs e)
+        {
 
+        }
     }
 }

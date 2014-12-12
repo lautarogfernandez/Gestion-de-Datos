@@ -16,7 +16,7 @@ namespace FrbaHotel
         public static List<string> funcionalidadesHabilitadas=new List<string>();
         public static string _nombreUsuario = "guest";
         public static int _codigo_hotel;
-        public static DateTime _fechaHoy=DateTime.Today;
+        public static DateTime _fechaHoy=Convert.ToDateTime("20-07-2022");
         public static string transformarFechaASql(DateTime fecha)
         {
             return fecha.Date.ToString("yyyy-MM-dd HH:mm:ss");

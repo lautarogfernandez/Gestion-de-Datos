@@ -69,10 +69,6 @@ namespace FrbaHotel.Facturacion
                             button_facturar.Enabled = false;
                             pagado = false;
                             codigo_estadia = Convert.ToInt32(txt_estadia.Text);
-                            l_b.Visible = true;
-                            l_t.Visible = true;
-                            txt_banco.Visible = true;
-                            txt_tarjeta.Visible = true;
                             rb_tarjeta.Visible = true;
                             rb_efectivo.Visible = true;
                         }
@@ -143,6 +139,7 @@ namespace FrbaHotel.Facturacion
         {
             if (rb_tarjeta.Checked)
             {
+                button_pagar.Visible = true;
                 l_b.Visible = true;
                 l_t.Visible = true;
                 txt_banco.Visible = true;
@@ -150,6 +147,7 @@ namespace FrbaHotel.Facturacion
             }
             else
             {
+                button_pagar.Visible = true;
                 l_b.Visible = false;
                 l_t.Visible = false;
                 txt_banco.Visible = false;

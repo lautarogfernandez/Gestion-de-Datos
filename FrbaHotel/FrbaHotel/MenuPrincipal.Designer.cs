@@ -46,6 +46,7 @@
             this.grp_formularios = new System.Windows.Forms.GroupBox();
             this.dgv_roles = new System.Windows.Forms.DataGridView();
             this.button_cambiar_pass = new System.Windows.Forms.Button();
+            this.lbl_fecha = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imagenHotel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_hoteles)).BeginInit();
@@ -74,7 +75,7 @@
             this.combo_operacion});
             this.menuStrip1.Location = new System.Drawing.Point(12, 24);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(365, 27);
+            this.menuStrip1.Size = new System.Drawing.Size(273, 27);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
@@ -137,9 +138,9 @@
             // 
             this.imagenHotel.Image = global::FrbaHotel.Properties.Resources.imagenHotel;
             this.imagenHotel.InitialImage = ((System.Drawing.Image)(resources.GetObject("imagenHotel.InitialImage")));
-            this.imagenHotel.Location = new System.Drawing.Point(252, 60);
+            this.imagenHotel.Location = new System.Drawing.Point(249, 80);
             this.imagenHotel.Name = "imagenHotel";
-            this.imagenHotel.Size = new System.Drawing.Size(332, 376);
+            this.imagenHotel.Size = new System.Drawing.Size(335, 356);
             this.imagenHotel.TabIndex = 10;
             this.imagenHotel.TabStop = false;
             // 
@@ -176,7 +177,8 @@
             // 
             this.stat_BarraEstado.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.barra_progreso,
-            this.label_progreso});
+            this.label_progreso,
+            this.lbl_fecha});
             this.stat_BarraEstado.Location = new System.Drawing.Point(0, 439);
             this.stat_BarraEstado.Name = "stat_BarraEstado";
             this.stat_BarraEstado.Size = new System.Drawing.Size(584, 22);
@@ -222,6 +224,13 @@
             this.button_cambiar_pass.UseVisualStyleBackColor = true;
             this.button_cambiar_pass.Visible = false;
             this.button_cambiar_pass.Click += new System.EventHandler(this.button_cambiar_pass_Click);
+            // 
+            // lbl_fecha
+            // 
+            this.lbl_fecha.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.lbl_fecha.Name = "lbl_fecha";
+            this.lbl_fecha.Size = new System.Drawing.Size(38, 17);
+            this.lbl_fecha.Text = "Fecha";
             // 
             // MenuPrincipal
             // 
@@ -277,5 +286,6 @@
         private System.Windows.Forms.GroupBox grp_formularios;
         private System.Windows.Forms.DataGridView dgv_roles;
         private System.Windows.Forms.Button button_cambiar_pass;
+        private System.Windows.Forms.ToolStripStatusLabel lbl_fecha;
     }
 }

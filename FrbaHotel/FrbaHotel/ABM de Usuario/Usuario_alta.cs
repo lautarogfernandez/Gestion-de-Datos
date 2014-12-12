@@ -42,11 +42,8 @@ namespace FrbaHotel.ABM_de_Usuario
             using (var form = new Usuario_elegir_roles_por_hotel(""))
             {
                 var result = form.ShowDialog();
-                if (result == DialogResult.OK)
-                {
                     tabla_roles_hoteles = form.tabla_valores;            //values preserved after close
                     //Do something here with these values
-                }
             }
         }
 
@@ -84,7 +81,7 @@ namespace FrbaHotel.ABM_de_Usuario
                                         cmd.Parameters.Add(new SqlParameter("@mail", txt_mail.Text));
                                         cmd.Parameters.Add(new SqlParameter("@telefono", txt_telefono.Text));
                                         cmd.Parameters.Add(new SqlParameter("@direccion", txt_direccion.Text));
-                                        cmd.Parameters.Add(new SqlParameter("@fechaNacimiento", dtp_fecha_nacimiento.Text));
+                                        cmd.Parameters.Add(new SqlParameter("@fechaNacimiento",Home_Usuario.transformarFechaASql(dtp_fecha_nacimiento.Value)));
                                         cmd.Parameters.Add(new SqlParameter("@tabla", tabla_roles_hoteles));
                                         cmd.ExecuteNonQuery();
                                         string msj = "Usuario agregado con éxito";
@@ -142,6 +139,13 @@ namespace FrbaHotel.ABM_de_Usuario
                 e.Handled = true;
             else
                 e.Handled = true;
+        }
+
+        private void button_volver_Click(object sender, EventArgs e)
+        {
+            MenuPrincipal menuPrincipal = new MenuPrincipal();
+            menuPrincipal.Show();
+            this.Hide();
         }
 
     }

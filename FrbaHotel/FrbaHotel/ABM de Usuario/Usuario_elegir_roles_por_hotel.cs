@@ -37,8 +37,22 @@ namespace FrbaHotel.ABM_de_Usuario
                 barra_progreso.Value = 100;                                                                                                    //Aviso que terminó la búsqueda
                 label_progreso.Text = tablaHoteles.Rows.Count.ToString() + " Hoteles encontrados";      //Le digo la cantidad de filas encontradas
                 tabla_auxiliar = new DataTable();
-                tabla_auxiliar.Columns.Add(new DataColumn("Nombre", typeof(string)));
                 tabla_auxiliar.Columns.Add(new DataColumn("Hotel", typeof(int)));
+                tabla_auxiliar.Columns.Add(new DataColumn("Nombre", typeof(string)));
+                if (usuario != "")
+                {
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        //function TEAM_CASTY.HotelYRolDeUnUsuario
+                        //(@usuario nvarchar(255))
+                        cmd.CommandText = string.Format("SELECT [Cod_Hotel] , [Nombre] FROM [TEAM_CASTY].HotelYRolDeUnUsuario ('{0}')", usuario);
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            tabla_auxiliar.Rows.Add(reader["Cod_Hotel"],reader["Nombre"].ToString());
+                        }
+                    }
+                }
             }
             catch (SqlException exc)                                                                                                                             //En un error le aviso
             {
@@ -168,22 +182,27 @@ namespace FrbaHotel.ABM_de_Usuario
         {
             button_guardar.Enabled = false;
             button_guardar.ForeColor = SystemColors.ScrollBar;
-
+            for (int i = 0; i < tabla_auxiliar.Rows.Count; i++)
+            {
+                if (Convert.ToInt32(dgv_hoteles.SelectedRows[0].Cells[0].Value) ==Convert.ToInt32(tabla_auxiliar.Rows[i].ItemArray[0]))
+                {
+                    tabla_auxiliar.Rows.Remove(tabla_auxiliar.Rows[i]);
+                }
+            }
             for (int i = 0; i < dgv_roles.Rows.Count; i++)
             {
                 if (Convert.ToBoolean(dgv_roles.Rows[i].Cells[0].Value) == true)
                 {
-                    tabla_auxiliar.Rows.Add(dgv_roles.Rows[i].Cells[1].Value.ToString(),
-                        Convert.ToInt32(dgv_hoteles.SelectedRows[0].Cells[0].Value));
+                    tabla_auxiliar.Rows.Add(Convert.ToInt32(dgv_hoteles.SelectedRows[0].Cells[0].Value),
+                        dgv_roles.Rows[i].Cells[1].Value.ToString());
                 }
             }
             dgv_roles.DataSource = null;
-            dgv_hoteles.Rows.Remove(dgv_hoteles.SelectedRows[0]);
         }
 
         private void button_aceptar_Click(object sender, EventArgs e)
         {
-            tabla_valores = new DataTable();
+            this.tabla_valores = new DataTable();
             this.tabla_valores = tabla_auxiliar;
             this.Close();
         }
@@ -212,33 +231,19 @@ namespace FrbaHotel.ABM_de_Usuario
             {
                 Home_Usuario.mostrarMensajeErrorSql(exc);
             }
-            if (usuario != "")
-            {
-                //FUNCTION TEAM_CASTY.RolesDeUsuarioEnHotel
-                //(@usuario nvarchar(255),@hotel numeric(18))
-                string busqueda1 = string.Format("SELECT * FROM [TEAM_CASTY].RolesDeUsuarioEnHotel ('{0}',{1})",
-                    usuario, hotel);
-                SqlCommand cmd2 = new SqlCommand(busqueda1, conn);
-                reader = cmd2.ExecuteReader();                                                                              //Creo adaptador para la busqueda
-                barra_progreso.Value = 5;                                                                                                            //0% de la barra de progreso
-                DataTable table2 = new DataTable();
-                table2.Columns.Add(new DataColumn("Activado", typeof(bool)));
-                table2.Columns.Add(new DataColumn("Nombre", typeof(string)));
-                while (reader.Read())
-                {
-                    table.Rows.Add(true, reader["Nombre de Rol"].ToString());
-                }
-                for (int i = 0; i < table.Rows.Count; i++)
+                for (int i = 0; i < tabla_auxiliar.Rows.Count; i++)
                 {
                     for (int j = 0; j < dgv_roles.Rows.Count; j++)
                     {
-                        if (dgv_roles.Rows[j].Cells[1].Value.ToString() == table.Rows[i].ItemArray[1].ToString())
+                        if(Convert.ToInt32(tabla_auxiliar.Rows[i].ItemArray[0])==Convert.ToInt32(dgv_hoteles.SelectedCells[0].Value))
+                        {
+                        if (dgv_roles.Rows[j].Cells[1].Value.ToString() == tabla_auxiliar.Rows[i].ItemArray[1].ToString())
                         {
                             dgv_roles.Rows[j].Cells[0].Value = true;
                         }
+                        }
                     }
                 }
-            }
             reader.Close();
             conn.Close();
             button_guardar.Enabled = true;
@@ -258,6 +263,11 @@ namespace FrbaHotel.ABM_de_Usuario
             {
                 dgv_roles.EditMode = DataGridViewEditMode.EditOnKeystroke;
             }
+        }
+
+        private void button_volver_Click_1(object sender, EventArgs e)
+        {
+            this.Hide();
         }
     }
 }

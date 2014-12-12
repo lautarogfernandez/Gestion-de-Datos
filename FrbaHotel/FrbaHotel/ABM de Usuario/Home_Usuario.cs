@@ -29,7 +29,7 @@ namespace FrbaHotel.ABM_de_Usuario
         }
         public static SqlCommand obtenerComandoRoles(SqlConnection conn)
         {
-            string busqueda = "select [Nombre]  from [TEAM_CASTY].Rol WHERE [Activo]=1";
+            string busqueda = "select [Nombre]  from [TEAM_CASTY].Rol WHERE [Activo]=1 AND [Nombre] not in ('Guest','Administrador General')";
             SqlCommand cmd = new SqlCommand(busqueda, conn);
             return cmd;
         }

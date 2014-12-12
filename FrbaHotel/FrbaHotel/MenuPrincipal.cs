@@ -29,6 +29,7 @@ namespace FrbaHotel
 
         private void MenuPrincipal_Load(object sender, EventArgs e)
         {
+            lbl_fecha.Text = Home._fechaHoy.ToString();
             lbl_usuario.Text = Home._nombreUsuario;
             if ((Home._nombreUsuario).ToLower() != "guest")
             {

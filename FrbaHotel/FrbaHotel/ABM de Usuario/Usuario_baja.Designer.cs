@@ -1,6 +1,6 @@
 ﻿namespace FrbaHotel.ABM_de_Usuario
 {
-    partial class Usuario_modificacion
+    partial class Usuario_baja
     {
         /// <summary>
         /// Required designer variable.
@@ -28,13 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button_modificar = new System.Windows.Forms.Button();
-            this.dgv_resultados = new System.Windows.Forms.DataGridView();
-            this.stat_BarraEstado = new System.Windows.Forms.StatusStrip();
-            this.barra_progreso = new System.Windows.Forms.ToolStripProgressBar();
-            this.label_progreso = new System.Windows.Forms.ToolStripStatusLabel();
-            this.button_volver = new System.Windows.Forms.Button();
-            this.button_limpiar = new System.Windows.Forms.Button();
             this.Filtros_de_busqueda = new System.Windows.Forms.GroupBox();
             this.button_Buscar = new System.Windows.Forms.Button();
             this.txt_numeroIdentificacion = new System.Windows.Forms.TextBox();
@@ -47,85 +40,17 @@
             this.lbl_Tipo_identificacion = new System.Windows.Forms.Label();
             this.lbl_Apellido = new System.Windows.Forms.Label();
             this.lbl_Nombre = new System.Windows.Forms.Label();
+            this.button_eliminar = new System.Windows.Forms.Button();
+            this.dgv_resultados = new System.Windows.Forms.DataGridView();
+            this.stat_BarraEstado = new System.Windows.Forms.StatusStrip();
+            this.barra_progreso = new System.Windows.Forms.ToolStripProgressBar();
+            this.label_progreso = new System.Windows.Forms.ToolStripStatusLabel();
+            this.button_volver = new System.Windows.Forms.Button();
+            this.button_limpiar = new System.Windows.Forms.Button();
+            this.Filtros_de_busqueda.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_resultados)).BeginInit();
             this.stat_BarraEstado.SuspendLayout();
-            this.Filtros_de_busqueda.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // button_modificar
-            // 
-            this.button_modificar.Enabled = false;
-            this.button_modificar.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_modificar.ForeColor = System.Drawing.SystemColors.ScrollBar;
-            this.button_modificar.Location = new System.Drawing.Point(222, 475);
-            this.button_modificar.Name = "button_modificar";
-            this.button_modificar.Size = new System.Drawing.Size(135, 45);
-            this.button_modificar.TabIndex = 200;
-            this.button_modificar.Text = "Modificar";
-            this.button_modificar.UseVisualStyleBackColor = true;
-            this.button_modificar.Click += new System.EventHandler(this.button_modificar_Click);
-            // 
-            // dgv_resultados
-            // 
-            this.dgv_resultados.AllowUserToAddRows = false;
-            this.dgv_resultados.AllowUserToDeleteRows = false;
-            this.dgv_resultados.AllowUserToOrderColumns = true;
-            this.dgv_resultados.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_resultados.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.dgv_resultados.Location = new System.Drawing.Point(12, 179);
-            this.dgv_resultados.MultiSelect = false;
-            this.dgv_resultados.Name = "dgv_resultados";
-            this.dgv_resultados.ReadOnly = true;
-            this.dgv_resultados.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_resultados.Size = new System.Drawing.Size(560, 289);
-            this.dgv_resultados.TabIndex = 198;
-            // 
-            // stat_BarraEstado
-            // 
-            this.stat_BarraEstado.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.barra_progreso,
-            this.label_progreso});
-            this.stat_BarraEstado.Location = new System.Drawing.Point(0, 539);
-            this.stat_BarraEstado.Name = "stat_BarraEstado";
-            this.stat_BarraEstado.Size = new System.Drawing.Size(584, 22);
-            this.stat_BarraEstado.TabIndex = 203;
-            this.stat_BarraEstado.Text = "Estado";
-            // 
-            // barra_progreso
-            // 
-            this.barra_progreso.Name = "barra_progreso";
-            this.barra_progreso.Size = new System.Drawing.Size(100, 16);
-            // 
-            // label_progreso
-            // 
-            this.label_progreso.Name = "label_progreso";
-            this.label_progreso.Size = new System.Drawing.Size(42, 17);
-            this.label_progreso.Text = "Estado";
-            // 
-            // button_volver
-            // 
-            this.button_volver.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_volver.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.button_volver.Location = new System.Drawing.Point(437, 474);
-            this.button_volver.Name = "button_volver";
-            this.button_volver.Size = new System.Drawing.Size(135, 45);
-            this.button_volver.TabIndex = 201;
-            this.button_volver.Text = "Volver";
-            this.button_volver.UseVisualStyleBackColor = true;
-            this.button_volver.Click += new System.EventHandler(this.button_volver_Click);
-            // 
-            // button_limpiar
-            // 
-            this.button_limpiar.Enabled = false;
-            this.button_limpiar.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_limpiar.ForeColor = System.Drawing.SystemColors.ScrollBar;
-            this.button_limpiar.Location = new System.Drawing.Point(12, 474);
-            this.button_limpiar.Name = "button_limpiar";
-            this.button_limpiar.Size = new System.Drawing.Size(135, 45);
-            this.button_limpiar.TabIndex = 199;
-            this.button_limpiar.Text = "Limpiar";
-            this.button_limpiar.UseVisualStyleBackColor = true;
-            this.button_limpiar.Click += new System.EventHandler(this.button_limpiar_Click);
             // 
             // Filtros_de_busqueda
             // 
@@ -141,10 +66,10 @@
             this.Filtros_de_busqueda.Controls.Add(this.lbl_Apellido);
             this.Filtros_de_busqueda.Controls.Add(this.lbl_Nombre);
             this.Filtros_de_busqueda.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.Filtros_de_busqueda.Location = new System.Drawing.Point(12, 12);
+            this.Filtros_de_busqueda.Location = new System.Drawing.Point(12, 6);
             this.Filtros_de_busqueda.Name = "Filtros_de_busqueda";
             this.Filtros_de_busqueda.Size = new System.Drawing.Size(560, 161);
-            this.Filtros_de_busqueda.TabIndex = 204;
+            this.Filtros_de_busqueda.TabIndex = 210;
             this.Filtros_de_busqueda.TabStop = false;
             this.Filtros_de_busqueda.Text = "Filtros de búsqueda";
             // 
@@ -171,6 +96,7 @@
             this.txt_numeroIdentificacion.TextChanged += new System.EventHandler(this.txt_numeroIdentificacion_TextChanged);
             this.txt_numeroIdentificacion.Click += new System.EventHandler(this.txt_numeroIdentificacion_Click);
             this.txt_numeroIdentificacion.Leave += new System.EventHandler(this.txt_numeroIdentificacion_Leave);
+            this.txt_numeroIdentificacion.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_numeroIdentificacion_KeyPress);
             // 
             // cmb_tipoIdentificacion
             // 
@@ -269,27 +195,102 @@
             this.lbl_Nombre.TabIndex = 0;
             this.lbl_Nombre.Text = "Nombre";
             // 
-            // Usuario_modificacion
+            // button_eliminar
+            // 
+            this.button_eliminar.Enabled = false;
+            this.button_eliminar.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_eliminar.ForeColor = System.Drawing.SystemColors.ScrollBar;
+            this.button_eliminar.Location = new System.Drawing.Point(222, 469);
+            this.button_eliminar.Name = "button_eliminar";
+            this.button_eliminar.Size = new System.Drawing.Size(135, 45);
+            this.button_eliminar.TabIndex = 207;
+            this.button_eliminar.Text = "Eliminar";
+            this.button_eliminar.UseVisualStyleBackColor = true;
+            this.button_eliminar.Click += new System.EventHandler(this.button_eliminar_Click);
+            // 
+            // dgv_resultados
+            // 
+            this.dgv_resultados.AllowUserToAddRows = false;
+            this.dgv_resultados.AllowUserToDeleteRows = false;
+            this.dgv_resultados.AllowUserToOrderColumns = true;
+            this.dgv_resultados.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_resultados.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.dgv_resultados.Location = new System.Drawing.Point(12, 173);
+            this.dgv_resultados.MultiSelect = false;
+            this.dgv_resultados.Name = "dgv_resultados";
+            this.dgv_resultados.ReadOnly = true;
+            this.dgv_resultados.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgv_resultados.Size = new System.Drawing.Size(560, 289);
+            this.dgv_resultados.TabIndex = 205;
+            // 
+            // stat_BarraEstado
+            // 
+            this.stat_BarraEstado.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.barra_progreso,
+            this.label_progreso});
+            this.stat_BarraEstado.Location = new System.Drawing.Point(0, 539);
+            this.stat_BarraEstado.Name = "stat_BarraEstado";
+            this.stat_BarraEstado.Size = new System.Drawing.Size(584, 22);
+            this.stat_BarraEstado.TabIndex = 209;
+            this.stat_BarraEstado.Text = "Estado";
+            // 
+            // barra_progreso
+            // 
+            this.barra_progreso.Name = "barra_progreso";
+            this.barra_progreso.Size = new System.Drawing.Size(100, 16);
+            // 
+            // label_progreso
+            // 
+            this.label_progreso.Name = "label_progreso";
+            this.label_progreso.Size = new System.Drawing.Size(42, 17);
+            this.label_progreso.Text = "Estado";
+            // 
+            // button_volver
+            // 
+            this.button_volver.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_volver.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.button_volver.Location = new System.Drawing.Point(437, 468);
+            this.button_volver.Name = "button_volver";
+            this.button_volver.Size = new System.Drawing.Size(135, 45);
+            this.button_volver.TabIndex = 208;
+            this.button_volver.Text = "Volver";
+            this.button_volver.UseVisualStyleBackColor = true;
+            this.button_volver.Click += new System.EventHandler(this.button_volver_Click);
+            // 
+            // button_limpiar
+            // 
+            this.button_limpiar.Enabled = false;
+            this.button_limpiar.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_limpiar.ForeColor = System.Drawing.SystemColors.ScrollBar;
+            this.button_limpiar.Location = new System.Drawing.Point(12, 468);
+            this.button_limpiar.Name = "button_limpiar";
+            this.button_limpiar.Size = new System.Drawing.Size(135, 45);
+            this.button_limpiar.TabIndex = 206;
+            this.button_limpiar.Text = "Limpiar";
+            this.button_limpiar.UseVisualStyleBackColor = true;
+            this.button_limpiar.Click += new System.EventHandler(this.button_limpiar_Click);
+            // 
+            // Usuario_baja
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 561);
             this.Controls.Add(this.Filtros_de_busqueda);
-            this.Controls.Add(this.button_modificar);
+            this.Controls.Add(this.button_eliminar);
             this.Controls.Add(this.dgv_resultados);
             this.Controls.Add(this.stat_BarraEstado);
             this.Controls.Add(this.button_volver);
             this.Controls.Add(this.button_limpiar);
             this.MaximumSize = new System.Drawing.Size(600, 600);
             this.MinimumSize = new System.Drawing.Size(600, 600);
-            this.Name = "Usuario_modificacion";
-            this.Text = "Usuario_modificacion";
-            this.Load += new System.EventHandler(this.Usuario_modificacion_Load);
+            this.Name = "Usuario_baja";
+            this.Text = "Usuario_baja";
+            this.Load += new System.EventHandler(this.Usuario_baja_Load);
+            this.Filtros_de_busqueda.ResumeLayout(false);
+            this.Filtros_de_busqueda.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_resultados)).EndInit();
             this.stat_BarraEstado.ResumeLayout(false);
             this.stat_BarraEstado.PerformLayout();
-            this.Filtros_de_busqueda.ResumeLayout(false);
-            this.Filtros_de_busqueda.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -297,13 +298,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button_modificar;
-        private System.Windows.Forms.DataGridView dgv_resultados;
-        private System.Windows.Forms.StatusStrip stat_BarraEstado;
-        private System.Windows.Forms.ToolStripProgressBar barra_progreso;
-        private System.Windows.Forms.ToolStripStatusLabel label_progreso;
-        private System.Windows.Forms.Button button_volver;
-        private System.Windows.Forms.Button button_limpiar;
         private System.Windows.Forms.GroupBox Filtros_de_busqueda;
         private System.Windows.Forms.Button button_Buscar;
         private System.Windows.Forms.TextBox txt_numeroIdentificacion;
@@ -316,5 +310,12 @@
         private System.Windows.Forms.Label lbl_Tipo_identificacion;
         private System.Windows.Forms.Label lbl_Apellido;
         private System.Windows.Forms.Label lbl_Nombre;
+        private System.Windows.Forms.Button button_eliminar;
+        private System.Windows.Forms.DataGridView dgv_resultados;
+        private System.Windows.Forms.StatusStrip stat_BarraEstado;
+        private System.Windows.Forms.ToolStripProgressBar barra_progreso;
+        private System.Windows.Forms.ToolStripStatusLabel label_progreso;
+        private System.Windows.Forms.Button button_volver;
+        private System.Windows.Forms.Button button_limpiar;
     }
 }

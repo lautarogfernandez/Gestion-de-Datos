@@ -190,6 +190,12 @@
     <Compile Include="ABM de Usuario\Usuario_alta.Designer.cs">
       <DependentUpon>Usuario_alta.cs</DependentUpon>
     </Compile>
+    <Compile Include="ABM de Usuario\Usuario_baja.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM de Usuario\Usuario_baja.Designer.cs">
+      <DependentUpon>Usuario_baja.cs</DependentUpon>
+    </Compile>
     <Compile Include="ABM de Usuario\Usuario_elegir_roles_por_hotel.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -209,6 +215,12 @@
       <DependentUpon>Usuario_modificar.cs</DependentUpon>
     </Compile>
     <Compile Include="Encriptado\Encriptador.cs" />
+    <Compile Include="Facturacion\registrar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Facturacion\registrar.Designer.cs">
+      <DependentUpon>registrar.cs</DependentUpon>
+    </Compile>
     <Compile Include="Home.cs" />
     <Compile Include="Listado Estadistico\ListadoEstadistico.cs">
       <SubType>Form</SubType>
@@ -300,6 +312,9 @@
     <EmbeddedResource Include="ABM de Usuario\Usuario_alta.resx">
       <DependentUpon>Usuario_alta.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ABM de Usuario\Usuario_baja.resx">
+      <DependentUpon>Usuario_baja.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ABM de Usuario\Usuario_elegir_roles_por_hotel.resx">
       <DependentUpon>Usuario_elegir_roles_por_hotel.cs</DependentUpon>
     </EmbeddedResource>
@@ -308,6 +323,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ABM de Usuario\Usuario_modificar.resx">
       <DependentUpon>Usuario_modificar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Facturacion\registrar.resx">
+      <DependentUpon>registrar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Listado Estadistico\ListadoEstadistico.resx">
       <DependentUpon>ListadoEstadistico.cs</DependentUpon>
@@ -438,9 +456,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\menor_no_hover.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Facturacion\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

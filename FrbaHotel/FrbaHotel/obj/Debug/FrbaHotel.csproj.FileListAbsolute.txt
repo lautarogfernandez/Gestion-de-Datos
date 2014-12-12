@@ -71,3 +71,5 @@ C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHote
 C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Usuario.Usuario_elegir_roles_por_hotel.resources
 C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Usuario.Usuario_modificacion.resources
 C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Usuario.Usuario_modificar.resources
+C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.Facturacion.registrar.resources
+C:\Users\Usuario\Desktop\Gestion-de-Datos\FrbaHotel\FrbaHotel\obj\Debug\FrbaHotel.ABM_de_Usuario.Usuario_baja.resources

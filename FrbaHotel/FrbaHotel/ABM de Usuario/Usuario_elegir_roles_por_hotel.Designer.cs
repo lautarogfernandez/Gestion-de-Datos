@@ -124,6 +124,7 @@
             this.button_volver.TabIndex = 28;
             this.button_volver.Text = "Volver";
             this.button_volver.UseVisualStyleBackColor = true;
+            this.button_volver.Click += new System.EventHandler(this.button_volver_Click_1);
             // 
             // button_limpiar
             // 
