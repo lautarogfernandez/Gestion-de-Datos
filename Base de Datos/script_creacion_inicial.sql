@@ -2502,6 +2502,14 @@ begin
 				set @error=1;
 				set @mensaje+=' El hotel no corresponde a esa estadía.';
 			end
+			else
+			begin
+			  if(exists (select * from TEAM_CASTY.Factura f where f.Cod_Estadia=@cod_Estadia))
+			    begin
+			      set @error=1;
+			      set @mensaje+=' Ya fue facturada la estadia.';
+			    end
+			end
 		end
 	end
 end
@@ -2549,20 +2557,25 @@ begin
 		est.Cod_Estadia=hxe.Cod_Estadia and hxe.Cod_Habitacion=hab.Cod_Habitacion;
 		
 		declare @monto_consumibles numeric(18,2);
+		declare @puntos_consumibles numeric(18)=0;
+		declare @puntos_habitaciones numeric(18)=0;
+		
 		set @monto_consumibles=TEAM_CASTY.MontoConsumibles(@cod_Estadia);
 		declare @monto_habitaciones numeric(18,2);
 		set @monto_habitaciones=TEAM_CASTY.MontoHabitaciones(@cod_Estadia);
 		declare @monto_total numeric(18,2);
 		set @monto_total=@monto_habitaciones;
+		set @puntos_habitaciones=ROUND(@monto_habitaciones/10,0,1);
 		if((select res.Cod_Regimen
 		from TEAM_CASTY.Reserva res, TEAM_CASTY.Estadia est
 		where est.Cod_Estadia=@cod_Estadia and res.Cod_Reserva=est.Cod_Reserva)<>1)
 		begin
 			set @monto_total+=@monto_consumibles;
+			set @puntos_consumibles=ROUND( @monto_consumibles/5,0,1);
 		end
 		
 		update TEAM_CASTY.Factura
-		set Total=@monto_total
+		set Total=@monto_total, Puntos=@puntos_consumibles+@puntos_habitaciones
 		where Cod_Estadia=@cod_Estadia;	
 		set @money=@monto_total;
 	end try
