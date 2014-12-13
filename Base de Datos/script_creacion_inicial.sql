@@ -2112,6 +2112,7 @@ begin
 		select @cod_usuario=u.Cod_Usuario from TEAM_CASTY.Usuario u where u.Username=@usuario;
 		declare @num numeric(18);
 		select @num=(1+max(mxr.Numero_Modificacion)) from TEAM_CASTY.ModificacionXReserva mxr;
+		update TEAM_CASTY.Reserva set Cod_Estado=2 , Fecha_Reserva=@fecha_reserva, Cant_Noches=@cant_noches where Cod_Reserva=@cod_reserva;
 		insert into TEAM_CASTY.ModificacionXReserva
 		(Cod_Reserva,Cod_Usuario,Descripcion,Fecha,Numero_Modificacion)
 		values (@cod_reserva,@cod_usuario,'Modificación',@fecha_realizacion,@num);
