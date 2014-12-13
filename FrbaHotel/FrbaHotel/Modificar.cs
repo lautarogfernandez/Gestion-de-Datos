@@ -107,9 +107,7 @@ namespace FrbaHotel
                         component.ForeColor = SystemColors.ScrollBar;
                         string busqueda = "SELECT DISTINCT [" + label.Text + "] "
                                                              + "FROM [GD2C2014].[Team_Casty].[" + _nombreTabla + "] ";          //búsqueda básica
-                        string ConnStr = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;"; //ruta de la conexión
-                        SqlConnection conn = new SqlConnection(ConnStr);                                                             //conexión
-                        conn.Open();                                                                                                                                 //Abrir Conexión
+                        SqlConnection conn = Home.obtenerConexion();                                                                                                                                    //Abrir Conexión
                         SqlCommand cmd = new SqlCommand(busqueda, conn);
                         SqlDataReader reader = cmd.ExecuteReader();                                                       //Busco en la sesión abierta
                         while (reader.Read())

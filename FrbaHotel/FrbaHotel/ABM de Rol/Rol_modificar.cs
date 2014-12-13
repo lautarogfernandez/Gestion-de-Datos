@@ -21,9 +21,7 @@ namespace FrbaHotel.ABM_de_Rol
             establecerAtributosOriginales(_valores);
             cambiarTodosLosControles(false);
             string busqueda = "SELECT [Codigo], [Descripcion] FROM [TEAM_CASTY].FuncionesAsignables ()";
-            string ConnStr = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;"; //ruta de la conexión
-            SqlConnection conn = new SqlConnection(ConnStr);                                                             //conexión
-            conn.Open();                                                                                                                                 //Abrir Conexión
+            SqlConnection conn = Home.obtenerConexion();                                                                                                                                   //Abrir Conexión
             SqlCommand cmd = new SqlCommand(busqueda, conn);
             try
             {

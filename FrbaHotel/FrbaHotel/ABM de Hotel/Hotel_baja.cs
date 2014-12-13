@@ -190,9 +190,7 @@ namespace FrbaHotel.ABM_de_Hotel
                                            "[Cantidad de estrellas] FROM [GD2C2014].[Team_Casty].[vistaHoteles]";          //búsqueda básica
             button_Buscar.Enabled = false;            //Deshabilito búsqueda hasta que haya resultado
             label_progreso.Text = "Cargando Hoteles";       //Imprime en la barra de progreso
-            string ConnStr = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;"; //ruta de la conexión
-            SqlConnection conn = new SqlConnection(ConnStr);                                                             //conexión
-            conn.Open();                                                                                                                                 //Abrir Conexión
+            SqlConnection conn = Home.obtenerConexion();                                                                                                                                    //Abrir Conexión
             SqlDataAdapter adaptador;                                                                                                          //Creo adaptador para la busqueda
             barra_progreso.Value = 5;                                                                                                            //0% de la barra de progreso
             DataTable tablaHoteles = new DataTable();                                                                                 //Creo Tabla para los resultados

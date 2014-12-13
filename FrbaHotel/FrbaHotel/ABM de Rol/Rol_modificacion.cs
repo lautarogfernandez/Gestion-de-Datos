@@ -23,9 +23,7 @@ namespace FrbaHotel.ABM_de_Rol
         {
             InitializeComponent();
             string busqueda = "SELECT [Cod_funcion], [Descripcion] FROM [TEAM_CASTY].Funcion";
-            string ConnStr = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;"; //ruta de la conexión
-            SqlConnection conn = new SqlConnection(ConnStr);                                                             //conexión
-            conn.Open();                                                                                                                                 //Abrir Conexión
+            SqlConnection conn = Home.obtenerConexion();                                                                                                                                     //Abrir Conexión
             SqlCommand cmd = new SqlCommand(busqueda, conn);
             try
             {
@@ -206,9 +204,7 @@ namespace FrbaHotel.ABM_de_Rol
         private void dgv_roles_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             string busqueda = "SELECT [Cod_Funcion], [Descripcion] FROM [TEAM_CASTY].FuncionesDeUnRol ("+dgv_roles.SelectedCells[0].Value+")";
-            string ConnStr = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;"; //ruta de la conexión
-            SqlConnection conn = new SqlConnection(ConnStr);                                                             //conexión
-            conn.Open();                                                                                                                                 //Abrir Conexión
+            SqlConnection conn = Home.obtenerConexion();                                                                                                                                 //Abrir Conexión
             SqlCommand cmd = new SqlCommand(busqueda, conn);
             for (int i = 0; i < list_funciones.Items.Count; i++)
                 list_funciones.SetItemChecked(i, false);

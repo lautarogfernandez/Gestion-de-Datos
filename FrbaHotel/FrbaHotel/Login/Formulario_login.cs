@@ -37,14 +37,11 @@ namespace FrbaHotel.Login
             string username = _txt_usuario.Text;
             try
             {
-                string connectionString = @"Data Source=localhost\SQLSERVER2008;Initial Catalog=GD2C2014;User ID=gd;Password=gd2014;Trusted_Connection=False;";
-                using (SqlConnection conn =
-                    new SqlConnection(connectionString))
+                              using (SqlConnection conn = Home.obtenerConexion())
                 {
                     
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
-                        conn.Open();
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = "[TEAM_CASTY].validarUsuario";
                         cmd.Parameters.Add(new SqlParameter("@usuario", username));
