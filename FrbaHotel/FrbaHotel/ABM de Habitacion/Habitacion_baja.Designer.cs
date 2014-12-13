@@ -70,7 +70,7 @@
             this.stat_BarraEstado.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.barra_progreso,
             this.label_progreso});
-            this.stat_BarraEstado.Location = new System.Drawing.Point(0, 540);
+            this.stat_BarraEstado.Location = new System.Drawing.Point(0, 539);
             this.stat_BarraEstado.Name = "stat_BarraEstado";
             this.stat_BarraEstado.Size = new System.Drawing.Size(584, 22);
             this.stat_BarraEstado.TabIndex = 30;
@@ -114,8 +114,8 @@
             "Vista Interior"});
             this.cmb_Frente.Location = new System.Drawing.Point(90, 62);
             this.cmb_Frente.Name = "cmb_Frente";
-            this.cmb_Frente.Size = new System.Drawing.Size(121, 21);
-            this.cmb_Frente.TabIndex = 202;
+            this.cmb_Frente.Size = new System.Drawing.Size(174, 21);
+            this.cmb_Frente.TabIndex = 3;
             this.cmb_Frente.SelectedIndexChanged += new System.EventHandler(this.cmb_Frente_SelectedIndexChanged);
             // 
             // button_Buscar
@@ -125,7 +125,7 @@
             this.button_Buscar.Location = new System.Drawing.Point(226, 101);
             this.button_Buscar.Name = "button_Buscar";
             this.button_Buscar.Size = new System.Drawing.Size(119, 45);
-            this.button_Buscar.TabIndex = 6;
+            this.button_Buscar.TabIndex = 5;
             this.button_Buscar.Text = "Buscar";
             this.button_Buscar.UseVisualStyleBackColor = true;
             this.button_Buscar.Click += new System.EventHandler(this.button_Buscar_Click);
@@ -136,7 +136,7 @@
             this.cmb_tipo_habitacion.FormattingEnabled = true;
             this.cmb_tipo_habitacion.Location = new System.Drawing.Point(382, 62);
             this.cmb_tipo_habitacion.Name = "cmb_tipo_habitacion";
-            this.cmb_tipo_habitacion.Size = new System.Drawing.Size(121, 21);
+            this.cmb_tipo_habitacion.Size = new System.Drawing.Size(172, 21);
             this.cmb_tipo_habitacion.TabIndex = 4;
             this.cmb_tipo_habitacion.SelectedIndexChanged += new System.EventHandler(this.cmb_tipo_habitacion_SelectedIndexChanged);
             // 
@@ -145,7 +145,7 @@
             this.txt_numero.ForeColor = System.Drawing.SystemColors.ScrollBar;
             this.txt_numero.Location = new System.Drawing.Point(382, 25);
             this.txt_numero.Name = "txt_numero";
-            this.txt_numero.Size = new System.Drawing.Size(121, 20);
+            this.txt_numero.Size = new System.Drawing.Size(172, 20);
             this.txt_numero.TabIndex = 2;
             this.txt_numero.Text = "Ingrese número";
             this.txt_numero.TextChanged += new System.EventHandler(this.txt_numero_TextChanged);
@@ -158,7 +158,7 @@
             this.txt_piso.ForeColor = System.Drawing.SystemColors.ScrollBar;
             this.txt_piso.Location = new System.Drawing.Point(90, 25);
             this.txt_piso.Name = "txt_piso";
-            this.txt_piso.Size = new System.Drawing.Size(121, 20);
+            this.txt_piso.Size = new System.Drawing.Size(174, 20);
             this.txt_piso.TabIndex = 1;
             this.txt_piso.Text = "Ingrese piso";
             this.txt_piso.TextChanged += new System.EventHandler(this.txt_piso_TextChanged);
@@ -213,7 +213,7 @@
             this.button_volver.Location = new System.Drawing.Point(437, 475);
             this.button_volver.Name = "button_volver";
             this.button_volver.Size = new System.Drawing.Size(135, 45);
-            this.button_volver.TabIndex = 28;
+            this.button_volver.TabIndex = 8;
             this.button_volver.Text = "Volver";
             this.button_volver.UseVisualStyleBackColor = true;
             this.button_volver.Click += new System.EventHandler(this.button_volver_Click_1);
@@ -226,7 +226,7 @@
             this.button_limpiar.Location = new System.Drawing.Point(12, 475);
             this.button_limpiar.Name = "button_limpiar";
             this.button_limpiar.Size = new System.Drawing.Size(135, 45);
-            this.button_limpiar.TabIndex = 26;
+            this.button_limpiar.TabIndex = 6;
             this.button_limpiar.Text = "Limpiar";
             this.button_limpiar.UseVisualStyleBackColor = true;
             this.button_limpiar.Click += new System.EventHandler(this.button_limpiar_Click_1);
@@ -239,7 +239,7 @@
             this.button_eliminar.Location = new System.Drawing.Point(222, 476);
             this.button_eliminar.Name = "button_eliminar";
             this.button_eliminar.Size = new System.Drawing.Size(135, 45);
-            this.button_eliminar.TabIndex = 27;
+            this.button_eliminar.TabIndex = 7;
             this.button_eliminar.Text = "Eliminar";
             this.button_eliminar.UseVisualStyleBackColor = true;
             this.button_eliminar.Click += new System.EventHandler(this.button_eliminar_Click);
@@ -248,7 +248,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 562);
+            this.ClientSize = new System.Drawing.Size(584, 561);
             this.Controls.Add(this.dgv_resultados);
             this.Controls.Add(this.stat_BarraEstado);
             this.Controls.Add(this.Filtros_de_busqueda);
@@ -259,6 +259,7 @@
             this.MinimumSize = new System.Drawing.Size(600, 600);
             this.Name = "Habitacion_baja";
             this.Text = "Habitacion_baja";
+            this.Load += new System.EventHandler(this.Habitacion_baja_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_resultados)).EndInit();
             this.stat_BarraEstado.ResumeLayout(false);
             this.stat_BarraEstado.PerformLayout();

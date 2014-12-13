@@ -74,6 +74,9 @@
             this._lbl_numero_doc = new System.Windows.Forms.Label();
             this._lbl_tipo_documento = new System.Windows.Forms.Label();
             this._lbl_username = new System.Windows.Forms.Label();
+            this.lbl_inhabilitado = new System.Windows.Forms.Label();
+            this.lbl_habilitar = new System.Windows.Forms.Label();
+            this.chk_habilitar = new System.Windows.Forms.CheckBox();
             this.stat_BarraEstado.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -231,9 +234,8 @@
             // 
             // button_modificar
             // 
-            this.button_modificar.Enabled = false;
             this.button_modificar.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_modificar.ForeColor = System.Drawing.SystemColors.ScrollBar;
+            this.button_modificar.ForeColor = System.Drawing.SystemColors.MenuText;
             this.button_modificar.Location = new System.Drawing.Point(12, 486);
             this.button_modificar.Name = "button_modificar";
             this.button_modificar.Size = new System.Drawing.Size(135, 45);
@@ -492,11 +494,45 @@
             this._lbl_username.TabIndex = 230;
             this._lbl_username.Text = "Nombre de usuario";
             // 
+            // lbl_inhabilitado
+            // 
+            this.lbl_inhabilitado.AutoSize = true;
+            this.lbl_inhabilitado.Location = new System.Drawing.Point(279, 399);
+            this.lbl_inhabilitado.Name = "lbl_inhabilitado";
+            this.lbl_inhabilitado.Size = new System.Drawing.Size(99, 13);
+            this.lbl_inhabilitado.TabIndex = 241;
+            this.lbl_inhabilitado.Text = "Usuario inhabilitado";
+            this.lbl_inhabilitado.Visible = false;
+            // 
+            // lbl_habilitar
+            // 
+            this.lbl_habilitar.AutoSize = true;
+            this.lbl_habilitar.Location = new System.Drawing.Point(434, 399);
+            this.lbl_habilitar.Name = "lbl_habilitar";
+            this.lbl_habilitar.Size = new System.Drawing.Size(63, 13);
+            this.lbl_habilitar.TabIndex = 242;
+            this.lbl_habilitar.Text = "HABILITAR";
+            this.lbl_habilitar.Visible = false;
+            // 
+            // chk_habilitar
+            // 
+            this.chk_habilitar.AutoSize = true;
+            this.chk_habilitar.Enabled = false;
+            this.chk_habilitar.Location = new System.Drawing.Point(553, 399);
+            this.chk_habilitar.Name = "chk_habilitar";
+            this.chk_habilitar.Size = new System.Drawing.Size(15, 14);
+            this.chk_habilitar.TabIndex = 243;
+            this.chk_habilitar.UseVisualStyleBackColor = true;
+            this.chk_habilitar.Visible = false;
+            // 
             // Usuario_modificar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 561);
+            this.Controls.Add(this.chk_habilitar);
+            this.Controls.Add(this.lbl_habilitar);
+            this.Controls.Add(this.lbl_inhabilitado);
             this.Controls.Add(this._lbl_mail);
             this.Controls.Add(this._lbl_apellido);
             this.Controls.Add(this._lbl_nombre);
@@ -601,5 +637,8 @@
         private System.Windows.Forms.Label _lbl_numero_doc;
         private System.Windows.Forms.Label _lbl_tipo_documento;
         private System.Windows.Forms.Label _lbl_username;
+        private System.Windows.Forms.Label lbl_inhabilitado;
+        private System.Windows.Forms.Label lbl_habilitar;
+        private System.Windows.Forms.CheckBox chk_habilitar;
     }
 }

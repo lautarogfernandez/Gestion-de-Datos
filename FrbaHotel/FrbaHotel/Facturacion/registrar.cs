@@ -57,9 +57,9 @@ namespace FrbaHotel.Facturacion
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.CommandText = "[TEAM_CASTY].Facturar";
                             cmd.Parameters.Add(new SqlParameter("@cod_Estadia", Convert.ToInt32(txt_estadia.Text)));
-                            cmd.Parameters.Add(new SqlParameter("@fecha", Home._fechaHoySql()));
+                            cmd.Parameters.Add(new SqlParameter("@fecha", Home_factura._fechaHoySql()));
                             cmd.Parameters.Add(new SqlParameter("@cod_forma_pago", 1));
-                            cmd.Parameters.Add(new SqlParameter("@hotel", Home._codigo_hotel));                            
+                            cmd.Parameters.Add(new SqlParameter("@hotel", Home_factura._codigo_hotel));                            
                             cmd.Parameters.Add(precio);
                             
                             cmd.ExecuteNonQuery();
@@ -165,6 +165,11 @@ namespace FrbaHotel.Facturacion
                 e.Handled = true;
             else
                 e.Handled = true;
+        }
+
+        private void registrar_Load(object sender, EventArgs e)
+        {
+
         }
 
 

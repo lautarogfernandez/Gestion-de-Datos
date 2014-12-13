@@ -436,6 +436,11 @@ namespace FrbaHotel.ABM_de_Hotel
         }
         #endregion
 
+        private void Hotel_listado_Load(object sender, EventArgs e)
+        {
+
+        }
+
         #endregion
 
 

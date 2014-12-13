@@ -19,13 +19,13 @@ namespace FrbaHotel
         public static DateTime _fechaHoy=Convert.ToDateTime("20-07-2022");
         public static string transformarFechaASql(DateTime fecha)
         {
-            return fecha.Date.ToString("yyyy-MM-dd HH:mm:ss");
+            string DateTime = string.Format("{0:yyyy-MM-dd}", fecha);
+            return DateTime;
         }
         public static string _fechaHoySql()
         {
-
-            var sqlFormattedDate = _fechaHoy.Date.ToString("yyyy-MM-dd HH:mm:ss");
-            return sqlFormattedDate;
+            string DateTime = string.Format("{0:yyyy-MM-dd}", _fechaHoy);
+            return DateTime;
         }
         public static SqlConnection obtenerConexion()
         {

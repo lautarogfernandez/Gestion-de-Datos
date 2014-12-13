@@ -258,5 +258,10 @@ namespace FrbaHotel.ABM_de_Habitacion
             button_eliminar.ForeColor = SystemColors.ScrollBar;
         }
 
+        private void Habitacion_baja_Load(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

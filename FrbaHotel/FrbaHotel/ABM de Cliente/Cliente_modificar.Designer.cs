@@ -130,7 +130,7 @@
             this.button_modificar.Location = new System.Drawing.Point(12, 491);
             this.button_modificar.Name = "button_modificar";
             this.button_modificar.Size = new System.Drawing.Size(135, 45);
-            this.button_modificar.TabIndex = 25;
+            this.button_modificar.TabIndex = 32;
             this.button_modificar.Text = "Modificar";
             this.button_modificar.UseVisualStyleBackColor = true;
             this.button_modificar.Click += new System.EventHandler(this.button_modificar_Click);
@@ -142,7 +142,7 @@
             this.button_volver.Location = new System.Drawing.Point(437, 491);
             this.button_volver.Name = "button_volver";
             this.button_volver.Size = new System.Drawing.Size(135, 45);
-            this.button_volver.TabIndex = 24;
+            this.button_volver.TabIndex = 33;
             this.button_volver.Text = "Volver";
             this.button_volver.UseVisualStyleBackColor = true;
             this.button_volver.Click += new System.EventHandler(this.button_volver_Click);
@@ -408,7 +408,7 @@
             this.txt_nombre.Location = new System.Drawing.Point(327, 58);
             this.txt_nombre.Name = "txt_nombre";
             this.txt_nombre.Size = new System.Drawing.Size(210, 20);
-            this.txt_nombre.TabIndex = 59;
+            this.txt_nombre.TabIndex = 17;
             this.txt_nombre.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_apellido
@@ -416,7 +416,7 @@
             this.txt_apellido.Location = new System.Drawing.Point(327, 87);
             this.txt_apellido.Name = "txt_apellido";
             this.txt_apellido.Size = new System.Drawing.Size(210, 20);
-            this.txt_apellido.TabIndex = 60;
+            this.txt_apellido.TabIndex = 18;
             this.txt_apellido.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_mail
@@ -424,7 +424,7 @@
             this.txt_mail.Location = new System.Drawing.Point(327, 116);
             this.txt_mail.Name = "txt_mail";
             this.txt_mail.Size = new System.Drawing.Size(210, 20);
-            this.txt_mail.TabIndex = 61;
+            this.txt_mail.TabIndex = 19;
             this.txt_mail.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_numero_documento
@@ -432,7 +432,7 @@
             this.txt_numero_documento.Location = new System.Drawing.Point(327, 171);
             this.txt_numero_documento.Name = "txt_numero_documento";
             this.txt_numero_documento.Size = new System.Drawing.Size(210, 20);
-            this.txt_numero_documento.TabIndex = 62;
+            this.txt_numero_documento.TabIndex = 21;
             this.txt_numero_documento.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_numero_documento_KeyPress);
             this.txt_numero_documento.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
@@ -442,7 +442,7 @@
             this.cmb_tipo_documento.Location = new System.Drawing.Point(327, 143);
             this.cmb_tipo_documento.Name = "cmb_tipo_documento";
             this.cmb_tipo_documento.Size = new System.Drawing.Size(210, 21);
-            this.cmb_tipo_documento.TabIndex = 63;
+            this.cmb_tipo_documento.TabIndex = 20;
             this.cmb_tipo_documento.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_localidad
@@ -450,7 +450,7 @@
             this.txt_localidad.Location = new System.Drawing.Point(327, 258);
             this.txt_localidad.Name = "txt_localidad";
             this.txt_localidad.Size = new System.Drawing.Size(210, 20);
-            this.txt_localidad.TabIndex = 66;
+            this.txt_localidad.TabIndex = 24;
             this.txt_localidad.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_pais
@@ -458,7 +458,7 @@
             this.txt_pais.Location = new System.Drawing.Point(327, 229);
             this.txt_pais.Name = "txt_pais";
             this.txt_pais.Size = new System.Drawing.Size(210, 20);
-            this.txt_pais.TabIndex = 65;
+            this.txt_pais.TabIndex = 23;
             this.txt_pais.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_telefono
@@ -466,7 +466,7 @@
             this.txt_telefono.Location = new System.Drawing.Point(327, 200);
             this.txt_telefono.Name = "txt_telefono";
             this.txt_telefono.Size = new System.Drawing.Size(210, 20);
-            this.txt_telefono.TabIndex = 64;
+            this.txt_telefono.TabIndex = 22;
             this.txt_telefono.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_piso
@@ -474,7 +474,7 @@
             this.txt_piso.Location = new System.Drawing.Point(327, 345);
             this.txt_piso.Name = "txt_piso";
             this.txt_piso.Size = new System.Drawing.Size(210, 20);
-            this.txt_piso.TabIndex = 69;
+            this.txt_piso.TabIndex = 27;
             this.txt_piso.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_numero_documento_KeyPress);
             this.txt_piso.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
@@ -483,7 +483,7 @@
             this.txt_numero_calle.Location = new System.Drawing.Point(327, 316);
             this.txt_numero_calle.Name = "txt_numero_calle";
             this.txt_numero_calle.Size = new System.Drawing.Size(210, 20);
-            this.txt_numero_calle.TabIndex = 68;
+            this.txt_numero_calle.TabIndex = 26;
             this.txt_numero_calle.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_numero_documento_KeyPress);
             this.txt_numero_calle.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
@@ -492,7 +492,7 @@
             this.txt_calle.Location = new System.Drawing.Point(327, 287);
             this.txt_calle.Name = "txt_calle";
             this.txt_calle.Size = new System.Drawing.Size(210, 20);
-            this.txt_calle.TabIndex = 67;
+            this.txt_calle.TabIndex = 25;
             this.txt_calle.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_nacionalidad
@@ -500,7 +500,7 @@
             this.txt_nacionalidad.Location = new System.Drawing.Point(327, 403);
             this.txt_nacionalidad.Name = "txt_nacionalidad";
             this.txt_nacionalidad.Size = new System.Drawing.Size(210, 20);
-            this.txt_nacionalidad.TabIndex = 71;
+            this.txt_nacionalidad.TabIndex = 29;
             this.txt_nacionalidad.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // txt_departamento
@@ -508,7 +508,7 @@
             this.txt_departamento.Location = new System.Drawing.Point(327, 374);
             this.txt_departamento.Name = "txt_departamento";
             this.txt_departamento.Size = new System.Drawing.Size(210, 20);
-            this.txt_departamento.TabIndex = 70;
+            this.txt_departamento.TabIndex = 28;
             this.txt_departamento.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // dtp_fecha_nacimiento
@@ -516,7 +516,7 @@
             this.dtp_fecha_nacimiento.Location = new System.Drawing.Point(327, 435);
             this.dtp_fecha_nacimiento.Name = "dtp_fecha_nacimiento";
             this.dtp_fecha_nacimiento.Size = new System.Drawing.Size(210, 20);
-            this.dtp_fecha_nacimiento.TabIndex = 72;
+            this.dtp_fecha_nacimiento.TabIndex = 30;
             this.dtp_fecha_nacimiento.EnabledChanged += new System.EventHandler(this.control_enabled_change);
             // 
             // chk_nombre
@@ -525,7 +525,7 @@
             this.chk_nombre.Location = new System.Drawing.Point(556, 61);
             this.chk_nombre.Name = "chk_nombre";
             this.chk_nombre.Size = new System.Drawing.Size(15, 14);
-            this.chk_nombre.TabIndex = 73;
+            this.chk_nombre.TabIndex = 2;
             this.chk_nombre.UseVisualStyleBackColor = true;
             this.chk_nombre.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
@@ -535,7 +535,7 @@
             this.chk_apellido.Location = new System.Drawing.Point(556, 90);
             this.chk_apellido.Name = "chk_apellido";
             this.chk_apellido.Size = new System.Drawing.Size(15, 14);
-            this.chk_apellido.TabIndex = 74;
+            this.chk_apellido.TabIndex = 3;
             this.chk_apellido.UseVisualStyleBackColor = true;
             this.chk_apellido.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
@@ -545,7 +545,7 @@
             this.chk_mail.Location = new System.Drawing.Point(556, 119);
             this.chk_mail.Name = "chk_mail";
             this.chk_mail.Size = new System.Drawing.Size(15, 14);
-            this.chk_mail.TabIndex = 75;
+            this.chk_mail.TabIndex = 4;
             this.chk_mail.UseVisualStyleBackColor = true;
             this.chk_mail.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
@@ -555,7 +555,7 @@
             this.chk_tipo_documento.Location = new System.Drawing.Point(556, 146);
             this.chk_tipo_documento.Name = "chk_tipo_documento";
             this.chk_tipo_documento.Size = new System.Drawing.Size(15, 14);
-            this.chk_tipo_documento.TabIndex = 76;
+            this.chk_tipo_documento.TabIndex = 5;
             this.chk_tipo_documento.UseVisualStyleBackColor = true;
             this.chk_tipo_documento.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
@@ -565,7 +565,7 @@
             this.chk_numero_documento.Location = new System.Drawing.Point(556, 174);
             this.chk_numero_documento.Name = "chk_numero_documento";
             this.chk_numero_documento.Size = new System.Drawing.Size(15, 14);
-            this.chk_numero_documento.TabIndex = 77;
+            this.chk_numero_documento.TabIndex = 6;
             this.chk_numero_documento.UseVisualStyleBackColor = true;
             this.chk_numero_documento.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
@@ -575,7 +575,7 @@
             this.chk_telefono.Location = new System.Drawing.Point(556, 203);
             this.chk_telefono.Name = "chk_telefono";
             this.chk_telefono.Size = new System.Drawing.Size(15, 14);
-            this.chk_telefono.TabIndex = 78;
+            this.chk_telefono.TabIndex = 7;
             this.chk_telefono.UseVisualStyleBackColor = true;
             this.chk_telefono.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
@@ -585,7 +585,7 @@
             this.chk_pais.Location = new System.Drawing.Point(556, 232);
             this.chk_pais.Name = "chk_pais";
             this.chk_pais.Size = new System.Drawing.Size(15, 14);
-            this.chk_pais.TabIndex = 79;
+            this.chk_pais.TabIndex = 8;
             this.chk_pais.UseVisualStyleBackColor = true;
             this.chk_pais.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
@@ -595,7 +595,7 @@
             this.chk_localidad.Location = new System.Drawing.Point(556, 261);
             this.chk_localidad.Name = "chk_localidad";
             this.chk_localidad.Size = new System.Drawing.Size(15, 14);
-            this.chk_localidad.TabIndex = 80;
+            this.chk_localidad.TabIndex = 9;
             this.chk_localidad.UseVisualStyleBackColor = true;
             this.chk_localidad.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
@@ -605,7 +605,7 @@
             this.chk_fecha_nacimiento.Location = new System.Drawing.Point(556, 435);
             this.chk_fecha_nacimiento.Name = "chk_fecha_nacimiento";
             this.chk_fecha_nacimiento.Size = new System.Drawing.Size(15, 14);
-            this.chk_fecha_nacimiento.TabIndex = 86;
+            this.chk_fecha_nacimiento.TabIndex = 15;
             this.chk_fecha_nacimiento.UseVisualStyleBackColor = true;
             this.chk_fecha_nacimiento.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
@@ -615,7 +615,7 @@
             this.chk_nacionalidad.Location = new System.Drawing.Point(556, 406);
             this.chk_nacionalidad.Name = "chk_nacionalidad";
             this.chk_nacionalidad.Size = new System.Drawing.Size(15, 14);
-            this.chk_nacionalidad.TabIndex = 85;
+            this.chk_nacionalidad.TabIndex = 14;
             this.chk_nacionalidad.UseVisualStyleBackColor = true;
             this.chk_nacionalidad.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
@@ -625,7 +625,7 @@
             this.chk_departamento.Location = new System.Drawing.Point(556, 377);
             this.chk_departamento.Name = "chk_departamento";
             this.chk_departamento.Size = new System.Drawing.Size(15, 14);
-            this.chk_departamento.TabIndex = 84;
+            this.chk_departamento.TabIndex = 13;
             this.chk_departamento.UseVisualStyleBackColor = true;
             this.chk_departamento.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
@@ -635,7 +635,7 @@
             this.chk_piso.Location = new System.Drawing.Point(556, 348);
             this.chk_piso.Name = "chk_piso";
             this.chk_piso.Size = new System.Drawing.Size(15, 14);
-            this.chk_piso.TabIndex = 83;
+            this.chk_piso.TabIndex = 12;
             this.chk_piso.UseVisualStyleBackColor = true;
             this.chk_piso.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
@@ -645,7 +645,7 @@
             this.chk_numero_calle.Location = new System.Drawing.Point(556, 319);
             this.chk_numero_calle.Name = "chk_numero_calle";
             this.chk_numero_calle.Size = new System.Drawing.Size(15, 14);
-            this.chk_numero_calle.TabIndex = 82;
+            this.chk_numero_calle.TabIndex = 11;
             this.chk_numero_calle.UseVisualStyleBackColor = true;
             this.chk_numero_calle.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
@@ -655,7 +655,7 @@
             this.chk_calle.Location = new System.Drawing.Point(556, 290);
             this.chk_calle.Name = "chk_calle";
             this.chk_calle.Size = new System.Drawing.Size(15, 14);
-            this.chk_calle.TabIndex = 81;
+            this.chk_calle.TabIndex = 10;
             this.chk_calle.UseVisualStyleBackColor = true;
             this.chk_calle.CheckedChanged += new System.EventHandler(this.common_checkBox_check);
             // 
@@ -665,7 +665,7 @@
             this.chk_todos.Location = new System.Drawing.Point(556, 26);
             this.chk_todos.Name = "chk_todos";
             this.chk_todos.Size = new System.Drawing.Size(15, 14);
-            this.chk_todos.TabIndex = 87;
+            this.chk_todos.TabIndex = 1;
             this.chk_todos.UseVisualStyleBackColor = true;
             this.chk_todos.CheckedChanged += new System.EventHandler(this.check_todos_change);
             // 
@@ -705,7 +705,7 @@
             this.chk_inhabilitado.Location = new System.Drawing.Point(556, 467);
             this.chk_inhabilitado.Name = "chk_inhabilitado";
             this.chk_inhabilitado.Size = new System.Drawing.Size(15, 14);
-            this.chk_inhabilitado.TabIndex = 94;
+            this.chk_inhabilitado.TabIndex = 16;
             this.chk_inhabilitado.UseVisualStyleBackColor = true;
             // 
             // cmb_inhabilitado
@@ -717,7 +717,7 @@
             this.cmb_inhabilitado.Location = new System.Drawing.Point(327, 464);
             this.cmb_inhabilitado.Name = "cmb_inhabilitado";
             this.cmb_inhabilitado.Size = new System.Drawing.Size(210, 21);
-            this.cmb_inhabilitado.TabIndex = 93;
+            this.cmb_inhabilitado.TabIndex = 31;
             // 
             // _lbl_inhabilitado
             // 

@@ -336,7 +336,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 562);
+            this.ClientSize = new System.Drawing.Size(584, 561);
             this.Controls.Add(this.cmb_frente);
             this.Controls.Add(this.chk_baja);
             this.Controls.Add(this.cmb_baja);
@@ -369,6 +369,7 @@
             this.MinimumSize = new System.Drawing.Size(600, 600);
             this.Name = "Habitacion_modificar";
             this.Text = "Habitacion_modificar";
+            this.Load += new System.EventHandler(this.Habitacion_modificar_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

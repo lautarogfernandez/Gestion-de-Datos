@@ -16,6 +16,7 @@ namespace FrbaHotel.ABM_de_Usuario
     {
         private string codigo;
         public DataTable tabla_roles_hoteles;
+        public  bool habilitar=false;
         public Usuario_modificar(valoresDataGridView _valoresDGV)
         {
             InitializeComponent();
@@ -30,6 +31,14 @@ namespace FrbaHotel.ABM_de_Usuario
                 cmb_tipo_documento.Items.Add(reader["Tipo_Documento"].ToString());
             }
             codigo = _valoresDGV._codigo;
+            habilitar = _valoresDGV._habilitado;
+            if (_valoresDGV._habilitado == false)
+            {
+                lbl_inhabilitado.Visible = true;
+                lbl_habilitar.Visible = true;
+                chk_habilitar.Visible = true;
+                chk_habilitar.Enabled = true;
+            }
         }
         private void establecerAtributosOriginales(valoresDataGridView _valoresDGV)
         {
@@ -50,7 +59,7 @@ namespace FrbaHotel.ABM_de_Usuario
                                         cmb_tipo_documento};
             CheckBox[] checks = {chk_apellido,chk_direccion,chk_fecha_nacimiento,
                                     chk_mail,chk_nombre,chk_numero_documento,
-                                    chk_telefono,chk_tipo_documento,chk_username,chk_todos};
+                                    chk_telefono,chk_tipo_documento,chk_username,chk_todos,chk_habilitar};
             for (int i = 0; i < controles.Length; i++)
             {
                 habilitar_o_deshabilitar_control(controles[i], _enable);
@@ -173,6 +182,11 @@ namespace FrbaHotel.ABM_de_Usuario
                         habilitar_o_deshabilitar_control(cmb_tipo_documento, _checker.Checked);
                         break;
                     }
+                case "chk_habilitar":
+                    {
+                        habilitar = _checker.Checked;
+                        break;
+                    }
                 case "chk_todos":
                     {
                         cambiarTodosLosControles(_checker.Checked);
@@ -216,7 +230,8 @@ namespace FrbaHotel.ABM_de_Usuario
             DialogResult resultado = MessageBox.Show(mensaje, "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (resultado == DialogResult.Yes)
             {
-                if (chk_fecha_nacimiento.Checked && dtp_fecha_nacimiento.Value < Home_Usuario._fechaHoy)
+                if ((chk_fecha_nacimiento.Checked && dtp_fecha_nacimiento.Value < Home_Usuario._fechaHoy) 
+                    || chk_fecha_nacimiento.Checked==false)
                 {
                     try
                     {
@@ -267,9 +282,10 @@ namespace FrbaHotel.ABM_de_Usuario
                                 cmd.Parameters.Add(new SqlParameter("@direccion", direccion));
                                 string fecha_nacimiento = _lbl_fecha_nacimiento.Text;
                                 if (chk_fecha_nacimiento.Checked)
-                                    fecha_nacimiento = Home.transformarFechaASql(dtp_fecha_nacimiento.Value);
+                                    fecha_nacimiento = Home_Usuario.transformarFechaASql(dtp_fecha_nacimiento.Value);
                                 cmd.Parameters.Add(new SqlParameter("@fechaNacimiento", fecha_nacimiento));
                                 cmd.Parameters.Add(new SqlParameter("@tabla", tabla_roles_hoteles));
+                                cmd.Parameters.Add(new SqlParameter("@habilitado",habilitar));
                                 cmd.ExecuteNonQuery();
                                 string msj = "Usuario agregado con éxito";
                                 MessageBox.Show(msj, "Exito", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);

@@ -271,5 +271,10 @@ namespace FrbaHotel.ABM_de_Habitacion
             else
                 e.Handled = true;
         }
+
+        private void Habitacion_modificar_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

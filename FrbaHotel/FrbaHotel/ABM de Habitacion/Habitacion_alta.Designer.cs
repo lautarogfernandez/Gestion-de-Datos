@@ -51,6 +51,7 @@
             this.button_volver = new System.Windows.Forms.Button();
             this.rb_VistaExterior = new System.Windows.Forms.RadioButton();
             this.rb_VistaInterior = new System.Windows.Forms.RadioButton();
+            this.label1 = new System.Windows.Forms.Label();
             this.stat_BarraEstado.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,7 +60,7 @@
             this.stat_BarraEstado.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.barra_progreso,
             this.label_progreso});
-            this.stat_BarraEstado.Location = new System.Drawing.Point(0, 540);
+            this.stat_BarraEstado.Location = new System.Drawing.Point(0, 339);
             this.stat_BarraEstado.Name = "stat_BarraEstado";
             this.stat_BarraEstado.Size = new System.Drawing.Size(584, 22);
             this.stat_BarraEstado.TabIndex = 196;
@@ -79,10 +80,10 @@
             // cmb_tipo_habitacion
             // 
             this.cmb_tipo_habitacion.FormattingEnabled = true;
-            this.cmb_tipo_habitacion.Location = new System.Drawing.Point(236, 141);
+            this.cmb_tipo_habitacion.Location = new System.Drawing.Point(213, 141);
             this.cmb_tipo_habitacion.Name = "cmb_tipo_habitacion";
-            this.cmb_tipo_habitacion.Size = new System.Drawing.Size(169, 21);
-            this.cmb_tipo_habitacion.TabIndex = 195;
+            this.cmb_tipo_habitacion.Size = new System.Drawing.Size(192, 21);
+            this.cmb_tipo_habitacion.TabIndex = 5;
             // 
             // _obli_tipoDoc
             // 
@@ -90,7 +91,7 @@
             this._obli_tipoDoc.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._obli_tipoDoc.ForeColor = System.Drawing.Color.Red;
             this._obli_tipoDoc.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this._obli_tipoDoc.Location = new System.Drawing.Point(548, 137);
+            this._obli_tipoDoc.Location = new System.Drawing.Point(411, 142);
             this._obli_tipoDoc.Name = "_obli_tipoDoc";
             this._obli_tipoDoc.Size = new System.Drawing.Size(15, 20);
             this._obli_tipoDoc.TabIndex = 191;
@@ -102,7 +103,7 @@
             this._obli_mail.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._obli_mail.ForeColor = System.Drawing.Color.Red;
             this._obli_mail.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this._obli_mail.Location = new System.Drawing.Point(548, 109);
+            this._obli_mail.Location = new System.Drawing.Point(478, 115);
             this._obli_mail.Name = "_obli_mail";
             this._obli_mail.Size = new System.Drawing.Size(15, 20);
             this._obli_mail.TabIndex = 190;
@@ -114,7 +115,7 @@
             this._obli_apellido.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._obli_apellido.ForeColor = System.Drawing.Color.Red;
             this._obli_apellido.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this._obli_apellido.Location = new System.Drawing.Point(548, 81);
+            this._obli_apellido.Location = new System.Drawing.Point(335, 86);
             this._obli_apellido.Name = "_obli_apellido";
             this._obli_apellido.Size = new System.Drawing.Size(15, 20);
             this._obli_apellido.TabIndex = 189;
@@ -126,7 +127,7 @@
             this._obli_nombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._obli_nombre.ForeColor = System.Drawing.Color.Red;
             this._obli_nombre.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this._obli_nombre.Location = new System.Drawing.Point(548, 53);
+            this._obli_nombre.Location = new System.Drawing.Point(335, 55);
             this._obli_nombre.Name = "_obli_nombre";
             this._obli_nombre.Size = new System.Drawing.Size(15, 20);
             this._obli_nombre.TabIndex = 188;
@@ -153,11 +154,11 @@
             // 
             // txt_descripcion
             // 
-            this.txt_descripcion.Location = new System.Drawing.Point(236, 168);
+            this.txt_descripcion.Location = new System.Drawing.Point(213, 168);
             this.txt_descripcion.Multiline = true;
             this.txt_descripcion.Name = "txt_descripcion";
-            this.txt_descripcion.Size = new System.Drawing.Size(306, 98);
-            this.txt_descripcion.TabIndex = 162;
+            this.txt_descripcion.Size = new System.Drawing.Size(329, 98);
+            this.txt_descripcion.TabIndex = 6;
             // 
             // lbl_informacion_obligatoria
             // 
@@ -218,18 +219,18 @@
             // 
             // txt_numero
             // 
-            this.txt_numero.Location = new System.Drawing.Point(236, 84);
+            this.txt_numero.Location = new System.Drawing.Point(213, 84);
             this.txt_numero.Name = "txt_numero";
-            this.txt_numero.Size = new System.Drawing.Size(93, 20);
-            this.txt_numero.TabIndex = 160;
+            this.txt_numero.Size = new System.Drawing.Size(116, 20);
+            this.txt_numero.TabIndex = 2;
             this.txt_numero.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_piso_KeyPress);
             // 
             // txt_piso
             // 
-            this.txt_piso.Location = new System.Drawing.Point(236, 55);
+            this.txt_piso.Location = new System.Drawing.Point(213, 55);
             this.txt_piso.Name = "txt_piso";
-            this.txt_piso.Size = new System.Drawing.Size(93, 20);
-            this.txt_piso.TabIndex = 159;
+            this.txt_piso.Size = new System.Drawing.Size(116, 20);
+            this.txt_piso.TabIndex = 1;
             this.txt_piso.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_piso_KeyPress);
             // 
             // button_aceptar
@@ -239,7 +240,7 @@
             this.button_aceptar.Location = new System.Drawing.Point(12, 284);
             this.button_aceptar.Name = "button_aceptar";
             this.button_aceptar.Size = new System.Drawing.Size(135, 45);
-            this.button_aceptar.TabIndex = 158;
+            this.button_aceptar.TabIndex = 7;
             this.button_aceptar.Text = "Aceptar";
             this.button_aceptar.UseVisualStyleBackColor = true;
             this.button_aceptar.Click += new System.EventHandler(this.button_aceptar_Click);
@@ -251,7 +252,7 @@
             this.button_volver.Location = new System.Drawing.Point(437, 284);
             this.button_volver.Name = "button_volver";
             this.button_volver.Size = new System.Drawing.Size(135, 45);
-            this.button_volver.TabIndex = 157;
+            this.button_volver.TabIndex = 8;
             this.button_volver.Text = "Volver";
             this.button_volver.UseVisualStyleBackColor = true;
             this.button_volver.Click += new System.EventHandler(this.button_volver_Click);
@@ -262,7 +263,7 @@
             this.rb_VistaExterior.Location = new System.Drawing.Point(238, 113);
             this.rb_VistaExterior.Name = "rb_VistaExterior";
             this.rb_VistaExterior.Size = new System.Drawing.Size(86, 17);
-            this.rb_VistaExterior.TabIndex = 198;
+            this.rb_VistaExterior.TabIndex = 3;
             this.rb_VistaExterior.TabStop = true;
             this.rb_VistaExterior.Text = "Vista Exterior";
             this.rb_VistaExterior.UseVisualStyleBackColor = true;
@@ -273,16 +274,29 @@
             this.rb_VistaInterior.Location = new System.Drawing.Point(374, 113);
             this.rb_VistaInterior.Name = "rb_VistaInterior";
             this.rb_VistaInterior.Size = new System.Drawing.Size(83, 17);
-            this.rb_VistaInterior.TabIndex = 199;
+            this.rb_VistaInterior.TabIndex = 4;
             this.rb_VistaInterior.TabStop = true;
             this.rb_VistaInterior.Text = "Vista Interior";
             this.rb_VistaInterior.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.Red;
+            this.label1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label1.Location = new System.Drawing.Point(548, 168);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(15, 20);
+            this.label1.TabIndex = 198;
+            this.label1.Text = "*";
             // 
             // Habitacion_alta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 562);
+            this.ClientSize = new System.Drawing.Size(584, 361);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.rb_VistaInterior);
             this.Controls.Add(this.rb_VistaExterior);
             this.Controls.Add(this.stat_BarraEstado);
@@ -304,10 +318,11 @@
             this.Controls.Add(this.txt_piso);
             this.Controls.Add(this.button_aceptar);
             this.Controls.Add(this.button_volver);
-            this.MaximumSize = new System.Drawing.Size(600, 600);
-            this.MinimumSize = new System.Drawing.Size(600, 600);
+            this.MaximumSize = new System.Drawing.Size(600, 400);
+            this.MinimumSize = new System.Drawing.Size(600, 400);
             this.Name = "Habitacion_alta";
             this.Text = "Habitacion_alta";
+            this.Load += new System.EventHandler(this.Habitacion_alta_Load);
             this.stat_BarraEstado.ResumeLayout(false);
             this.stat_BarraEstado.PerformLayout();
             this.ResumeLayout(false);
@@ -340,5 +355,6 @@
         private System.Windows.Forms.Button button_volver;
         private System.Windows.Forms.RadioButton rb_VistaExterior;
         private System.Windows.Forms.RadioButton rb_VistaInterior;
+        private System.Windows.Forms.Label label1;
     }
 }

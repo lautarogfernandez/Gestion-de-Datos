@@ -50,7 +50,7 @@
             this.stat_BarraEstado.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.barra_progreso,
             this.label_progreso});
-            this.stat_BarraEstado.Location = new System.Drawing.Point(0, 540);
+            this.stat_BarraEstado.Location = new System.Drawing.Point(0, 539);
             this.stat_BarraEstado.Name = "stat_BarraEstado";
             this.stat_BarraEstado.Size = new System.Drawing.Size(584, 22);
             this.stat_BarraEstado.TabIndex = 29;
@@ -187,7 +187,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 562);
+            this.ClientSize = new System.Drawing.Size(584, 561);
             this.Controls.Add(this.txt_tarjeta);
             this.Controls.Add(this.txt_banco);
             this.Controls.Add(this.l_b);
@@ -204,6 +204,7 @@
             this.MinimumSize = new System.Drawing.Size(600, 600);
             this.Name = "registrar";
             this.Text = "registrar";
+            this.Load += new System.EventHandler(this.registrar_Load);
             this.stat_BarraEstado.ResumeLayout(false);
             this.stat_BarraEstado.PerformLayout();
             this.ResumeLayout(false);

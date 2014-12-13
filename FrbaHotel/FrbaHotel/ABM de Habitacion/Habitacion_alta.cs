@@ -108,5 +108,10 @@ namespace FrbaHotel.ABM_de_Habitacion
             this.Hide();
             formx.Show();
         }
+
+        private void Habitacion_alta_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

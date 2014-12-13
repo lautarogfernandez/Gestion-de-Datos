@@ -540,6 +540,7 @@
             this.MinimumSize = new System.Drawing.Size(600, 600);
             this.Name = "Hotel_listado";
             this.Text = "Hotel_listado";
+            this.Load += new System.EventHandler(this.Hotel_listado_Load);
             this.grp_cantidad_estrellas.ResumeLayout(false);
             this.grp_cantidad_estrellas.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.menor)).EndInit();

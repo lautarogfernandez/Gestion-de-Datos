@@ -200,7 +200,7 @@ namespace FrbaHotel.ABM_de_Usuario
             button_modificar.Enabled = false;
             button_modificar.ForeColor = SystemColors.ScrollBar;
             string busqueda = "SELECT Codigo,Username,  Apellido, Nombre,Mail, [Tipo de Documento], [Numero de Documento],"
-            +"Telefono, Direccion, [Fecha de Nacimiento]"
+            +"Telefono, Direccion, [Fecha de Nacimiento], Habilitado "
                                                                      + "FROM [GD2C2014].[Team_Casty].[vistaUsuarios]";           //búsqueda básica
             button_Buscar.Enabled = false;            //Deshabilito búsqueda hasta que haya resultado
             label_progreso.Text = "Cargando Usuarios";       //Imprime en la barra de progreso
@@ -335,6 +335,11 @@ namespace FrbaHotel.ABM_de_Usuario
                             _valores._codigo = dgv_resultados.SelectedCells[i].Value.ToString();
                             break;
                         }
+                    case "Username":
+                        {
+                            _valores._username = dgv_resultados.SelectedCells[i].Value.ToString();
+                            break;
+                        }
                     case "Nombre":
                         {
                             _valores._nombre = dgv_resultados.SelectedCells[i].Value.ToString();
@@ -370,9 +375,9 @@ namespace FrbaHotel.ABM_de_Usuario
                             _valores._direccion = dgv_resultados.SelectedCells[i].Value.ToString();
                             break;
                         }
-                    case "Fecha Nacimiento":
+                    case "Fecha de Nacimiento":
                         {
-                            _valores._fecha_nacimiento = dgv_resultados.SelectedCells[i].Value.ToString();
+                            _valores._fecha_nacimiento =Home_Usuario.transformarFechaASql(Convert.ToDateTime(dgv_resultados.SelectedCells[i].Value));
                             break;
                         }
                     case "Habilitado":
