@@ -1728,6 +1728,10 @@ begin
 	set @mensaje=' Mail repetido.';
 end 
 
+select * from TEAM_CASTY.Consumible
+select * from TEAM_CASTY.Tipo_Habitacion
+select * from TEAM_CASTY.Regimen
+select * from TEAM_CASTY.Factura order by Cod_Estadia desc
 if(exists(
 select *
 from @tabla t
@@ -2081,7 +2085,6 @@ group by th.Descripcion);
 
 GO
 
-
 create procedure  TEAM_CASTY.Modificar_Reserva
 (@usuario nvarchar(255),@cod_reserva numeric(18),@fecha_realizacion datetime,@fecha_reserva datetime,@cant_noches numeric(18),
 @id_cliente numeric(18),@regimen nvarchar(255),@hotel numeric(18),@tabla TEAM_CASTY.t_reserva readonly)
@@ -2096,9 +2099,13 @@ begin
 	
 		delete TEAM_CASTY.HabitacionXReserva
 		where Cod_Reserva=@cod_reserva;
-
-	
-	if(@error=0)		
+		declare @sepuede numeric(18);
+		set @sepuede=1;
+		declare @precio money;
+		declare @f_hasta datetime=@fecha_reserva+ @cant_noches;
+	EXEC TEAM_CASTY.Disponibilidad_Reserva @fecha_reserva,@f_hasta,@hotel,@regimen,@tabla,@sepuede
+	,@precio; 
+	if(@error=0 AND @sepuede=1)		
 	begin
 		exec TEAM_CASTY.Reservar_Habitaciones @cod_reserva,@fecha_reserva,@cant_noches,@hotel,@tabla;
 		declare @cod_usuario numeric(18);

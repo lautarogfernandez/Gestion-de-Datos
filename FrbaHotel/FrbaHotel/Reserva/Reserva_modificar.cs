@@ -365,114 +365,55 @@ namespace FrbaHotel.Reserva
                     DataTable table = new DataTable("t_reserva");
                     table.Columns.Add(new DataColumn("Tipo_habitacion", typeof(string)));
                     table.Columns.Add(new DataColumn("Cantidad", typeof(int)));
-                    string regimen =dgv_regimenes.SelectedCells[0].Value.ToString();
+                    string regimen = dgv_regimenes.SelectedCells[0].Value.ToString();
                     for (int i = 0; i < dgv_tipos_habitaciones.Rows.Count; i++)
                     {
                         bool activado = Convert.ToBoolean(dgv_tipos_habitaciones.Rows[i].Cells[0].Value);
-                        if (activado == true )
+                        if (activado == true)
                         {
-                        string nombre = dgv_tipos_habitaciones.Rows[i].Cells[1].Value.ToString();
-                        int cantidad = Convert.ToInt32(dgv_tipos_habitaciones.Rows[i].Cells[2].Value);
-                        table.Rows.Add(nombre, cantidad);
+                            string nombre = dgv_tipos_habitaciones.Rows[i].Cells[1].Value.ToString();
+                            int cantidad = Convert.ToInt32(dgv_tipos_habitaciones.Rows[i].Cells[2].Value);
+                            table.Rows.Add(nombre, cantidad);
                         }
                     }
+                    _reserva.regimen = regimen;
+                    _reserva.codigo_hotel = Home_Reserva._codigo_hotel;
+                    _reserva.fecha_desde = dtp_desde.Value;
+                    _reserva.fecha_hasta = dtp_hasta.Value;
                     using (SqlConnection conn = Home_Reserva.obtenerConexion())
                     {
-                        using (SqlCommand cmd = conn.CreateCommand())
+                        using (SqlCommand cmd2 = conn.CreateCommand())
                         {
-                            //function  TEAM_CASTY.Disponibilidad_Reserva
-                            //(@fecha_desde datetime,@fecha_hasta datetime,@hotel numeric(18),@tabla TEAM_CASTY.t_reserva
-                            cmd.CommandType = CommandType.StoredProcedure;
-                            SqlParameter outputIdParam = new SqlParameter("@sePuede", SqlDbType.Bit)
+                            cmd2.CommandType = CommandType.StoredProcedure;
+                            //procedure  TEAM_CASTY.Modificar_Reserva(@usuario nvarchar(255),@cod_reserva numeric(18),
+                            //@fecha_realizacion datetime,@fecha_reserva datetime,@cant_noches numeric(18),
+                            //@id_cliente numeric(18),@regimen nvarchar(255),@hotel numeric(18),@tabla TEAM_CASTY.t_reserva readonly)
+                            cmd2.CommandText = "[TEAM_CASTY].Modificar_Reserva";
+                            cmd2.Parameters.Add(new SqlParameter("@usuario", Home_Reserva._nombreUsuario));
+                            cmd2.Parameters.Add(new SqlParameter("@cod_reserva", _reserva.codigo_reserva));
+                            cmd2.Parameters.Add(new SqlParameter("@fecha_realizacion", Home_Reserva._fechaHoySql()));
+                            cmd2.Parameters.Add(new SqlParameter("@fecha_reserva", Home_Reserva.transformarFechaASql(_reserva.fecha_desde)));
+                            int cant_noches = Convert.ToInt32((_reserva.fecha_hasta - _reserva.fecha_desde).TotalDays);
+                            cmd2.Parameters.Add(new SqlParameter("@cant_noches", cant_noches));
+                            cmd2.Parameters.Add(new SqlParameter("@id_cliente", _reserva.cliente));
+                            cmd2.Parameters.Add(new SqlParameter("@regimen", _reserva.regimen));
+                            cmd2.Parameters.Add(new SqlParameter("@hotel", _reserva.codigo_hotel));
+                            cmd2.Parameters.Add(new SqlParameter("@tabla", table));
+                            cmd2.ExecuteNonQuery();
+                            string mensj = string.Format("¡Reserva Exitosa! \n Su código de reserva es: {0} \n Usuario: {1} \n Fecha realización: {2} \n" +
+                            "Fecha inicio: {3} \n Cantidad de noches: {4} \n Id cliente: {5} \n Regimen: {6} \n Codigo del Hotel: {7} \n",
+                            txt_codigo_reserva.Text, Home_Reserva._nombreUsuario, Home_Reserva._fechaHoy.ToString(),
+                            _reserva.fecha_desde.ToString(), cant_noches, _reserva.cliente, _reserva.regimen, _reserva.codigo_hotel);
+                            for (int i = 0; i < table.Rows.Count; i++)
                             {
-                                Direction = ParameterDirection.Output
-                            };
-                            SqlParameter precio = new SqlParameter("@precio", SqlDbType.Money)
-                            {
-                                Direction = ParameterDirection.Output
-                            };
-                            cmd.CommandText = "[TEAM_CASTY].Disponibilidad_Reserva";
-                            cmd.Parameters.Add(new SqlParameter("@fecha_desde", Home_Reserva.transformarFechaASql(dtp_desde.Value)));
-                            cmd.Parameters.Add(new SqlParameter("@fecha_hasta", Home_Reserva.transformarFechaASql(dtp_hasta.Value)));
-                            cmd.Parameters.Add(new SqlParameter("@hotel", Home_Reserva._codigo_hotel));
-                            cmd.Parameters.Add(new SqlParameter("@tabla", table));
-                            cmd.Parameters.Add(new SqlParameter("@regimen",regimen));
-                            cmd.Parameters.Add(outputIdParam);
-                            cmd.Parameters.Add(precio);
-                            cmd.ExecuteNonQuery();
-                            if (Convert.ToInt32(outputIdParam.Value) != 0)
-                            {
-                                if (Convert.ToInt32(precio.Value) > 0)
-                                {
-                                    string msj = string.Format("Reserva válida \n Precio total: USD {0} \n ¿Desea continuar y reservar?", precio.Value);
-                                    DialogResult resultado = MessageBox.Show(msj, "Éxito", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                                    if (resultado == DialogResult.Yes)
-                                    {
-                                        _reserva.tipos_habitaciones = new List<t_reserva.habitacion_reserva>();
-                                        for (int i = 0; i < dgv_tipos_habitaciones.Rows.Count; i++)
-                                        {
-                                            bool activado = Convert.ToBoolean(dgv_tipos_habitaciones.Rows[i].Cells[0].Value);
-                                            string nombre = dgv_tipos_habitaciones.Rows[i].Cells[1].Value.ToString();
-                                            int cantidad = Convert.ToInt32(dgv_tipos_habitaciones.Rows[i].Cells[2].Value);
-                                            if (activado == true && cantidad > 0)
-                                            {
-                                                t_reserva.habitacion_reserva habitacion_reserva = new t_reserva.habitacion_reserva();
-                                                habitacion_reserva.cantidad = cantidad;
-                                                habitacion_reserva.tipo_habitacion = nombre;
-                                                _reserva.tipos_habitaciones.Add(habitacion_reserva);
-                                            }
-                                        }
-                                        _reserva.regimen = regimen;
-                                        _reserva.codigo_hotel = Home_Reserva._codigo_hotel;
-                                        _reserva.fecha_desde = dtp_desde.Value;
-                                        _reserva.fecha_hasta = dtp_hasta.Value;
-                                        using (SqlCommand cmd2 = conn.CreateCommand())
-                                        {
-                                            cmd2.CommandType = CommandType.StoredProcedure;
-                                            //procedure  TEAM_CASTY.Modificar_Reserva(@usuario nvarchar(255),@cod_reserva numeric(18),
-                                            //@fecha_realizacion datetime,@fecha_reserva datetime,@cant_noches numeric(18),
-                                            //@id_cliente numeric(18),@regimen nvarchar(255),@hotel numeric(18),@tabla TEAM_CASTY.t_reserva readonly)
-                                            cmd2.CommandText = "[TEAM_CASTY].Modificar_Reserva";
-                                            cmd2.Parameters.Add(new SqlParameter("@usuario", Home_Reserva._nombreUsuario));
-                                            cmd2.Parameters.Add(new SqlParameter("@cod_reserva", _reserva.codigo_reserva));
-                                            cmd2.Parameters.Add(new SqlParameter("@fecha_realizacion", Home_Reserva._fechaHoySql()));
-                                            cmd2.Parameters.Add(new SqlParameter("@fecha_reserva", Home_Reserva.transformarFechaASql(_reserva.fecha_desde)));
-                                            int cant_noches = Convert.ToInt32((_reserva.fecha_hasta - _reserva.fecha_desde).TotalDays);
-                                            cmd2.Parameters.Add(new SqlParameter("@cant_noches", cant_noches));
-                                            cmd2.Parameters.Add(new SqlParameter("@id_cliente", _reserva.cliente));
-                                            cmd2.Parameters.Add(new SqlParameter("@regimen", _reserva.regimen));
-                                            cmd2.Parameters.Add(new SqlParameter("@hotel", _reserva.codigo_hotel));
-                                            cmd2.Parameters.Add(new SqlParameter("@tabla", table));
-                                            cmd2.ExecuteNonQuery();
-                                            string mensj = string.Format("¡Reserva Exitosa! \n Su código de reserva es: {0} \n Usuario: {1} \n Fecha realización: {2} \n" +
-                                            "Fecha inicio: {3} \n Cantidad de noches: {4} \n Id cliente: {5} \n Regimen: {6} \n Codigo del Hotel: {7} \n",
-                                            txt_codigo_reserva.Text, Home_Reserva._nombreUsuario, Home_Reserva._fechaHoy.ToString(),
-                                            _reserva.fecha_desde.ToString(), cant_noches, _reserva.cliente, _reserva.regimen, _reserva.codigo_hotel);
-                                            for (int i = 0; i < table.Rows.Count; i++)
-                                            {
-                                                mensj += string.Format("Tipo de habitacion: {0} - Cantidad: {1} \n", table.Rows[i].ItemArray[0], table.Rows[i].ItemArray[1]);
-                                            }
-                                            MessageBox.Show(mensj, "Exito", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                                            MenuPrincipal formularioPrincipal = new MenuPrincipal();
-                                            this.Hide();
-                                            formularioPrincipal.Show();
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    string msj = "Seleccione al menos un tipo de habitación \n";
-                                    MessageBox.Show(msj, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                                }
+                                mensj += string.Format("Tipo de habitacion: {0} - Cantidad: {1} \n", table.Rows[i].ItemArray[0], table.Rows[i].ItemArray[1]);
                             }
-                            else
-                            {
-                                string msj = "Reserva no disponible \n";
-                                MessageBox.Show(msj, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                            }
+                            MessageBox.Show(mensj, "Exito", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                            MenuPrincipal formularioPrincipal = new MenuPrincipal();
+                            this.Hide();
+                            formularioPrincipal.Show();
                         }
                     }
-
                 }
                 catch (SqlException exc)
                 {

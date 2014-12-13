@@ -49,7 +49,7 @@
             this.button_aceptar.Location = new System.Drawing.Point(13, 89);
             this.button_aceptar.Name = "button_aceptar";
             this.button_aceptar.Size = new System.Drawing.Size(135, 45);
-            this.button_aceptar.TabIndex = 16;
+            this.button_aceptar.TabIndex = 3;
             this.button_aceptar.Text = "Aceptar";
             this.button_aceptar.UseVisualStyleBackColor = true;
             this.button_aceptar.Click += new System.EventHandler(this.button_aceptar_Click);
@@ -61,7 +61,7 @@
             this.button_volver.Location = new System.Drawing.Point(237, 89);
             this.button_volver.Name = "button_volver";
             this.button_volver.Size = new System.Drawing.Size(135, 45);
-            this.button_volver.TabIndex = 17;
+            this.button_volver.TabIndex = 4;
             this.button_volver.Text = "Volver";
             this.button_volver.UseVisualStyleBackColor = true;
             this.button_volver.Click += new System.EventHandler(this.button_volver_Click);
@@ -107,7 +107,7 @@
             this._txt_password.Name = "_txt_password";
             this._txt_password.PasswordChar = '*';
             this._txt_password.Size = new System.Drawing.Size(220, 20);
-            this._txt_password.TabIndex = 1;
+            this._txt_password.TabIndex = 2;
             this._txt_password.TextChanged += new System.EventHandler(this._txt_usuario_TextChanged);
             // 
             // _txt_usuario
@@ -115,7 +115,7 @@
             this._txt_usuario.Location = new System.Drawing.Point(133, 18);
             this._txt_usuario.Name = "_txt_usuario";
             this._txt_usuario.Size = new System.Drawing.Size(220, 20);
-            this._txt_usuario.TabIndex = 0;
+            this._txt_usuario.TabIndex = 1;
             this._txt_usuario.TextChanged += new System.EventHandler(this._txt_usuario_TextChanged);
             // 
             // stat_BarraEstado

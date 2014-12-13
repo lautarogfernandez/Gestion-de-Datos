@@ -49,7 +49,7 @@
             this.button_aceptar.Location = new System.Drawing.Point(13, 91);
             this.button_aceptar.Name = "button_aceptar";
             this.button_aceptar.Size = new System.Drawing.Size(135, 45);
-            this.button_aceptar.TabIndex = 26;
+            this.button_aceptar.TabIndex = 3;
             this.button_aceptar.Text = "Aceptar";
             this.button_aceptar.UseVisualStyleBackColor = true;
             this.button_aceptar.Click += new System.EventHandler(this.button_aceptar_Click);
@@ -61,7 +61,7 @@
             this.button_volver.Location = new System.Drawing.Point(237, 91);
             this.button_volver.Name = "button_volver";
             this.button_volver.Size = new System.Drawing.Size(135, 45);
-            this.button_volver.TabIndex = 27;
+            this.button_volver.TabIndex = 4;
             this.button_volver.Text = "Volver";
             this.button_volver.UseVisualStyleBackColor = true;
             this.button_volver.Click += new System.EventHandler(this.button_volver_Click);
@@ -94,7 +94,7 @@
             this.txt_pass.Name = "txt_pass";
             this.txt_pass.PasswordChar = '*';
             this.txt_pass.Size = new System.Drawing.Size(220, 20);
-            this.txt_pass.TabIndex = 4;
+            this.txt_pass.TabIndex = 1;
             this.txt_pass.TextChanged += new System.EventHandler(this.txt_pass_TextChanged);
             // 
             // lbl_pass
@@ -123,7 +123,7 @@
             this.txt_repetir_pass.Name = "txt_repetir_pass";
             this.txt_repetir_pass.PasswordChar = '*';
             this.txt_repetir_pass.Size = new System.Drawing.Size(220, 20);
-            this.txt_repetir_pass.TabIndex = 30;
+            this.txt_repetir_pass.TabIndex = 2;
             this.txt_repetir_pass.TextChanged += new System.EventHandler(this.txt_pass_TextChanged);
             // 
             // lbl_4omas
