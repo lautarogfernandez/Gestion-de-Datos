@@ -1695,7 +1695,7 @@ declare @error int;
 set @error=0;
 set @mensaje='Error: ';
 
-if (not exists(select * from TEAM_CASTY.Usuario u where u.Cod_Usuario= @cod_usuario and u.Cod_Usuario<>@cod_usuario))
+if (not exists(select * from TEAM_CASTY.Usuario u where u.Username= @username and u.Cod_Usuario<>@cod_usuario))
 begin
 	set @error=1;
 	set @mensaje=' Nombre de usuario repetido.';
